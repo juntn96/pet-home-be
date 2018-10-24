@@ -4,21 +4,42 @@ import jwt_decode from 'jwt-decode';
 
 import { GET_ERRORS, SET_CURRENT_USER, TEST_DISPATCH } from './types';
 
+export const itemsHasErrored = (bool) => dispatch => {
+  dispatch( {
+      type: 'ITEMS_HAS_ERRORED',
+      payload: bool
+  });
+}
+
+export const itemsIsLoading = (bool) => dispatch => {
+  dispatch( {
+      type: 'ITEMS_IS_LOADING',
+      isLoading: bool
+  });
+}
+
+export const itemsFetchLCSuccess = (items) => dispatch => {
+  dispatch( {
+      type: 'ITEMS_FETCH_LC_SUCCESS',
+      items
+  });
+}
+
 // Register User
 export const registerUser = (userData, history) => dispatch => {
-  // axios
-  //   .post('/api/auth/register', userData)
-  //   .then(res => history.push('/login'))
-  //   .catch(err =>
-  //     dispatch({
-  //       type: GET_ERRORS,
-  //       payload: err.response.data
-  //     })
-  //   );
-    dispatch({
-      type: TEST_DISPATCH,
-      payload: userData
-    });
+  axios
+    .post('/api/auth/register', userData)
+    .then(res => history.push('/login'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+    // dispatch({
+    //   type: TEST_DISPATCH,
+    //   payload: userData
+    // });
 };
 
 // Login - Get User Token

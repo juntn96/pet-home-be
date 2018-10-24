@@ -4,10 +4,9 @@ const isEmpty = require('./is-empty');
 module.exports = function validateRegisterInput(data) {
   let errors = {};
 
+  data.name = !isEmpty(data.name) ? data.name : '';
   data.password = !isEmpty(data.password) ? data.password : '';
   data.password2 = !isEmpty(data.password2) ? data.password2 : '';
-  data.location.name = isEmpty(data.location.name) ? data.location.name : '';
-  data.location.address = isEmpty(data.location.address) ? data.location.address : '';
 
   if (Validator.isEmpty(data.password)) {
     errors.password = 'Bạn chưa nhập mật khẩu';
@@ -25,11 +24,11 @@ module.exports = function validateRegisterInput(data) {
     errors.password2 = 'Mật khẩu không trùng khớp';
   }
 
-  if (Validator.isEmpty(data.location.name)) {
+  if (Validator.isEmpty(data.name)) {
     errors.password = 'Bạn chưa nhập tên cửa hàng';
   }
 
-  if (Validator.isEmpty(data.location.name)) {
+  if (Validator.isEmpty(data.name)) {
     errors.password = 'Bạn chưa nhập địa chỉ cửa hàng';
   }
 

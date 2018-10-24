@@ -37,7 +37,8 @@ const UserSchema = mongoose.Schema({
 		type: Number,
 	},
 	status: {
-		type: Number,
+    type: Number,
+    default: 1
 	},
 	deletionFlag: {
 		type: Boolean,

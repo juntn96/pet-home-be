@@ -63,7 +63,7 @@ class Login extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Đăng kí</h1>            
+              <h1 className="display-4 text-center">Đăng nhập</h1>            
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
@@ -95,7 +95,7 @@ class Login extends Component {
                     <div className="invalid-feedback">{errors.password}</div>
                   )}
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng kí" />
+                <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng nhập" />
               </form>
             </div>
           </div>

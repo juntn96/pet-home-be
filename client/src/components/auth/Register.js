@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
+import { getLocationCategories } from '../../actions/locationAction';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-
+import Spinner from '../common/Spinner';
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -14,14 +15,16 @@ class Register extends Component {
       password2: '',
       typeLocation: '',
       phone: '',
-      errors: {}
+      errors: {},
+      locationCategories: []
     };
 }
 
   componentDidMount() {
+    this.props.getLocationCategories();
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
-    }
+    }    
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -48,16 +51,24 @@ class Register extends Component {
       name: this.state.name,
       password: this.state.password,
       password2: this.state.password2,
-      type: this.state.typeLocation,
-      phone: phone
+      typeId: this.state.typeLocation,
+      phoneNumber: phone,
+      role: 1
     };
 
     this.props.registerUser(newUser, this.props.history);
   }
 
+  renderOptionItem = (item, index) => {
+    return (
+      <option key={index} value={item._id}>{item.name}</option>
+    );
+  }
+
   render() {
     const { errors } = this.state;
-    
+    const { locationCategories, loading } = this.props.locationApp;    
+    console.log(this.props);
     return (
       <div className="register">
         <div className="container">
@@ -112,13 +123,11 @@ class Register extends Component {
                 </div>
                 <div className="form-group">
                   <label>                    
-                    <p className="lead">Lựa chọn loại địa điểm:</p>                  
-                    <select value={this.state.value} className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
-                      <option value="shop">Cửa hàng đồ thú cưng</option>
-                      <option value="hospital">Bệnh viện thú cưng</option>
-                      <option value="emergency">Trạm cứu hộ thú cưng</option>
-                      <option value="shopPet">Cửa hàng thú cưng</option>
-                    </select>
+                    <p className="lead">Lựa chọn loại địa điểm:</p>  
+                    { locationCategories === null ? <Spinner /> :            
+                    <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
+                      {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
+                    </select> }
                   </label>
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng kí"/>
@@ -139,7 +148,9 @@ Register.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default connect(mapStateToProps, { registerUser, getLocationCategories })(withRouter(Register));
+

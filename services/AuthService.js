@@ -4,30 +4,24 @@ const validator = require('validator');
 const constants = require('./../utils/constants');
 
 const createUser = async (userDetail, avatar) => {
-	let userInfo;
-	try {
-		userInfo = JSON.parse(userDetail);
-		userInfo.avatar = avatar;
-	} catch (e) {
-		return TE('Vui lòng nhập Role của User');
-	}
+  userDetail.avatar = avatar;
 	let auth_info, err;
 	auth_info = {};
-	auth_info.status = 'create';
-	if (validator.isMobilePhone(userInfo.phoneNumber, 'any')) {
+  auth_info.status = 'create';
+  console.log(userDetail);
+	if (validator.isMobilePhone(userDetail.phoneNumber, 'any')) {
 		auth_info.method = 'phone';
 		let user;
-		[err, user] = await to(User.create(userInfo));
+		[err, user] = await to(User.create(userDetail));
 		if (err) TE('Số điện thoại đã được đăng ký');
 		if (user.role === constants.ROLE_USER) {
 			// To do
 		}
 		if (user.role === constants.ROLE_LOCATION_MANAGER) {
 			var location = new Location({
-        address: userInfo.locationAddress,
-        name: userInfo.locationName,
-        ownerId: userInfo.ownerId,
-        typeId: userInfo.typeId,
+        name: userDetail.name,
+        ownerId: user._id,
+        typeId: userDetail.typeId,
         systemRating: constants.FIRST_RATTING,
         deletionFlag: constants.NOT_DELETED_ENTITY,
 			});
@@ -39,7 +33,7 @@ const createUser = async (userDetail, avatar) => {
 		}
 		return user;
 	} else {
-		TE('A valid email or phone number was not entered.');
+		TE('A valid phone number was not entered.');
 	}
 };
 module.exports.createUser = createUser;
