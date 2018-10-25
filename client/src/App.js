@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PhoneVertification from './components/auth/PhoneVertification';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
@@ -14,6 +14,11 @@ import { setCurrentUser, logoutUser } from './actions/authActions';
 
 import { Provider } from 'react-redux';
 import store from './store';
+
+import PrivateRoute from './components/common/PrivateRoute';
+import NotFound from './components/not-found/NotFound';
+
+import Dashboard from './components/dashboard/Dashboard';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -48,6 +53,10 @@ class App extends Component {
               <Route exact path="/register" component={PhoneVertification} />
               <Route exact path="/register2" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
+              <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer />
           </div>

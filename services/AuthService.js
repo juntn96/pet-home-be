@@ -41,12 +41,12 @@ module.exports.createUser = createUser;
 const authUser = async (userInfo) => { //returns token
 	let auth_info = {};
 	auth_info.status = 'login';
-	if (!userInfo.phoneNumber || !userInfo.password) TE('Vui lòng nhập số điện thoại và mật khẩu để đăng nhập');
+	if (!userInfo.phone || !userInfo.password) TE('Vui lòng nhập số điện thoại và mật khẩu để đăng nhập');
 	let user;
-	if (validator.isMobilePhone(userInfo.phoneNumber, 'any')) { //checks if only phone number was sent
+	if (validator.isMobilePhone(userInfo.phone, 'any')) { //checks if only phone number was sent
 		auth_info.method = 'phone';
 		[err, user] = await to(User.findOne({
-			phoneNumber: userInfo.phoneNumber,
+			phoneNumber: userInfo.phone,
 		}));
 		if (err) TE(err.message);
 

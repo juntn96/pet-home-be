@@ -6,6 +6,7 @@ import { getLocationCategories } from '../../actions/locationAction';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../common/Spinner';
+import SelectListGroup from './../common/SelectListGroup';
 
 class Register extends Component {
   constructor(props) {
@@ -138,13 +139,23 @@ class Register extends Component {
                   )}
                 </div>
                 <div className="form-group">
-                  <label>                    
-                    <p className="lead">Lựa chọn loại địa điểm:</p>  
+                  {/* <label>                    
+                    <p className="lead">Lựa chọn loại địa điểm:</p>   */}
                     { locationCategories === null || loading ? <Spinner /> :            
-                    <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
-                      {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
-                    </select> }
-                  </label>
+                      // <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
+                      //   {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
+                      // </select> 
+                      <SelectListGroup
+                        placeholder="Loại địa điểm"
+                        name="typeLocation"
+                        value={this.state.typeLocation}
+                        onChange={this.onChangeTypeLocation}
+                        options={locationCategories}
+                        error={errors.status}
+                        info="Cho chúng tôi biết loại địa điểm bạn muốn tạo"
+                      />
+                    }
+                  {/* </label> */}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng kí"/>
               </form>

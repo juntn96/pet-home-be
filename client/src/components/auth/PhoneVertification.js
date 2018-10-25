@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import DisableLink from './../common/DisableLink';
+import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
-import { getVertificationCode } from '../../actions/phoneActions';
+import { 
+  getVertificationCode, 
+  getVertify, 
+  clearMessageSendCode, 
+  clearmessageCheckCode,
+  clearErrorsProps 
+} from '../../actions/phoneActions';
 
 class PhoneVertification extends Component {
   constructor() {
@@ -10,13 +16,20 @@ class PhoneVertification extends Component {
       phone: '',
       code: '',
       errors: {},
-      disable: false,
     };
   }
 
   onPhoneVertification = (e) => {
+    this.props.clearMessageSendCode();
+    this.props.clearErrorsProps();
     this.props.getVertificationCode({phone: this.state.phone});
-    console.log(this.props.errorsProps);
+  }
+
+  onPhoneVertify = (e) => {
+    this.props.clearmessageCheckCode();
+    this.props.clearErrorsProps();
+    const { phone, code } = this.state;
+    this.props.getVertify({phone, code});
   }
 
   onChangePhoneNumber = (e) => {
@@ -29,7 +42,7 @@ class PhoneVertification extends Component {
 
   render() {
     const { errors } = this.state;
-    const { messageSendCode, errorsProps } = this.props;
+    const { messageSendCode, messageCheckCode, errorsProps } = this.props;
     return (
       <div className="login">
         <div className="container">
@@ -50,15 +63,14 @@ class PhoneVertification extends Component {
                 )}            
               </div>
               <div className="form-group">                  
-                <button type="button" className="btn btn-info" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>
-                  { messageSendCode && messageSendCode.message !== undefined && (
-                      
-                      <p className="font-weight-normal">{messageSendCode.message}</p>
-                  )}  
-                  { errorsProps && (
-                      <p className="font-weight-normal">{ errorsProps.message }</p>
-                  )}  
+                <button type="button" className="btn btn-info" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>                  
               </div>
+              { messageSendCode && messageSendCode.message !== undefined && (                      
+                  <p className="font-weight-normal">{messageSendCode.message}</p>
+              )}  
+              { errorsProps && (
+                  <p className="font-weight-normal">{errorsProps.message}</p>
+              )}  
               <div className="form-group">
                 <input
                   type="text"
@@ -68,12 +80,22 @@ class PhoneVertification extends Component {
                   value={this.state.code}
                   onChange={this.onChangeCode}/>
               </div>
-              <DisableLink 
-                disable={this.state.disable}
-                linkText={'Tiếp tục'}
-                phone={this.state.phone}
+              <div className="form-group">                  
+                <button type="button" className="btn btn-info" onClick={this.onPhoneVertify}>Xác nhận</button>
+              </div>
+              {messageCheckCode && messageCheckCode.message !== undefined && (                      
+                <p className="font-weight-normal">{messageCheckCode.message}</p>
+              )}  
+              {errorsProps && (
+                <p className="font-weight-normal">{errorsProps.message2}</p>
+              )}
+
+              {messageCheckCode && messageCheckCode.message !== undefined && (
+                <CustomLink 
+                  linkText={'Tiếp tục'}
+                  phone={this.state.phone}
                 />
-              {/* <Link to={{ pathname: '/register2', state: { phone: this.state.phone} }}>Tiếp tục</Link> */}
+              )}  
             </div>
           </div>
         </div>
@@ -86,6 +108,15 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errorsProps: state.errors,
   messageSendCode: state.sendCodeBySMS.messageSendCode,
+  messageCheckCode: state.sendCodeBySMS.messageCheckCode,
 });
 
-export default connect(mapStateToProps, { getVertificationCode })(PhoneVertification);
+export default connect(
+  mapStateToProps, 
+  { 
+    getVertificationCode, 
+    getVertify, 
+    clearMessageSendCode, 
+    clearmessageCheckCode,
+    clearErrorsProps
+  })(PhoneVertification);

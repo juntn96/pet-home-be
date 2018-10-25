@@ -5,6 +5,7 @@ const AuthController = require('./../controllers/AuthController');
 const PhoneController = require('./../controllers/PhoneController');
 const AdminController = require('./../controllers/AdminController');
 const LocationController = require('./../controllers/LocationController');
+const UserController = require('./../controllers/UserController');
 
 //Auth controller
 router.post('/auth/register', AuthController.register);
@@ -14,7 +15,10 @@ router.post('/auth/logout', AuthController.logout);
 //Admin 
 router.post('/admin/addLocationCategory', AdminController.addLocationCategory);
 
-// Location Category
+//User
+router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+
+//Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
 
 //Phone
