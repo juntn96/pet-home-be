@@ -3,19 +3,21 @@ const PhoneVerification = require('../models/PhoneVerification');
 
 const sendPhoneVerifyCode = async function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
-	const body = req.body;
-	const vietnamesePhoneRegex = /(03|09|01|03[2|6|8|9])+([0-9]{8})\b/;
-	if (!body.phoneNumber || !vietnamesePhoneRegex.test(body.phoneNumber)) {
+  const body = req.body;
+  console.log(req.body.phone);
+	const vietnamesePhoneRegex = /(03|09|01[2|6|8|9])+([0-9]{8})\b/;
+	if (!body.phone || !vietnamesePhoneRegex.test(body.phone)) {
 		return ReE(res, 'Vui lòng nhập số điện thoại để xác minh', 400);
 	} else {
 		let errors, status;
-		[errors, status] = await to(phoneService.sendSMSVerification(body.phoneNumber));
+		[errors, status] = await to(phoneService.sendSMSVerification(body.phone));
 		if (errors) {
 			return ReE(res, 'Gửi SMS không thành công', 400);
 		} else {
 			return ReS(res, {
 				status: 'success',
-				message: 'INFO0001'
+        message: 'Mã code đã gửi đến bạn thành công',
+        phone: body.phone
 			}, 200);
 		}
 	}

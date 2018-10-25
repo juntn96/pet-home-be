@@ -7,6 +7,7 @@ module.exports = function validateRegisterInput(data) {
   data.name = !isEmpty(data.name) ? data.name : '';
   data.password = !isEmpty(data.password) ? data.password : '';
   data.password2 = !isEmpty(data.password2) ? data.password2 : '';
+  data.address = !isEmpty(data.address) ? data.address : '';
 
   if (Validator.isEmpty(data.password)) {
     errors.password = 'Bạn chưa nhập mật khẩu';
@@ -25,13 +26,12 @@ module.exports = function validateRegisterInput(data) {
   }
 
   if (Validator.isEmpty(data.name)) {
-    errors.password = 'Bạn chưa nhập tên cửa hàng';
+    errors.name = 'Bạn chưa nhập tên địa điểm';
   }
 
-  if (Validator.isEmpty(data.name)) {
-    errors.password = 'Bạn chưa nhập địa chỉ cửa hàng';
+  if (Validator.isEmpty(data.address)) {
+    errors.address = 'Bạn chưa nhập địa chỉ';
   }
-
   return {
     errors,
     isValid: isEmpty(errors)

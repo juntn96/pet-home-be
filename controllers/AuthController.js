@@ -11,7 +11,7 @@ const register = async function (req, res) {
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
-    ReS(res, errors , 400)
+    return ReE(res, errors , 400)
   }
   const image = 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png';
   let erro, user;
@@ -33,7 +33,7 @@ const login = async function (req, res) {
   const { errors, isValid } = validateLoginInput(req.body);
   // Check Validation
   if (!isValid) {
-    ReS(res, errors , 400)
+    return ReE(res, errors , 400)
   }
 	[err, user] = await to(authService.authUser(req.body));
 	if (err) return ReE(res, err, 422);

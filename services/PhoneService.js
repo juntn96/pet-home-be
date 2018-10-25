@@ -1,4 +1,4 @@
-var https = require('https');
+const https = require('https');
 const phoneRepository = require('./../repositories/PhoneVerificationRepository');
 const ACCESS_TOKEN = CONFIG.SPEED_SMS_AUTH_TOKEN;
 

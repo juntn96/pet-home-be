@@ -2,7 +2,7 @@ import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
-import { GET_ERRORS, SET_CURRENT_USER, TEST_DISPATCH } from './types';
+import { GET_ERRORS, SET_CURRENT_USER } from './types';
 
 export const itemsHasErrored = (bool) => dispatch => {
   dispatch( {
@@ -33,13 +33,9 @@ export const registerUser = (userData, history) => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data.error
       })
     );
-    // dispatch({
-    //   type: TEST_DISPATCH,
-    //   payload: userData
-    // });
 };
 
 // Login - Get User Token
@@ -61,7 +57,7 @@ export const loginUser = userData => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data.error 
       })
     );
 };

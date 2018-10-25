@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import DisableLink from './../common/DisableLink';
+import { connect } from 'react-redux';
+import { getVertificationCode } from '../../actions/phoneActions';
 
 class PhoneVertification extends Component {
   constructor() {
@@ -7,12 +9,14 @@ class PhoneVertification extends Component {
     this.state = {
       phone: '',
       code: '',
-      errors: {}
+      errors: {},
+      disable: false,
     };
   }
 
   onPhoneVertification = (e) => {
-    e.preventDefault();
+    this.props.getVertificationCode({phone: this.state.phone});
+    console.log(this.props.errorsProps);
   }
 
   onChangePhoneNumber = (e) => {
@@ -25,6 +29,7 @@ class PhoneVertification extends Component {
 
   render() {
     const { errors } = this.state;
+    const { messageSendCode, errorsProps } = this.props;
     return (
       <div className="login">
         <div className="container">
@@ -44,8 +49,15 @@ class PhoneVertification extends Component {
                     <div className="invalid-feedback">{errors.name}</div>
                 )}            
               </div>
-              <div className="form-group">
+              <div className="form-group">                  
                 <button type="button" className="btn btn-info" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>
+                  { messageSendCode && messageSendCode.message !== undefined && (
+                      
+                      <p className="font-weight-normal">{messageSendCode.message}</p>
+                  )}  
+                  { errorsProps && (
+                      <p className="font-weight-normal">{ errorsProps.message }</p>
+                  )}  
               </div>
               <div className="form-group">
                 <input
@@ -56,7 +68,12 @@ class PhoneVertification extends Component {
                   value={this.state.code}
                   onChange={this.onChangeCode}/>
               </div>
-              <Link to={{ pathname: '/register2', state: { phone: this.state.phone} }}>Tiếp tục</Link>
+              <DisableLink 
+                disable={this.state.disable}
+                linkText={'Tiếp tục'}
+                phone={this.state.phone}
+                />
+              {/* <Link to={{ pathname: '/register2', state: { phone: this.state.phone} }}>Tiếp tục</Link> */}
             </div>
           </div>
         </div>
@@ -65,4 +82,10 @@ class PhoneVertification extends Component {
   }
 }
 
-export default PhoneVertification;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errorsProps: state.errors,
+  messageSendCode: state.sendCodeBySMS.messageSendCode,
+});
+
+export default connect(mapStateToProps, { getVertificationCode })(PhoneVertification);

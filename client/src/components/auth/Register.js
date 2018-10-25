@@ -6,6 +6,7 @@ import { getLocationCategories } from '../../actions/locationAction';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../common/Spinner';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class Register extends Component {
       typeLocation: '',
       phone: '',
       errors: {},
+      address: [],
       locationCategories: []
     };
 }
@@ -68,7 +70,6 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;    
-    console.log(this.props);
     return (
       <div className="register">
         <div className="container">
@@ -122,9 +123,24 @@ class Register extends Component {
                   )}
                 </div>
                 <div className="form-group">
+                  <input
+                    type="text"
+                    className={classnames('form-control form-control-lg', {
+                      'is-invalid': errors.address
+                    })}
+                    placeholder="Địa chỉ chi tiết"
+                    name="address"
+                    value={this.state.address}
+                    onChange={this.onChange}
+                  />
+                  {errors.address && (
+                    <div className="invalid-feedback">{errors.address}</div>
+                  )}
+                </div>
+                <div className="form-group">
                   <label>                    
                     <p className="lead">Lựa chọn loại địa điểm:</p>  
-                    { locationCategories === null ? <Spinner /> :            
+                    { locationCategories === null || loading ? <Spinner /> :            
                     <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
                       {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </select> }
