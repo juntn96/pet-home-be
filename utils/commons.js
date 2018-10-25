@@ -33,7 +33,7 @@ ReE = function (res, err, code) {
 
 	if (typeof code !== 'undefined') res.statusCode = code;
 
-	return res.json({success: false, error: err});
+	return res.json({success: false, error: {message: err}});
 };
 
 /**

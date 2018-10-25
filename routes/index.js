@@ -3,11 +3,19 @@ const router = express.Router();
 
 const AuthController = require('./../controllers/AuthController');
 const PhoneController = require('./../controllers/PhoneController');
+const AdminController = require('./../controllers/AdminController');
+const LocationController = require('./../controllers/LocationController');
 
 //Auth controller
 router.post('/auth/register', AuthController.register);
 router.post('/auth/login', AuthController.login);
 router.post('/auth/logout', AuthController.logout);
+
+//Admin 
+router.post('/admin/addLocationCategory', AdminController.addLocationCategory);
+
+// Location Category
+router.get('/location/locationCategories', LocationController.getLocationCategories);
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);

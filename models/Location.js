@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 let childRecords = mongoose.Schema({
 	lat: {type: Number},
 	long: {type: Number},
-  addressDetail: {type: String},
-  
+  addressDetail: {type: String}, 
 	createdAt: {
 		type: Number,
 		default: new Date().getTime()

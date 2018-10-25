@@ -4,7 +4,7 @@ const locationCategorySchema = mongoose.Schema({
 	name: {
 		type: String,
 	},
-	hiddenlag: {
+	hiddenFlag: {
 		type: Boolean,
 		default: false,
 	},
@@ -18,7 +18,7 @@ const locationCategorySchema = mongoose.Schema({
 	},
 });
 
-let LocationCategory = module.exports = mongoose.model('PostCategory', locationCategorySchema);
+let LocationCategory = module.exports = mongoose.model('LocationCategory', locationCategorySchema);
 
 locationCategorySchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();
