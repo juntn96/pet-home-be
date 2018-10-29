@@ -18,7 +18,7 @@ class Landing extends Component {
             <div className="row">
               <div className="col-md-12 text-center">
                 <h1 className="display-3 mb-4">Ngôi nhà của thú cưng</h1>                
-                <Link to="/register" className="btn btn-lg btn-info mr-2">
+                <Link to="/phoneVertification" className="btn btn-lg btn-info mr-2">
                   Đăng kí
                 </Link>
                 <Link to="/login" className="btn btn-lg btn-light">

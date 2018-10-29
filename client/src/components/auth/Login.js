@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { loginUser } from '../../actions/authActions';
+import { loginUser } from '../../store/actions/authActions';
 
 class Login extends Component {
   constructor() {
@@ -51,6 +51,10 @@ class Login extends Component {
     console.log(userData);
   }
 
+  onForgetPass = (e) => {
+    this.props.history.push('/forgetPass');;
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -97,6 +101,7 @@ class Login extends Component {
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng nhập" />
               </form>
+              <button type="button" className="btn btn-info btn-block mt-4" onClick={this.onForgetPass}>Quên mật khẩu?</button>
             </div>
           </div>
         </div>

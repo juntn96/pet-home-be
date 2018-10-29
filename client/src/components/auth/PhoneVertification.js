@@ -7,7 +7,7 @@ import {
   clearMessageSendCode, 
   clearmessageCheckCode,
   clearErrorsProps 
-} from '../../actions/phoneActions';
+} from '../../store/actions/phoneActions';
 
 class PhoneVertification extends Component {
   constructor() {

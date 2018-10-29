@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/authActions';
-import { getLocationCategories } from '../../actions/locationAction';
+import { registerUser } from '../../store/actions/authActions';
+import { getLocationCategories } from '../../store/actions/locationAction';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../common/Spinner';
@@ -176,7 +176,7 @@ Register.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  locationApp: state.locationApp
+  locationApp: state.locationApp,
 });
 
 export default connect(mapStateToProps, { registerUser, getLocationCategories })(withRouter(Register));

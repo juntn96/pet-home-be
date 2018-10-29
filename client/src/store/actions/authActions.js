@@ -1,8 +1,8 @@
 import axios from 'axios';
-import setAuthToken from '../utils/setAuthToken';
+import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
-import { GET_ERRORS, SET_CURRENT_USER } from './types';
+import { GET_ERRORS, SET_CURRENT_USER, GET_CODE, SEND_PASS_LOADING } from './types';
 
 export const itemsHasErrored = (bool) => dispatch => {
   dispatch( {
@@ -62,6 +62,29 @@ export const loginUser = userData => dispatch => {
     );
 };
 
+// Login - Get User Token
+export const forgetPass = phone => dispatch => {
+  axios
+    .get(`/api/users/forgotPassword/${phone}`)
+    .then(res => {     
+      dispatch(
+        {
+          type: GET_CODE,
+          payload: res.data
+        },        
+      )
+    })
+    .catch(err =>
+      {
+        console.log(err);
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data.error 
+        })
+      }
+    );
+};
+
 // Set logged in user
 export const setCurrentUser = decoded => {
   return {
@@ -78,4 +101,10 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
+};
+
+export const setSendPassLoading = () => {
+  return {
+    type: SEND_PASS_LOADING
+  };
 };

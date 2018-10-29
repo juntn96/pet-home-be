@@ -7,13 +7,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import PhoneVertification from './components/auth/PhoneVertification';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import ForgetPass from './components/auth/ForgetPass';
+import SendPassSuccess from './components/auth/SendPassSuccess';
 
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser, logoutUser } from './actions/authActions';
+import { setCurrentUser, logoutUser } from './store/actions/authActions';
 
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './store/store';
 
 import PrivateRoute from './components/common/PrivateRoute';
 import NotFound from './components/not-found/NotFound';
@@ -50,15 +52,17 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
-              <Route exact path="/register" component={PhoneVertification} />
-              <Route exact path="/register2" component={Register} />
+              <Route exact path="/phoneVertification" component={PhoneVertification} />
+              <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/forgetPass" component={ForgetPass} />
+              <Route exact path="/sendPassSuccess" component={SendPassSuccess} />
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
               </Switch>
               <Route exact path="/not-found" component={NotFound} />
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </Router>
       </Provider>

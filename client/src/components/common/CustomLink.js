@@ -5,7 +5,7 @@ class CustomLink extends Component {
   render () {
     return (
       <div className="btn btn-info">
-        <Link style={{ textDecoration: 'none', color: 'white' }} to={{ pathname: '/register2', state: { phone: this.props.phone} }}>{this.props.linkText}</Link>
+        <Link style={{ textDecoration: 'none', color: 'white' }} to={{ pathname: '/register', state: { phone: this.props.phone} }}>{this.props.linkText}</Link>
       </div>
     )    
   }

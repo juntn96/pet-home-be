@@ -4,11 +4,11 @@ const constants = require('../utils/constants');
 const phoneService = require('./../services/PhoneService');
 
 const forgotPassword = async function (req, res) {
+  console.log(req.params)
 	if (!req.params.phoneNumber) {
 		ReS(res, { message: 'Bad request' }, 400);
 	}
 	else {
-    console.log(req.params.phoneNumber);
     let objUser = await User.findOne({ phoneNumber: req.params.phoneNumber });
     
 		if (objUser) {
@@ -18,10 +18,7 @@ const forgotPassword = async function (req, res) {
 			if (objUserReturn) {
 				let [errors, status] = await to(phoneService.sendSMSPassword(req.params.phoneNumber, newPassword));
 				if (errors) {
-					return ReE(res, {
-						status: false,
-						message: 'Có lỗi khi gửi message!',
-					}, 400);
+					return ReEM2(res, 'Có lỗi khi gửi message!',400);
 				} else {
 					return ReS(res, {
 						status: true,
@@ -31,10 +28,7 @@ const forgotPassword = async function (req, res) {
 			}
 		}
 		else {
-			return ReS(res, {
-				status: false,
-				message: 'Số điện thoại không đúng.',
-			}, 404);
+			return ReEM2(res, 'Số điện thoại không đúng.', 404);
 		}
 	}
 };
