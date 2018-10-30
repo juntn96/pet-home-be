@@ -26,7 +26,7 @@ const productSchema = mongoose.Schema({
 	},
 });
 
-let Product = module.exports = mongoose.model('Pet', productSchema);
+let Product = module.exports = mongoose.model('Product', productSchema);
 
 productSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();

@@ -7,7 +7,11 @@ const productParentCategorySchema = mongoose.Schema({
 	deletionFlag: {
 		type: Boolean,
 		default: false,
-	},
+  },
+  ownerId: {
+    type: String,
+    ref: 'User'
+  },
 	createdAt: {
 		type: Number,
 		default: new Date().getTime(),

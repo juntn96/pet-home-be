@@ -36,8 +36,9 @@ const login = async function (req, res) {
     return ReE(res, errors , 400)
   }
 	[err, user] = await to(authService.authUser(req.body));
-	if (err) return ReE(res, err, 422);
-	res.cookie('ACCESS_TOKEN', user.getJWT(), { maxAge: 900000 });
+	if (err) return ReEM(res, err, 422);
+  res.cookie('ACCESS_TOKEN', user.getJWT(), { maxAge: 900000 });
+  console.log(user.getJWT());
 	return ReS(res, {
 		token: user.getJWT(),
 		user: user.toWeb(),

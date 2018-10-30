@@ -21,6 +21,8 @@ import PrivateRoute from './components/common/PrivateRoute';
 import NotFound from './components/not-found/NotFound';
 
 import Dashboard from './components/dashboard/Dashboard';
+import AdminDashboard from './components/admin-dashboard/AdminDashboard';
+
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -59,6 +61,7 @@ class App extends Component {
               <Route exact path="/sendPassSuccess" component={SendPassSuccess} />
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute exact path="/adminDashboard" component={AdminDashboard} />
               </Switch>
               <Route exact path="/not-found" component={NotFound} />
             </div>

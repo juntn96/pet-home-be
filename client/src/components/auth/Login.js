@@ -25,7 +25,12 @@ class Login extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-      nextProps.history.push('/dashboard');
+      if(nextProps.auth.currentUser.user.role === 1){
+        nextProps.history.push('/dashboard');
+      } else {
+        nextProps.history.push('/adminDashboard');
+      }
+      
     }
 
     if (nextProps.errors) {
@@ -88,15 +93,15 @@ class Login extends Component {
                   <input
                     type="password"
                     className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password
+                      'is-invalid': errors.message
                     })}
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.onChange}
                   />
-                  {errors.password && (
-                    <div className="invalid-feedback">{errors.password}</div>
+                  {errors.message && (
+                    <div className="invalid-feedback">{errors.message}</div>
                   )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng nhập" />

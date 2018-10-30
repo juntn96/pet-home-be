@@ -7,6 +7,11 @@ const AdminController = require('./../controllers/AdminController');
 const LocationController = require('./../controllers/LocationController');
 const UserController = require('./../controllers/UserController');
 
+const passport = require('passport');
+const path = require('path');
+
+require('./../middleware/passport')(passport);
+
 //Auth controller
 router.post('/auth/register', AuthController.register);
 router.post('/auth/login', AuthController.login);
@@ -17,6 +22,10 @@ router.post('/admin/addLocationCategory', AdminController.addLocationCategory);
 
 //User
 router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+// router.get('/users/detail/:userId', passport.authenticate('jwt', {
+// 	session: false,
+// }), UserController.getUserById);
+router.get('/users/detail/:userId', UserController.getUserById);
 
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);

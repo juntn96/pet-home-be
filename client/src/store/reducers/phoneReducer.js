@@ -32,12 +32,6 @@ export default function(state = initialState, action) {
         messageCheckCode: action.payload,
         loading: false
       };
-    case GET_CHECK_CODE_RES:
-      return {
-        ...state,
-        messageCheckCode: action.payload,
-        loading: false
-      };
     case CLEAR_MSC:
       return {
         ...state,

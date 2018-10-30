@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactDropzone from "react-dropzone";
 
-class Dashboard extends Component {
+class AdminDashboard extends Component {
   constructor(props) {
     super(props);
 
@@ -27,13 +26,7 @@ class Dashboard extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h1 className="display-4">Dashboard</h1>
-              <ReactDropzone
-                accept="image/*"
-                onDrop={this.onPreviewDrop}
-              >
-                Drop an image, get a preview!
-              </ReactDropzone>
+              <h1 className="display-4">Admin Dashboard</h1>             
             </div>
           </div>
         </div>
@@ -47,5 +40,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(
-  Dashboard
+  AdminDashboard
 );

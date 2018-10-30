@@ -4,7 +4,6 @@ const constants = require('../utils/constants');
 const phoneService = require('./../services/PhoneService');
 
 const forgotPassword = async function (req, res) {
-  console.log(req.params)
 	if (!req.params.phoneNumber) {
 		ReS(res, { message: 'Bad request' }, 400);
 	}
@@ -33,3 +32,56 @@ const forgotPassword = async function (req, res) {
 	}
 };
 module.exports.forgotPassword = forgotPassword;
+
+const getUserById = async function (req, res, next) {
+  const userId = req.params.userId;
+  console.log(req.params.userId);
+	if (!userId) {
+		ReE(res, {
+			status: false,
+			message: 'Vui lòng nhập userId',
+		}, 400);
+  }
+
+	User.find({
+		_id: userId,
+		deletionFlag: false,
+	}, (err, results) => {
+		if (err) {
+			return ReE(res, err, 500);
+		}
+
+		if (results && results.length === 0) {
+			return ReE(res, 'Người dùng không tồn tại', 404);
+		}
+		let user = results[0];
+		if (user && user.role === constants.ROLE_LOCATION_MANAGER) {
+			// Location.find({ ownerId: user._id }, function (err, getLocation) {
+			// 	if (err) {
+          ReS(res, {
+            status: true,
+            user: user.toWeb(),
+            locationDetail: null,
+          }, 200);
+			// 		next();
+			// 	} else {
+      //     let locationDetail = null;
+      //     if (getLocation && getLocation.length > 0) {
+      //       locationDetail = getLocation[0];
+      //     }
+      //     ReS(res, {
+      //       status: true,
+      //       user: user.toWeb(),
+      //       locationDetail: locationDetail,
+      //     }, 200);
+      //   }
+			// });
+		} else {
+			ReS(res, {
+				status: true,
+				user: user.toWeb(),
+			}, 200);
+		}
+	});
+};
+module.exports.getUserById = getUserById;
