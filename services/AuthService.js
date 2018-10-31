@@ -19,11 +19,11 @@ const createUser = async (userDetail, avatar) => {
 		}
 		if (user.role === constants.ROLE_LOCATION_MANAGER) {
 			var location = new Location({
-        name: userDetail.name,
-        ownerId: user._id,
-        typeId: userDetail.typeId,
-        systemRating: constants.FIRST_RATTING,
-        deletionFlag: constants.NOT_DELETED_ENTITY,
+				name: userDetail.name,
+				ownerId: user._id,
+				typeId: userDetail.typeId,
+				systemRating: constants.FIRST_RATTING,
+				deletionFlag: constants.NOT_DELETED_ENTITY,
 			});
 			let error, loca;
 			[error, loca] = await to(Location.create(location));

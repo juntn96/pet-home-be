@@ -6,6 +6,7 @@ const PhoneController = require('./../controllers/PhoneController');
 const AdminController = require('./../controllers/AdminController');
 const LocationController = require('./../controllers/LocationController');
 const UserController = require('./../controllers/UserController');
+const ProductController = require('../controllers/ProductController');
 
 //Auth controller
 router.post('/auth/register', AuthController.register);
@@ -20,6 +21,13 @@ router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
 
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
+
+/*********************** */
+//Product
+router.post('/product/add',ProductController.addProduct);
+router.get('/product',ProductController.getProduct);
+
+
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);
