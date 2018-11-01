@@ -24,7 +24,7 @@ export default {
         icon: 'icon-list',
       },
       {
-        name: 'Quản lý loại sản phẩm',
+        name: 'Quản lý thể loại',
         url: '/product/category',
         icon: 'icon-list'
       }

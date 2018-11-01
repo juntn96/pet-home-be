@@ -66,9 +66,7 @@ class AddProduct extends Component {
               <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Username" />
             </InputGroup>
             </Col>
-            <Link to="/product/add
-            
-            " className="btn btn-lg btn-primary"><i className="fa fa-plus">Thêm sản phẩm</i></Link>
+            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">Thêm sản phẩm</i></Link>
             {/* <Button sm="3" color="primary" size="lg" >  Thêm sản phẩm</Button> */}
           </FormGroup>
         <Row>
@@ -100,20 +98,16 @@ class AddProduct extends Component {
                       <Button color="success" size="sm">Sửa</Button>
                       <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
                     </td>
-
                   </tr>
                   <tr>
                     <td><img src={'assets/img/cho3.jpg'} style={{height:55,width:55}}  alt="image" /></td>
                     <td>Đồ chơi cho chó</td>
                     <td>20.000</td>
-                    
                     <td><Badge color="secondary">Đồ chơ cho thú</Badge></td>
-
                     <td>
                       <Button color="success" size="sm">Sửa</Button>
                       <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
                     </td>
-
                   </tr>
                   <tr>
                     <td><img src={'assets/img/cho2.jpg'} style={{height:55,width:55}}  alt="image" /></td>
