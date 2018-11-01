@@ -37,7 +37,7 @@ router.post('/product/add',ProductController.addProduct);
 router.get('/product',ProductController.getProduct);
 
 // get product category
-router.get('/product/productCategories', ProductController.getProductCategories);
+router.get('/product/productParentCategories/:ownerId', ProductController.getProductParentCategories);
 router.post('/product/addProductParentCategory', ProductController.addProductParentCategory);
 
 //Phone

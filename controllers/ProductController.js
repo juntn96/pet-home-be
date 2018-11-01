@@ -30,22 +30,23 @@ const addProduct = async (req, res)=> {
 
 module.exports.addProduct = addProduct;
 
-const getProductCategories = async (req, res) => {
+const getProductParentCategories = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  let erro, productCategories;
-  [erro, productCategories] = await to(productService.getproductCategories(req.body));
+  const ownerId = req.params.ownerId;
+  let erro, productParentCategories;
+  [erro, productParentCategories] = await to(productService.getProductParentCategories(ownerId));
   if (erro) {
-    return ReE(res, 'Get productCategories failed', 422);
+    return ReE(res, 'Get productParentCategories failed', 422);
   }	
-  if (productCategories) {
-    return ReS(res, { message: 'Get productCategories success', productCategories: productCategories }, 200);
+  if (productParentCategories) {
+    return ReS(res, { message: 'Get productParentCategories success', productParentCategories: productParentCategories }, 200);
   }
   else {
-    return ReE(res, 'Get productCategories failed', 503);
+    return ReE(res, 'Get productParentCategories failed', 503);
   }
   				
 };
-module.exports.getProductCategories = getProductCategories;
+module.exports.getProductParentCategories = getProductParentCategories;
 
 const addProductParentCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');

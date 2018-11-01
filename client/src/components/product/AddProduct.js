@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductCategories } from '../../store/actions/productAction';
+import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import {
   Card,
@@ -14,8 +14,8 @@ import {
   InputGroupText,
   InputGroup,
   Button
-
 } from 'reactstrap';
+import Spinner from '../common/Spinner';
 
 class AddProduct extends Component {
   constructor(props) {
@@ -26,21 +26,18 @@ class AddProduct extends Component {
       price: 0,
       image: []
     };
-}
+  }
 
-  // componentDidMount() {
-  //   this.props.getProductCategories();
-  //   if (this.props.auth.isAuthenticated) {
-  //     this.props.history.push('/product');
-  //   }    
-  // }
+  componentDidMount() {
+    this.props.getProductParentCategories(this.props.auth.user.user_id); 
+  }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.errors) {
-  //     return { errors: nextProps.errors};
-  //   }
-  //   else return null;
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.errors) {
+      return { errors: nextProps.errors};
+    }
+    else return null;
+  }
 
   onChangeTypeProduct = (e) => {
     this.setState({typeLocation: e.target.value});
@@ -57,14 +54,20 @@ class AddProduct extends Component {
       name: this.state.name,
       desciption: this.state.desciption,
       price: this.state.price,
-      image: this.state.image
     };
 
-    // this.props.createProduct(newProduct, this.props.history);
+    this.props.createProduct(newProduct, this.props.history);
   }
+
+  renderOptionItem = (item, index) => {
+    return (
+      <option key={index} value={item._id}>{item.name}</option>
+    );
+  }
+
   render() {
     const { errors } = this.state;
-    // const { locationCategories, loading } = this.props.locationApp;    
+    const { productParentCategories , loading } = this.props.product;    
     return (
       <div className="register">
           <div className="row">
@@ -96,12 +99,11 @@ class AddProduct extends Component {
                 <FormGroup row className="my-0">
                   <Col xs="4">
                       <Label htmlFor="ccyear">Loại</Label>
+                      { productParentCategories === null || loading ? <Spinner /> :   
                       <Input type="select" name="ccyear" id="ccyear">
-                        <option>Đồ ăn</option>
-                        <option>Dụng cụ vệ sinh</option>
-                        <option>Thuốc</option>
-                        <option>Đồ chơi cho thú nuôi</option>
+                        {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                       </Input>
+                      }
                     </Col>
                   </FormGroup>
                   <FormGroup row className="my-0">
@@ -133,11 +135,11 @@ class AddProduct extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  // errors: state.errors,
-  // locationApp: state.locationApp,
+  errors: state.errors,
+  product: state.product,
 });
 
-// export default connect(mapStateToProps, { createProduct, getProductCategories })(withRouter(AddProduct));
-export default connect(mapStateToProps)(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(AddProduct));
+
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductCategories } from '../../store/actions/productAction';
+import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
@@ -163,5 +163,5 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductCategories })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(AddProduct));
 

@@ -2,32 +2,33 @@ import axios from 'axios';
 
 import {
   CREATE_PRODUCT,
-  GET_PRODUCT_CATEGORIES,
+  GET_PRODUCT_PARENT_CATEGORIES,
   GET_ERRORS,
-  CODE_LOADING
+  PRODUCT_PARENT_CATEGORIES_LOADING,
 } from './types';
 
 // Get Posts
-export const getProductCategories = () => dispatch => {
-    dispatch(setLoading());
+export const getProductParentCategories = ownerId => dispatch => {
+    dispatch(setProductParentCategoriesLoading());
     axios
-      .get('/api/product/productCategories')
-      .then(res =>
+      .get(`/api/product/productParentCategories/${ownerId}`)
+      .then(res =>{
+        console.log(res.data)
         dispatch({
-          type: GET_PRODUCT_CATEGORIES,
-          payload: res.data.productCategories
+          type: GET_PRODUCT_PARENT_CATEGORIES,
+          payload: res.data.productParentCategories
         })
+      }
       )
       .catch(err =>
         dispatch({
-          type: GET_PRODUCT_CATEGORIES,
+          type: GET_PRODUCT_PARENT_CATEGORIES,
           payload: null
         })
       );
   };
 
 export const createProduct = product => dispatch => {
-  dispatch(setLoading());
   axios
     .post('/api/product/add', product)
     .then(res =>
@@ -51,8 +52,8 @@ export const createProduct = product => dispatch => {
 };
 
 // Set loading state
-export const setLoading = () => {
+export const setProductParentCategoriesLoading = () => {
   return {
-    type: CODE_LOADING
+    type: PRODUCT_PARENT_CATEGORIES_LOADING
   };
 };

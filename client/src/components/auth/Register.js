@@ -21,7 +21,7 @@ class Register extends Component {
       address: [],
       locationCategories: []
     };
-}
+  }
 
   componentDidMount() {
     this.props.getLocationCategories();
@@ -60,12 +60,6 @@ class Register extends Component {
     };
 
     this.props.registerUser(newUser, this.props.history);
-  }
-
-  renderOptionItem = (item, index) => {
-    return (
-      <option key={index} value={item._id}>{item.name}</option>
-    );
   }
 
   render() {
@@ -140,9 +134,6 @@ class Register extends Component {
                 </div>
                 <div className="form-group">
                     { locationCategories === null || loading ? <Spinner /> :            
-                      // <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
-                      //   {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
-                      // </select> 
                       <SelectListGroup
                         placeholder="Loại địa điểm"
                         name="typeLocation"

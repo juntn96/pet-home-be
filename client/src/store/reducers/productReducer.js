@@ -1,12 +1,12 @@
 import {
     CREATE_PRODUCT,
-    GET_PRODUCT_CATEGORIES
+    GET_PRODUCT_PARENT_CATEGORIES,
+    PRODUCT_PARENT_CATEGORIES_LOADING
   } from '../actions/types';
   
   const initialState = {
-    code: '',
-    messageSendCode: '',
-    messageCheckCode: '',
+    productParentCategories: [],
+    productParentCategory: {},
     loading: false
   };
   
@@ -17,10 +17,15 @@ import {
             ...state,
             loading: true
           };
-        case GET_PRODUCT_CATEGORIES:
+        case PRODUCT_PARENT_CATEGORIES_LOADING:
           return {
             ...state,
-            productCategories: action.payload,
+            loading: true
+          };
+        case GET_PRODUCT_PARENT_CATEGORIES:
+          return {
+            ...state,
+            productParentCategories: action.payload,
             loading: false
           };
         default:

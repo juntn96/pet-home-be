@@ -1,5 +1,4 @@
-const {Product} = require('./../models/Product');
-const {ProductCategory} = require('./../models/ProductCategory');
+const Product = require('./../models/Product');
 const ProductParentCategory = require('./../models/ProductParentCategory');
 
 const getProduct = async (userId) => {
@@ -18,16 +17,16 @@ const createProduct = async (product) => {
 }
 module.exports.createProduct= createProduct;
 
-const getProductCategories = async (userId) => {
+const getProductParentCategories = async (ownerId) => {
 	try {
-    let getProductCategoryList = await ProductCategory.find({ deletionFlag: false});
+    let getProductCategoryList = await ProductParentCategory.find({ deletionFlag: false, ownerId: ownerId});
 		return getProductCategoryList;
 	}
 	catch (e) {
-		return TE(res, 'Get locationCategories failed', 503);
+		return TE(res, 'Get productParentCategories failed', 503);
 	}		
 };
-module.exports.getProductCategories = getProductCategories;
+module.exports.getProductParentCategories = getProductParentCategories;
 
 const createProductParentCategory = async (productParentCategoryDetail) => {
 	let productParentCategory, err;
