@@ -1,14 +1,8 @@
 const productService = require('../services/ProductService')
-// const validateProductInput = require('..')
 
 // get all product
 const getProduct = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  // const { errors, isValid } = validateProductInput(req.body);
-  // Check Validation
-  // if (!isValid) {
-  //   return ReE(res, errors , 400)
-  // }
   let error, product;
   [error, product] = await to(productService.getProduct(req.params.uid));
   if (error) {
@@ -22,13 +16,9 @@ const getProduct = async (req, res) => {
   }
 }
 module.exports.getProduct = getProduct;
+
 const addProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
-  // const { errors, isValid } = validateProductInput(req.body);
-  // Check Validation
-  // if (!isValid) {
-  //   return ReE(res, errors , 400)
-  // }
   let error, product;
   [error, product] = await to(productService.createProduct(req.body));
   console.log(req.body);
@@ -56,3 +46,19 @@ const getProductCategories = async (req, res) => {
   				
 };
 module.exports.getProductCategories = getProductCategories;
+
+const addProductParentCategory = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, addProductParentCategory;
+  console.log(req.body);
+  [erro, addProductParentCategory] = await to(productService.createProductParentCategory(req.body));
+  if (erro) {
+    console.log(erro);
+    return ReE(res, 'Thêm mới PPC không thành công, vui lòng thử lại sau', 422);
+  }
+  return ReS(res, {
+    message: 'Successfully created new PPC.',
+  }, 200);				
+};
+
+module.exports.addProductParentCategory = addProductParentCategory;

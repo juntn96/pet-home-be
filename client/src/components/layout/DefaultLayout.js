@@ -29,8 +29,7 @@ class DefaultLayout extends Component {
         <AppHeader fixed>
           <DefaultHeader />
         </AppHeader>
-        <div className="app-body">
-        
+        <div className="app-body">        
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />

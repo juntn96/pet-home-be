@@ -12,6 +12,9 @@ const productParentCategorySchema = mongoose.Schema({
     type: String,
     ref: 'User'
   },
+  description: {
+    type: String,
+  },
 	createdAt: {
 		type: Number,
 		default: new Date().getTime(),

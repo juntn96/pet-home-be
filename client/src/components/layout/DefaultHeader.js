@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-// import logo from '../../assets/img/brand/logo.svg'
-// import sygnet from '../../assets/img/brand/sygnet.svg'
+import { connect } from 'react-redux';
+import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
+import { logoutUser } from '../../store/actions/authActions';
 
 const propTypes = {
   children: PropTypes.node,
@@ -13,18 +12,19 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+  onLogoutClick = (e) => {
+    e.preventDefault();
+    this.props.logoutUser();
+  }
+
   render() {
 
-    // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        {/* <AppNavbarBrand
-          full={{ src: logo, width: 89, height: 25, alt: 'CoreUI Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'CoreUI Logo' }}
-        /> */}
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="d-md-down-none" navbar>
@@ -49,7 +49,7 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
               <DropdownItem><i className="fa fa-bell-o"></i> Thay đổi thông tin</DropdownItem>
-              <DropdownItem><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
+              <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
@@ -63,4 +63,8 @@ class DefaultHeader extends Component {
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
-export default DefaultHeader;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { logoutUser })(DefaultHeader);

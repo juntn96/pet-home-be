@@ -1,5 +1,6 @@
 const {Product} = require('./../models/Product');
 const {ProductCategory} = require('./../models/ProductCategory');
+const ProductParentCategory = require('./../models/ProductParentCategory');
 
 const getProduct = async (userId) => {
 	try {
@@ -27,3 +28,9 @@ const getProductCategories = async (userId) => {
 	}		
 };
 module.exports.getProductCategories = getProductCategories;
+
+const createProductParentCategory = async (productParentCategoryDetail) => {
+	let productParentCategory, err;
+	[err, productParentCategory] = await to(ProductParentCategory.create(productParentCategoryDetail));		
+};
+module.exports.createProductParentCategory = createProductParentCategory;

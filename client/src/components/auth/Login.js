@@ -19,18 +19,13 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      this.props.history.push('/product');
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-      if(nextProps.auth.currentUser.user.role === 1){
-        nextProps.history.push('/dashboard');
-      } else {
-        nextProps.history.push('/adminDashboard');
-      }
-      
+        nextProps.history.push('/product');
     }
 
     if (nextProps.errors) {
@@ -41,7 +36,7 @@ class Login extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      this.props.history.push('/product');
     }
   }
 
@@ -58,6 +53,10 @@ class Login extends Component {
 
   onForgetPass = (e) => {
     this.props.history.push('/forgetPass');;
+  }
+
+  onRegister = (e) => {
+    this.props.history.push('/phoneVertification');;
   }
 
   onChange(e) {
@@ -106,6 +105,7 @@ class Login extends Component {
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng nhập" />
               </form>
+              <button type="button" className="btn btn-info btn-block mt-4" onClick={this.onRegister}>Đăng kí</button>
               <button type="button" className="btn btn-info btn-block mt-4" onClick={this.onForgetPass}>Quên mật khẩu?</button>
             </div>
           </div>

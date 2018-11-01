@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { createProduct, getProductCategories } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon,Input } from 'reactstrap';
-// import Spinner from '../common/Spinner';
-// import SelectListGroup from './../common/SelectListGroup';
+import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 
 class AddProduct extends Component {
   constructor(props) {
@@ -16,20 +14,6 @@ class AddProduct extends Component {
       price: 0,
       image: []
     };
-}
-
-  componentDidMount() {
-    this.props.getProductCategories();
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/product');
-    }    
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      return { errors: nextProps.errors};
-    }
-    else return null;
   }
 
   onChangeTypeProduct = (e) => {
@@ -53,8 +37,6 @@ class AddProduct extends Component {
     this.props.createProduct(newProduct, this.props.history);
   }
   render() {
-    const { errors } = this.state;
-    const { locationCategories, loading } = this.props.locationApp;    
     return (
       <div className="product-container">   
         <FormGroup row>
@@ -63,12 +45,11 @@ class AddProduct extends Component {
               <InputGroupAddon addonType="prepend">
                 <Button type="button" color="primary" size="lg"><i className="fa fa-search"></i> Tìm kiếm</Button>
               </InputGroupAddon>
-              <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Username" />
+              <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
             </InputGroup>
             </Col>
-            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">Thêm sản phẩm</i></Link>
-            {/* <Button sm="3" color="primary" size="lg" >  Thêm sản phẩm</Button> */}
-          </FormGroup>
+            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Link>
+        </FormGroup>
         <Row>
         <Col xs="12" lg="12">
             <Card>

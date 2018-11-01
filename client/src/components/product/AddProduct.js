@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createProduct, getProductCategories } from '../../store/actions/productAction';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
   Card,
@@ -17,8 +16,6 @@ import {
   Button
 
 } from 'reactstrap';
-// import Spinner from '../common/Spinner';
-// import SelectListGroup from './../common/SelectListGroup';
 
 class AddProduct extends Component {
   constructor(props) {
@@ -31,19 +28,19 @@ class AddProduct extends Component {
     };
 }
 
-  componentDidMount() {
-    this.props.getProductCategories();
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/product');
-    }    
-  }
+  // componentDidMount() {
+  //   this.props.getProductCategories();
+  //   if (this.props.auth.isAuthenticated) {
+  //     this.props.history.push('/product');
+  //   }    
+  // }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      return { errors: nextProps.errors};
-    }
-    else return null;
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.errors) {
+  //     return { errors: nextProps.errors};
+  //   }
+  //   else return null;
+  // }
 
   onChangeTypeProduct = (e) => {
     this.setState({typeLocation: e.target.value});
@@ -63,50 +60,20 @@ class AddProduct extends Component {
       image: this.state.image
     };
 
-    this.props.createProduct(newProduct, this.props.history);
+    // this.props.createProduct(newProduct, this.props.history);
   }
   render() {
     const { errors } = this.state;
-    const { locationCategories, loading } = this.props.locationApp;    
+    // const { locationCategories, loading } = this.props.locationApp;    
     return (
       <div className="register">
           <div className="row">
             <div className="col-md-8">
-              {/* <form noValidate onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name-store">Tên cửa hàng</label>
-                  <input type="text" className="form-control" onChange={this.onChange} value={this.state.name}  id="name-store"  placeholder="Nhập tên cửa hàng"/>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="name-store">Giá sản phẩm</label>
-                  <input type="text" onChange={this.onChange} value={this.state.price} className="form-control" id="name-store"  placeholder="Nhập giá của sản phẩm"/>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="name-store">Mô tả sản phẩm</label>
-                  <input type="text" className="form-control" onChange={this.onChange} value={this.state.desciption}  id="name-store"  placeholder="Thêm mô tả"/>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="name-store">Mô tả sản phẩm</label> */}
-                  {/* { productCategory === null || loading ? <Spinner /> :            
-                    <SelectListGroup
-                      placeholder="Loại địa điểm"
-                      name="typeLocation"
-                      value={this.state.typeLocation}
-                      onChange={this.onChangeTypeProduct}
-                      options={productCategory}
-                      error={errors.status}
-                      info="Cho chúng tôi biết loại địa điểm bạn muốn tạo"
-                    />
-                  } */}
-                  {/* </label> */}
-                {/* </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" value="Thêm sản phẩm"/>
-              </form> */}
+              
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
                 <strong>Add Product</strong>
-                <small>new</small>
               </CardHeader>
               <CardBody>
                 <FormGroup>
@@ -164,17 +131,13 @@ class AddProduct extends Component {
   }
 }
 
-AddProduct.propTypes = {
-  createProduct: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors,
-  locationApp: state.locationApp,
+  // errors: state.errors,
+  // locationApp: state.locationApp,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductCategories })(withRouter(AddProduct));
+// export default connect(mapStateToProps, { createProduct, getProductCategories })(withRouter(AddProduct));
+export default connect(mapStateToProps)(withRouter(AddProduct));
+
 
