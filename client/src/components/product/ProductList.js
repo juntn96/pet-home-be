@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
+import { createProduct, getProductByIds } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
+import Img from 'react-image';
+import Spinner from '../common/Spinner';
 
 class AddProduct extends Component {
   constructor(props) {
@@ -14,6 +16,10 @@ class AddProduct extends Component {
       price: 0,
       image: []
     };
+  }
+
+  componentDidMount() {
+    this.props.getProductByIds(this.props.auth.user.user_id); 
   }
 
   onChangeTypeProduct = (e) => {
@@ -36,7 +42,26 @@ class AddProduct extends Component {
 
     this.props.createProduct(newProduct, this.props.history);
   }
+
+  renderProductItem = (item, index) => {
+    return (
+      <tr key={index}>
+        <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
+        <td>{item.name}</td>
+        <td>{item.price}</td>
+        
+        <td><Badge color="danger">Đồ ăn</Badge></td>
+
+        <td>
+          <Button color="success" size="sm">Sửa</Button>
+          <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
+        </td>
+      </tr>
+    );
+  }
+
   render() {
+    const { productByUserIds , loading } = this.props.product; 
     return (
       <div className="product-container">   
         <FormGroup row>
@@ -57,7 +82,8 @@ class AddProduct extends Component {
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
               </CardHeader>
               <CardBody>
-                <Table responsive>
+              { productByUserIds === null || loading ? <Spinner /> :
+                <Table responsive>              
                   <thead>
                   <tr>
                     <th>Ảnh</th>
@@ -68,60 +94,10 @@ class AddProduct extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td><img src={'assets/img/cho1.jpg'} style={{height:55,width:55}}  alt="image" /></td>
-                    <td>Thức ăn cho chó</td>
-                    <td>120.000</td>
-                    
-                    <td><Badge color="danger">Đồ ăn</Badge></td>
-
-                    <td>
-                      <Button color="success" size="sm">Sửa</Button>
-                      <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><img src={'assets/img/cho3.jpg'} style={{height:55,width:55}}  alt="image" /></td>
-                    <td>Đồ chơi cho chó</td>
-                    <td>20.000</td>
-                    <td><Badge color="secondary">Đồ chơ cho thú</Badge></td>
-                    <td>
-                      <Button color="success" size="sm">Sửa</Button>
-                      <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><img src={'assets/img/cho2.jpg'} style={{height:55,width:55}}  alt="image" /></td>
-                    <td>Thức ăn cho chó</td>
-                    <td>120.000</td>
-                    <td><Badge color="danger">Đồ ăn</Badge></td>
-                    <td>
-                    <Button color="success" size="sm">Sửa</Button>
-                      <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><img src={'assets/img/meo2.jpg'} style={{height:55,width:55}}  alt="image" /></td>
-                    <td>Đồ chơi cho mèo</td>
-                    <td>45.000</td>
-                    <td><Badge color="secondary">Đồ chơi cho thú</Badge></td>
-                    <td>
-                    <Button color="success" size="sm">Sửa</Button>
-                      <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><img src={'assets/img/meo1.jpg'} style={{height:55,width:55}}  alt="image" /></td>
-                    <td>Thuốc đau bụng</td>
-                    <td>25.000</td>
-                    <td><Badge color="primary">Thuốc</Badge></td>
-                    <td>
-                    <Button color="success" size="sm">Sửa</Button>
-                      <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
-                    </td>
-                  </tr>
+                    {productByUserIds.productByIds !== undefined && productByUserIds.productByIds.map((item, index) => this.renderProductItem(item,index))}
                   </tbody>
                 </Table>
+                }
                 <Pagination>
                   <PaginationItem>
                     <PaginationLink previous tag="button"></PaginationLink>
@@ -161,7 +137,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
   locationApp: state.locationApp,
+  product: state.product,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductByIds })(withRouter(AddProduct));
 

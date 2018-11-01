@@ -1,12 +1,15 @@
 import {
     CREATE_PRODUCT,
     GET_PRODUCT_PARENT_CATEGORIES,
-    PRODUCT_PARENT_CATEGORIES_LOADING
+    PRODUCT_PARENT_CATEGORIES_LOADING,
+    PRODUCT_PRODUCT_BY_USER_ID_LOADING,
+    GET_PRODUCT_BY_USER_ID
   } from '../actions/types';
   
   const initialState = {
     productParentCategories: [],
     productParentCategory: {},
+    productByUserIds: [],
     loading: false
   };
   
@@ -26,6 +29,17 @@ import {
           return {
             ...state,
             productParentCategories: action.payload,
+            loading: false
+          };
+        case PRODUCT_PRODUCT_BY_USER_ID_LOADING:
+          return {
+            ...state,
+            loading: true
+          };
+        case GET_PRODUCT_BY_USER_ID:
+          return {
+            ...state,
+            productByUserIds: action.payload,
             loading: false
           };
         default:

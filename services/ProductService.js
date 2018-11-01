@@ -1,19 +1,19 @@
 const Product = require('./../models/Product');
 const ProductParentCategory = require('./../models/ProductParentCategory');
 
-const getProduct = async (userId) => {
-	try {
-    let getProductList = await Product.find({ ownerId: userId});
-		return getProductList;
-	}
-	catch (e) {
-		return TE(res, 'Get locationCategories failed', 503);
-	}		
-};
-module.exports.getProduct = getProduct;
-const createProduct = async (product) => {
-  [error, product] = await to(Product.create(product));
-  if (err) TE(err);
+const createProduct = async (productDetail, image) => {
+  productDetail.images = [image];
+  console.log(productDetail);
+  let productAdd = new Product({
+    name: productDetail.name,
+    ownerId: productDetail.ownerId,
+    typeId: productDetail.typeId,
+    description: productDetail.description,
+    price: productDetail.price,
+    images: productDetail.images
+  });
+  [error, product] = await to(Product.create(productAdd));
+  if (error) TE(error);
 }
 module.exports.createProduct= createProduct;
 
@@ -27,6 +27,17 @@ const getProductParentCategories = async (ownerId) => {
 	}		
 };
 module.exports.getProductParentCategories = getProductParentCategories;
+
+const getProductByIds = async (ownerId) => {
+	try {
+    let getProductByIdList = await Product.find({ deletionFlag: false, ownerId: ownerId});
+		return getProductByIdList;
+	}
+	catch (e) {
+		return TE(res, 'Get productByIds failed', 503);
+	}		
+};
+module.exports.getProductByIds = getProductByIds;
 
 const createProductParentCategory = async (productParentCategoryDetail) => {
 	let productParentCategory, err;

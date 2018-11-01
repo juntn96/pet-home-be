@@ -19,9 +19,9 @@ module.exports.getProduct = getProduct;
 
 const addProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
+  const image = 'http://cdn.nhanh.vn/cdn/store/23446/ps/20180110/102341625_3c0a747d19943b04ca2dcbd956332bfc_724x724.jpg';
   let error, product;
-  [error, product] = await to(productService.createProduct(req.body));
-  console.log(req.body);
+  [error, product] = await to(productService.createProduct(req.body, image));
   if (error) return ReE(res, 'Không thể tạo thêm sản phẩm', 422);
   return ReS(res, {
     message: 'Create new product successfully'
@@ -48,18 +48,37 @@ const getProductParentCategories = async (req, res) => {
 };
 module.exports.getProductParentCategories = getProductParentCategories;
 
+const getProductByIds = async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  console.log(req);
+  const ownerId = req.params.ownerId;
+  let erro, productByIds;
+  [erro, productByIds] = await to(productService.getProductByIds(ownerId));
+  if (erro) {
+    console.log('Vao day :v')
+    return ReE(res, 'Get productByIds failed', 422);
+  }	
+  if (productByIds) {
+    return ReS(res, { message: 'Get productByIds success', productByIds: productByIds }, 200);
+  }
+  else {
+    return ReE(res, 'Get productByIds failed', 503);
+  }
+  				
+};
+module.exports.getProductByIds = getProductByIds;
+
+
 const addProductParentCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, addProductParentCategory;
   console.log(req.body);
   [erro, addProductParentCategory] = await to(productService.createProductParentCategory(req.body));
   if (erro) {
-    console.log(erro);
     return ReE(res, 'Thêm mới PPC không thành công, vui lòng thử lại sau', 422);
   }
   return ReS(res, {
     message: 'Successfully created new PPC.',
   }, 200);				
 };
-
 module.exports.addProductParentCategory = addProductParentCategory;
