@@ -31,12 +31,13 @@ router.get('/users/detail/:userId', UserController.getUserById);
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
 
-/*********************** */
+/************************/
 //Product
 router.post('/product/add',ProductController.addProduct);
 router.get('/product',ProductController.getProduct);
 
-
+// get product category
+router.get('/product/productCategories',ProductController.getProductCategories);
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);

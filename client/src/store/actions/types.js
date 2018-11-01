@@ -15,3 +15,7 @@ export const CLEAR_MSC = 'CLEAR_MSC';
 
 export const SET_USER = 'SET_USER';
 export const RESET_STATE = 'RESET_STATE';
+
+
+export const CREATE_PRODUCT = 'CREATE_PRODUCT'
+export const GET_PRODUCT_CATEGORIES = 'GET_PRODUCT_CATEGORIES'

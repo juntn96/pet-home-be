@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './App.scss';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
@@ -22,6 +23,9 @@ import NotFound from './components/not-found/NotFound';
 
 import Dashboard from './components/dashboard/Dashboard';
 import AdminDashboard from './components/admin-dashboard/AdminDashboard';
+
+import Product from './components/product/AddProduct';
+import DefaultLayout from './components/layout/DefaultLayout';
 
 
 // Check for token
@@ -50,15 +54,18 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navbar />
+          <div className="">
             <Route exact path="/" component={Landing} />
-            <div className="container">
               <Route exact path="/phoneVertification" component={PhoneVertification} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/forgetPass" component={ForgetPass} />
               <Route exact path="/sendPassSuccess" component={SendPassSuccess} />
+              {/* <Route exact path="/product" component={Product} /> */}
+              <Route path="/pro" component={DefaultLayout} />
+              <Route path="/product/add" component={DefaultLayout} />
+              <Route path="/product" component={DefaultLayout} />
+
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute exact path="/adminDashboard" component={AdminDashboard} />
@@ -66,7 +73,6 @@ class App extends Component {
               <Route exact path="/not-found" component={NotFound} />
             </div>
             {/* <Footer /> */}
-          </div>
         </Router>
       </Provider>
     );
