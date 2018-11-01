@@ -1,7 +1,8 @@
 import {
     CREATE_PRODUCT,
     GET_PRODUCT_PARENT_CATEGORIES,
-    PRODUCT_PARENT_CATEGORIES_LOADING
+    PRODUCT_PARENT_CATEGORIES_LOADING,
+    CREATE_PRODUCT_PARENT_CATEGORIES
   } from '../actions/types';
   
   const initialState = {
@@ -26,6 +27,11 @@ import {
           return {
             ...state,
             productParentCategories: action.payload,
+            loading: false
+          };
+          case CREATE_PRODUCT_PARENT_CATEGORIES:
+          return {
+            ...state,
             loading: false
           };
         default:

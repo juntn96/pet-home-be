@@ -33,3 +33,9 @@ const createProductParentCategory = async (productParentCategoryDetail) => {
 	[err, productParentCategory] = await to(ProductParentCategory.create(productParentCategoryDetail));		
 };
 module.exports.createProductParentCategory = createProductParentCategory;
+
+const editProductParentCategory = async (id, productParentCategoryDetail) => {
+	let productParentCategory, err;
+	[err, productParentCategory] = await to(ProductParentCategory.update({ _id: id },productParentCategoryDetail));		
+};
+module.exports.editProductParentCategory = editProductParentCategory;

@@ -63,3 +63,19 @@ const addProductParentCategory = async function (req, res) {
 };
 
 module.exports.addProductParentCategory = addProductParentCategory;
+
+const editProductParentCategory = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, editProductParentCategory;
+  console.log(req.body);
+  [erro, editProductParentCategory] = await to(productService.editProductParentCategory(req.body.id,req.body));
+  if (erro) {
+    console.log(erro);
+    return ReE(res, 'Thêm mới PPC không thành công, vui lòng thử lại sau', 422);
+  }
+  return ReS(res, {
+    message: 'Successfully created new PPC.',
+  }, 200);				
+};
+
+module.exports.editProductParentCategory = editProductParentCategory;

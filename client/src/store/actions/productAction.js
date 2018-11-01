@@ -5,6 +5,7 @@ import {
   GET_PRODUCT_PARENT_CATEGORIES,
   GET_ERRORS,
   PRODUCT_PARENT_CATEGORIES_LOADING,
+  CREATE_PRODUCT_PARENT_CATEGORIES,
 } from './types';
 
 // Get Posts
@@ -38,6 +39,29 @@ export const createProduct = product => dispatch => {
             type: CREATE_PRODUCT,
             payload: res.data
           },        
+        )
+      }
+      )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data.error 
+        })
+      }
+    );
+};
+
+export const createProductParentCategories = productParentCategories => dispatch => {
+  axios
+    .post('/api/product/addProductParentCategory', productParentCategories)
+    .then(res =>
+      {
+        dispatch(
+          {
+            type: CREATE_PRODUCT_PARENT_CATEGORIES,
+            payload: res.data
+          },
         )
       }
       )
