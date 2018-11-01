@@ -33,8 +33,8 @@ router.get('/location/locationCategories', LocationController.getLocationCategor
 
 /************************/
 //Product
-router.post('/product/add',ProductController.addProduct);
-router.get('/product',ProductController.getProduct);
+router.post('/product/add', ProductController.addProduct);
+router.get('/product/productByUserIds/:ownerId', ProductController.getProductByIds);
 
 // get product category
 router.get('/product/productParentCategories/:ownerId', ProductController.getProductParentCategories);

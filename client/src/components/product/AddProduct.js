@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
 import {
   Card,
   CardBody,
@@ -22,8 +23,9 @@ class AddProduct extends Component {
     super(props);
     this.state = {
       name: '',
-      desciption: '',
+      description: '',
       price: 0,
+      typeProductCategory: '',
       image: []
     };
   }
@@ -40,7 +42,7 @@ class AddProduct extends Component {
   }
 
   onChangeTypeProduct = (e) => {
-    this.setState({typeLocation: e.target.value});
+    this.setState({typeProductCategory: e.target.value});
   }
 
   onChange = (e) => {
@@ -52,11 +54,17 @@ class AddProduct extends Component {
 
     const newProduct = {
       name: this.state.name,
-      desciption: this.state.desciption,
-      price: this.state.price,
+      ownerId: this.props.auth.user.user_id,
+      typeId: this.state.typeProductCategory,
+      description: this.state.description,
+      price: this.state.price,  
     };
 
     this.props.createProduct(newProduct, this.props.history);
+  }
+
+  onCancel = (e) => {
+    this.props.history.push('/product');
   }
 
   renderOptionItem = (item, index) => {
@@ -67,7 +75,8 @@ class AddProduct extends Component {
 
   render() {
     const { errors } = this.state;
-    const { productParentCategories , loading } = this.props.product;    
+    const { productParentCategories , loading } = this.props.product;  
+    console.log(this.state);  
     return (
       <div className="register">
           <div className="row">
@@ -81,14 +90,28 @@ class AddProduct extends Component {
               <CardBody>
                 <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
-                  <Input type="text" id="company" placeholder="Nhập tên sản phẩm của bạn" />
+                  <input
+                    type="text"
+                    className={classnames('form-control form-control-lg')}
+                    placeholder="Tên sản phẩm"
+                    name="name"
+                    value={this.state.name}
+                    onChange={this.onChange}
+                  />
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
                   <Label htmlFor="vat">Giá</Label>
                   <div className="controls">
                       <InputGroup className="input-prepend">
-                      <Input id="appendedPrependedInput" size="16" type="text" />
+                      <input
+                        type="text"
+                        className={classnames('form-control form-control-lg')}
+                        placeholder="Giá"
+                        name="price"
+                        value={this.state.price}
+                        onChange={this.onChange}
+                      />
                       <InputGroupAddon addonType="append">
                         <InputGroupText>.00</InputGroupText>
                       </InputGroupAddon>
@@ -100,7 +123,14 @@ class AddProduct extends Component {
                   <Col xs="4">
                       <Label htmlFor="ccyear">Loại</Label>
                       { productParentCategories === null || loading ? <Spinner /> :   
-                      <Input type="select" name="ccyear" id="ccyear">
+                      <Input 
+                        type="select" 
+                        name="ccyear" 
+                        id="ccyear"
+                        value={this.state.typeProductCategory}
+                        onChange={this.onChangeTypeProduct}
+                        >
+                        <option>--Loại--</option>
                         {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                       </Input>
                       }
@@ -109,17 +139,24 @@ class AddProduct extends Component {
                   <FormGroup row className="my-0">
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
-                      <Input type="textarea" name="textarea-input" id="textarea-input" rows="7"
-                             placeholder="Nội dung mô tả..." />
+                        <textarea 
+                          class="form-control" 
+                          name="description" 
+                          id="textarea-input" 
+                          rows="7"
+                          placeholder="Nội dung mô tả..." 
+                          value={this.state.description}
+                          onChange={this.onChange}>
+                        </textarea>
                     </Col>
                   </FormGroup>
                   <div style={{marginTop:20}}>
                   <FormGroup row className="my-0">
                     <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary">Thêm sản phẩm</Button>
+                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
                     </Col>
                     <Col col="5" sm="4" md="2" className="mb-xl-0">
-                      <Button block color="secondary">Hủy</Button>
+                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
                     </Col>
                   </FormGroup>
                   </div>

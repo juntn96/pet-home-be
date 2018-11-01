@@ -8,7 +8,6 @@ const createUser = async (userDetail, avatar) => {
 	let auth_info, err;
 	auth_info = {};
   auth_info.status = 'create';
-  console.log(userDetail);
 	if (validator.isMobilePhone(userDetail.phoneNumber, 'any')) {
 		auth_info.method = 'phone';
 		let user;
@@ -18,7 +17,7 @@ const createUser = async (userDetail, avatar) => {
 			// To do
 		}
 		if (user.role === constants.ROLE_LOCATION_MANAGER) {
-			var location = new Location({
+			let location = new Location({
 				name: userDetail.name,
 				ownerId: user._id,
 				typeId: userDetail.typeId,
