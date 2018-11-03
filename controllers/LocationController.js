@@ -1,4 +1,5 @@
 const locationService = require('../services/LocationService');
+const Location = require('../models/Location');
 
 const getLocationCategories = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');

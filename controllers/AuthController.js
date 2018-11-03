@@ -8,6 +8,7 @@ const validateRegisterInput = require('./../validation/register');
 // @access  Public
 const register = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
+  console.log(req.body);
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check Validation
   if (!isValid) {
@@ -38,7 +39,6 @@ const login = async function (req, res) {
 	[err, user] = await to(authService.authUser(req.body));
 	if (err) return ReEM(res, err, 422);
   res.cookie('ACCESS_TOKEN', user.getJWT(), { maxAge: 900000 });
-  console.log(user.getJWT());
 	return ReS(res, {
 		token: user.getJWT(),
 		user: user.toWeb(),

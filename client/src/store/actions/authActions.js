@@ -2,7 +2,7 @@ import axios from 'axios';
 import setAuthToken from '../../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 
-import { GET_ERRORS, SET_CURRENT_USER, GET_CODE, SEND_PASS_LOADING, SET_USER , RESET_STATE} from './types';
+import { GET_ERRORS, SET_CURRENT_USER, GET_CODE, SEND_PASS_LOADING , RESET_STATE} from './types';
 
 export const itemsHasErrored = (bool) => dispatch => {
   dispatch( {
@@ -53,12 +53,12 @@ export const loginUser = userData => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded));
-      dispatch(getCurrentUser(decoded.user_id));
     })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data.error 
+
       })
     );
 };
@@ -97,23 +97,6 @@ export const setStateToDefault = () => {
   return {
     type: RESET_STATE
   };
-};
-
-export const getCurrentUser = user_id => dispatch => {
-  axios
-    .get(`/api/users/detail/${user_id}`, {withCredentials: true}) 
-    .then(res =>    
-      dispatch({
-          type: SET_USER,
-          payload: res.data
-        })
-    )
-    .catch(err =>
-        dispatch({
-          type: SET_USER,
-          payload: null
-        })
-    );
 };
 
 // Log user out

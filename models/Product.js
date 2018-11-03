@@ -10,12 +10,21 @@ const productSchema = mongoose.Schema({
   },
   typeId: { 
     type: String, 
-    ref: 'ProductCategory'
+    ref: 'ProductParentCategory'
   },
+  images: [{
+    type: String
+  }],
 	deletionFlag: {
 		type: Boolean,
 		default: false,
-	},
+  },
+  price: {
+    type: Number
+  },
+  description: {
+    type: String
+  },
 	createdAt: {
 		type: Number,
 		default: new Date().getTime(),

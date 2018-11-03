@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const bcrypt_p = require('bcrypt-promise');
 const jwt = require('jsonwebtoken');
 const validate = require('mongoose-validator');
@@ -103,7 +103,13 @@ UserSchema.virtual('fullName').get(function () {
 UserSchema.methods.getJWT = function () {
 	let expiration_time = parseInt(CONFIG.jwt_expiration);
 	return 'Bearer ' + jwt.sign({
-		user_id: this._id,
+    user_id: this._id,
+    phone: this.phoneNumber,
+    address: this.address,
+    role: this.role,
+    status: this.status,
+    deletionFlag: this.deletionFlag,
+    avatar: this.avatar
 	}, CONFIG.jwt_encryption, {
 		expiresIn: expiration_time,
 	});

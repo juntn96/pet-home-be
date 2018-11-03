@@ -6,6 +6,7 @@ const PhoneController = require('./../controllers/PhoneController');
 const AdminController = require('./../controllers/AdminController');
 const LocationController = require('./../controllers/LocationController');
 const UserController = require('./../controllers/UserController');
+const ProductController = require('../controllers/ProductController');
 
 const passport = require('passport');
 const path = require('path');
@@ -29,6 +30,15 @@ router.get('/users/detail/:userId', UserController.getUserById);
 
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
+
+/************************/
+//Product
+router.post('/product/add', ProductController.addProduct);
+router.get('/product/productByUserIds/:ownerId', ProductController.getProductByIds);
+
+// get product category
+router.get('/product/productParentCategories/:ownerId', ProductController.getProductParentCategories);
+router.post('/product/addProductParentCategory', ProductController.addProductParentCategory);
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);

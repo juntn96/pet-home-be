@@ -35,7 +35,6 @@ module.exports.forgotPassword = forgotPassword;
 
 const getUserById = async function (req, res, next) {
   const userId = req.params.userId;
-  console.log(req.params.userId);
 	if (!userId) {
 		ReE(res, {
 			status: false,

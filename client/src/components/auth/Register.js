@@ -21,12 +21,12 @@ class Register extends Component {
       address: [],
       locationCategories: []
     };
-}
+  }
 
   componentDidMount() {
     this.props.getLocationCategories();
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
+      this.props.history.push('/product');
     }    
   }
 
@@ -56,16 +56,11 @@ class Register extends Component {
       password2: this.state.password2,
       typeId: this.state.typeLocation,
       phoneNumber: phone,
+      address: [this.state.address],
       role: 1
     };
 
     this.props.registerUser(newUser, this.props.history);
-  }
-
-  renderOptionItem = (item, index) => {
-    return (
-      <option key={index} value={item._id}>{item.name}</option>
-    );
   }
 
   render() {
@@ -139,12 +134,7 @@ class Register extends Component {
                   )}
                 </div>
                 <div className="form-group">
-                  {/* <label>                    
-                    <p className="lead">Lựa chọn loại địa điểm:</p>   */}
                     { locationCategories === null || loading ? <Spinner /> :            
-                      // <select className="form-control form-control-lg" onChange={this.onChangeTypeLocation}>
-                      //   {locationCategories.map((item, index) => this.renderOptionItem(item,index))}
-                      // </select> 
                       <SelectListGroup
                         placeholder="Loại địa điểm"
                         name="typeLocation"
@@ -155,7 +145,6 @@ class Register extends Component {
                         info="Cho chúng tôi biết loại địa điểm bạn muốn tạo"
                       />
                     }
-                  {/* </label> */}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng kí"/>
               </form>
