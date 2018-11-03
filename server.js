@@ -22,6 +22,7 @@ mongoose
   .connect(
     mongooseUri,
     {
+      useCreateIndex: true,
       useNewUrlParser: true 
     }
   )
@@ -32,7 +33,7 @@ let db = mongoose.connection;
 
 module.exports = db;
 db.once('open', () => {
-  console.log('Connected to mongo at ' + mongooseUri);
+  // console.log('Connected to mongo at ' + mongooseUri);
 });
 db.on('error', (error) => {
   console.log('error', error);

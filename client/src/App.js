@@ -20,6 +20,7 @@ import PrivateRoute from './components/common/PrivateRoute';
 import NotFound from './components/not-found/NotFound';
 
 import DefaultLayout from './components/layout/DefaultLayout';
+import AdminDashboard from './components/admin-dashboard/AdminDashboard';
 
 
 // Check for token
@@ -56,11 +57,13 @@ class App extends Component {
             <Route exact path="/forgetPass" component={ForgetPass} />
             <Route exact path="/sendPassSuccess" component={SendPassSuccess} />          
             <Switch>
-              <PrivateRoute path="/" component={DefaultLayout} />
+              {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
               <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
               <PrivateRoute path="/product/category" component={DefaultLayout} />
+              <PrivateRoute path="/pro" component={DefaultLayout} />
+              <PrivateRoute path="/admin" component={AdminDashboard}/>
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>

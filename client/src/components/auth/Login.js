@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { loginUser } from '../../store/actions/authActions';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor() {
@@ -16,13 +17,22 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/product');
+      // this.props.history.push('/product');
+      if(this.props.auth.user.role === 1){
+        this.props.history.push('/product');
+      } else {
+        this.props.history.push('/admin');
+      }
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-        nextProps.history.push('/product');
+        if(nextProps.auth.user.role === 1){
+          nextProps.history.push('/product');
+        } else {
+          nextProps.history.push('/admin');
+        }
     }
 
     if (nextProps.errors) {
@@ -33,7 +43,7 @@ class Login extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.isAuthenticated) {
-      this.props.history.push('/product');
+      prevProps.history.push('/product');
     }
   }
 
@@ -66,6 +76,11 @@ class Login extends Component {
       <div className="login">
         <div className="container">
           <div className="row">
+            <div className="col-md-1 mt-1">       
+              <Link to="/" className="btn btn-lg btn-info mr-2">
+                Home
+              </Link>
+            </div>
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Đăng nhập</h1>            
               <form onSubmit={this.onSubmit}>

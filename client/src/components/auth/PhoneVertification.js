@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { 
   getVertificationCode, 
   getVertify, 
@@ -47,8 +48,13 @@ class PhoneVertification extends Component {
       <div className="login">
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
-            <h1 className="display-4 text-center">Bước 1</h1>
+            <div className="col-md-1 mt-1">       
+              <Link to="/" className="btn btn-lg btn-info mr-2">
+                Home
+              </Link>
+            </div>
+            <div className="col-md-8 m-auto">           
+            <h1 className="display-4 text-center">Bước 1</h1>             
               <div className="form-group">
                 <input
                   type="text"

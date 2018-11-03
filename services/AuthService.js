@@ -54,9 +54,10 @@ const authUser = async (userInfo) => { //returns token
 	}
 	if (!user) TE('Số điện thoại chưa được đăng ký');
 	[err, user] = await to(user.comparePassword(userInfo.password));
-	console.log(err);
 	if (err) TE('Mật khẩu không chính xác');
 	return user;
 };
 module.exports.authUser = authUser;
+
+
 

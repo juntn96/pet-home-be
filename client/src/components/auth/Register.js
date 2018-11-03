@@ -56,6 +56,7 @@ class Register extends Component {
       password2: this.state.password2,
       typeId: this.state.typeLocation,
       phoneNumber: phone,
+      address: [this.state.address],
       role: 1
     };
 
