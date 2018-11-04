@@ -53,7 +53,7 @@ class AddProduct extends Component {
         <td><Badge color="danger">Đồ ăn</Badge></td>
 
         <td>
-          <Button color="success" size="sm">Sửa</Button>
+          <Button color="success" size="sm"><i className="fa fa-pencil-square-o"></i></Button>
           <Button color="danger" size="sm"><i className="fa fa-trash"></i></Button>
         </td>
       </tr>

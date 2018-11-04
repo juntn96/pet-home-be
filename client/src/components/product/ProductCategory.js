@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { createProductParentCategories, getProductParentCategories } from '../../store/actions/productAction';
 import {FormGroup, 
   InputGroup, 
@@ -13,13 +12,11 @@ import {FormGroup,
   CardHeader,
   Table,
   Button,
-  Badge,
   FormText,
   Label,
-  Alert
 } from 'reactstrap';
 import Spinner from '../common/Spinner';
-import {Link, withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 class ProductCategory extends Component {
 
@@ -43,10 +40,6 @@ class ProductCategory extends Component {
       description: e.currentTarget.getElementsByTagName('td')[1].innerText,
       checkUpdate: true
     });
-    // this.setState({
-    //   name: e.productParentCategories.name,
-    //   description: e.productParentCategories.description
-    //  });
   }
 
   setDeletionFlagFalse = (e) =>{
@@ -99,8 +92,8 @@ class ProductCategory extends Component {
           <td name="name">{item.name}</td>
           <td>{item.description}</td>
           {item.deletionFlag===false ? 
-            <td><Badge color="success">Đang hoạt động</Badge></td>:
-            <td><Badge color="secondary">Đang bị ẩn</Badge></td>
+            <td><Button color="success" size="sm"><i className="fa fa-check-circle"></i></Button></td>:
+            <td><Button color="danger" size="sm"><i className="fa fa-ban"></i></Button></td>
           }
           {item.deletionFlag===false ? 
              <td><Button size="sm" onClick={this.setDeletionFlagTrue} color="warning" >Ẩn</Button></td>:
@@ -110,7 +103,6 @@ class ProductCategory extends Component {
     );
   }
   render() {
-    const { errors } = this.state;
     const { productParentCategories , loading } = this.props.product;    
     return(
       <div>
@@ -136,7 +128,7 @@ class ProductCategory extends Component {
                 </div>  }
               </form>
           </Col>
-        <Col xs="7" lg="7">
+        <Col xs="9" lg="9">
             <Card>
             <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm

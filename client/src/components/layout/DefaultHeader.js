@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import { logoutUser } from '../../store/actions/authActions';
+import Img from 'react-image';
 
 const propTypes = {
   children: PropTypes.node,
@@ -20,8 +21,7 @@ class DefaultHeader extends Component {
 
   render() {
 
-    const { children, ...attributes } = this.props;
-
+    // const { children, ...attributes } = this.props;
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -40,11 +40,11 @@ class DefaultHeader extends Component {
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
-            <NavLink href="#">(+84)969 255 141</NavLink>
+            <NavLink href="#">{this.props.auth.user.phone}</NavLink>
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'assets/img/6.jpg'} style={{height:35,width:35}} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              <Img src={this.props.auth.user.avatar} style={{height:35,width:35}} className="img-avatar"></Img>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>

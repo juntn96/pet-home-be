@@ -81,6 +81,7 @@ class Register extends Component {
       typeId: this.state.typeLocation,
       phoneNumber: phone,
       latlong: this.state.latlong,
+      address: [this.state.address],
       role: 1
     };
     this.props.registerUser(newUser, this.props.history);

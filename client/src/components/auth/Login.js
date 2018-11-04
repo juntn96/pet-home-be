@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { Link} from 'react-router-dom'
 import { loginUser } from '../../store/actions/authActions';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor() {
@@ -21,13 +21,22 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/product');
+      // this.props.history.push('/product');
+      if(this.props.auth.user.role === 1){
+        this.props.history.push('/product');
+      } else {
+        this.props.history.push('/admin');
+      }
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-        nextProps.history.push('/product');
+        if(nextProps.auth.user.role === 1){
+          nextProps.history.push('/product');
+        } else {
+          nextProps.history.push('/admin');
+        }
     }
 
     if (nextProps.errors) {
@@ -38,7 +47,7 @@ class Login extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.isAuthenticated) {
-      this.props.history.push('/product');
+      prevProps.history.push('/product');
     }
   }
   validate = () => {

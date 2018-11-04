@@ -74,9 +74,7 @@ class AddProduct extends Component {
   }
 
   render() {
-    const { errors } = this.state;
     const { productParentCategories , loading } = this.props.product;  
-    console.log(this.state);  
     return (
       <div className="register">
           <div className="row">
@@ -140,7 +138,7 @@ class AddProduct extends Component {
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
                         <textarea 
-                          class="form-control" 
+                          className="form-control" 
                           name="description" 
                           id="textarea-input" 
                           rows="7"

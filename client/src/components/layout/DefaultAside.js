@@ -3,6 +3,7 @@ import { Nav, NavItem, NavLink, Progress, TabContent, TabPane, ListGroup, ListGr
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { AppSwitch } from '@coreui/react'
+import Img from 'react-image';
 
 const propTypes = {
   children: PropTypes.node,
@@ -152,7 +153,8 @@ class DefaultAside extends Component {
             <div className="message">
               <div className="py-3 pb-5 mr-3 float-left">
                 <div className="avatar">
-                  <img src={'assets/img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+                  {/* <img src={'assets/img/avatars/7.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" /> */}
+                  <Img src={'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png'} className="img-avatar"/>
                   <span className="avatar-status badge-success"></span>
                 </div>
               </div>

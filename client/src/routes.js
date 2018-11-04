@@ -10,10 +10,7 @@ const AddProduct = Loadable({
     loader: () => import('./components/product/AddProduct'),
     loading: Loading,
   });
-const Register = Loadable({
-  loader: () => import('./components/auth/Register'),
-  loading: Loading,
-});
+  
 const routes = [
     { path: '/', exact: true, name: 'Trang Chủ', component: ProductList },
     { path: '/product/add', exact: true, name: 'Thêm sản phẩm', component: AddProduct },

@@ -50,12 +50,10 @@ module.exports.getProductParentCategories = getProductParentCategories;
 
 const getProductByIds = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  console.log(req);
   const ownerId = req.params.ownerId;
   let erro, productByIds;
   [erro, productByIds] = await to(productService.getProductByIds(ownerId));
   if (erro) {
-    console.log('Vao day :v')
     return ReE(res, 'Get productByIds failed', 422);
   }	
   if (productByIds) {
@@ -72,7 +70,6 @@ module.exports.getProductByIds = getProductByIds;
 const addProductParentCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, addProductParentCategory;
-  console.log(req.body);
   [erro, addProductParentCategory] = await to(productService.createProductParentCategory(req.body));
   if (erro) {
     return ReE(res, 'Thêm mới PPC không thành công, vui lòng thử lại sau', 422);
@@ -88,10 +85,8 @@ module.exports.addProductParentCategory = addProductParentCategory;
 const editProductParentCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, editProductParentCategory;
-  console.log(req.body);
   [erro, editProductParentCategory] = await to(productService.editProductParentCategory(req.body.id,req.body));
   if (erro) {
-    console.log(erro);
     return ReE(res, 'Thêm mới PPC không thành công, vui lòng thử lại sau', 422);
   }
   return ReS(res, {
