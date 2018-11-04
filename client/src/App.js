@@ -50,8 +50,8 @@ class App extends Component {
         <Router>
           <div className="App">
             <Route exact path="/" component={Landing} />
-            <Route exact path="/phoneVertification" component={PhoneVertification} />
-            <Route exact path="/register" component={Register} />
+            <Route path="/phoneVertification" component={PhoneVertification} />
+            <Route path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
             <Route exact path="/sendPassSuccess" component={SendPassSuccess} />          
