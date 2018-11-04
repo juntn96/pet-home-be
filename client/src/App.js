@@ -21,7 +21,7 @@ import NotFound from './components/not-found/NotFound';
 
 import DefaultLayout from './components/layout/DefaultLayout';
 import AdminDashboard from './components/admin-dashboard/AdminDashboard';
-
+import UploadImage from './components/uploadImage/UploadImage';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -55,9 +55,9 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
-            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />          
+            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />  
+            <Route exact path="/upload" component={UploadImage} />       
             <Switch>
-              {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
               <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />

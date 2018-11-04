@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const bcrypt_p = require('bcrypt-promise');
 const jwt = require('jsonwebtoken');
 const validate = require('mongoose-validator');
 
@@ -77,7 +76,7 @@ UserSchema.methods.comparePassword = async function (pw) {
 	let err, pass;
 	if (!this.password) TE('password not set');
 
-	[err, pass] = await to(bcrypt_p.compare(pw, this.password));
+	[err, pass] = await to(bcrypt.compare(pw, this.password));
 	if (err) {
 		TE(err);
 	}

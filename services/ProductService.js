@@ -2,7 +2,7 @@ const Product = require('./../models/Product');
 const ProductParentCategory = require('./../models/ProductParentCategory');
 
 const createProduct = async (productDetail, image) => {
-  productDetail.images = [image];
+  // productDetail.images = [image];
   let productAdd = new Product({
     name: productDetail.name,
     ownerId: productDetail.ownerId,

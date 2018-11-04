@@ -7,6 +7,7 @@ const AdminController = require('./../controllers/AdminController');
 const LocationController = require('./../controllers/LocationController');
 const UserController = require('./../controllers/UserController');
 const ProductController = require('../controllers/ProductController');
+const UploadController = require('./../controllers/UploadController.js');
 
 const passport = require('passport');
 const path = require('path');
@@ -43,6 +44,10 @@ router.post('/product/addProductParentCategory', ProductController.addProductPar
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);
 router.post('/phone/verify', PhoneController.verifyPhoneVerifyCode);
+
+// Upload to Cloudinary
+router.get('/wake-up', (req, res) => res.send('👌'))
+router.post('/image-upload', UploadController.uploadImage);
 
 router.get('/test', (req, res, next) => {
   res.json({ message: 'test'});

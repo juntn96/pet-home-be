@@ -296,7 +296,7 @@ const mapStateToProps = state => ({
   product: state.product,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(x));
 
 
 
