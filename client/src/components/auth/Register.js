@@ -96,12 +96,18 @@ class Register extends Component {
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;    
     return (
+      <div className="landing">
+        <div className="dark-overlay landing-inner text-light">
       <div className="register-form">
-        <div className="container-register">
+        <div className="container-register" style={{marginTop: "8%"}}>
           <Row >
             <Col xs="6">
+
             <div className="card-form">
-              <div className="register-form">
+            
+              <div className="register-form" style={{padding: "10%"}}>
+              <h3 style={{color:"black"}}>Đăng ký cửa hàng</h3>
+              <br/>
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
@@ -155,7 +161,7 @@ class Register extends Component {
                       'is-invalid': errors.address
                     })}
                     placeholder="Địa chỉ chi tiết"
-                    name="address"
+                    name="addressDetail"
                     value={this.state.addressDetail}
                     onChange={this.onChange}
                   />
@@ -176,7 +182,7 @@ class Register extends Component {
                       />
                     }
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" value="Đăng kí"/>
+                <input type="submit" className="btn-lg btn-primary btn-block mt-4" value="Đăng kí"/>
               </form>
               </div>
             </div>
@@ -186,11 +192,13 @@ class Register extends Component {
               <MyMapComponent
                 onMarkerClick={this.handleMarkerClick}
                 onMapClick={this.getLatLong}
-                getLatLong={this.state.address}
+                getLatLong={this.state.latlong}
               />
               </div>
             </Col>
           </Row>
+      </div>
+      </div>
       </div>
       </div>
     );

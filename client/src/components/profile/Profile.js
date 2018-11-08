@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductByIds, deleteProduct } from '../../store/actions/productAction';
+import { createProduct, getProductByIds, getProfile } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import Img from 'react-image';
 import Spinner from '../common/Spinner';
 
-class AddProduct extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -142,10 +142,8 @@ AddProduct.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors,
-  locationApp: state.locationApp,
-  product: state.product,
+  errors: state.errors
 });
 
-export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(AddProduct));
+export default connect(mapStateToProps, { getProfile })(withRouter(Profile));
 

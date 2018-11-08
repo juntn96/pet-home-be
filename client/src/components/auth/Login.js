@@ -53,26 +53,26 @@ class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if(/(03|09|08)+([0-9]{8})\b/.test(this.state.phone)){
-      this.setState({
-        errorsClassUsername : ""
-      })
-    }else {
-      this.setState({
-        errorsClassUsername : "alert-validate",
-        messageUsername: "Số điện thoại không đúng"
-      })
-    }
-    if(/[0-9a-zA-Z]{6,32}\b/.test(this.state.password)){
-      this.setState({
-        errorsClassPassword : ""
-      })
-    }else {
-      this.setState({
-        errorsClassPassword : "alert-validate",
-        messagePassword: "Mật khẩu hợp lệ"
-      })
-    }
+    // if(/(03|09|08)+([0-9]{8})\b/.test(this.state.phone)){
+    //   this.setState({
+    //     errorsClassUsername : ""
+    //   })
+    // }else {
+    //   this.setState({
+    //     errorsClassUsername : "alert-validate",
+    //     messageUsername: "Số điện thoại không đúng"
+    //   })
+    // }
+    // if(/[0-9a-zA-Z]{6,32}\b/.test(this.state.password)){
+    //   this.setState({
+    //     errorsClassPassword : ""
+    //   })
+    // }else {
+    //   this.setState({
+    //     errorsClassPassword : "alert-validate",
+    //     messagePassword: "Mật khẩu hợp lệ"
+    //   })
+    // }
     const userData = {
       phone: this.state.phone,
       password: this.state.password
@@ -156,7 +156,7 @@ class Login extends Component {
                   </div>
                   <div className="register-link">
                     <span className="txt3 p-b-11" style={{color:"#23282c"}}>Bạn chưa có tài khoản?</span>
-                    <Link to="/register">Đăng ký</Link>
+                    <Link to="/phoneVertification">Đăng ký</Link>
                   </div>
                 </form>
               </div>

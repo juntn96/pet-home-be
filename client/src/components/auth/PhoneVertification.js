@@ -31,6 +31,10 @@ class PhoneVertification extends Component {
     this.props.clearErrorsProps();
     const { phone, code } = this.state;
     this.props.getVertify({phone, code});
+    const { messageSendCode, messageCheckCode} = this.props;
+    if(messageSendCode && messageCheckCode.message !== undefined){
+      this.props.history.push('/register',{phone: phone})
+    }
   }
 
   onChangePhoneNumber = (e) => {
@@ -45,18 +49,16 @@ class PhoneVertification extends Component {
     const { errors } = this.state;
     const { messageSendCode, messageCheckCode, errorsProps } = this.props;
     return (
+      <div className="landing">
+        <div className="dark-overlay landing-inner text-light">
       <div className="login">
-        <div className="container">
+        <div className="container bounceInRight">
           <div className="row">
-            <div className="col-md-1 mt-1">       
-              <Link to="/" className="btn btn-lg btn-info mr-2">
-                Home
-              </Link>
-            </div>
-            <div className="col-md-8 m-auto">           
-            <h1 className="display-4 text-center">Bước 1</h1>             
+            <div className="col-md-4 m-auto bounceInRight">           
+            <h1 className="display-4 text-center" style={{ marginBottom:30}}>Đăng ký</h1>             
               <div className="form-group">
                 <input
+                  style={{ borderRadius:25}}
                   type="text"
                   className="form-control form-control-lg"
                   placeholder="Số điện thoại"
@@ -69,42 +71,38 @@ class PhoneVertification extends Component {
                 )}            
               </div>
               <div className="form-group">                  
-                <button type="button" className="btn btn-info" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>                  
+                <button type="button" style={{width:"100%", borderRadius:25}} className="btn-lg btn-success" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>                  
               </div>
+
               { messageSendCode && messageSendCode.message !== undefined && (                      
-                  <p className="font-weight-normal">{messageSendCode.message}</p>
-              )}  
+                  <p className="font-weight-normal text-center">{messageSendCode.message}</p>
+              )}
               { errorsProps && (
                   <p className="font-weight-normal">{errorsProps.message}</p>
-              )}  
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  placeholder="Mã xác minh"
-                  name="code"
-                  value={this.state.code}
-                  onChange={this.onChangeCode}/>
+              )}
+              {messageSendCode? (<div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    style={{width:"100%", borderRadius:25}}
+                    className="form-control form-control-lg"
+                    placeholder="Mã xác minh"
+                    name="code"
+                    value={this.state.code}
+                    onChange={this.onChangeCode}/>
+                </div>
+                <div className="form-group">                  
+                <button type="button"style={{ borderRadius:25}} className="btn-lg btn-secondary" onClick={this.onPhoneVertify}>Xác nhận</button>
               </div>
-              <div className="form-group">                  
-                <button type="button" className="btn btn-info" onClick={this.onPhoneVertify}>Xác nhận</button>
-              </div>
-              {messageCheckCode && messageCheckCode.message !== undefined && (                      
-                <p className="font-weight-normal">{messageCheckCode.message}</p>
-              )}  
+                </div>):""}
               {errorsProps && (
                 <p className="font-weight-normal">{errorsProps.message2}</p>
               )}
-
-              {messageCheckCode && messageCheckCode.message !== undefined && (
-                <CustomLink 
-                  linkText={'Tiếp tục'}
-                  phone={this.state.phone}
-                />
-              )}  
             </div>
           </div>
         </div>
+      </div>
+      </div>
       </div>
     );
   }

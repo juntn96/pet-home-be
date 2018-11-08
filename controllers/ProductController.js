@@ -30,16 +30,40 @@ const addProduct = async (req, res)=> {
 
 module.exports.addProduct = addProduct;
 
+
+const deleteProduct = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  let error, product;
+  [error, product] = await to(productService.deleteProduct(req.body));
+  if (error) return ReE(res, 'Không thể xóa thêm sản phẩm', 422);
+  return ReS(res, {
+    message: 'Xóa thành công'
+  }, 200);
+}
+module.exports.deleteProduct = deleteProduct;
+
 const updateProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
   let error, product;
-  [error, product] = await to(productService.update(req.body));
+  [error, product] = await to(productService.updateProduct(req.body));
   if (error) return ReE(res, 'Không thể tạo thêm sản phẩm', 422);
   return ReS(res, {
     message: 'Create new product successfully'
   }, 200);
 }
 module.exports.updateProduct = updateProduct;
+
+const getProductDetailById = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  let error, productDetail;
+  [error, productDetail] = await to(productService.getProductById(req.params.id));
+  if (error) return ReE(res, 'Không thể laasy thêm sản phẩm', 422);
+  return ReS(res, {
+    productDetail: productDetail,
+    message: 'Lấy thành công'
+  }, 200);
+}
+module.exports.getProductDetailById = getProductDetailById;
 
 const getProductParentCategories = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -90,8 +114,6 @@ const addProductParentCategory = async function (req, res) {
     message: 'Successfully created new PPC.',
   }, 200);				
 };
-
-
 module.exports.addProductParentCategory = addProductParentCategory;
 
 
@@ -106,5 +128,4 @@ const updateProductParentCategory = async function (req, res) {
     message: 'Successfully created new PPC.',
   }, 200);				
 };
-
 module.exports.updateProductParentCategory = updateProductParentCategory;

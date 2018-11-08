@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
+import { createProduct, getProductParentCategories ,getProductDetailById, updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -33,6 +33,7 @@ const toastColor = {
 class AddProduct extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       name: '',
       description: '',
@@ -42,9 +43,23 @@ class AddProduct extends Component {
       uploading: false,
       images: []
     };
+    if(props.location.state.id !== undefined ){
+      this.setState({id: props.location.state.id});
+    }
   }
 
   componentDidMount() {
+    this.props.getProductDetailById(this.props.location.state.id);
+    const { productDetail } = this.props.product;  
+
+      this.setState({
+        typeProductCategory: "5bdb59047d05503694985afb",
+        // name: productDetail.productDetail.name,
+        // description: productDetail.productDetail.description,
+        // price: productDetail.productDetail.price,
+        // typeProductCategory: productDetail.productDetail.typeProductCategory,
+        // images: productDetail.productDetail.images
+      });
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -74,17 +89,31 @@ class AddProduct extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    let imagesUrl = this.state.images.map( item => item.url);
-    const newProduct = {
-      name: this.state.name,
-      ownerId: this.props.auth.user.user_id,
-      typeId: this.state.typeProductCategory,
-      description: this.state.description,
-      price: this.state.price,
-      images: imagesUrl
-    };
-
-    this.props.createProduct(newProduct, this.props.history);
+    if(this.state.id === null){
+      let imagesUrl = this.state.images.map( item => item.url);
+      const newProduct = {
+        name: this.state.name,
+        ownerId: this.props.auth.user.user_id,
+        typeId: this.state.typeProductCategory,
+        description: this.state.description,
+        price: this.state.price,
+        images: imagesUrl
+      };
+      this.props.createProduct(newProduct, this.props.history);
+    }else {
+      console.log('aaa');
+      // let imagesUrl = this.state.images.map( item => item.url);
+      // const newProduct = {
+      //   id: this.state.id,
+      //   name: this.state.name,
+      //   ownerId: this.props.auth.user.user_id,
+      //   typeId: this.state.typeProductCategory,
+      //   description: this.state.description,
+      //   price: this.state.price,
+      //   images: imagesUrl
+      // };
+      // this.props.updateProduct(newProduct, this.props.history);
+    }
   }
 
   onCancel = (e) => {
@@ -93,7 +122,7 @@ class AddProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id}>{item.name}</option>
+      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
     );
   }
 
@@ -186,7 +215,6 @@ class AddProduct extends Component {
           return <Buttons onChange={this.onChangeU} />
       }
     }
-    console.log(this.state);
     return (
       <div className="addProduct">
           <div className="row">
@@ -293,10 +321,10 @@ class AddProduct extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  product: state.product,
+  product: state.product
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductParentCategories, getProductDetailById, updateProduct })(withRouter(AddProduct));
 
 
 
