@@ -9,6 +9,7 @@ const UserController = require('./../controllers/UserController');
 const ProductController = require('../controllers/ProductController');
 const UploadController = require('./../controllers/UploadController.js');
 
+
 const passport = require('passport');
 const path = require('path');
 
@@ -36,10 +37,16 @@ router.get('/location/locationCategories', LocationController.getLocationCategor
 //Product
 router.post('/product/add', ProductController.addProduct);
 router.get('/product/productByUserIds/:ownerId', ProductController.getProductByIds);
+router.put('/product/update', ProductController.updateProduct);
+
+// profile 
+router.get('/profile',ProfileController.getProfile)
+router.put('/profile',ProfileController.updateProfile)
 
 // get product category
 router.get('/product/productParentCategories/:ownerId', ProductController.getProductParentCategories);
 router.post('/product/addProductParentCategory', ProductController.addProductParentCategory);
+router.put('/product/addProductParentCategory', ProductController.updateProductParentCategory);
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);

@@ -16,7 +16,7 @@ import {
   InputGroup,
   Button
 } from 'reactstrap';
-import Spinner from '../common/Spinner';
+import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
 import Images from './../uploadImage/Images'
@@ -28,6 +28,7 @@ const toastColor = {
   background: '#505050', 
   text: '#fff' 
 }
+
 
 class AddProduct extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -74,13 +75,12 @@ class AddProduct extends Component {
     e.preventDefault();
 
     let imagesUrl = this.state.images.map( item => item.url);
-
     const newProduct = {
       name: this.state.name,
       ownerId: this.props.auth.user.user_id,
       typeId: this.state.typeProductCategory,
       description: this.state.description,
-      price: this.state.price,  
+      price: this.state.price,
       images: imagesUrl
     };
 
@@ -197,7 +197,7 @@ class AddProduct extends Component {
                 <strong>Add Product</strong>
               </CardHeader>
               <CardBody>
-                <FormGroup>                  
+                <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
                   <input
                     type="text"
@@ -206,7 +206,7 @@ class AddProduct extends Component {
                     name="name"
                     value={this.state.name}
                     onChange={this.onChange}
-                  />         
+                  />
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
@@ -249,7 +249,7 @@ class AddProduct extends Component {
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
                         <textarea 
-                          className="form-control form-control-lg" 
+                          className="form-control form-control-lg"
                           name="description" 
                           id="textarea-input" 
                           rows="7"
