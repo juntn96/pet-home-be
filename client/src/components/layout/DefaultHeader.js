@@ -39,12 +39,11 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
-            <NavLink href="#">{this.props.auth.user.phone}</NavLink>
-          </NavItem>
+          
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <Img src={this.props.auth.user.avatar} style={{height:35,width:35}} className="img-avatar"></Img>
+            {console.log(this.props.auth.user.phone)}
+            <Img src={this.props.auth.user.avatar} style={{height:35,width:35}} className="img-avatar"></Img>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>

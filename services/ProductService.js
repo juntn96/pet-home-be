@@ -16,6 +16,13 @@ const createProduct = async (productDetail, image) => {
 }
 module.exports.createProduct= createProduct;
 
+const updateProduct = async (productDetail) => {
+  [error, product] = await to(Product.create(productDetail));
+  if (error) TE(error);
+}
+module.exports.updateProduct= updateProduct;
+
+
 const getProductParentCategories = async (ownerId) => {
 	try {
     let getProductCategoryList = await ProductParentCategory.find({ deletionFlag: false, ownerId: ownerId});
@@ -44,8 +51,8 @@ const createProductParentCategory = async (productParentCategoryDetail) => {
 };
 module.exports.createProductParentCategory = createProductParentCategory;
 
-const editProductParentCategory = async (id, productParentCategoryDetail) => {
+const updateProductParentCategory = async (productParentCategoryDetail) => {
 	let productParentCategory, err;
-	[err, productParentCategory] = await to(ProductParentCategory.update({ _id: id },productParentCategoryDetail));		
+	[err, productParentCategory] = await to(ProductParentCategory.update({ _id: productParentCategoryDetail._id },productParentCategoryDetail));		
 };
-module.exports.editProductParentCategory = editProductParentCategory;
+module.exports.updateProductParentCategory = updateProductParentCategory;

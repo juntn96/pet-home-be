@@ -80,8 +80,7 @@ class Register extends Component {
       password2: this.state.password2,
       typeId: this.state.typeLocation,
       phoneNumber: phone,
-      latlong: this.state.latlong,
-      address: [this.state.address],
+      address: [this.state.latlong,this.state.addressDetail],
       role: 1
     };
     this.props.registerUser(newUser, this.props.history);
@@ -91,7 +90,6 @@ class Register extends Component {
     this.setState({
       latlong:{ lat:lat, lng:long}
     });
-    console.log(this.state.latlong)
   }
   render() {
     const { errors } = this.state;
@@ -157,7 +155,7 @@ class Register extends Component {
                     })}
                     placeholder="Địa chỉ chi tiết"
                     name="address"
-                    value={this.state.address}
+                    value={this.state.addressDetail}
                     onChange={this.onChange}
                   />
                   {errors.address && (
@@ -187,7 +185,7 @@ class Register extends Component {
               <MyMapComponent
                 onMarkerClick={this.handleMarkerClick}
                 onMapClick={this.getLatLong}
-                getLatLong={this.state.latlong}
+                getLatLong={this.state.address}
               />
               </div>
             </Col>
