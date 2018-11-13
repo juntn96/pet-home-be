@@ -32,6 +32,7 @@ router.get('/users/detail/:userId', UserController.getUserById);
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
 
+
 //Product
 router.post('/product/add', passport.authenticate('jwt', {
   session: false,
@@ -53,6 +54,17 @@ router.post('/product/addProductParentCategory',
     session: false,
   }),
   ProductController.addProductParentCategory);
+
+//location
+router.get('/location/profile/:id', LocationController.getLocationProfile);
+
+/************************/
+//Product
+router.put('/product/delete', ProductController.deleteProduct);
+router.put('/product/update', ProductController.updateProduct);
+router.get('/product/:id', ProductController.getProductDetailById);
+router.put('/product/updateProductCategory', ProductController.updateProductParentCategory);
+
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);

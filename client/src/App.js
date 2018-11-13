@@ -56,13 +56,14 @@ class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
             <Route exact path="/sendPassSuccess" component={SendPassSuccess} />  
-            <Route exact path="/upload" component={UploadImage} />       
+            <Route exact path="/upload" component={UploadImage} />
             <Switch>
+              {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
               <PrivateRoute path="/pro" component={DefaultLayout} />
+              <PrivateRoute path="/profile" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
               <PrivateRoute path="/product/category" component={DefaultLayout} />
-              <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/admin" component={AdminDashboard}/>
             </Switch>
             <Route exact path="/not-found" component={NotFound} />

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import { createProductParentCategories, getProductParentCategories } from '../../store/actions/productAction';
+import { createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory } from '../../store/actions/productAction';
 import {FormGroup, 
   InputGroup, 
   InputGroupAddon, 
@@ -14,6 +14,7 @@ import {FormGroup,
   Button,
   FormText,
   Label,
+  Badge
 } from 'reactstrap';
 import Spinner from '../common/Spinner';
 import { withRouter} from 'react-router-dom';
@@ -25,36 +26,55 @@ class ProductCategory extends Component {
     this.state = {
       name: '',
       description: '',
-      checkUpdate: false
+      checkUpdate: false,
+      deletionFlag:false
     }
   }
   componentDidMount() {
     this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    this.setState(this.props.product.productParentCategories)
+    const script = document.createElement("script");
+    script.src = "https://use.typekit.net/foobar.js";
+    script.async = true;
+    document.body.appendChild(script);
   }
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
   getPropertyCategory = (e) =>{
+    e.preventDefault();
     this.setState({
-      name: e.currentTarget.getElementsByTagName('td')[0].innerText,
-      description: e.currentTarget.getElementsByTagName('td')[1].innerText,
+      _id:e.currentTarget.getElementsByTagName('input')[0].value,
+      name: e.currentTarget.getElementsByTagName('td')[0].innerText.trim(),
+      description: e.currentTarget.getElementsByTagName('td')[1].innerText.trim(),
       checkUpdate: true
     });
   }
 
-  setDeletionFlagFalse = (e) =>{
-    this.setState({
-      deletionFlag : false
-     });
-  }
+  // setDeletionFlagFalse = (e) =>{
+  //   alert('aa');
+  //   const newCategory = {
+  //     id: this.state._id,
+  //     deletionFlag : false
+  //   };
+  //   this.props.updateProductCategory(newCategory, this.props.history);
+  //   this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
+  // }
 
   setDeletionFlagFalse = (e) =>{
-    this.setState({
-      deletionFlag : true
-     });
+    if(e.currentTarget.value===true)this.setState({deletionFlag : false})
+    if(e.currentTarget.value===false)this.setState({deletionFlag : true});
+    console.log(e.currentTarget.getElementsByTagName('input')[0].value,)
+    const newCategory = {
+      id: this.state._id,
+      name: this.state.name,
+      description: this.state.description,
+      deletionFlag: this.state.deletionFlag,
+    };
+    this.props.updateProductCategory(newCategory, this.props.history);
+    this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
   }
   cancelEdit = (e) => {
-
     this.setState({
       name: '',
       description: '',
@@ -75,12 +95,11 @@ class ProductCategory extends Component {
       this.cancelEdit()
     }else{
       const newCategory = {
-        ownerId: this.props.auth.user.user_id,
+        id: this.state._id,
         name: this.state.name,
-        description: this.state.description,
-        deletionFlag: this.state.deletionFlag,
+        description: this.state.description
       };
-      this.props.createProductParentCategories(newCategory, this.props.history);
+      this.props.updateProductCategory(newCategory, this.props.history);
       this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
       this.cancelEdit()
     }
@@ -89,19 +108,33 @@ class ProductCategory extends Component {
   renderRowItem = (item, index) => {
     return (
       <tr ref="rowCategory" key={index} onClick={this.getPropertyCategory}>
+          <input type ="hidden" value={item._id}/>
           <td name="name">{item.name}</td>
           <td>{item.description}</td>
-          {item.deletionFlag===false ? 
-            <td><Button color="success" size="sm"><i className="fa fa-check-circle"></i></Button></td>:
-            <td><Button color="danger" size="sm"><i className="fa fa-ban"></i></Button></td>
+          {item.deletionFlag===false ?
+            <td><Badge color="success">Đang hoạt động</Badge></td>:
+            <td><Badge color="secondary">Đang bị ẩn</Badge></td>
           }
-          {item.deletionFlag===false ? 
-             <td><Button size="sm" onClick={this.setDeletionFlagTrue} color="warning" >Ẩn</Button></td>:
-             <td><Button size="sm" onClick={this.setDeletionFlagFalse} color="warning" >Hiện</Button></td>
-          }
+          <td><Button onClick={this.setDeletionFlagFalse} size="sm" ref="hideShowFlag" value={item.deletionFlag} color="warning" >
+          {item.deletionFlag===false ? "Ẩn": "Hiện"}<input type ="hidden" value={item._id}/>
+          </Button></td>
       </tr>
     );
   }
+  onSearch =(e) => {
+    let tr = this.refs.table.getElementsByTagName('tr');
+    for (let i = 0; i < tr.length; i++) {
+      let td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }     
+    }
+  }
+
   render() {
     const { productParentCategories , loading } = this.props.product;    
     return(
@@ -110,6 +143,7 @@ class ProductCategory extends Component {
           <Col xs="3" lg="3">
             <strong>Thêm thể loại</strong>
               <form onSubmit={this.addCategory}>
+              <input type ="hidden" value={this.state._id}/>
               <FormGroup>
                 <Label htmlFor="name">Tên thể loại</Label>
                 <input type="text"  className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
@@ -128,17 +162,14 @@ class ProductCategory extends Component {
                 </div>  }
               </form>
           </Col>
-        <Col xs="9" lg="9">
+        <Col xs="7" lg="7">
             <Card>
             <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Danh sách thể loại
                 <div style={{float: 'right'}}>
                   <Col sm="12">
                     <InputGroup>
-                    <Input type="text" id="input1-group2"name="input1-group2" placeholder="Tìm sản phẩm" />
-                    <InputGroupAddon addonType="prepend">
-                        <Button type="button" color="info" ><i className="fa fa-search"></i> Tìm kiếm</Button>
-                    </InputGroupAddon>
+                    <Input type="text" name="search" value={this.state.search}  onChange={this.onSearch} placeholder="Tìm thể loại" />
                     </InputGroup>
                     </Col>
                 </div> 
@@ -153,7 +184,7 @@ class ProductCategory extends Component {
                     <th></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody ref="table">
                   { productParentCategories === null || loading ? <Spinner /> : 
                       productParentCategories.map((item, index) => this.renderRowItem(item,index))
                   }
@@ -174,4 +205,4 @@ const mapStateToProps = state => ({
   product: state.product
 });
   
-export default connect(mapStateToProps, {createProductParentCategories, getProductParentCategories  })(withRouter(ProductCategory));
+export default connect(mapStateToProps, {createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory  })(withRouter(ProductCategory));

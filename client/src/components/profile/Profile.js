@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductByIds, deleteProduct } from '../../store/actions/productAction';
+import { createProduct, getProductByIds, getProfile } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import Img from 'react-image';
 import Spinner from '../common/Spinner';
 
-class AddProduct extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,16 +45,14 @@ class AddProduct extends Component {
   editProduct = (e) => {
     this.props.history.push('/product/add',{id: e.currentTarget.getElementsByTagName('input')[0].value});
   }
-  onAddProduct =(e) => {
-    this.props.history.push('/product/add',{id: ''});
-  }
   deleteProduct =(e) => {
+    console.log(e.currentTarget.getElementsByTagName('input')[0].value)
     this.props.deleteProduct({id:e.currentTarget.getElementsByTagName('input')[0].value})
-    this.setState(this.props.getProductByIds(this.props.auth.user.user_id));
   }
   renderProductItem = (item, index) => {
     return (
       <tr key={index}>
+        
         <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
         <td>{item.name}</td>
         <td>{item.price}</td>
@@ -82,7 +80,7 @@ class AddProduct extends Component {
               <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
             </InputGroup>
             </Col>
-            <Button onClick={this.onAddProduct} type="button" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Button>
+            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Link>
         </FormGroup>
         <Row>
         <Col xs="12" lg="12">
@@ -91,42 +89,7 @@ class AddProduct extends Component {
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
               </CardHeader>
               <CardBody>
-              { productByUserIds === null || loading ? <Spinner /> :
-                <Table responsive>              
-                  <thead>
-                  <tr>
-                    <th>Ảnh</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Loại</th>
-                    <th style={{width:'9%'}}>Sửa sản phẩm</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    {productByUserIds.productByIds !== undefined && productByUserIds.productByIds.map((item, index) => this.renderProductItem(item,index))}
-                  </tbody>
-                </Table>
-                }
-                <Pagination>
-                  <PaginationItem>
-                    <PaginationLink previous tag="button"></PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem active>
-                    <PaginationLink tag="button">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">4</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink next tag="button"></PaginationLink>
-                  </PaginationItem>
-                </Pagination>
+ 
               </CardBody>
             </Card>
           </Col>
@@ -144,10 +107,8 @@ AddProduct.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors,
-  locationApp: state.locationApp,
-  product: state.product,
+  errors: state.errors
 });
 
-export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(AddProduct));
+export default connect(mapStateToProps, { getProfile })(withRouter(Profile));
 
