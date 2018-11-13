@@ -32,14 +32,27 @@ router.get('/users/detail/:userId', UserController.getUserById);
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
 
-/************************/
 //Product
-router.post('/product/add', ProductController.addProduct);
-router.get('/product/productByUserIds/:ownerId', ProductController.getProductByIds);
+router.post('/product/add', passport.authenticate('jwt', {
+  session: false,
+}),ProductController.addProduct);
+router.get('/product/productByUserIds/:ownerId', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductByIds);
 
 // get product category
-router.get('/product/productParentCategories/:ownerId', ProductController.getProductParentCategories);
-router.post('/product/addProductParentCategory', ProductController.addProductParentCategory);
+router.get('/product/productParentCategories/:ownerId',
+  passport.authenticate('jwt', {
+    session: false,
+  }), 
+  ProductController.getProductParentCategories);
+router.post('/product/addProductParentCategory', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.addProductParentCategory);
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);
@@ -47,9 +60,10 @@ router.post('/phone/verify', PhoneController.verifyPhoneVerifyCode);
 
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', UploadController.uploadImage);
+router.post('/image-upload', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  UploadController.uploadImage);
 
-router.get('/test', (req, res, next) => {
-  res.json({ message: 'test'});
-});
 module.exports = router;
