@@ -14,6 +14,7 @@ import {FormGroup,
   Button,
   FormText,
   Label,
+  Badge
 } from 'reactstrap';
 import Spinner from '../common/Spinner';
 import { withRouter} from 'react-router-dom';
@@ -25,11 +26,13 @@ class ProductCategory extends Component {
     this.state = {
       name: '',
       description: '',
-      checkUpdate: false
+      checkUpdate: false,
+      deletionFlag:false
     }
   }
   componentDidMount() {
     this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    this.setState(this.props.product.productParentCategories)
     const script = document.createElement("script");
     script.src = "https://use.typekit.net/foobar.js";
     script.async = true;
@@ -39,33 +42,39 @@ class ProductCategory extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   getPropertyCategory = (e) =>{
+    e.preventDefault();
     this.setState({
       _id:e.currentTarget.getElementsByTagName('input')[0].value,
-      name: e.currentTarget.getElementsByTagName('td')[0].innerText,
-      description: e.currentTarget.getElementsByTagName('td')[1].innerText,
+      name: e.currentTarget.getElementsByTagName('td')[0].innerText.trim(),
+      description: e.currentTarget.getElementsByTagName('td')[1].innerText.trim(),
       checkUpdate: true
     });
   }
 
-  setDeletionFlagFalse = (e) =>{
-    const newCategory = {
-      id: this.state._id,
-      deletionFlag : false
-    };
-    this.props.updateProductCategory(newCategory, this.props.history);
-    this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
-  }
+  // setDeletionFlagFalse = (e) =>{
+  //   alert('aa');
+  //   const newCategory = {
+  //     id: this.state._id,
+  //     deletionFlag : false
+  //   };
+  //   this.props.updateProductCategory(newCategory, this.props.history);
+  //   this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
+  // }
 
   setDeletionFlagFalse = (e) =>{
+    if(e.currentTarget.value===true)this.setState({deletionFlag : false})
+    if(e.currentTarget.value===false)this.setState({deletionFlag : true});
+    console.log(e.currentTarget.getElementsByTagName('input')[0].value,)
     const newCategory = {
       id: this.state._id,
-      deletionFlag : true
+      name: this.state.name,
+      description: this.state.description,
+      deletionFlag: this.state.deletionFlag,
     };
     this.props.updateProductCategory(newCategory, this.props.history);
     this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
   }
   cancelEdit = (e) => {
-
     this.setState({
       name: '',
       description: '',
@@ -103,11 +112,11 @@ class ProductCategory extends Component {
           <td name="name">{item.name}</td>
           <td>{item.description}</td>
           {item.deletionFlag===false ?
-            <td><Button color="success" size7="sm"><i className="fa fa-check-circle"></i></Button></td>:
-            <td><Button color="danger" size="sm" ><i className="fa fa-ban"></i></Button></td>
+            <td><Badge color="success">Đang hoạt động</Badge></td>:
+            <td><Badge color="secondary">Đang bị ẩn</Badge></td>
           }
-          <td><Button size="sm" ref="hideShowFlag" value={item.deletionFlag} color="warning" >
-          {item.deletionFlag===false ? "Ẩn": "Hiện"}
+          <td><Button onClick={this.setDeletionFlagFalse} size="sm" ref="hideShowFlag" value={item.deletionFlag} color="warning" >
+          {item.deletionFlag===false ? "Ẩn": "Hiện"}<input type ="hidden" value={item._id}/>
           </Button></td>
       </tr>
     );
@@ -153,7 +162,7 @@ class ProductCategory extends Component {
                 </div>  }
               </form>
           </Col>
-        <Col xs="9" lg="9">
+        <Col xs="7" lg="7">
             <Card>
             <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách thể loại

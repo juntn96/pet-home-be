@@ -89,42 +89,7 @@ class Profile extends Component {
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
               </CardHeader>
               <CardBody>
-              { productByUserIds === null || loading ? <Spinner /> :
-                <Table responsive>              
-                  <thead>
-                  <tr>
-                    <th>Ảnh</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Loại</th>
-                    <th style={{width:'9%'}}>Sửa sản phẩm</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    {productByUserIds.productByIds !== undefined && productByUserIds.productByIds.map((item, index) => this.renderProductItem(item,index))}
-                  </tbody>
-                </Table>
-                }
-                <Pagination>
-                  <PaginationItem>
-                    <PaginationLink previous tag="button"></PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem active>
-                    <PaginationLink tag="button">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">4</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink next tag="button"></PaginationLink>
-                  </PaginationItem>
-                </Pagination>
+ 
               </CardBody>
             </Card>
           </Col>

@@ -25,7 +25,7 @@ module.exports.updateProduct= updateProduct;
 
 const getProductParentCategories = async (ownerId) => {
 	try {
-    let getProductCategoryList = await ProductParentCategory.find({ deletionFlag: false, ownerId: ownerId});
+    let getProductCategoryList = await ProductParentCategory.find({ ownerId: ownerId});
 		return getProductCategoryList;
 	}
 	catch (e) {

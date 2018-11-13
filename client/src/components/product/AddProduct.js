@@ -43,23 +43,19 @@ class AddProduct extends Component {
       uploading: false,
       images: []
     };
-    if(props.location.state.id !== undefined ){
-      this.setState({id: props.location.state.id});
-    }
+    console.log(this.props.location.state)
   }
 
   componentDidMount() {
-    this.props.getProductDetailById(this.props.location.state.id);
     const { productDetail } = this.props.product;  
-
-      this.setState({
-        typeProductCategory: "5bdb59047d05503694985afb",
-        // name: productDetail.productDetail.name,
-        // description: productDetail.productDetail.description,
-        // price: productDetail.productDetail.price,
-        // typeProductCategory: productDetail.productDetail.typeProductCategory,
-        // images: productDetail.productDetail.images
-      });
+    this.setState({
+      typeProductCategory: "5bdb59047d05503694985afb",
+      // name: productDetail.productDetail.name,
+      // description: productDetail.productDetail.description,
+      // price: productDetail.productDetail.price,
+      // typeProductCategory: productDetail.productDetail.typeProductCategory,
+      // images: productDetail.productDetail.images
+    });
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -88,31 +84,22 @@ class AddProduct extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
-    if(this.state.id === null){
-      let imagesUrl = this.state.images.map( item => item.url);
-      const newProduct = {
-        name: this.state.name,
-        ownerId: this.props.auth.user.user_id,
-        typeId: this.state.typeProductCategory,
-        description: this.state.description,
-        price: this.state.price,
-        images: imagesUrl
-      };
+    let imagesUrl = this.state.images.map( item => item.url);
+    const newProduct = {
+      name: this.state.name,
+      ownerId: this.props.auth.user.user_id,
+      typeId: this.state.typeProductCategory,
+      description: this.state.description,
+      price: this.state.price,
+      images: imagesUrl
+    };
+    if(this.props.location.state.id === ''){
+      
       this.props.createProduct(newProduct, this.props.history);
     }else {
-      console.log('aaa');
-      // let imagesUrl = this.state.images.map( item => item.url);
-      // const newProduct = {
-      //   id: this.state.id,
-      //   name: this.state.name,
-      //   ownerId: this.props.auth.user.user_id,
-      //   typeId: this.state.typeProductCategory,
-      //   description: this.state.description,
-      //   price: this.state.price,
-      //   images: imagesUrl
-      // };
-      // this.props.updateProduct(newProduct, this.props.history);
+      newProduct.push({id: this.props.location.state.id})
+      console.log(newProduct)
+      this.props.updateProduct(newProduct, this.props.history);
     }
   }
 

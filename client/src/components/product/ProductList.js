@@ -45,14 +45,16 @@ class AddProduct extends Component {
   editProduct = (e) => {
     this.props.history.push('/product/add',{id: e.currentTarget.getElementsByTagName('input')[0].value});
   }
+  onAddProduct =(e) => {
+    this.props.history.push('/product/add',{id: ''});
+  }
   deleteProduct =(e) => {
-    console.log(e.currentTarget.getElementsByTagName('input')[0].value)
     this.props.deleteProduct({id:e.currentTarget.getElementsByTagName('input')[0].value})
+    this.setState(this.props.getProductByIds(this.props.auth.user.user_id));
   }
   renderProductItem = (item, index) => {
     return (
       <tr key={index}>
-        
         <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
         <td>{item.name}</td>
         <td>{item.price}</td>
@@ -80,7 +82,7 @@ class AddProduct extends Component {
               <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
             </InputGroup>
             </Col>
-            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Link>
+            <Button onClick={this.onAddProduct} type="button" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Button>
         </FormGroup>
         <Row>
         <Col xs="12" lg="12">

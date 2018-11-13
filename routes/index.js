@@ -32,6 +32,9 @@ router.get('/users/detail/:userId', UserController.getUserById);
 //Location Category
 router.get('/location/locationCategories', LocationController.getLocationCategories);
 
+//location
+router.get('/location/profile/:id', LocationController.getLocationProfile);
+
 /************************/
 //Product
 router.post('/product/add', ProductController.addProduct);
