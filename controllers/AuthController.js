@@ -34,6 +34,7 @@ const login = async function (req, res) {
   const { errors, isValid } = validateLoginInput(req.body);
   // Check Validation
   if (!isValid) {
+    console.log(errors);
     return ReE(res, errors , 400)
   }
 	[err, user] = await to(authService.authUser(req.body));

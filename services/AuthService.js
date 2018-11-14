@@ -23,6 +23,8 @@ const createUser = async (userDetail, avatar) => {
 				typeId: userDetail.typeId,
 				systemRating: constants.FIRST_RATTING,
 				deletionFlag: constants.NOT_DELETED_ENTITY,
+				location: userDetail.location,
+				address: userDetail.address
 			});
 			let error, loca;
 			[error, loca] = await to(Location.create(location));
@@ -47,7 +49,7 @@ const authUser = async (userInfo) => { //returns token
 		[err, user] = await to(User.findOne({
 			phoneNumber: userInfo.phone,
 		}));
-		if (err) TE(err.message);
+		if (err) TE(err.phone);
 
 	} else {
 		TE('Vui lòng nhập 1 số điện thoại di động tại Việt Nam');

@@ -32,6 +32,9 @@ module.exports = function validateRegisterInput(data) {
   if (Validator.isEmpty(data.address)) {
     errors.address = 'Bạn chưa nhập địa chỉ';
   }
+  // if (Validator.isEmpty(data.location)) {
+  //   errors.address = 'Bạn chưa nhập địa chỉ';
+  // }
   return {
     errors,
     isValid: isEmpty(errors)
