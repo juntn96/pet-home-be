@@ -17,7 +17,6 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      // this.props.history.push('/product');
       if(this.props.auth.user.role === 1){
         this.props.history.push('/product');
       } else {
