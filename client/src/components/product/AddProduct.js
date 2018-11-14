@@ -194,7 +194,7 @@ class AddProduct extends Component {
           return <SpinnerU />
         case images.length > 0:
           return <Images 
-                  images={images} 
+                  images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
                  />

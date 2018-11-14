@@ -42,8 +42,9 @@ class Register extends Component {
       typeLocation: '',
       phone: '',
       errors: {},
-      address: [],
-      locationCategories: []
+      address: '',
+      locationCategories: [],
+      location:[]
     };
   }
 
@@ -71,25 +72,31 @@ class Register extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
     const { phone } = this.props.location.state;
-
+    const location =  {
+      type: 'Point',
+      coordinates: [this.state.latlong.lat,this.state.latlong.lng]
+    }
     const newUser = {
       name: this.state.name,
       password: this.state.password,
       password2: this.state.password2,
       typeId: this.state.typeLocation,
       phoneNumber: phone,
-      address: [this.state.latlong,this.state.addressDetail],
+      address: this.state.address,
+      location:location,
       role: 1
     };
     this.props.registerUser(newUser, this.props.history);
   }
 
   getLatLong = (event) =>{
+    
     var lat = event.latLng.lat(), long = event.latLng.lng();
     this.setState({
-      latlong:{ lat:lat, lng:long}
+      latlong:{
+        lat:lat, lng:long
+      }
     });
   }
   render() {
@@ -161,8 +168,8 @@ class Register extends Component {
                       'is-invalid': errors.address
                     })}
                     placeholder="Địa chỉ chi tiết"
-                    name="addressDetail"
-                    value={this.state.addressDetail}
+                    name="address"
+                    value={this.state.address}
                     onChange={this.onChange}
                   />
                   {errors.address && (

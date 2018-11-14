@@ -84,3 +84,6 @@ const getUserById = async function (req, res, next) {
 	});
 };
 module.exports.getUserById = getUserById;
+
+
+// get all users

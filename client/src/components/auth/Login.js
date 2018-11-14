@@ -13,9 +13,7 @@ class Login extends Component {
       password: '',
       errors: {},
       errorsClassPassword: '',
-      errorsClassUsername: '',
-      messageUsername: '',
-      messagePassword: ''
+      errorsClassUsername: ''
     };
   }
 
@@ -37,7 +35,6 @@ class Login extends Component {
           nextProps.history.push('/admin');
         }
     }
-
     if (nextProps.errors) {
       return { errors: nextProps.errors};
     }
@@ -49,29 +46,19 @@ class Login extends Component {
       prevProps.history.push('/product');
     }
   }
-
+  
   onSubmit = (e) => {
     e.preventDefault();
-    // if(/(03|09|08)+([0-9]{8})\b/.test(this.state.phone)){
-    //   this.setState({
-    //     errorsClassUsername : ""
-    //   })
-    // }else {
-    //   this.setState({
-    //     errorsClassUsername : "alert-validate",
-    //     messageUsername: "Số điện thoại không đúng"
-    //   })
-    // }
-    // if(/[0-9a-zA-Z]{6,32}\b/.test(this.state.password)){
-    //   this.setState({
-    //     errorsClassPassword : ""
-    //   })
-    // }else {
-    //   this.setState({
-    //     errorsClassPassword : "alert-validate",
-    //     messagePassword: "Mật khẩu hợp lệ"
-    //   })
-    // }
+    if(this.state.errors.message !== undefined) {
+      this.setState({
+        errorsClassUsername : "alert-validate"
+      })
+    }
+    if(this.state.errors.message !== undefined) {
+      this.setState({
+        errorsClassPassword : "alert-validate"
+      })
+    }
     const userData = {
       phone: this.state.phone,
       password: this.state.password
@@ -84,7 +71,7 @@ class Login extends Component {
   }
 
   onRegister = (e) => {
-    this.props.history.push('/phoneVertification');;
+    this.props.history.push('/phoneVertification');
   }
 
   onChange = (e) => {
@@ -107,12 +94,8 @@ class Login extends Component {
                   <span className="txt1 p-b-11">
                     Số điện thoại
                   </span>
-                  <div className={"wrap-input100 validate-input m-b-36" + this.state.errorsClassUsername} data-validate = {this.state.messageUsername}>
-                    <input className="input100" type="text"
-                    type="text"
-                    // className={classnames('form-control form-control-lg', {
-                    //   'is-invalid': errors.phone
-                    // })}
+                  <div className={classnames("wrap-input100 validate-input m-b-36"+this.state.errorsClassUsername) } data-validate = {this.state.errors.phone}>
+                  <input className="input100" type="text"
                     name="phone"
                     value={this.state.phone}
                     onChange={this.onChange}/>
@@ -121,24 +104,20 @@ class Login extends Component {
                   <span className="txt1 p-b-11">
                     Mật khẩu
                   </span>
-                  <div className={"wrap-input100 validate-input m-b-12  "+ this.state.errorsClassPassword} data-validate={this.state.messagePassword}>
+                  <div className={"wrap-input100 validate-input m-b-12  " + this.state.errorsClassPassword} data-validate={this.state.errors.password||this.state.errors.message}>
                     <span className="btn-show-pass">
                       <i className="fa fa-eye"></i>
                     </span>
-                    <input className="input100" type="password"
-                    // className={classnames('form-control form-control-lg', {
-                    //   'is-invalid': errors.message
-                    // })}
+                    <input  className="input100" type="password"
                     name="password"
                     value={this.state.password}
-
                     onChange={this.onChange} />
                     <span className="focus-input100"></span>
                   </div>
                   <div className="flex-sb-m w-full p-b-48">
                     <div className="contact100-form-checkbox">
                       <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
-                      <label className="label-checkbox100" for="ckb1">
+                      <label className="label-checkbox100" htmlFor="ckb1">
                         Nhớ mật khẩu
                       </label>
                     </div>
