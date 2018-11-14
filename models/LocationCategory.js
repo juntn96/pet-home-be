@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const locationCategorySchema = mongoose.Schema({
 	name: {
 		type: String,
-	},
+  },
+  type: {
+    type: Number
+  },
 	hiddenFlag: {
 		type: Boolean,
 		default: false,

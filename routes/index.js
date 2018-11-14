@@ -27,7 +27,16 @@ router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
 router.get('/users/detail/:userId', UserController.getUserById);
 
 //Location Category
-router.get('/location/locationCategories', LocationController.getLocationCategories);
+router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+
+//Create Admin
+router.post('/admin/create', AuthController.createAdminUser);
+router.get('/admin/wake-up', passport.authenticate('jwt', {
+  session: false,
+}),(req, res) => res.send('👌'));
+router.post('./admin/addLocation',passport.authenticate('jwt', {
+  session: false,
+}), AdminController.addLocation)
 
 
 //Product
