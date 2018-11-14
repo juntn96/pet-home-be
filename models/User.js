@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const bcrypt_p = require('bcrypt-promise');
+const bcrypt = require('bcryptjs');
+
 const jwt = require('jsonwebtoken');
 const validate = require('mongoose-validator');
 
@@ -37,7 +37,8 @@ const UserSchema = mongoose.Schema({
 		type: Number,
 	},
 	status: {
-		type: Number,
+    type: Number,
+    default: 1
 	},
 	deletionFlag: {
 		type: Boolean,
@@ -76,7 +77,7 @@ UserSchema.methods.comparePassword = async function (pw) {
 	let err, pass;
 	if (!this.password) TE('password not set');
 
-	[err, pass] = await to(bcrypt_p.compare(pw, this.password));
+	[err, pass] = await to(bcrypt.compare(pw, this.password));
 	if (err) {
 		TE(err);
 	}
@@ -102,7 +103,13 @@ UserSchema.virtual('fullName').get(function () {
 UserSchema.methods.getJWT = function () {
 	let expiration_time = parseInt(CONFIG.jwt_expiration);
 	return 'Bearer ' + jwt.sign({
-		user_id: this._id,
+    user_id: this._id,
+    phone: this.phoneNumber,
+    address: this.address,
+    role: this.role,
+    status: this.status,
+    deletionFlag: this.deletionFlag,
+    avatar: this.avatar
 	}, CONFIG.jwt_encryption, {
 		expiresIn: expiration_time,
 	});

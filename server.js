@@ -1,3 +1,5 @@
+require('./config/config');
+require('./utils/commons');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -6,6 +8,9 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const mongodbUri = require('mongodb-uri')
 const http = require('http');
+const cors = require('cors')
+
+const formData = require('express-form-data')
 const debug = require('debug')('pet-home:server');
 const indexRouter = require('./routes');
 
@@ -20,6 +25,7 @@ mongoose
   .connect(
     mongooseUri,
     {
+      useCreateIndex: true,
       useNewUrlParser: true 
     }
   )
@@ -30,7 +36,7 @@ let db = mongoose.connection;
 
 module.exports = db;
 db.once('open', () => {
-  console.log('Connected to mongo at ' + mongooseUri);
+  // console.log('Connected to mongo at ' + mongooseUri);
 });
 db.on('error', (error) => {
   console.log('error', error);
@@ -55,7 +61,7 @@ if (process.env.NODE_ENV === 'production') {
 //Passport
 app.use(passport.initialize());
 
-// CORS
+//CORS
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -63,6 +69,12 @@ app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 	next();
 });
+
+// app.use(cors({ 
+//   origin: CONFIG.CLIENT_ORIGIN 
+// }));
+
+app.use(formData.parse());
 
 app.use('/api', indexRouter);
 

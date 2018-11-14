@@ -1,4 +1,4 @@
-var https = require('https');
+const https = require('https');
 const phoneRepository = require('./../repositories/PhoneVerificationRepository');
 const ACCESS_TOKEN = CONFIG.SPEED_SMS_AUTH_TOKEN;
 
@@ -24,7 +24,6 @@ const sendSMSPassword = async (phoneNumber, newPassword) => {
 	try {
 		const statusSendSMS = await sendSMS(phoneNumber, mesage);
 	} catch (error) {
-		console.log(error);
 		return Promise.reject('Gửi SMS không thành công');
 	}
 };
@@ -34,7 +33,6 @@ const adminSendSMS = async (phoneNumber, message) => {
 	try {
 		const statusSendSMS = await sendSMS(phoneNumber, message);
 	} catch (error) {
-		console.log(error);
 		return Promise.reject('Gửi SMS không thành công');
 	}
 };

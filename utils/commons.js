@@ -33,7 +33,27 @@ ReE = function (res, err, code) {
 
 	if (typeof code !== 'undefined') res.statusCode = code;
 
-	return res.json({success: false, error: err});
+	return res.json({success: false, error: {message: err}});
+};
+
+ReEM = function (res, err, code) { 
+	if (typeof err == 'object' && typeof err.message != 'undefined') {
+		err = err.message;
+	}
+
+	if (typeof code !== 'undefined') res.statusCode = code;
+
+	return res.json({success: false, error: { message:err}});
+};
+
+ReEM2 = function (res, err, code) { 
+	if (typeof err == 'object' && typeof err.message != 'undefined') {
+		err = err.message;
+	}
+
+	if (typeof code !== 'undefined') res.statusCode = code;
+
+	return res.json({success: false, error: { message2:err}});
 };
 
 /**
