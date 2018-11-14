@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
 import './App.css';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
+import './App.scss';
 import Landing from './components/layout/Landing';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
 import PhoneVertification from './components/auth/PhoneVertification';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import ForgetPass from './components/auth/ForgetPass';
+import SendPassSuccess from './components/auth/SendPassSuccess';
 
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser, logoutUser } from './actions/authActions';
+import { setCurrentUser, logoutUser } from './store/actions/authActions';
 
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './store/store';
+
+import PrivateRoute from './components/common/PrivateRoute';
+import NotFound from './components/not-found/NotFound';
+
+import DefaultLayout from './components/layout/DefaultLayout';
+import AdminDashboard from './components/admin-dashboard/AdminDashboard';
+import UploadImage from './components/uploadImage/UploadImage';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -42,14 +50,23 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Navbar />
             <Route exact path="/" component={Landing} />
-            <div className="container">
-              <Route exact path="/register" component={PhoneVertification} />
-              <Route exact path="/register2" component={Register} />
-              <Route exact path="/login" component={Login} />
-            </div>
-            <Footer />
+            <Route exact path="/phoneVertification" component={PhoneVertification} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/forgetPass" component={ForgetPass} />
+            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />  
+            <Route exact path="/upload" component={UploadImage} />
+            <Switch>
+              {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
+              <PrivateRoute path="/pro" component={DefaultLayout} />
+              <PrivateRoute path="/profile" component={DefaultLayout} />
+              <PrivateRoute path="/product/add" component={DefaultLayout} />
+              <PrivateRoute path="/product" component={DefaultLayout} />
+              <PrivateRoute path="/product/category" component={DefaultLayout} />
+              <PrivateRoute path="/admin" component={AdminDashboard}/>
+            </Switch>
+            <Route exact path="/not-found" component={NotFound} />
           </div>
         </Router>
       </Provider>

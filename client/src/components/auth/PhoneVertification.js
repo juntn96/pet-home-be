@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import DisableLink from './../common/DisableLink';
+import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
-import { getVertificationCode } from '../../actions/phoneActions';
+import { Link } from 'react-router-dom';
+import { 
+  getVertificationCode, 
+  getVertify, 
+  clearMessageSendCode, 
+  clearmessageCheckCode,
+  clearErrorsProps 
+} from '../../store/actions/phoneActions';
 
 class PhoneVertification extends Component {
   constructor() {
@@ -10,15 +17,37 @@ class PhoneVertification extends Component {
       phone: '',
       code: '',
       errors: {},
-      disable: false,
     };
   }
 
   onPhoneVertification = (e) => {
+    this.props.clearMessageSendCode();
+    this.props.clearErrorsProps();
     this.props.getVertificationCode({phone: this.state.phone});
-    console.log(this.props.errorsProps);
   }
 
+  onPhoneVertify = (e) => {
+    this.props.clearmessageCheckCode();
+    this.props.clearErrorsProps();
+    const { phone, code } = this.state;
+    this.props.getVertify({phone, code});
+    const { messageSendCode, messageCheckCode} = this.props;
+    
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.messageSendCode && nextProps.messageCheckCode.message !== undefined) {
+      nextProps.history.push('/register',{phone: prevState.phone})
+    }
+    if (nextProps.errors) {
+      return { errors: nextProps.errors};
+    }
+    else return null;
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.auth.isAuthenticated) {
+      prevProps.history.push('/product');
+    }
+  }
   onChangePhoneNumber = (e) => {
     this.setState({phone: e.target.value});
   }
@@ -29,15 +58,18 @@ class PhoneVertification extends Component {
 
   render() {
     const { errors } = this.state;
-    const { messageSendCode, errorsProps } = this.props;
+    const { messageSendCode, messageCheckCode, errorsProps } = this.props;
     return (
+      <div className="landing">
+        <div className="dark-overlay landing-inner text-light">
       <div className="login">
-        <div className="container">
+        <div className="container bounceInRight">
           <div className="row">
-            <div className="col-md-8 m-auto">
-            <h1 className="display-4 text-center">Bước 1</h1>
+            <div className="col-md-4 m-auto bounceInRight">           
+            <h1 className="display-4 text-center" style={{ marginBottom:30}}>Đăng ký</h1>             
               <div className="form-group">
                 <input
+                  style={{ borderRadius:25}}
                   type="text"
                   className="form-control form-control-lg"
                   placeholder="Số điện thoại"
@@ -50,33 +82,38 @@ class PhoneVertification extends Component {
                 )}            
               </div>
               <div className="form-group">                  
-                <button type="button" className="btn btn-info" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>
-                  { messageSendCode && messageSendCode.message !== undefined && (
-                      
-                      <p className="font-weight-normal">{messageSendCode.message}</p>
-                  )}  
-                  { errorsProps && (
-                      <p className="font-weight-normal">{ errorsProps.message }</p>
-                  )}  
+                <button type="button" style={{width:"100%", borderRadius:25}} className="btn-lg btn-success" onClick={this.onPhoneVertification}>Gửi mã xác minh</button>                  
               </div>
-              <div className="form-group">
-                <input
-                  type="text"
-                  className="form-control form-control-lg"
-                  placeholder="Mã xác minh"
-                  name="code"
-                  value={this.state.code}
-                  onChange={this.onChangeCode}/>
+
+              { messageSendCode && messageSendCode.message !== undefined && (                      
+                  <p className="font-weight-normal text-center">{messageSendCode.message}</p>
+              )}
+              { errorsProps && (
+                  <p className="font-weight-normal">{errorsProps.message}</p>
+              )}
+              {messageSendCode? (<div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    style={{width:"100%", borderRadius:25}}
+                    className="form-control form-control-lg"
+                    placeholder="Mã xác minh"
+                    name="code"
+                    value={this.state.code}
+                    onChange={this.onChangeCode}/>
+                </div>
+                <div className="form-group">                  
+                <button type="button"style={{ borderRadius:25}} className="btn-lg btn-secondary" onClick={this.onPhoneVertify}>Xác nhận</button>
               </div>
-              <DisableLink 
-                disable={this.state.disable}
-                linkText={'Tiếp tục'}
-                phone={this.state.phone}
-                />
-              {/* <Link to={{ pathname: '/register2', state: { phone: this.state.phone} }}>Tiếp tục</Link> */}
+                </div>):""}
+              {errorsProps && (
+                <p className="font-weight-normal">{errorsProps.message2}</p>
+              )}
             </div>
           </div>
         </div>
+      </div>
+      </div>
       </div>
     );
   }
@@ -86,6 +123,15 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errorsProps: state.errors,
   messageSendCode: state.sendCodeBySMS.messageSendCode,
+  messageCheckCode: state.sendCodeBySMS.messageCheckCode,
 });
 
-export default connect(mapStateToProps, { getVertificationCode })(PhoneVertification);
+export default connect(
+  mapStateToProps, 
+  { 
+    getVertificationCode, 
+    getVertify, 
+    clearMessageSendCode, 
+    clearmessageCheckCode,
+    clearErrorsProps
+  })(PhoneVertification);
