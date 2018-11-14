@@ -1,6 +1,6 @@
 const productService = require('../services/ProductService')
 
-// get all product
+
 const getProduct = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   let error, product;

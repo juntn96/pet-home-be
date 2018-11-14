@@ -9,6 +9,7 @@ import Spinner from '../common/Spinner';
 import { compose, withProps } from "recompose"
 import SelectListGroup from './../common/SelectListGroup';
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
+import * as Constants from './../../utils/constants';
 
 import {
   Row,
@@ -49,7 +50,7 @@ class Register extends Component {
   }
 
   componentDidMount() {
-    this.props.getLocationCategories();
+    this.props.getLocationCategories(Constants.PRIVATE_LOCATION);
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/product');
     }    
