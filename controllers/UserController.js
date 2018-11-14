@@ -55,26 +55,11 @@ const getUserById = async function (req, res, next) {
 		}
 		let user = results[0];
 		if (user && user.role === constants.ROLE_LOCATION_MANAGER) {
-			// Location.find({ ownerId: user._id }, function (err, getLocation) {
-			// 	if (err) {
           ReS(res, {
             status: true,
             user: user.toWeb(),
             locationDetail: null,
           }, 200);
-			// 		next();
-			// 	} else {
-      //     let locationDetail = null;
-      //     if (getLocation && getLocation.length > 0) {
-      //       locationDetail = getLocation[0];
-      //     }
-      //     ReS(res, {
-      //       status: true,
-      //       user: user.toWeb(),
-      //       locationDetail: locationDetail,
-      //     }, 200);
-      //   }
-			// });
 		} else {
 			ReS(res, {
 				status: true,
@@ -84,6 +69,3 @@ const getUserById = async function (req, res, next) {
 	});
 };
 module.exports.getUserById = getUserById;
-
-
-// get all users

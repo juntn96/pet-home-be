@@ -24,9 +24,6 @@ router.post('/admin/addLocationCategory', AdminController.addLocationCategory);
 
 //User
 router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
-// router.get('/users/detail/:userId', passport.authenticate('jwt', {
-// 	session: false,
-// }), UserController.getUserById);
 router.get('/users/detail/:userId', UserController.getUserById);
 
 //Location Category
@@ -55,15 +52,33 @@ router.post('/product/addProductParentCategory',
   }),
   ProductController.addProductParentCategory);
 
-//location
-router.get('/location/profile/:id', LocationController.getLocationProfile);
+//Location
+router.get('/location/profile/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  LocationController.getLocationProfile);
 
-/************************/
 //Product
-router.put('/product/delete', ProductController.deleteProduct);
-router.put('/product/update', ProductController.updateProduct);
-router.get('/product/:id', ProductController.getProductDetailById);
-router.put('/product/updateProductCategory', ProductController.updateProductParentCategory);
+router.put('/product/delete', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.deleteProduct);
+router.put('/product/update', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),ProductController.updateProduct);
+router.get('/product/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductDetailById);
+router.put('/product/updateProductCategory', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.updateProductParentCategory);
 
 
 //Phone

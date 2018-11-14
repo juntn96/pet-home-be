@@ -1,5 +1,9 @@
 const adminService = require('./../services/AdminService');
+const constants = require('./../utils/constants');
 
+// @route   POST api/admin/addLocationCategory
+// @desc    Create location category
+// @access  Private
 const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationCategory;
