@@ -40,9 +40,12 @@ router.post('./admin/addLocation',passport.authenticate('jwt', {
 
 
 //Product
-router.post('/product/add', passport.authenticate('jwt', {
-  session: false,
-}),ProductController.addProduct);
+router.post('/product/add', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.addProduct);
+
 router.get('/product/productByUserIds/:ownerId', 
   passport.authenticate('jwt', {
     session: false,
@@ -96,10 +99,6 @@ router.post('/phone/verify', PhoneController.verifyPhoneVerifyCode);
 
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', 
-  passport.authenticate('jwt', {
-    session: false,
-  }),
-  UploadController.uploadImage);
+router.post('/image-upload', UploadController.uploadImage);
 
 module.exports = router;
