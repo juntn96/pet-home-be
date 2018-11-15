@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let childRecords = mongoose.Schema({
 	lat: {type: Number},
-	long: {type: Number},
+	lng: {type: Number},
   addressDetail: {type: String}, 
 	createdAt: {
 		type: Number,

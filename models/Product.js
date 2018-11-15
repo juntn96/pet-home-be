@@ -10,12 +10,21 @@ const productSchema = mongoose.Schema({
   },
   typeId: { 
     type: String, 
-    ref: 'ProductCategory'
+    ref: 'ProductParentCategory'
   },
+  images: [{
+    type: String
+  }],
 	deletionFlag: {
 		type: Boolean,
 		default: false,
-	},
+  },
+  price: {
+    type: Number
+  },
+  description: {
+    type: String
+  },
 	createdAt: {
 		type: Number,
 		default: new Date().getTime(),
@@ -26,7 +35,7 @@ const productSchema = mongoose.Schema({
 	},
 });
 
-let Product = module.exports = mongoose.model('Pet', productSchema);
+let Product = module.exports = mongoose.model('Product', productSchema);
 
 productSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();
