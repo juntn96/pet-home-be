@@ -26,6 +26,19 @@ const register = async function (req, res) {
 };
 module.exports.register = register;
 
+const createAdminUser = async function (req, res) {
+  const image = 'https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png';
+  let erro, user;
+  [erro, user] = await to(authService.createUser(req.body, image));
+  if (erro) return ReE(res, 'Đăng ký không thành công, vui lòng thử lại sau', 422);
+  return ReS(res, {
+    message: 'Successfully created new user.',
+    user: user.toWeb(),
+    token: user.getJWT(),
+  }, 200);					
+}
+module.exports.createAdminUser = createAdminUser;
+
 // @route   GET api/auth/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
