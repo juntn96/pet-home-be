@@ -4,7 +4,7 @@ const locationCategorySchema = mongoose.Schema({
 	name: {
 		type: String,
   },
-  type: {
+  typeLocation: {
     type: Number
   },
 	hiddenFlag: {

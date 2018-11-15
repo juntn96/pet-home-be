@@ -40,3 +40,22 @@ const getLocationProfile = async function (req, res) {
   				
 };
 module.exports.getLocationProfile = getLocationProfile;
+
+
+const searchNearByLatLong = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, locations;
+  [erro, locations] = await to(locationService.searchNearByLatLong());
+  if (erro) {
+    return ReE(res, 'Get locations failed', 422);
+  }	
+  if (locations) {
+    return ReS(res, { message: 'Get locations success', locationCategories: locationCategories }, 200);
+  }
+  else {
+    return ReE(res, 'Get locations failed', 503);
+  }
+  				
+};
+
+module.exports.searchNearByLatLong = searchNearByLatLong;

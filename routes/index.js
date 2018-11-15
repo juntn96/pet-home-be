@@ -12,6 +12,8 @@ const UploadController = require('./../controllers/UploadController.js');
 const passport = require('passport');
 const path = require('path');
 
+const LocationModel = require('./../models/Location');
+
 require('./../middleware/passport')(passport);
 
 //Auth controller
@@ -34,7 +36,7 @@ router.post('/admin/create', AuthController.createAdminUser);
 router.get('/admin/wake-up', passport.authenticate('jwt', {
   session: false,
 }),(req, res) => res.send('👌'));
-router.post('./admin/addLocation',passport.authenticate('jwt', {
+router.post('/admin/addLocation',passport.authenticate('jwt', {
   session: false,
 }), AdminController.addLocation)
 
@@ -70,6 +72,28 @@ router.get('/location/profile/:id',
     session: false,
   }),
   LocationController.getLocationProfile);
+
+router.get('/location/searchNear', LocationController.searchNearByLatLong);
+
+router.get('/search', (req,res)=>{
+  LocationModel.aggregate([
+    {
+      $geoNear: {
+         near: { type: "Point", coordinates: [ 105.524061 , 21.012357 ] },
+         distanceField: "dist.calculated",
+         maxDistance: 2,
+         query: { type: "public" },
+         includeLocs: "dist.location",
+         num: 5,
+         x: true
+      }
+    }
+  ],(err ,data)=>{
+     if(err) throw err;
+     return res.send(data);
+   })
+  });
+
 
 //Product
 router.put('/product/delete', 
