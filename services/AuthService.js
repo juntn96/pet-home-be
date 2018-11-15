@@ -31,7 +31,10 @@ const createUser = async (userDetail, avatar) => {
 			if (error) {
 				TE('Error save location');
 			}
-		}
+    }
+    if (user.role === constants.ROLE_ADMIN) {
+      // To do
+    }
 		return user;
 	} else {
 		TE('A valid phone number was not entered.');
