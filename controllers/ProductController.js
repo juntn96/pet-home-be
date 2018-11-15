@@ -19,7 +19,7 @@ module.exports.getProduct = getProduct;
 
 const addProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
-  const image = 'http://cdn.nhanh.vn/cdn/store/23446/ps/20180110/102341625_3c0a747d19943b04ca2dcbd956332bfc_724x724.jpg';
+  const image = 'https://www.touchtaiwan.com/images/default.jpg';
   let error, product;
   [error, product] = await to(productService.createProduct(req.body, image));
   if (error) return ReE(res, 'Không thể tạo thêm sản phẩm', 422);

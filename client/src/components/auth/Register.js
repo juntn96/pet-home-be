@@ -15,6 +15,7 @@ import {
   Row,
   Col
 } from 'reactstrap'
+
 const MyMapComponent = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDZM7hoDN16cKoeHixvIrEyzEU-zlLzA10&v=3.exp&libraries=geometry,drawing,places",
@@ -33,6 +34,7 @@ const MyMapComponent = compose(
   {<Marker position={props.getLatLong} />}
   </GoogleMap>
 )
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -91,8 +93,7 @@ class Register extends Component {
     this.props.registerUser(newUser, this.props.history);
   }
 
-  getLatLong = (event) =>{
-    
+  getLatLong = (event) =>{    
     var lat = event.latLng.lat(), long = event.latLng.lng();
     this.setState({
       latlong:{
@@ -100,6 +101,7 @@ class Register extends Component {
       }
     });
   }
+  
   render() {
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;    
@@ -110,9 +112,7 @@ class Register extends Component {
         <div className="container-register" style={{marginTop: "8%"}}>
           <Row >
             <Col xs="6">
-
-            <div className="card-form">
-            
+            <div className="card-form">           
               <div className="register-form" style={{padding: "10%"}}>
               <h3 style={{color:"black"}}>Đăng ký cửa hàng</h3>
               <br/>
