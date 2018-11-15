@@ -50,7 +50,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App">
-            <Route exact path="/" component={Landing} />
+            <Route exact path="/" component={Login} />
             <Route exact path="/phoneVertification" component={PhoneVertification} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
@@ -62,6 +62,7 @@ class App extends Component {
               <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/profile" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
+              <PrivateRoute path="/product/edit" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
               <PrivateRoute path="/product/category" component={DefaultLayout} />
               <PrivateRoute path="/admin" component={AdminDashboard}/>

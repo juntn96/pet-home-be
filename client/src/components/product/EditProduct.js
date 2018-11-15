@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
+import { getProductParentCategories ,getProductDetailById, updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -16,7 +16,7 @@ import {
   InputGroup,
   Button
 } from 'reactstrap';
-import Spinner from '../common/Spinner';
+import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
 import Images from './../uploadImage/Images'
@@ -29,7 +29,8 @@ const toastColor = {
   text: '#fff' 
 }
 
-class AddProduct extends Component {
+
+class EditProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,10 +42,22 @@ class AddProduct extends Component {
       uploading: false,
       images: []
     };
+    this.props.getProductDetailById(this.props.location.state.id)
   }
-
+  componentWillReceiveProps(){
+    const { productDetail } = this.props.product;  
+    console.log(this.props.product)
+    this.setState({
+      name: productDetail.productDetail.name,
+      description: productDetail.productDetail.description,
+      price: productDetail.productDetail.price,
+      typeProductCategory: productDetail.productDetail.typeProductCategory,
+      images: productDetail.productDetail.images
+    });
+  }
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    
+    this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -72,19 +85,17 @@ class AddProduct extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
     let imagesUrl = this.state.images.map( item => item.url);
-
     const newProduct = {
+      id: this.props.location.state.id,
       name: this.state.name,
       ownerId: this.props.auth.user.user_id,
       typeId: this.state.typeProductCategory,
       description: this.state.description,
-      price: this.state.price,  
+      price: this.state.price,
       images: imagesUrl
     };
-
-    this.props.createProduct(newProduct, this.props.history);
+    this.props.updateProduct(newProduct, this.props.history);
   }
 
   onCancel = (e) => {
@@ -93,7 +104,7 @@ class AddProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id}>{item.name}</option>
+      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
     );
   }
 
@@ -169,7 +180,7 @@ class AddProduct extends Component {
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { productParentCategories , loading } = this.props.product;  
+    const { productParentCategories ,productDetail, loading } = this.props.product;  
     const content = () => {
       switch(true) {
         case loadingU:
@@ -178,7 +189,7 @@ class AddProduct extends Component {
           return <SpinnerU />
         case images.length > 0:
           return <Images 
-                  images={images} 
+                  images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
                  />
@@ -186,7 +197,6 @@ class AddProduct extends Component {
           return <Buttons onChange={this.onChangeU} />
       }
     }
-    console.log(this.state);
     return (
       <div className="addProduct">
           <div className="row">
@@ -194,10 +204,10 @@ class AddProduct extends Component {
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
-                <strong>Add Product</strong>
+                <strong>Sửa sản phẩm</strong>
               </CardHeader>
               <CardBody>
-                <FormGroup>                  
+                <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
                   <input
                     type="text"
@@ -206,7 +216,7 @@ class AddProduct extends Component {
                     name="name"
                     value={this.state.name}
                     onChange={this.onChange}
-                  />         
+                  />
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
@@ -249,7 +259,7 @@ class AddProduct extends Component {
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
                         <textarea 
-                          className="form-control form-control-lg" 
+                          className="form-control form-control-lg"
                           name="description" 
                           id="textarea-input" 
                           rows="7"
@@ -293,10 +303,10 @@ class AddProduct extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  product: state.product,
+  product: state.product
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(x));
+export default connect(mapStateToProps, { getProductParentCategories, getProductDetailById, updateProduct })(withRouter(EditProduct));
 
 
 
