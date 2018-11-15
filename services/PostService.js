@@ -1,0 +1,400 @@
+const Post = require("../models/Post");
+
+//#region post controller
+const add = async data => {
+  try {
+    const post = new Post({ ...data });
+    const result = await post.save();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// get public post only
+const get = async () => {
+  try {
+    const result = await Post.find({ status: { $eq: 1 } }).sort({ _id: -1 });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// const get = async () => {
+//  get private post
+//   try {
+//     const result = await Post.find({ status: { $eq: 0 } }).sort({ _id: -1 });
+//     if (result) return result;
+//     throw "Get all post failed";
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+const getPublicByTypeId = async typeId => {
+  try {
+    const result = await Post.find({
+      $and: [{ typeId }, { status: 1 }],
+    }).sort({ _id: -1 });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getByOwnerId = async ownerId => {
+  try {
+    const result = await Post.find({ ownerId }).sort({ _id: -1 });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const editPost = async (postId, updateOptions) => {
+  try {
+    const options = {};
+    for (const opt of updateOptions) {
+      options[opt.propName] = opt.value;
+    }
+    const result = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $set: options,
+      },
+      {
+        new: true,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteById = async _id => {
+  try {
+    const result = await Post.findByIdAndRemove(_id);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const findPostById = async postId => {
+  try {
+    const post = await Post.findById(postId);
+    return post;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const postTextSearch = async searchString => {
+  try {
+    const result = await Post.find({
+      $text: {
+        $search: searchString,
+      },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//#endregion
+
+//#region post image controller
+const getImages = async postId => {
+  try {
+    const result = await Post.findById(postId);
+    result.images;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addImages = async (postId, images) => {
+  try {
+    const result = await Post.findByIdAndUpdate(postId, {
+      $push: {
+        images,
+      },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeImage = async (postId, imageId) => {
+  try {
+    const result = await Post.findByIdAndUpdate(postId, {
+      $pull: {
+        images: {
+          _id: imageId,
+        },
+      },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+//#endregion
+
+//#region comment controller
+const getComments = async postId => {
+  try {
+    const result = await Post.findById(postId);
+    return result.comments;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addComment = async (postId, comment) => {
+  try {
+    const result = await Post.findByIdAndUpdate(postId, {
+      $push: { comments: { ...comment } },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const editComment = async (postId, comment) => {
+  try {
+    const result = await Post.findOneAndUpdate(
+      {
+        _id: postId,
+        comments: {
+          $elemMatch: {
+            _id: comment.id,
+          },
+        },
+      },
+      {
+        $set: {
+          "comments.$.content": comment.content,
+        },
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteComment = async (postId, commentId) => {
+  try {
+    const result = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: {
+          comments: {
+            _id: commentId,
+          },
+        },
+      },
+      {
+        new: false,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+//#endregion
+
+//#region vote controller
+const findVote = async (postId, voterId) => {
+  try {
+    const result = await Post.findById(postId, {
+      votes: {
+        $elemMatch: {
+          voterId,
+        },
+      },
+    });
+    return result.votes[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getVoteByType = async (postId, voteType) => {
+  try {
+    const result = await Post.findById(postId, {
+      votes: {
+        $elemMatch: {
+          voteType: { $eq: voteType },
+        },
+      },
+    });
+    return result.votes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const vote = async (postId, newVote) => {
+  try {
+    const oldVote = await findVote(postId, newVote.voterId);
+    if (!oldVote) {
+      return await addVote(postId, newVote);
+    } else {
+      if (newVote.voteType === oldVote.voteType) {
+        return await removeVote(postId, newVote.voterId);
+      } else {
+        return await editVote(postId, newVote);
+      }
+    }
+  } catch (error) {}
+};
+
+const addVote = async (postId, vote) => {
+  try {
+    const result = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: {
+          votes: vote,
+        },
+      },
+      {
+        new: false,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeVote = async (postId, voterId) => {
+  try {
+    const result = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: {
+          votes: {
+            voterId,
+          },
+        },
+      },
+      {
+        new: false,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const editVote = async (postId, vote) => {
+  try {
+    const result = await Post.findOneAndUpdate(
+      {
+        _id: postId,
+        votes: {
+          $elemMatch: {
+            voterId: vote.voterId,
+          },
+        },
+      },
+      {
+        $set: {
+          "votes.$.voteType": vote.voteType,
+        },
+      },
+      {
+        new: false,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+//#endregion
+
+//#region report controller
+const getReports = async postId => {
+  try {
+    const result = await Post.findById(postId);
+    return result.reports;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const isReported = async (postId, userReportId) => {
+  try {
+    const result = await Post.findById(postId, {
+      reports: {
+        $elemMatch: {
+          userReportId,
+        },
+      },
+    });
+    return result.reports[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addReport = async (postId, report) => {
+  try {
+    const reported = await isReported(postId, report.userReportId);
+    if (reported) TEM("Bạn đã tố cáo bài viết này");
+    const result = await Post.findByIdAndUpdate(postId, {
+      $push: {
+        reports: report,
+      },
+    });
+    return result.reports;
+  } catch (error) {
+    throw error;
+  }
+};
+//#endregion
+
+const t = async p => {
+  try {
+    //todo
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = {
+  add,
+  get,
+  editPost,
+  deleteById,
+  postTextSearch,
+  getByOwnerId,
+  getPublicByTypeId,
+  /////////////////
+  getImages,
+  addImages,
+  removeImage,
+  ////////////////
+  getComments,
+  addComment,
+  editComment,
+  deleteComment,
+  ///////////////
+  vote,
+  getVoteByType,
+  /////////////
+  addReport,
+  getReports,
+};

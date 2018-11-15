@@ -23,6 +23,11 @@ TE = function (err_message, log) {
 	throw new Error(err_message);
 };
 
+// error message to client
+TEM = function (message) {
+	throw {message}
+}
+
 /**
  * Error Web Response
  */
