@@ -56,34 +56,76 @@ router.get(
   ProductController.getProductByIds
 );
 
-// get product category
-router.get(
-  "/product/productParentCategories/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.getProductParentCategories
-);
-router.post(
-  "/product/addProductParentCategory",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.addProductParentCategory
-);
+//User
+router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+router.get('/users/detail/:userId', UserController.getUserById);
 
-//location
-router.get("/location/profile/:id", LocationController.getLocationProfile);
+//Location Category
+router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
 
-/************************/
+//Create Admin
+router.post('/admin/create', AuthController.createAdminUser);
+router.get('/admin/wake-up', passport.authenticate('jwt', {
+  session: false,
+}),(req, res) => res.send('👌'));
+router.post('./admin/addLocation',passport.authenticate('jwt', {
+  session: false,
+}), AdminController.addLocation)
+
+
 //Product
-router.put("/product/delete", ProductController.deleteProduct);
-router.put("/product/update", ProductController.updateProduct);
-router.get("/product/:id", ProductController.getProductDetailById);
-router.put(
-  "/product/updateProductCategory",
-  ProductController.updateProductParentCategory
-);
+router.post('/product/add', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.addProduct);
+
+router.get('/product/productByUserIds/:ownerId', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductByIds);
+
+// get product category
+router.get('/product/productParentCategories/:ownerId',
+  passport.authenticate('jwt', {
+    session: false,
+  }), 
+  ProductController.getProductParentCategories);
+router.post('/product/addProductParentCategory', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.addProductParentCategory);
+
+//Location
+router.get('/location/profile/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  LocationController.getLocationProfile);
+
+//Product
+router.put('/product/delete', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.deleteProduct);
+router.put('/product/update', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),ProductController.updateProduct);
+router.get('/product/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductDetailById);
+router.put('/product/updateProductCategory', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.updateProductParentCategory);
+
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
@@ -133,5 +175,9 @@ router.post(
   }),
   UploadController.uploadImage
 );
+
+// Upload to Cloudinary
+router.get('/wake-up', (req, res) => res.send('👌'))
+router.post('/image-upload', UploadController.uploadImage);
 
 module.exports = router;
