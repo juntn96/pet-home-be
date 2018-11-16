@@ -1,13 +1,14 @@
+
 img {
   width: 100%;
 }
 
 .landing {
   position: relative;
-  background: url('./img/petB.jpg') no-repeat;
+  background: url('./assets/img/petB.jpg') no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  height: 105vh;
   margin-top: -24px;
   margin-bottom: -50px;
 }

@@ -7,10 +7,10 @@ import {
 } from './types';
 
 // Get Posts
-export const getLocationCategories = () => dispatch => {
+export const getLocationCategories = type => dispatch => {
   dispatch(setCategoryLoading());
   axios
-    .get('/api/location/locationCategories')
+    .get(`/api/location/locationCategories/${type}`)
     .then(res =>
       dispatch({
         type: GET_LOCATIONCATEGORIES,

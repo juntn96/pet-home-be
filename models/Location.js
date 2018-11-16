@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
 
-let childRecords = mongoose.Schema({
-	lat: {type: Number},
-	lng: {type: Number},
-  addressDetail: {type: String}, 
-	createdAt: {
-		type: Number,
-		default: new Date().getTime()
-	}
-});
-
 const locationSchema = mongoose.Schema({
-  address: [childRecords],
+  address: {
+		type: String
+	},
 	name: {
+			type: String,
+	},
+	ownerId: {
 		type: String,
-  },
-  ownerId: {
+		ref: 'User'
+	},
+	location: {
+		type: { type: String },
+		coordinates: [Number],
+	},
+  typeId: {
     type: String,
-    ref: 'User'
-  },
-  typeId: { 
-    type: String, 
     ref: 'LocationCategory'
   },
   systemRating: {
@@ -45,14 +41,6 @@ let Location = module.exports = mongoose.model('Location', locationSchema);
 locationSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();
 	this.updatedAt = currTime;
-	if (this.isNew) {
-		this.createdAt = currTime;
-	}
-	next();
-});
-
-childRecords.pre('save', async function (next) {
-	const currTime = new Date().getTime();
 	if (this.isNew) {
 		this.createdAt = currTime;
 	}

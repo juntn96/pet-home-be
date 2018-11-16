@@ -1,6 +1,9 @@
 const phoneService = require('./../services/PhoneService');
 const PhoneVerification = require('../models/PhoneVerification');
 
+// @route   POST api/phone/sms
+// @desc    Send code by sms to user
+// @access  Public
 const sendPhoneVerifyCode = async function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
   const body = req.body;
@@ -27,6 +30,9 @@ const sendPhoneVerifyCode = async function (req, res) {
 };
 module.exports.sendPhoneVerifyCode = sendPhoneVerifyCode;
 
+// @route   POST api/phone/verify
+// @desc    Vertify code of user
+// @access  Public
 const verifyPhoneVerifyCode = async function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	const body = req.body;
