@@ -9,9 +9,10 @@ const UserController = require("./../controllers/UserController");
 const ProductController = require("../controllers/ProductController");
 const UploadController = require("./../controllers/UploadController.js");
 
-//#region post
+//#region khanhln
 const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
+const AppUserController = require("../controllers/AppUserController")
 //#endregion
 
 const passport = require("passport");
@@ -188,19 +189,24 @@ router.post("/post/report/add", PostController.addReport);
 router.get("/post/report/:postId", PostController.getReports);
 //#endregion
 
-// Upload to Cloudinary
-router.get("/wake-up", (req, res) => res.send("👌"));
-router.post(
-  "/image-upload",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  UploadController.uploadImage
-);
+//#region app user service
+router.post("/app/user/add", AppUserController.createUser);
+//#endregion
 
-// Upload to Cloudinary
-router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', UploadController.uploadImage);
+
+// // Upload to Cloudinary
+// router.get("/wake-up", (req, res) => res.send("👌"));
+// router.post(
+//   "/image-upload",
+//   passport.authenticate("jwt", {
+//     session: false,
+//   }),
+//   UploadController.uploadImage
+// );
+
+// // Upload to Cloudinary
+// router.get('/wake-up', (req, res) => res.send('👌'))
+// router.post('/image-upload', UploadController.uploadImage);
 
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
