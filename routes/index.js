@@ -73,6 +73,23 @@ router.post('./admin/addLocation',passport.authenticate('jwt', {
 }), AdminController.addLocation)
 
 
+//User
+router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+router.get('/users/detail/:userId', UserController.getUserById);
+
+//Location Category
+router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+
+//Create Admin
+router.post('/admin/create', AuthController.createAdminUser);
+router.get('/admin/wake-up', passport.authenticate('jwt', {
+  session: false,
+}),(req, res) => res.send('👌'));
+router.post('./admin/addLocation',passport.authenticate('jwt', {
+  session: false,
+}), AdminController.addLocation)
+
+
 //Product
 router.post('/product/add', 
   passport.authenticate('jwt', {
@@ -175,6 +192,10 @@ router.post(
   }),
   UploadController.uploadImage
 );
+
+// Upload to Cloudinary
+router.get('/wake-up', (req, res) => res.send('👌'))
+router.post('/image-upload', UploadController.uploadImage);
 
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
