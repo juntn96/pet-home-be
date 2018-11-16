@@ -1,0 +1,9 @@
+node_modules
+build
+npm-debug.log
+.env
+.DS_Store
+client/node_modules
+client/package-lock.json
+package-lock.json
+.vscode

@@ -47,15 +47,6 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    const { productDetail } = this.props.product;  
-    this.setState({
-      typeProductCategory: "5bdb59047d05503694985afb",
-      // name: productDetail.productDetail.name,
-      // description: productDetail.productDetail.description,
-      // price: productDetail.productDetail.price,
-      // typeProductCategory: productDetail.productDetail.typeProductCategory,
-      // images: productDetail.productDetail.images
-    });
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -194,7 +185,7 @@ class AddProduct extends Component {
           return <SpinnerU />
         case images.length > 0:
           return <Images 
-                  images={images} 
+                  images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
                  />

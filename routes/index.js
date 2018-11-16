@@ -56,6 +56,54 @@ router.get(
   ProductController.getProductByIds
 );
 
+//User
+router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+router.get('/users/detail/:userId', UserController.getUserById);
+
+//Location Category
+router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+
+//Create Admin
+router.post('/admin/create', AuthController.createAdminUser);
+router.get('/admin/wake-up', passport.authenticate('jwt', {
+  session: false,
+}),(req, res) => res.send('👌'));
+router.post('./admin/addLocation',passport.authenticate('jwt', {
+  session: false,
+}), AdminController.addLocation)
+
+
+//User
+router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
+router.get('/users/detail/:userId', UserController.getUserById);
+
+//Location Category
+router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+
+//Create Admin
+router.post('/admin/create', AuthController.createAdminUser);
+router.get('/admin/wake-up', passport.authenticate('jwt', {
+  session: false,
+}),(req, res) => res.send('👌'));
+router.post('./admin/addLocation',passport.authenticate('jwt', {
+  session: false,
+}), AdminController.addLocation)
+
+
+//Product
+router.post('/product/add', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.addProduct);
+
+router.get('/product/productByUserIds/:ownerId', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductByIds
+);
+
 // get product category
 router.get(
   "/product/productParentCategories/:ownerId",
@@ -72,11 +120,20 @@ router.post(
   ProductController.addProductParentCategory
 );
 
+<<<<<<< HEAD
 //location
 router.get("/location/profile/:id", LocationController.getLocationProfile);
+=======
+//Location
+router.get('/location/profile/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  LocationController.getLocationProfile);
+>>>>>>> develop
 
-/************************/
 //Product
+<<<<<<< HEAD
 router.put("/product/delete", ProductController.deleteProduct);
 router.put("/product/update", ProductController.updateProduct);
 router.get("/product/:id", ProductController.getProductDetailById);
@@ -84,6 +141,28 @@ router.put(
   "/product/updateProductCategory",
   ProductController.updateProductParentCategory
 );
+=======
+router.put('/product/delete', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.deleteProduct);
+router.put('/product/update', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),ProductController.updateProduct);
+router.get('/product/:id', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.getProductDetailById);
+router.put('/product/updateProductCategory', 
+  passport.authenticate('jwt', {
+    session: false,
+  }),
+  ProductController.updateProductParentCategory);
+
+>>>>>>> develop
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
@@ -133,5 +212,16 @@ router.post(
   }),
   UploadController.uploadImage
 );
+<<<<<<< HEAD
+=======
+
+// Upload to Cloudinary
+router.get('/wake-up', (req, res) => res.send('👌'))
+router.post('/image-upload', UploadController.uploadImage);
+
+// Upload to Cloudinary
+router.get('/wake-up', (req, res) => res.send('👌'))
+router.post('/image-upload', UploadController.uploadImage);
+>>>>>>> develop
 
 module.exports = router;

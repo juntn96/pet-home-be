@@ -1,9 +1,9 @@
 const LocationCategory = require('../models/LocationCategory');
 const LocationModel = require('../models/Location');
-
+const constants = require('../utils/constants');
 const getLocationCategories = async () => {
 	try {
-    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false });
+    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, type: constants.PRIVATE_LOCATION });
 		return listLocationCategory;
 	}
 	catch (e) {

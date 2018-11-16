@@ -1,6 +1,9 @@
 const locationService = require('../services/LocationService');
 const Location = require('../models/Location');
 
+// @route   GET api/location/locationCategories
+// @desc    Get location category
+// @access  Public
 const getLocationCategories = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationCategories;
@@ -18,7 +21,9 @@ const getLocationCategories = async function (req, res) {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
-
+// @route   GET api/location/profile/:id
+// @desc    Get location by user_id
+// @access  Public
 const getLocationProfile = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationProfile;

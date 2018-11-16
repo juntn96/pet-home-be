@@ -32,11 +32,22 @@ class PhoneVertification extends Component {
     const { phone, code } = this.state;
     this.props.getVertify({phone, code});
     const { messageSendCode, messageCheckCode} = this.props;
-    if(messageSendCode && messageCheckCode.message !== undefined){
-      this.props.history.push('/register',{phone: phone})
+    
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.messageSendCode && nextProps.messageCheckCode.message !== undefined) {
+      nextProps.history.push('/register',{phone: prevState.phone})
+    }
+    if (nextProps.errors) {
+      return { errors: nextProps.errors};
+    }
+    else return null;
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.auth.isAuthenticated) {
+      prevProps.history.push('/product');
     }
   }
-
   onChangePhoneNumber = (e) => {
     this.setState({phone: e.target.value});
   }
