@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductByIds, deleteProduct } from '../../store/actions/productAction';
+import { createProduct, getProductByIds, deleteProduct,getProductParentCategories } from '../../store/actions/productAction';
 import PropTypes from 'prop-types';
 import { withRouter,Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
@@ -58,9 +58,7 @@ class AddProduct extends Component {
         <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
         <td>{item.name}</td>
         <td>{item.price}</td>
-        
-        <td><Badge color="danger">Đồ ăn</Badge></td>
-
+        { <td><Badge color="danger">Đồ ăn</Badge><span style={{display:'none'}}>{item.typeId}</span> </td>}
         <td>
           <Button color="success" size="sm" onClick={this.editProduct}><i className="fa fa-pencil-square-o"></i><input type="hidden" value={item._id}/></Button>
           <Button color="danger" size="sm" onClick={this.deleteProduct}><i className="fa fa-trash"></i><input type="hidden" value={item._id}/></Button>
@@ -68,9 +66,29 @@ class AddProduct extends Component {
       </tr>
     );
   }
+  renderOptionItem = (item, index) => {
+    return (
+      <option key={index} value={item._id}>{item.name}</option>
+    );
+  }
+  onSearch =(e) => {
+    let tr = this.refs.tableProduct.getElementsByTagName('tr');
+    for (let i = 0; i < tr.length; i++) {
+      let td = tr[i].getElementsByTagName("span")[1];
+      console.log(td)
+      console.log(e.target.value.trim())
+      if (td) {
+        if (td.innerHTML.toLowerCase().indexOf(e.target.value.trim()) > -1 || e.target.value==='all') {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }     
+    }
+  }
 
   render() {
-    const { productByUserIds , loading } = this.props.product; 
+    const { productByUserIds , productParentCategories,loading } = this.props.product; 
     return (
       <div className="product-container">   
         <FormGroup row>
@@ -79,7 +97,23 @@ class AddProduct extends Component {
               <InputGroupAddon addonType="prepend">
                 <Button type="button" color="primary" size="lg"><i className="fa fa-search"></i> Tìm kiếm</Button>
               </InputGroupAddon>
-              <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
+              { productParentCategories === null || loading ? <Input 
+                  type="select" 
+                  name="ccyear" 
+                  id="ccyear"
+                  >
+                  <option value='all'>Tất cả</option>
+                </Input> :   
+                <Input 
+                  type="select" 
+                  name="ccyear" 
+                  id="ccyear"
+                  onClick={this.onSearch}
+                  >
+                  <option value='all'>Tất cả</option>
+                  {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
+                </Input>
+                }
             </InputGroup>
             </Col>
             <Button onClick={this.onAddProduct} type="button" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Button>
@@ -102,31 +136,11 @@ class AddProduct extends Component {
                     <th style={{width:'9%'}}>Sửa sản phẩm</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody ref="tableProduct">
                     {productByUserIds.productByIds !== undefined && productByUserIds.productByIds.map((item, index) => this.renderProductItem(item,index))}
                   </tbody>
                 </Table>
                 }
-                <Pagination>
-                  <PaginationItem>
-                    <PaginationLink previous tag="button"></PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem active>
-                    <PaginationLink tag="button">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink tag="button">4</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink next tag="button"></PaginationLink>
-                  </PaginationItem>
-                </Pagination>
               </CardBody>
             </Card>
           </Col>
@@ -149,5 +163,5 @@ const mapStateToProps = state => ({
   product: state.product,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct,getProductParentCategories })(withRouter(AddProduct));
 

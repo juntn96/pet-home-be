@@ -40,23 +40,13 @@ class EditProduct extends Component {
       typeProductCategory: '',
       loadingU: true,
       uploading: false,
-      images: []
+      images: [],
+      isUpdate: true
     };
-    this.props.getProductDetailById(this.props.location.state.id)
-  }
-  componentWillReceiveProps(){
-    const { productDetail } = this.props.product;  
-    console.log(this.props.product)
-    this.setState({
-      name: productDetail.productDetail.name,
-      description: productDetail.productDetail.description,
-      price: productDetail.productDetail.price,
-      typeProductCategory: productDetail.productDetail.typeProductCategory,
-      images: productDetail.productDetail.images
-    });
+    
   }
   componentDidMount() {
-    
+    this.props.getProductDetailById(this.props.location.state.id)
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -69,10 +59,20 @@ class EditProduct extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
+      console.log(nextProps.product.productDetail.productDetail)
+      return {
+        name: nextProps.product.productDetail.productDetail.name,
+        description: nextProps.product.productDetail.productDetail.description,
+        price: nextProps.product.productDetail.productDetail.price,
+        typeProductCategory: nextProps.product.productDetail.productDetail.typeProductCategory,
+        images: nextProps.product.productDetail.productDetail.images,
+        isUpdate: false
+      }
+    }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
-    }
-    else return null;
+    }else return null
   }
 
   onChangeTypeProduct = e => {
@@ -180,7 +180,7 @@ class EditProduct extends Component {
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { productParentCategories ,productDetail, loading } = this.props.product;  
+    const { productParentCategories , loading } = this.props.product;
     const content = () => {
       switch(true) {
         case loadingU:
@@ -188,7 +188,7 @@ class EditProduct extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          return <Images 
+          return <Images
                   images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
@@ -207,6 +207,17 @@ class EditProduct extends Component {
                 <strong>Sửa sản phẩm</strong>
               </CardHeader>
               <CardBody>
+              <FormGroup row className="my-0 mt-2">
+                    <Col xs="7">
+                      <Label htmlFor="textarea-input">Ảnh</Label>
+                      <div className='container'>
+                        <Notifications />
+                        <div className='buttons'>
+                          {content()}
+                        </div>                        
+                      </div>
+                    </Col>
+                  </FormGroup>
                 <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
                   <input
@@ -269,21 +280,11 @@ class EditProduct extends Component {
                         </textarea>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="my-0 mt-2">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Ảnh</Label>
-                      <div className='container'>
-                        <Notifications />
-                        <div className='buttons'>
-                          {content()}
-                        </div>                        
-                      </div>
-                    </Col>
-                  </FormGroup>
+                  
                   <div style={{marginTop:20}}>
                   <FormGroup row className="my-0">
                     <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
+                      <Button block color="primary" onClick={this.onSubmit}>Lưu sản phẩm</Button>
                     </Col>
                     <Col col="5" sm="4" md="2" className="mb-xl-0">
                       <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>

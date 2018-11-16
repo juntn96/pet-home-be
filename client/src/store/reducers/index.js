@@ -5,13 +5,15 @@ import locationReducer from './locationReducer';
 import phoneReducer from './phoneReducer';
 import productReducer from './productReducer.js';
 import {RESET_STATE} from './../actions/types';
+import profileReducer from './profileReducer';
 
 const appReducer = combineReducers({
   auth: authReducer,
   errors: errorReducer,
   locationApp: locationReducer,
   sendCodeBySMS: phoneReducer,
-  product: productReducer
+  product: productReducer,
+  profile: profileReducer
 });
 
 export const rootReducer = (state, action) => {

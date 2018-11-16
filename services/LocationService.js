@@ -15,7 +15,7 @@ module.exports.getLocationCategories = getLocationCategories;
 // get profile
 const getLocationProfile = async (id) => {
 	try {
-    let getProfile = await LocationModel.findOne({ownerId: id}).populate('ownerId').populate('typeId');
+    let getProfile = await LocationModel.findOne({ownerId: id}).populate('ownerId');
 		return getProfile;
 	}
 	catch (e) {

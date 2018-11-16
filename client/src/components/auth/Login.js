@@ -122,7 +122,7 @@ class Login extends Component {
                       </label>
                     </div>
                     <div>
-                      <a href="#" className="txt3">
+                      <a href="/forgetPass" className="txt3">
                         Quên mật khẩu?
                       </a>
                     </div>

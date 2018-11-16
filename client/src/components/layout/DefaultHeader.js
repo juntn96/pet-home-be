@@ -3,6 +3,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } fro
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
+import { Link } from 'react-router-dom';
 import { logoutUser } from '../../store/actions/authActions';
 import Img from 'react-image';
 
@@ -48,7 +49,7 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> Thay đổi thông tin</DropdownItem>
+              <DropdownItem><i className="fa fa-bell-o"></i> <Link to="/profile">Thay đổi thông tin</Link></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { forgetPass } from '../../store/actions/authActions';
 import Spinner from '../common/Spinner';
+import { Link } from 'react-router-dom';
 
 class ForgetPass extends Component {
   constructor(props) {
@@ -41,14 +42,18 @@ class ForgetPass extends Component {
     const { errors } = this.state;
     const { loading } = this.props.auth;   
     return (
+      <div className="landing">
+        <div className="dark-overlay landing-inner text-light">
       <div className="forgotPass">
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
+            <div className="col-md-5 m-auto" style={{ marginLeft:830}}>
+              <h2 style={{ marginBottom:30}}>Quên mật khẩu</h2>
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
+                    style={{width:"100%", borderRadius:25}}
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.message2
                     })}
@@ -62,10 +67,13 @@ class ForgetPass extends Component {
                   )}
                 </div>   
                 { loading ? <Spinner /> : 
-                <input type="submit" className="btn btn-info btn-block mt-4" value="Gửi"/>}
+                <input type="submit" style={{width:"100%", borderRadius:25}} className="btn-lg btn-warning btn-block mt-4" value="Gửi mật khẩu về điện thoại"/>}
+                <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white'}} to="/login">Quay lại</Link></div>
               </form>
             </div>
           </div>
+        </div>
+        </div>
         </div>
         </div>
     );

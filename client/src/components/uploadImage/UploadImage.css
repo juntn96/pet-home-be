@@ -1,21 +1,18 @@
 .container {
   display: flex;
   flex-direction: column;
-  height: 70vh;
   justify-content: space-around;
+  width: 1100px;
 }
 
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: space-around;
   flex-wrap: wrap;
-  height: 70vh
+  height: 205px;
+  width: 2000px;
 }
 
-.button {
-  margin: 0 10vw
-}
 
 .images {
   display: flex;
@@ -58,10 +55,9 @@ input[type=file] {
 }
 
 img {
-  max-height: 320px;
-  max-width: 320px;
+  max-height: 180px;
+  max-width: 165px;
   padding: 10px;
-  border: 1px dashed #999;
 }
 
 /* Loading */
