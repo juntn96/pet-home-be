@@ -120,28 +120,14 @@ router.post(
   ProductController.addProductParentCategory
 );
 
-<<<<<<< HEAD
-//location
-router.get("/location/profile/:id", LocationController.getLocationProfile);
-=======
 //Location
 router.get('/location/profile/:id', 
   passport.authenticate('jwt', {
     session: false,
   }),
   LocationController.getLocationProfile);
->>>>>>> develop
 
 //Product
-<<<<<<< HEAD
-router.put("/product/delete", ProductController.deleteProduct);
-router.put("/product/update", ProductController.updateProduct);
-router.get("/product/:id", ProductController.getProductDetailById);
-router.put(
-  "/product/updateProductCategory",
-  ProductController.updateProductParentCategory
-);
-=======
 router.put('/product/delete', 
   passport.authenticate('jwt', {
     session: false,
@@ -162,7 +148,6 @@ router.put('/product/updateProductCategory',
   }),
   ProductController.updateProductParentCategory);
 
->>>>>>> develop
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
@@ -212,8 +197,6 @@ router.post(
   }),
   UploadController.uploadImage
 );
-<<<<<<< HEAD
-=======
 
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
@@ -222,6 +205,5 @@ router.post('/image-upload', UploadController.uploadImage);
 // Upload to Cloudinary
 router.get('/wake-up', (req, res) => res.send('👌'))
 router.post('/image-upload', UploadController.uploadImage);
->>>>>>> develop
 
 module.exports = router;
