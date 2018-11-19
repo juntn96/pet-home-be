@@ -364,13 +364,13 @@ const isReported = async (postId, userReportId) => {
 const addReport = async (postId, report) => {
   try {
     const reported = await isReported(postId, report.userReportId);
-    if (reported) TEM("Bạn đã tố cáo bài viết này");
+    if (reported) return "Bạn đã tố cáo bài viết này";
     const result = await Post.findByIdAndUpdate(postId, {
       $push: {
         reports: report,
       },
     });
-    return result.reports;
+    return "Tố cáo bài viết thành công";
   } catch (error) {
     throw error;
   }
