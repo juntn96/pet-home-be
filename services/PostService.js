@@ -14,7 +14,10 @@ const add = async data => {
 // get public post only
 const get = async () => {
   try {
-    const result = await Post.find({ status: { $eq: 1 } }).sort({ _id: -1 });
+    const result = await Post.find({ status: { $eq: 1 } })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -36,7 +39,10 @@ const getPublicByTypeId = async typeId => {
   try {
     const result = await Post.find({
       $and: [{ typeId }, { status: 1 }],
-    }).sort({ _id: -1 });
+    })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -45,7 +51,10 @@ const getPublicByTypeId = async typeId => {
 
 const getByOwnerId = async ownerId => {
   try {
-    const result = await Post.find({ ownerId }).sort({ _id: -1 });
+    const result = await Post.find({ ownerId })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -97,7 +106,10 @@ const postTextSearch = async searchString => {
       $text: {
         $search: searchString,
       },
-    });
+    })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
