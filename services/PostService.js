@@ -160,7 +160,11 @@ const removeImage = async (postId, imageId) => {
 //#region comment controller
 const getComments = async postId => {
   try {
-    const result = await Post.findById(postId);
+    const result = await Post.findById(postId).populate("comments.userCommentId", {
+      _id: 1,
+      appName: 1,
+      avatar: 1,
+    });
     return result.comments;
   } catch (error) {
     throw error;
