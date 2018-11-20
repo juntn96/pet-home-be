@@ -15,6 +15,10 @@ class ForgetPass extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.errors) {
+      console.log(nextProps.errors)
+      return { errors: nextProps.errors};
+    }
     if (nextProps.sendPassStatus) {
       nextProps.history.push('/sendPassSuccess');
     }
@@ -33,6 +37,7 @@ class ForgetPass extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+
     this.props.forgetPass(this.state.phone);
   }
 

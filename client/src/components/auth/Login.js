@@ -13,7 +13,8 @@ class Login extends Component {
       password: '',
       errors: {},
       errorsClassPassword: '',
-      errorsClassUsername: ''
+      errorsClassUsername: '',
+      showpass: false
     };
   }
 
@@ -28,6 +29,7 @@ class Login extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps.errors)
     if (nextProps.auth.isAuthenticated) {
         if(nextProps.auth.user.role === 1){
           nextProps.history.push('/product');
@@ -37,6 +39,7 @@ class Login extends Component {
     }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
+      
     }
     else return null;
   }
@@ -49,21 +52,13 @@ class Login extends Component {
   
   onSubmit = (e) => {
     e.preventDefault();
-    if(this.state.errors.message !== undefined) {
-      this.setState({
-        errorsClassUsername : "alert-validate"
-      })
-    }
-    if(this.state.errors.message !== undefined) {
-      this.setState({
-        errorsClassPassword : "alert-validate"
-      })
-    }
+    if(this.state.phone!==''){
     const userData = {
       phone: this.state.phone,
       password: this.state.password
     };
     this.props.loginUser(userData);
+    }
   }
 
   onForgetPass = (e) => {
@@ -77,7 +72,16 @@ class Login extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
-
+  onShowPassword =(e) => {
+    if (!this.state.showpass){
+      this.refs.passwordInput.setAttribute('type','text');
+      this.setState({showpass:true})
+    }
+    else{
+      this.refs.passwordInput.setAttribute('type','password');
+      this.setState({showpass:false})
+    }
+  }
   render() {
     const { errors } = this.state;
 
@@ -91,10 +95,17 @@ class Login extends Component {
                   <span className="login100-form-title p-b-32">
                     Đăng nhập
                   </span>
+                  {this.state.errors.message === undefined?
+                    '':
+                    <div style={{width:'100%'}} className="alert alert-danger" role="alert">
+                    {this.state.errors.message !== undefined && (this.state.errors.message.phone ===undefined && this.state.errors.message.password ===undefined)?this.state.errors.message:''}
+                    {this.state.errors.message.phone ===undefined? '':this.state.errors.message.phone }
+                    {this.state.errors.message.password ===undefined? '':this.state.errors.message.password }
+                    </div> }
                   <span className="txt1 p-b-11">
                     Số điện thoại
                   </span>
-                  <div className={classnames("wrap-input100 validate-input m-b-36"+this.state.errorsClassUsername) } data-validate = {this.state.errors.phone}>
+                  <div className={classnames("wrap-input100 validate-input m-b-36") }>
                   <input className="input100" type="text"
                     name="phone"
                     value={this.state.phone}
@@ -104,14 +115,15 @@ class Login extends Component {
                   <span className="txt1 p-b-11">
                     Mật khẩu
                   </span>
-                  <div className={"wrap-input100 validate-input m-b-12  " + this.state.errorsClassPassword} data-validate={this.state.errors.password||this.state.errors.message}>
+                  <div className={"wrap-input100 validate-input m-b-12  "} >
                     <span className="btn-show-pass">
-                      <i className="fa fa-eye"></i>
+                      {this.state.showpass?<i className="fa fa-eye-slash" onClick={this.onShowPassword}></i>:<i className="fa fa-eye" onClick={this.onShowPassword}></i>}
                     </span>
                     <input  className="input100" type="password"
                     name="password"
                     value={this.state.password}
-                    onChange={this.onChange} />
+                    onChange={this.onChange} 
+                    ref='passwordInput'/>
                     <span className="focus-input100"></span>
                   </div>
                   <div className="flex-sb-m w-full p-b-48">

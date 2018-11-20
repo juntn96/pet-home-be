@@ -10,6 +10,7 @@ import { compose, withProps } from "recompose"
 import SelectListGroup from './../common/SelectListGroup';
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
 import * as Constants from './../../utils/constants';
+import Geosuggest from 'react-geosuggest';
 
 import {
   Row,
@@ -78,7 +79,7 @@ class Register extends Component {
     const { phone } = this.props.location.state;
     const location =  {
       type: 'Point',
-      coordinates: [this.state.latlong.lat,this.state.latlong.lng]
+      coordinates: [this.state.latlong.lng,this.state.latlong.lat]
     }
     const newUser = {
       name: this.state.name,
@@ -100,9 +101,20 @@ class Register extends Component {
         lat:lat, lng:long
       }
     });
+
   }
-  
+  getLocationCenter =(suggest) => {
+    if(suggest!== undefined){
+      console.log(suggest.location);
+      this.setState({location:suggest.location})
+    }
+  }
   render() {
+    var fixtures = [
+      {label: 'Old Elbe Tunnel, Hamburg', location: {lat: 53.5459, lng: 9.966576}},
+      {label: 'Reeperbahn, Hamburg', location: {lat: 53.5495629, lng: 9.9625838}},
+      {label: 'Alster, Hamburg', location: {lat: 53.5610398, lng: 10.0259135}}
+    ];
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;    
     return (
@@ -163,7 +175,7 @@ class Register extends Component {
                   )}
                 </div>
                 <div className="form-group">
-                  <input
+                  {/* <input
                     type="text"
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.address
@@ -172,11 +184,14 @@ class Register extends Component {
                     name="address"
                     value={this.state.address}
                     onChange={this.onChange}
-                  />
+                  /> */}
+
+                  <Geosuggest className='form-control form-control-lg' onSuggestSelect={this.getLocationCenter} placeholder='Tên địa chỉ'/>
                   {errors.address && (
                     <div className="invalid-feedback">{errors.address}</div>
                   )}
                 </div>
+                
                 <div className="form-group">
                     { locationCategories === null || loading ? <Spinner /> :            
                       <SelectListGroup
@@ -192,6 +207,7 @@ class Register extends Component {
                 </div>
                 <input type="submit" className="btn-lg btn-primary btn-block mt-4" value="Đăng kí"/>
               </form>
+              
               </div>
             </div>
             </Col>
