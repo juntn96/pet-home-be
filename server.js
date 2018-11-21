@@ -48,7 +48,7 @@ db.on("error", error => {
  * Create HTTP server.
  */
 const server = http.createServer(app);
-const io = SocketIO(server);
+const io = socketIO(server);
 
 app.use(logger("dev"));
 app.use(express.json());
