@@ -13,7 +13,7 @@ const cors = require("cors");
 const formData = require("express-form-data");
 const debug = require("debug")("pet-home:server");
 const indexRouter = require("./routes");
-
+const socketIO = require("socket.io");
 const app = express();
 
 // Database config
@@ -41,6 +41,14 @@ db.once("open", () => {
 db.on("error", error => {
   console.log("error", error);
 });
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+const io = socketIO(server);
+const ConversationRoute = require("./routes/ConversationsRoute")(io);
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -83,6 +91,7 @@ app.use(function(req, res, next) {
 app.use(formData.parse());
 
 app.use("/api", indexRouter);
+app.use("/api/conversation", ConversationRoute);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -101,11 +110,6 @@ app.use(function(err, req, res, next) {
 
 const port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
