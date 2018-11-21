@@ -12,7 +12,7 @@ const UploadController = require("./../controllers/UploadController.js");
 //#region khanhln
 const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
-const AppUserController = require("../controllers/AppUserController")
+const AppUserController = require("../controllers/AppUserController");
 //#endregion
 
 const passport = require("passport");
@@ -58,48 +58,71 @@ router.get(
 );
 
 //User
-router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
-router.get('/users/detail/:userId', UserController.getUserById);
+router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
+router.get("/users/detail/:userId", UserController.getUserById);
 
 //Location Category
-router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+router.get(
+  "/location/locationCategories/:type",
+  LocationController.getLocationCategories
+);
 
 //Create Admin
-router.post('/admin/create', AuthController.createAdminUser);
-router.get('/admin/wake-up', passport.authenticate('jwt', {
-  session: false,
-}),(req, res) => res.send('👌'));
-router.post('./admin/addLocation',passport.authenticate('jwt', {
-  session: false,
-}), AdminController.addLocation)
-
-
-//User
-router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
-router.get('/users/detail/:userId', UserController.getUserById);
-
-//Location Category
-router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
-
-//Create Admin
-router.post('/admin/create', AuthController.createAdminUser);
-router.get('/admin/wake-up', passport.authenticate('jwt', {
-  session: false,
-}),(req, res) => res.send('👌'));
-router.post('./admin/addLocation',passport.authenticate('jwt', {
-  session: false,
-}), AdminController.addLocation)
-
-
-//Product
-router.post('/product/add', 
-  passport.authenticate('jwt', {
+router.post("/admin/create", AuthController.createAdminUser);
+router.get(
+  "/admin/wake-up",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.addProduct);
+  (req, res) => res.send("👌")
+);
+router.post(
+  "./admin/addLocation",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AdminController.addLocation
+);
 
-router.get('/product/productByUserIds/:ownerId', 
-  passport.authenticate('jwt', {
+//User
+router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
+router.get("/users/detail/:userId", UserController.getUserById);
+
+//Location Category
+router.get(
+  "/location/locationCategories/:type",
+  LocationController.getLocationCategories
+);
+
+//Create Admin
+router.post("/admin/create", AuthController.createAdminUser);
+router.get(
+  "/admin/wake-up",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  (req, res) => res.send("👌")
+);
+router.post(
+  "./admin/addLocation",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AdminController.addLocation
+);
+
+//Product
+router.post(
+  "/product/add",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.addProduct
+);
+
+router.get(
+  "/product/productByUserIds/:ownerId",
+  passport.authenticate("jwt", {
     session: false,
   }),
   ProductController.getProductByIds
@@ -122,33 +145,43 @@ router.post(
 );
 
 //Location
-router.get('/location/profile/:id', 
-  passport.authenticate('jwt', {
+router.get(
+  "/location/profile/:id",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  LocationController.getLocationProfile);
+  LocationController.getLocationProfile
+);
 
 //Product
-router.put('/product/delete', 
-  passport.authenticate('jwt', {
+router.put(
+  "/product/delete",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.deleteProduct);
-router.put('/product/update', 
-  passport.authenticate('jwt', {
-    session: false,
-  }),ProductController.updateProduct);
-router.get('/product/:id', 
-  passport.authenticate('jwt', {
+  ProductController.deleteProduct
+);
+router.put(
+  "/product/update",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.getProductDetailById);
-router.put('/product/updateProductCategory', 
-  passport.authenticate('jwt', {
+  ProductController.updateProduct
+);
+router.get(
+  "/product/:id",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.updateProductParentCategory);
-
+  ProductController.getProductDetailById
+);
+router.put(
+  "/product/updateProductCategory",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.updateProductParentCategory
+);
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
@@ -193,7 +226,8 @@ router.get("/post/report/:postId", PostController.getReports);
 router.post("/app/user/add", AppUserController.createUser);
 //#endregion
 
-
+// const ConversationController = require("../controllers/ConversationController");
+// router.get("/conversation/:userId", ConversationController.getConversationsByUser);
 // // Upload to Cloudinary
 // router.get("/wake-up", (req, res) => res.send("👌"));
 // router.post(
@@ -209,7 +243,7 @@ router.post("/app/user/add", AppUserController.createUser);
 // router.post('/image-upload', UploadController.uploadImage);
 
 // Upload to Cloudinary
-router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', UploadController.uploadImage);
+router.get("/wake-up", (req, res) => res.send("👌"));
+router.post("/image-upload", UploadController.uploadImage);
 
 module.exports = router;
