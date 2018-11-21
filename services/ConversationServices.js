@@ -20,7 +20,9 @@ const getConversationsByUser = async userId => {
           user: userId,
         },
       },
-    }).sort({ _id: -1 });
+    })
+      .populate("users.user", { _id: 1, avatar: 1, appName: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
