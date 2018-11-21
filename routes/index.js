@@ -75,25 +75,7 @@ router.get('/location/profile/:id',
 
 router.get('/location/searchNear', LocationController.searchNearByLatLong);
 
-router.get('/search', (req,res)=>{
-  LocationModel.aggregate([
-    {
-      $geoNear: {
-         near: { type: "Point", coordinates: [ 105.524061 , 21.012357 ] },
-         distanceField: "dist.calculated",
-         maxDistance: 2,
-         query: { type: "public" },
-         includeLocs: "dist.location",
-         num: 5,
-         x: true
-      }
-    }
-  ],(err ,data)=>{
-     if(err) throw err;
-     return res.send(data);
-   })
-  });
-
+router.get('/location/searchDist', LocationController.searchDist)
 
 //Product
 router.put('/product/delete', 
@@ -115,7 +97,6 @@ router.put('/product/updateProductCategory',
     session: false,
   }),
   ProductController.updateProductParentCategory);
-
 
 //Phone
 router.post('/phone/sms', PhoneController.sendPhoneVerifyCode);
