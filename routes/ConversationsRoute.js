@@ -5,6 +5,7 @@ const ConversationController = require("../controllers/ConversationController");
 
 const routerIO = io => {
   router.get("/:userId", ConversationController.getConversationsByUser);
+  router.get("/message/:conversationId", ConversationController.getMessagesInConversation);
   router.post("/add", ConversationController.createConversation);
   router.post("/match", ConversationController.findConversationByUsers);
   router.post("/message/add", (req, res) => {

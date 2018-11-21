@@ -38,6 +38,17 @@ const findConversationByUsers = async users => {
   }
 };
 
+const getMessagesInConversation = async conversationId => {
+  try {
+    const result = await Conversation.findById(conversationId)
+      .populate("messages.sender", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ "messages._id": -1 });
+    return result.messages;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const addMessage = async data => {
   try {
     const result = await Conversation.findByIdAndUpdate(data.conversationId, {
@@ -56,4 +67,5 @@ module.exports = {
   getConversationsByUser,
   findConversationByUsers,
   addMessage,
+  getMessagesInConversation,
 };

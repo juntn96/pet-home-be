@@ -31,6 +31,19 @@ const findConversationByUsers = async (req, res) => {
   }
 };
 
+const getMessagesInConversation = async (req, res) => {
+  try {
+    res.setHeader("Content-Type", "application/json");
+    const conversationId = req.params.conversationId;
+    const result = await ConversationServices.getMessagesInConversation(
+      conversationId
+    );
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const addMessage = async (req, res) => {
   try {
     res.setHeader("Content-Type", "application/json");
@@ -55,5 +68,6 @@ module.exports = {
   createConversation,
   getConversationsByUser,
   findConversationByUsers,
-  addMessage
+  addMessage,
+  getMessagesInConversation,
 };
