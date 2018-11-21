@@ -50,6 +50,8 @@ db.on("error", error => {
 const server = http.createServer(app);
 const io = socketIO(server);
 
+const ConversationRoute = require("./routes/ConversationsRoute")(io);
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -91,6 +93,7 @@ app.use(function(req, res, next) {
 app.use(formData.parse());
 
 app.use("/api", indexRouter);
+app.use("/api/conversation", ConversationRoute);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
