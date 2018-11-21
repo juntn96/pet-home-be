@@ -226,8 +226,6 @@ router.get("/post/report/:postId", PostController.getReports);
 router.post("/app/user/add", AppUserController.createUser);
 //#endregion
 
-// const ConversationController = require("../controllers/ConversationController");
-// router.get("/conversation/:userId", ConversationController.getConversationsByUser);
 // // Upload to Cloudinary
 // router.get("/wake-up", (req, res) => res.send("👌"));
 // router.post(
