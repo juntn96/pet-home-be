@@ -14,6 +14,8 @@ const formData = require("express-form-data");
 const debug = require("debug")("pet-home:server");
 const indexRouter = require("./routes");
 
+const socketIO = require("socket.io");
+
 const app = express();
 
 // Database config
@@ -46,6 +48,7 @@ db.on("error", error => {
  * Create HTTP server.
  */
 const server = http.createServer(app);
+const io = SocketIO(server);
 
 app.use(logger("dev"));
 app.use(express.json());
