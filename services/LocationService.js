@@ -13,7 +13,6 @@ const getLocationCategories = async () => {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
-
 const getLocationProfile = async (id) => {
 	try {
     let getProfile = await LocationModel.findOne({ownerId: id}).populate('ownerId').populate('typeId');
@@ -25,16 +24,16 @@ const getLocationProfile = async (id) => {
 };
 module.exports.getLocationProfile = getLocationProfile;
 
-const searchNearByLatLong = async () => {
+const searchNearByLatLong = async (locationDetail) => {
 	try {
     let listLocations = await Location.find({
       location: {
        $nearSphere: {
         $geometry: {
          type: 'Point',
-         coordinates: [ 105.524061 , 21.012357]
+         coordinates: [ locationDetail.long , locationDetail.lat ]
         },
-        $maxDistance: 2000,
+        $maxDistance: locationDetail.radius,
         $minDistance: 0
        }
       }
@@ -47,22 +46,22 @@ const searchNearByLatLong = async () => {
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
-const searchDist = async () => {
+const searchDist = async (locationDetail) => {
 	try {
     let listLocations = await Location.aggregate([
       {
         $geoNear: {
-          near: { type: "Point", coordinates: [ 105.524061 , 21.012357 ] },
+          near: { type: "Point", coordinates: [ locationDetail.long , locationDetail.lat ] },
           key: "location",
           distanceField: "dist.calculated",
-          maxDistance: 2000,
+          maxDistance: locationDetail.radius,
           minDistance: 0,
           includeLocs: "dist.location",
           spherical: true
         }
       },
       { "$skip": 0 },
-      { "$limit": 5 }
+      // { "$limit": 5 }
     ]);
 		return listLocations;
 	} catch (e) {

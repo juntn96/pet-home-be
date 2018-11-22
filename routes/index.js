@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 const AuthController = require("./../controllers/AuthController");
 const PhoneController = require("./../controllers/PhoneController");
@@ -19,8 +20,6 @@ const ConversationController = require("../controllers/ConversationController");
 const LocationModel = require('./../models/Location');
 
 require('./../middleware/passport')(passport);
-
-require("./../middleware/passport")(passport);
 
 //Auth controller
 router.post("/auth/register", AuthController.register);
