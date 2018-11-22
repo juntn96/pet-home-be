@@ -8,7 +8,7 @@ const createLocationCategory = async (locationCategoryDetail) => {
 module.exports.createLocationCategory = createLocationCategory;
 
 const createLocation = async (locationDetail) => {
-	let location, err;
-	[err, location] = await to(Location.create(locationCategoryDetail));		
+  let location, err;
+	[err, location] = await to(Location.create(locationDetail));		
 };
 module.exports.createLocation = createLocation;

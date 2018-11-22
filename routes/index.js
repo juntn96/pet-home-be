@@ -14,8 +14,9 @@ const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
 //#endregion
 
-const passport = require("passport");
-const path = require("path");
+const LocationModel = require('./../models/Location');
+
+require('./../middleware/passport')(passport);
 
 require("./../middleware/passport")(passport);
 
@@ -68,7 +69,7 @@ router.post('/admin/create', AuthController.createAdminUser);
 router.get('/admin/wake-up', passport.authenticate('jwt', {
   session: false,
 }),(req, res) => res.send('👌'));
-router.post('./admin/addLocation',passport.authenticate('jwt', {
+router.post('/admin/addLocation',passport.authenticate('jwt', {
   session: false,
 }), AdminController.addLocation)
 
@@ -122,6 +123,10 @@ router.get('/location/profile/:id',
   }),
   LocationController.getLocationProfile);
 
+router.get('/location/searchNear', LocationController.searchNearByLatLong);
+
+router.get('/location/searchDist', LocationController.searchDist)
+
 //Product
 router.put('/product/delete', 
   passport.authenticate('jwt', {
@@ -142,7 +147,6 @@ router.put('/product/updateProductCategory',
     session: false,
   }),
   ProductController.updateProductParentCategory);
-
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
