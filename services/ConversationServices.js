@@ -40,10 +40,12 @@ const findConversationByUsers = async users => {
 
 const getMessagesInConversation = async conversationId => {
   try {
-    const result = await Conversation.findById(conversationId)
-      .populate("messages.sender", { _id: 1, appName: 1, avatar: 1 })
-      .sort({ "messages._id": -1 });
-    return result.messages;
+    const result = await Conversation.findById(conversationId).populate(
+      "messages.sender",
+      { _id: 1, appName: 1, avatar: 1 }
+    );
+    let messages = result.messages.sort((a, b) => a.createdAt < b.createdAt);
+    return messages;
   } catch (error) {
     throw error;
   }

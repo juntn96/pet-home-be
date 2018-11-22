@@ -13,6 +13,7 @@ const UploadController = require("./../controllers/UploadController.js");
 const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
 const AppUserController = require("../controllers/AppUserController");
+const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
 const passport = require("passport");
@@ -226,19 +227,22 @@ router.get("/post/report/:postId", PostController.getReports);
 router.post("/app/user/add", AppUserController.createUser);
 //#endregion
 
-// // Upload to Cloudinary
-// router.get("/wake-up", (req, res) => res.send("👌"));
-// router.post(
-//   "/image-upload",
-//   passport.authenticate("jwt", {
-//     session: false,
-//   }),
-//   UploadController.uploadImage
-// );
-
-// // Upload to Cloudinary
-// router.get('/wake-up', (req, res) => res.send('👌'))
-// router.post('/image-upload', UploadController.uploadImage);
+//#region conversation
+router.get(
+  "/conversation/:userId",
+  ConversationController.getConversationsByUser
+);
+router.get(
+  "/conversation/message/:conversationId",
+  ConversationController.getMessagesInConversation
+);
+router.post("/conversation/add", ConversationController.createConversation);
+router.post(
+  "/conversation/match",
+  ConversationController.findConversationByUsers
+);
+router.post("/conversation/message/add", ConversationController.addMessage);
+//#endregion
 
 // Upload to Cloudinary
 router.get("/wake-up", (req, res) => res.send("👌"));

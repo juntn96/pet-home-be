@@ -14,7 +14,8 @@ const formData = require("express-form-data");
 const debug = require("debug")("pet-home:server");
 const indexRouter = require("./routes");
 
-const socketIO = require("socket.io");
+// const socketIO = require("socket.io");
+const SocketService = require("./services/SocketService");
 
 const app = express();
 
@@ -48,9 +49,10 @@ db.on("error", error => {
  * Create HTTP server.
  */
 const server = http.createServer(app);
-const io = socketIO(server);
 
-const ConversationRoute = require("./routes/ConversationsRoute")(io);
+
+// initial socket io
+SocketService.configure(server);
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -93,7 +95,6 @@ app.use(function(req, res, next) {
 app.use(formData.parse());
 
 app.use("/api", indexRouter);
-app.use("/api/conversation", ConversationRoute);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
