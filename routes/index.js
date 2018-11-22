@@ -16,18 +16,14 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
-<<<<<<< Updated upstream
 const LocationModel = require('./../models/Location');
 
-require('./../middleware/passport')(passport);
-=======
 //#region trunghp
 const PetController = require("../controllers/PetController");
 //#endregion
 
 const passport = require("passport");
 const path = require("path");
->>>>>>> Stashed changes
 
 require("./../middleware/passport")(passport);
 
@@ -247,6 +243,13 @@ router.post(
   ConversationController.findConversationByUsers
 );
 router.post("/conversation/message/add", ConversationController.addMessage);
+//#endregion
+
+//#region pet route
+router.post("/pet/add", PetController.add);
+router.get("/pet/get", PetController.get);
+router.delete("/pet/deletePet", PetController.deletePet);
+router.post("/pet/editPet", PetController.editPet);
 //#endregion
 
 //#region pet route
