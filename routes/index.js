@@ -16,9 +16,18 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
+<<<<<<< Updated upstream
 const LocationModel = require('./../models/Location');
 
 require('./../middleware/passport')(passport);
+=======
+//#region trunghp
+const PetController = require("../controllers/PetController");
+//#endregion
+
+const passport = require("passport");
+const path = require("path");
+>>>>>>> Stashed changes
 
 require("./../middleware/passport")(passport);
 
@@ -219,7 +228,6 @@ router.post("/post/vote", PostController.vote);
 router.post("/post/report/add", PostController.addReport);
 router.get("/post/report/:postId", PostController.getReports);
 //#endregion
-
 //#region app user service
 router.post("/app/user/add", AppUserController.createUser);
 //#endregion
@@ -239,6 +247,13 @@ router.post(
   ConversationController.findConversationByUsers
 );
 router.post("/conversation/message/add", ConversationController.addMessage);
+//#endregion
+
+//#region pet route
+router.post("/pet/add", PetController.add);
+router.get("/pet/get", PetController.get);
+router.delete("/pet/deletePet", PetController.deletePet);
+router.post("/pet/editPet", PetController.editPet);
 //#endregion
 
 // Upload to Cloudinary
