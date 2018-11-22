@@ -28,6 +28,7 @@ let imageSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  publicId: { type: String },
 });
 
 let voteSchema = {

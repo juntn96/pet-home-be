@@ -15,7 +15,7 @@ const add = async (req, res) => {
     const result = await PostService.add(data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -25,7 +25,7 @@ const get = async (req, res) => {
     const result = await PostService.get();
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -36,7 +36,7 @@ const getByOwnerId = async (req, res) => {
     const result = await PostService.getByOwnerId(ownerId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -47,7 +47,7 @@ const getPublicByTypeId = async (req, res) => {
     const result = await PostService.getPublicByTypeId(typeId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -59,7 +59,7 @@ const editPost = async (req, res) => {
     const result = await PostService.editPost(postId, updateOptions);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -70,7 +70,7 @@ const postTextSearch = async (req, res) => {
     const result = await PostService.postTextSearch(searchString);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -81,7 +81,7 @@ const deleteById = async (req, res) => {
     const result = await PostService.deleteById(id);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 //#endregion
@@ -94,7 +94,7 @@ const getImages = async (req, res) => {
     const result = await PostService.getImages(postId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -106,7 +106,7 @@ const addImages = async (req, res) => {
     const result = await PostService.addImages(postId, images);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -118,7 +118,7 @@ const removeImage = async (req, res) => {
     const result = await PostService.removeImage(postId, imageId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 //#endregion
@@ -131,7 +131,7 @@ const getComments = async (req, res) => {
     const result = await PostService.getComments(postId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -145,7 +145,7 @@ const addComment = async (req, res) => {
     const result = await PostService.addComment(postId, data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -159,7 +159,7 @@ const editComment = async (req, res) => {
     const result = await PostService.editComment(postId, data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -171,7 +171,7 @@ const deleteComment = async (req, res) => {
     const result = await PostService.deleteComment(postId, id);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 //#endregion
@@ -187,7 +187,7 @@ const vote = async (req, res) => {
     const result = await PostService.vote(postId, data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -199,7 +199,7 @@ const getVoteByType = async (req, res) => {
     const result = await PostService.getVoteByType(postId, voteType);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -212,11 +212,11 @@ const addReport = async (req, res) => {
     const postId = req.body.postId;
     const userReportId = req.body.userReportId;
     const content = req.body.content;
-    const data = { userReportId, content }
-    const result = await PostService.addReport(postId, data)
+    const data = { userReportId, content };
+    const result = await PostService.addReport(postId, data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -224,10 +224,10 @@ const getReports = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
     const postId = req.params.postId;
-    const result = await PostService.getReports(postId)
+    const result = await PostService.getReports(postId);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 //#endregion
@@ -237,7 +237,7 @@ const temp = async (req, res) => {
   try {
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { ...error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -263,5 +263,5 @@ module.exports = {
   getVoteByType,
   /////////////
   addReport,
-  getReports
+  getReports,
 };

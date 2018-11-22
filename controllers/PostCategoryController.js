@@ -8,7 +8,7 @@ const add = async (req, res) => {
     const result = await postCategoryService.add(data);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -18,7 +18,7 @@ const get = async (req, res) => {
     const categories = await postCategoryService.getAll();
     return ReS(res, { categories }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -29,7 +29,7 @@ const findByName = async (req, res) => {
     const result = await postCategoryService.findByName(name);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -40,7 +40,7 @@ const deleteById = async (req, res) => {
     const result = await postCategoryService.deleteById(id);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 
@@ -52,7 +52,7 @@ const updateNameById = async (req, res) => {
     const result = await postCategoryService.updateNameById(id, name);
     return ReS(res, { result }, 200);
   } catch (error) {
-    return ReE(res, { error }, 422);
+    return ReE(res, error, 422);
   }
 };
 

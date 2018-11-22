@@ -9,9 +9,11 @@ const UserController = require("./../controllers/UserController");
 const ProductController = require("../controllers/ProductController");
 const UploadController = require("./../controllers/UploadController.js");
 
-//#region post
+//#region khanhln
 const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
+const AppUserController = require("../controllers/AppUserController");
+const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
 const LocationModel = require('./../models/Location');
@@ -58,11 +60,14 @@ router.get(
 );
 
 //User
-router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
-router.get('/users/detail/:userId', UserController.getUserById);
+router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
+router.get("/users/detail/:userId", UserController.getUserById);
 
 //Location Category
-router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+router.get(
+  "/location/locationCategories/:type",
+  LocationController.getLocationCategories
+);
 
 //Create Admin
 router.post('/admin/create', AuthController.createAdminUser);
@@ -73,80 +78,108 @@ router.post('/admin/addLocation',passport.authenticate('jwt', {
   session: false,
 }), AdminController.addLocation)
 
-
 //User
-router.get('/users/forgotPassword/:phoneNumber', UserController.forgotPassword);
-router.get('/users/detail/:userId', UserController.getUserById);
+router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
+router.get("/users/detail/:userId", UserController.getUserById);
 
 //Location Category
-router.get('/location/locationCategories/:type', LocationController.getLocationCategories);
+router.get(
+  "/location/locationCategories/:type",
+  LocationController.getLocationCategories
+);
 
 //Create Admin
-router.post('/admin/create', AuthController.createAdminUser);
-router.get('/admin/wake-up', passport.authenticate('jwt', {
-  session: false,
-}),(req, res) => res.send('👌'));
-router.post('./admin/addLocation',passport.authenticate('jwt', {
-  session: false,
-}), AdminController.addLocation)
-
+router.post("/admin/create", AuthController.createAdminUser);
+router.get(
+  "/admin/wake-up",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  (req, res) => res.send("👌")
+);
+router.post(
+  "./admin/addLocation",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AdminController.addLocation
+);
 
 //Product
-router.post('/product/add', 
-  passport.authenticate('jwt', {
+router.post(
+  "/product/add",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.addProduct);
+  ProductController.addProduct
+);
 
-router.get('/product/productByUserIds/:ownerId', 
-  passport.authenticate('jwt', {
+router.get(
+  "/product/productByUserIds/:ownerId",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.getProductByIds);
+  ProductController.getProductByIds
+);
 
 // get product category
-router.get('/product/productParentCategories/:ownerId',
-  passport.authenticate('jwt', {
-    session: false,
-  }), 
-  ProductController.getProductParentCategories);
-router.post('/product/addProductParentCategory', 
-  passport.authenticate('jwt', {
+router.get(
+  "/product/productParentCategories/:ownerId",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.addProductParentCategory);
+  ProductController.getProductParentCategories
+);
+router.post(
+  "/product/addProductParentCategory",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.addProductParentCategory
+);
 
 //Location
-router.get('/location/profile/:id', 
-  passport.authenticate('jwt', {
+router.get(
+  "/location/profile/:id",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  LocationController.getLocationProfile);
+  LocationController.getLocationProfile
+);
 
 router.get('/location/searchNear', LocationController.searchNearByLatLong);
 
 router.get('/location/searchDist', LocationController.searchDist)
 
 //Product
-router.put('/product/delete', 
-  passport.authenticate('jwt', {
+router.put(
+  "/product/delete",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.deleteProduct);
-router.put('/product/update', 
-  passport.authenticate('jwt', {
-    session: false,
-  }),ProductController.updateProduct);
-router.get('/product/:id', 
-  passport.authenticate('jwt', {
+  ProductController.deleteProduct
+);
+router.put(
+  "/product/update",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.getProductDetailById);
-router.put('/product/updateProductCategory', 
-  passport.authenticate('jwt', {
+  ProductController.updateProduct
+);
+router.get(
+  "/product/:id",
+  passport.authenticate("jwt", {
     session: false,
   }),
-  ProductController.updateProductParentCategory);
+  ProductController.getProductDetailById
+);
+router.put(
+  "/product/updateProductCategory",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.updateProductParentCategory
+);
 
 //Phone
 router.post("/phone/sms", PhoneController.sendPhoneVerifyCode);
@@ -187,22 +220,29 @@ router.post("/post/report/add", PostController.addReport);
 router.get("/post/report/:postId", PostController.getReports);
 //#endregion
 
+//#region app user service
+router.post("/app/user/add", AppUserController.createUser);
+//#endregion
+
+//#region conversation
+router.get(
+  "/conversation/:userId",
+  ConversationController.getConversationsByUser
+);
+router.get(
+  "/conversation/message/:conversationId",
+  ConversationController.getMessagesInConversation
+);
+router.post("/conversation/add", ConversationController.createConversation);
+router.post(
+  "/conversation/match",
+  ConversationController.findConversationByUsers
+);
+router.post("/conversation/message/add", ConversationController.addMessage);
+//#endregion
+
 // Upload to Cloudinary
 router.get("/wake-up", (req, res) => res.send("👌"));
-router.post(
-  "/image-upload",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  UploadController.uploadImage
-);
-
-// Upload to Cloudinary
-router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', UploadController.uploadImage);
-
-// Upload to Cloudinary
-router.get('/wake-up', (req, res) => res.send('👌'))
-router.post('/image-upload', UploadController.uploadImage);
+router.post("/image-upload", UploadController.uploadImage);
 
 module.exports = router;

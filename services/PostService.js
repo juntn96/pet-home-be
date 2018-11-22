@@ -14,7 +14,10 @@ const add = async data => {
 // get public post only
 const get = async () => {
   try {
-    const result = await Post.find({ status: { $eq: 1 } }).sort({ _id: -1 });
+    const result = await Post.find({ status: { $eq: 1 } })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -36,7 +39,10 @@ const getPublicByTypeId = async typeId => {
   try {
     const result = await Post.find({
       $and: [{ typeId }, { status: 1 }],
-    }).sort({ _id: -1 });
+    })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -45,7 +51,10 @@ const getPublicByTypeId = async typeId => {
 
 const getByOwnerId = async ownerId => {
   try {
-    const result = await Post.find({ ownerId }).sort({ _id: -1 });
+    const result = await Post.find({ ownerId })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -97,7 +106,10 @@ const postTextSearch = async searchString => {
       $text: {
         $search: searchString,
       },
-    });
+    })
+      .select({ votes: 0, comments: 0, reports: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .sort({ _id: -1 });
     return result;
   } catch (error) {
     throw error;
@@ -148,7 +160,11 @@ const removeImage = async (postId, imageId) => {
 //#region comment controller
 const getComments = async postId => {
   try {
-    const result = await Post.findById(postId);
+    const result = await Post.findById(postId).populate("comments.userCommentId", {
+      _id: 1,
+      appName: 1,
+      avatar: 1,
+    });
     return result.comments;
   } catch (error) {
     throw error;
@@ -352,13 +368,13 @@ const isReported = async (postId, userReportId) => {
 const addReport = async (postId, report) => {
   try {
     const reported = await isReported(postId, report.userReportId);
-    if (reported) TEM("Bạn đã tố cáo bài viết này");
+    if (reported) return "Bạn đã tố cáo bài viết này";
     const result = await Post.findByIdAndUpdate(postId, {
       $push: {
         reports: report,
       },
     });
-    return result.reports;
+    return "Tố cáo bài viết thành công";
   } catch (error) {
     throw error;
   }

@@ -1,23 +1,26 @@
-require('./config/config');
-require('./utils/commons');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const passport = require('passport');
-const mongoose = require('mongoose');
-const mongodbUri = require('mongodb-uri')
-const http = require('http');
-const cors = require('cors')
+require("./config/config");
+require("./utils/commons");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const passport = require("passport");
+const mongoose = require("mongoose");
+const mongodbUri = require("mongodb-uri");
+const http = require("http");
+const cors = require("cors");
 
-const formData = require('express-form-data')
-const debug = require('debug')('pet-home:server');
-const indexRouter = require('./routes');
+const formData = require("express-form-data");
+const debug = require("debug")("pet-home:server");
+const indexRouter = require("./routes");
+
+// const socketIO = require("socket.io");
+const SocketService = require("./services/SocketService");
 
 const app = express();
 
 // Database config
-const mongoLocation = require('./config/keys').mongoURI;
+const mongoLocation = require("./config/keys").mongoURI;
 let mongooseUri = mongodbUri.formatMongoose(mongoLocation);
 
 // Connect to MongoDB
@@ -26,35 +29,44 @@ mongoose
     mongooseUri,
     {
       useCreateIndex: true,
-      useNewUrlParser: true 
+      useNewUrlParser: true,
     }
   )
-  .then(() => console.log('MongoDB connected'))
-  .catch( err => console.log(err));
- 
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
+
 let db = mongoose.connection;
 
 module.exports = db;
-db.once('open', () => {
+db.once("open", () => {
   // console.log('Connected to mongo at ' + mongooseUri);
 });
-db.on('error', (error) => {
-  console.log('error', error);
+db.on("error", error => {
+  console.log("error", error);
 });
 
-app.use(logger('dev'));
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+
+// initial socket io
+SocketService.configure(server);
+
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Server static assets if in production
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   // Set static folder
-  app.use(express.static('client/build'));
+  app.use(express.static("client/build"));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
 
@@ -62,51 +74,52 @@ if (process.env.NODE_ENV === 'production') {
 app.use(passport.initialize());
 
 //CORS
-app.use(function (req, res, next) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization, Content-Type');
-	res.setHeader('Access-Control-Allow-Credentials', true);
-	next();
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, content-type, Authorization, Content-Type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
 });
 
-// app.use(cors({ 
-//   origin: CONFIG.CLIENT_ORIGIN 
+// app.use(cors({
+//   origin: CONFIG.CLIENT_ORIGIN
 // }));
 
 app.use(formData.parse());
 
-app.use('/api', indexRouter);
+app.use("/api", indexRouter);
 
 // Catch 404 and forward to error handler
-app.use(function (req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
+app.use(function(req, res, next) {
+  var err = new Error("Not Found");
+  err.status = 404;
+  next(err);
 });
 
 // Error handler
-app.use(function (err, req, res, next) {
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
-	res.status(err.status || 500);
-	next(err);
+app.use(function(err, req, res, next) {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.status(err.status || 500);
+  next(err);
 });
 
-const port = normalizePort(process.env.PORT || '5000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app);
+const port = normalizePort(process.env.PORT || "5000");
+app.set("port", port);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -131,22 +144,20 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -159,8 +170,6 @@ function onError(error) {
  */
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
 }
