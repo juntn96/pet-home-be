@@ -19,6 +19,9 @@ const locationSchema = mongoose.Schema({
     type: String,
     ref: 'LocationCategory'
   },
+  images: [{
+    type: String
+  }],
   systemRating: {
     type: Number
   },

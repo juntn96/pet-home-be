@@ -36,16 +36,14 @@ const getLocationProfile = async function (req, res) {
   }
   else {
     return ReE(res, 'Get getLocationProfile failed', 503);
-  }
-  				
+  } 				
 };
 module.exports.getLocationProfile = getLocationProfile;
-
 
 const searchNearByLatLong = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locations;
-  [erro, locations] = await to(locationService.searchNearByLatLong());
+  [erro, locations] = await to(locationService.searchNearByLatLong(req.body));
   if (erro) {
     return ReE(res, 'Get locations failed', 422);
   }	
@@ -54,15 +52,14 @@ const searchNearByLatLong = async function (req, res) {
   }
   else {
     return ReE(res, 'Get locations failed', 503);
-  }
-  				
+  }				
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
 const searchDist = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locations;
-  [erro, locations] = await to(locationService.searchDist());
+  [erro, locations] = await to(locationService.searchDist(req.body));
   if (erro) {
     return ReE(res, 'Get locations dist failed', 422);
   }	
@@ -71,7 +68,6 @@ const searchDist = async function (req, res) {
   }
   else {
     return ReE(res, 'Get locations dist failed', 503);
-  }
-  				
+  }  				
 };
 module.exports.searchDist = searchDist;
