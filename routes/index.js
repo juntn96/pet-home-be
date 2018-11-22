@@ -16,11 +16,11 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
+const passport = require("passport");
+
 const LocationModel = require('./../models/Location');
 
 require('./../middleware/passport')(passport);
-
-require("./../middleware/passport")(passport);
 
 //Auth controller
 router.post("/auth/register", AuthController.register);
@@ -200,7 +200,7 @@ router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
 router.get("/post/get/:typeId", PostController.getPublicByTypeId);
-router.post("/post/add", PostController.add);
+router.post("/post/add", PostController.add); 
 router.put("/post/edit", PostController.editPost);
 router.delete("/post/deleteById", PostController.deleteById);
 ///////////
