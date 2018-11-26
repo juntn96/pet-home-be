@@ -49,9 +49,41 @@ const editPet = async (petId, updateOptions) => {
   }
 };
 
+const addFavoritePet = async (petId, favoriteId) => {
+  try {
+    const result = await Pet.findByIdAndUpdate(petId, {
+      $push: {
+        favoritePet: {
+          petId: favoriteId,
+        },
+      },
+    });
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+const addIgnorePet = async (petId, ignorePet) => {
+  try {
+    const result = await Pet.findByIdAndUpdate(petId, {
+      $push: {
+        ignorePet: {
+          petId: ignorePet,
+        },
+      },
+    });
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
 module.exports = {
   add,
   get,
   deletePet,
   editPet,
+  addFavoritePet,
+  addIgnorePet,
 }

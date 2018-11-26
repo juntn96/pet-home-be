@@ -31,6 +31,12 @@ const petSchema = mongoose.Schema({
 		},
 		_id: false,
 	}],
+	ignorePet: [{
+		petId: {
+			type: String,
+		},
+		_id: false,
+	}],
 	gender: {
 		type: String,
 	},

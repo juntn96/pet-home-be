@@ -45,8 +45,32 @@ const editPet = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
         const petId = req.body.petId;
-        const newPet = req.body.updateOptions;
-        const result = await PetService.editPet(petId, newPet);
+        const updateOptions = req.body.updateOptions;
+        const result = await PetService.editPet(petId, updateOptions);
+        return ReS(res, { result }, 200);
+    } catch (error) {
+        return ReE(res, error, 422);
+    }
+}
+
+const addFavoritePet = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const petId = req.body.petId;
+        const favoriteId = req.body.favoriteId;
+        const result = await PetService.addFavoritePet(petId, favoriteId);
+        return ReS(res, { result }, 200);
+    } catch (error) {
+        return ReE(res, error, 422);
+    }
+}
+
+const addIgnorePet = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const petId = req.body.petId;
+        const ignorePet = req.body.ignorePet;
+        const result = await PetService.addIgnorePet(petId, ignorePet);
         return ReS(res, { result }, 200);
     } catch (error) {
         return ReE(res, error, 422);
@@ -58,4 +82,6 @@ module.exports = {
     get,
     deletePet,
     editPet,
+    addFavoritePet,
+    addIgnorePet,
 }

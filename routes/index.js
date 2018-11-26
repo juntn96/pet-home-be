@@ -250,13 +250,8 @@ router.post("/pet/add", PetController.add);
 router.get("/pet/get", PetController.get);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
-//#endregion
-
-//#region pet route
-router.post("/pet/add", PetController.add);
-router.get("/pet/get", PetController.get);
-router.delete("/pet/deletePet", PetController.deletePet);
-router.post("/pet/editPet", PetController.editPet);
+router.post("/pet/addFavoritePet", PetController.addFavoritePet);
+router.post("/pet/addIgnorePet", PetController.addIgnorePet);
 //#endregion
 
 // Upload to Cloudinary
