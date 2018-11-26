@@ -381,6 +381,19 @@ const addReport = async (postId, report) => {
 };
 //#endregion
 
+const testNotification = async p => {
+  try {
+    const result = await ExpoService.sendNotifications("1", [
+      "ExponentPushToken[OUu4s1LnwxqRi170yT_G4-]",
+    ]);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
 const t = async p => {
   try {
     //todo

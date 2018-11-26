@@ -16,10 +16,10 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
-const LocationModel = require('./../models/Location');
-
+const LocationModel = require("./../models/Location");
 //#region trunghp
 const PetController = require("../controllers/PetController");
+const ReportController = require("../controllers/ReportController");
 //#endregion
 
 const passport = require("passport");
@@ -252,6 +252,11 @@ router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
 router.post("/pet/addFavoritePet", PetController.addFavoritePet);
 router.post("/pet/addIgnorePet", PetController.addIgnorePet);
+//#endregion
+
+//#region report route
+router.post("/report/addReport", ReportController.addReport);
+router.post("/report/updateReportStatus", ReportController.updateReportStatus);
 //#endregion
 
 // Upload to Cloudinary
