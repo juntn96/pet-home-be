@@ -29,15 +29,13 @@ const toastColor = {
   text: '#fff' 
 }
 
-
 class AddProduct extends Component {
   constructor(props) {
     super(props);
-    
     this.state = {
       name: '',
       description: '',
-      price: 0,
+      price: '',
       typeProductCategory: '',
       loadingU: true,
       uploading: false,
@@ -74,6 +72,15 @@ class AddProduct extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    if(this.state.name ===''
+    ||this.state.price ===''
+    ||this.state.images.length ===0){
+      console.log(this.state.images.length)
+      if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
+      if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
+      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
+      return false;
+    }
     let imagesUrl = this.state.images.map( item => item.url);
     const newProduct = {
       name: this.state.name,
@@ -92,7 +99,7 @@ class AddProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
+      <option key={index} value={item._id}>{item.name}</option>
     );
   }
 
@@ -195,9 +202,21 @@ class AddProduct extends Component {
                 <strong>Add Product</strong>
               </CardHeader>
               <CardBody>
+                <FormGroup row className="my-0 mt-2">
+                  <Col xs="7">
+                    <Label htmlFor="textarea-input">Ảnh</Label>
+                    <div className='container'>
+                      <Notifications />
+                      <div className='buttons'>
+                        {content()}
+                      </div>                        
+                    </div>
+                    <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
+                  </Col>
+                </FormGroup>
                 <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
-                  <input
+                  <input ref='nameValidate1'
                     type="text"
                     className={classnames('form-control form-control-lg')}
                     placeholder="Tên sản phẩm"
@@ -205,14 +224,15 @@ class AddProduct extends Component {
                     value={this.state.name}
                     onChange={this.onChange}
                   />
+                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
                   <Label htmlFor="vat">Giá</Label>
                   <div className="controls">
                     <InputGroup className="input-prepend">
-                      <input
-                        type="text"
+                      <input ref='priceValidate1'
+                        type="number"
                         className={classnames('form-control form-control-lg')}
                         placeholder="Giá"
                         name="price"
@@ -220,9 +240,10 @@ class AddProduct extends Component {
                         onChange={this.onChange}
                       />
                       <InputGroupAddon addonType="append">
-                        <InputGroupText>.00</InputGroupText>
+                        <InputGroupText>vnđ</InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
+                    <div ref='priceValidate' style={{display:'block'}}  class="invalid-feedback"></div>
                   </div>
                   </Col>
                 </FormGroup>
@@ -230,14 +251,14 @@ class AddProduct extends Component {
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
                     { productParentCategories === null || loading ? <Spinner /> :   
-                    <Input 
+                    <Input
+                    className="form-control form-control-lg"
                       type="select" 
                       name="ccyear" 
                       id="ccyear"
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
-                      <option>--Loại--</option>
                       {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
@@ -246,7 +267,7 @@ class AddProduct extends Component {
                   <FormGroup row className="my-0 mt-3">
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
-                        <textarea 
+                        <textarea
                           className="form-control form-control-lg"
                           name="description" 
                           id="textarea-input" 
@@ -255,17 +276,6 @@ class AddProduct extends Component {
                           value={this.state.description}
                           onChange={this.onChange}>
                         </textarea>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row className="my-0 mt-2">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Ảnh</Label>
-                      <div className='container'>
-                        <Notifications />
-                        <div className='buttons'>
-                          {content()}
-                        </div>                        
-                      </div>
                     </Col>
                   </FormGroup>
                   <div style={{marginTop:20}}>

@@ -19,7 +19,7 @@ class DefaultHeader extends Component {
     e.preventDefault();
     this.props.logoutUser();
   }
-
+ 
   render() {
 
     // const { children, ...attributes } = this.props;
@@ -49,7 +49,9 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> <Link to="/profile">Thay đổi thông tin</Link></DropdownItem>
+              <DropdownItem><i className="fa fa-bell-o"></i> <Link style={{textDecoration:'none', color:'#181b1e'}} to="/profile">Thay đổi thông tin</Link></DropdownItem>
+
+              <DropdownItem><i className="fa fa-lock"></i> <Link style={{textDecoration:'none', color:'#181b1e'}} to="/chgpwd">Thay đổi mật khẩu</Link></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

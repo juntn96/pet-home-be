@@ -46,6 +46,9 @@ class EditProduct extends Component {
     
   }
   componentDidMount() {
+    if(this.props.auth.user.role!=='1'){
+      this.props.history.push('/login');
+    }
     this.props.getProductDetailById(this.props.location.state.id)
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
@@ -60,14 +63,12 @@ class EditProduct extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
-      console.log(nextProps.product.productDetail.productDetail)
       return {
         name: nextProps.product.productDetail.productDetail.name,
         description: nextProps.product.productDetail.productDetail.description,
         price: nextProps.product.productDetail.productDetail.price,
         typeProductCategory: nextProps.product.productDetail.productDetail.typeProductCategory,
         images: nextProps.product.productDetail.productDetail.images,
-        isUpdate: false
       }
     }
     if (nextProps.errors) {
@@ -76,16 +77,25 @@ class EditProduct extends Component {
   }
 
   onChangeTypeProduct = e => {
-    this.setState({typeProductCategory: e.target.value});
+    this.setState({typeProductCategory: e.target.value,isUpdate: false});
   }
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value,isUpdate: false });
   }
 
   onSubmit = e => {
     e.preventDefault();
-    let imagesUrl = this.state.images.map( item => item.url);
+    if(this.state.name ===''
+    ||this.state.price ===''
+    ||this.state.images.length ===0){
+      if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
+      if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
+      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
+      return false;
+    }
+    
+    let imagesUrl =this.state.images[0].url !== undefined? this.state.images.map( item => item.url):this.state.images;
     const newProduct = {
       id: this.props.location.state.id,
       name: this.state.name,
@@ -216,25 +226,27 @@ class EditProduct extends Component {
                           {content()}
                         </div>                        
                       </div>
+                      <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
                 <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
                   <input
-                    type="text"
+                    type="text" ref='nameValidate1'
                     className={classnames('form-control form-control-lg')}
                     placeholder="Tên sản phẩm"
                     name="name"
                     value={this.state.name}
                     onChange={this.onChange}
                   />
+                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
                   <Label htmlFor="vat">Giá</Label>
                   <div className="controls">
                     <InputGroup className="input-prepend">
-                      <input
+                      <input ref='priceValidate1'
                         type="text"
                         className={classnames('form-control form-control-lg')}
                         placeholder="Giá"
@@ -243,9 +255,10 @@ class EditProduct extends Component {
                         onChange={this.onChange}
                       />
                       <InputGroupAddon addonType="append">
-                        <InputGroupText>.00</InputGroupText>
+                        <InputGroupText>vnđ</InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
+                    <div style={{display:'block'}} ref='priceValidate' class="invalid-feedback"></div>
                   </div>
                   </Col>
                 </FormGroup>
@@ -260,7 +273,6 @@ class EditProduct extends Component {
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
-                      <option>--Loại--</option>
                       {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import './App.scss';
-import Landing from './components/layout/Landing';
 import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
 import PhoneVertification from './components/auth/PhoneVertification';
 import Register from './components/auth/Register';
@@ -20,8 +19,8 @@ import PrivateRoute from './components/common/PrivateRoute';
 import NotFound from './components/not-found/NotFound';
 
 import DefaultLayout from './components/layout/DefaultLayout';
-import AdminDashboard from './components/admin-dashboard/AdminDashboard';
 import UploadImage from './components/uploadImage/UploadImage';
+import DefaultLayoutAdmin from './components/admin-dashboard/layout/DefaultLayoutAdmin';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -43,7 +42,6 @@ if (localStorage.jwtToken) {
     window.location.href = '/login';
   }
 }
-
 class App extends Component {
   render() {
     return (
@@ -64,8 +62,10 @@ class App extends Component {
               <PrivateRoute path="/product/add" component={DefaultLayout} />
               <PrivateRoute path="/product/edit" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
+              <PrivateRoute path="/chgpwd" component={DefaultLayout} />
               <PrivateRoute path="/product/category" component={DefaultLayout} />
-              <PrivateRoute path="/admin" component={AdminDashboard}/>
+              {/* admin */}
+              <PrivateRoute path="/admin" component={DefaultLayoutAdmin}/>
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>

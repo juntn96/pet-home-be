@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {  getProfile } from '../../store/actions/profileAction';
-import PropTypes from 'prop-types';
-import { withRouter,Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
+import {  Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
 import { compose, withProps } from "recompose"
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
 
