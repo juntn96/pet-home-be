@@ -261,11 +261,13 @@ const getVoteByType = async (postId, voteType) => {
   }
 };
 
-const vote = async (postId, newVote) => {
+const vote = async (postId, newVote, notification) => {
   try {
     const oldVote = await findVote(postId, newVote.voterId);
     if (!oldVote) {
-      return await addVote(postId, newVote);
+      const result = await addVote(postId, newVote);
+      await ExpoService.sendNotifications(notification);
+      return result;
     } else {
       if (newVote.voteType === oldVote.voteType) {
         return await removeVote(postId, newVote.voterId);
@@ -273,7 +275,9 @@ const vote = async (postId, newVote) => {
         return await editVote(postId, newVote);
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 const addVote = async (postId, vote) => {

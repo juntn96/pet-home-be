@@ -183,8 +183,9 @@ const vote = async (req, res) => {
     const postId = req.body.postId;
     const voterId = req.body.voterId;
     const voteType = req.body.voteType;
+    const notification = req.body.notification;
     const data = { voterId, voteType };
-    const result = await PostService.vote(postId, data);
+    const result = await PostService.vote(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);

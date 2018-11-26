@@ -16,8 +16,6 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
-const passport = require("passport");
-
 const LocationModel = require("./../models/Location");
 //#region trunghp
 const PetController = require("../controllers/PetController");
