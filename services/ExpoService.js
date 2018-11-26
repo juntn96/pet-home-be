@@ -6,7 +6,9 @@ const sendNotifications = (data, tokens) => {
       to: token,
       sound: "default",
       body: "testing",
-      data: {},
+      data: {
+        message: "Hello"
+      },
     };
   });
   return Promise.all(
