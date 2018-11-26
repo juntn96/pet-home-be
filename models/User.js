@@ -29,6 +29,9 @@ const UserSchema = mongoose.Schema({
   appName: {
     type: String,
   },
+  expoToken: {
+    type: String,
+  },
   firstName: {
     type: String,
   },

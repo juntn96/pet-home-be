@@ -29,6 +29,26 @@ const findUser = async (req, res) => {
   }
 };
 
+const addExpoToken = async (req, res) => {
+  try {
+    const result = await AppUserService.addExpoToken(req.body);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
+const removeExpoToken = async (req, res) => {
+  try {
+    const result = await AppUserService.removeExpoToken(req.body);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   createUser,
+  addExpoToken,
+  removeExpoToken
 };

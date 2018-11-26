@@ -18,9 +18,9 @@ const ConversationController = require("../controllers/ConversationController");
 
 const passport = require("passport");
 
-const LocationModel = require('./../models/Location');
+const LocationModel = require("./../models/Location");
 
-require('./../middleware/passport')(passport);
+require("./../middleware/passport")(passport);
 
 //Auth controller
 router.post("/auth/register", AuthController.register);
@@ -70,13 +70,21 @@ router.get(
 );
 
 //Create Admin
-router.post('/admin/create', AuthController.createAdminUser);
-router.get('/admin/wake-up', passport.authenticate('jwt', {
-  session: false,
-}),(req, res) => res.send('👌'));
-router.post('/admin/addLocation',passport.authenticate('jwt', {
-  session: false,
-}), AdminController.addLocation)
+router.post("/admin/create", AuthController.createAdminUser);
+router.get(
+  "/admin/wake-up",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  (req, res) => res.send("👌")
+);
+router.post(
+  "/admin/addLocation",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AdminController.addLocation
+);
 
 //User
 router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
@@ -147,9 +155,9 @@ router.get(
   LocationController.getLocationProfile
 );
 
-router.get('/location/searchNear', LocationController.searchNearByLatLong);
+router.get("/location/searchNear", LocationController.searchNearByLatLong);
 
-router.get('/location/searchDist', LocationController.searchDist)
+router.get("/location/searchDist", LocationController.searchDist);
 
 //Product
 router.put(
@@ -200,7 +208,7 @@ router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
 router.get("/post/get/:typeId", PostController.getPublicByTypeId);
-router.post("/post/add", PostController.add); 
+router.post("/post/add", PostController.add);
 router.put("/post/edit", PostController.editPost);
 router.delete("/post/deleteById", PostController.deleteById);
 ///////////
@@ -218,10 +226,14 @@ router.post("/post/vote", PostController.vote);
 ///////////////////////////////////
 router.post("/post/report/add", PostController.addReport);
 router.get("/post/report/:postId", PostController.getReports);
+////
+router.post("/post/testNotification", PostController.testNotification);
 //#endregion
 
 //#region app user service
 router.post("/app/user/add", AppUserController.createUser);
+router.post("/app/user/addExpoToken", AppUserController.addExpoToken);
+router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
 //#endregion
 
 //#region conversation
