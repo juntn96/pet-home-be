@@ -234,6 +234,7 @@ router.post("/post/testNotification", PostController.testNotification);
 router.post("/app/user/add", AppUserController.createUser);
 router.post("/app/user/addExpoToken", AppUserController.addExpoToken);
 router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
+router.post("/app/user/findByFbId", AppUserController.findUserByFbId);
 //#endregion
 
 //#region conversation

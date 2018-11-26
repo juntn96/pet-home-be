@@ -50,5 +50,6 @@ const removeExpoToken = async ({ userId }) => {
 module.exports = {
   createUser,
   addExpoToken,
-  removeExpoToken
+  removeExpoToken,
+  findUserByFbId
 };
