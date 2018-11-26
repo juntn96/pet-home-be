@@ -19,6 +19,12 @@ const ConversationController = require("../controllers/ConversationController");
 const passport = require("passport");
 
 const LocationModel = require("./../models/Location");
+//#region trunghp
+const PetController = require("../controllers/PetController");
+//#endregion
+
+const passport = require("passport");
+const path = require("path");
 
 require("./../middleware/passport")(passport);
 
@@ -229,7 +235,6 @@ router.get("/post/report/:postId", PostController.getReports);
 ////
 router.post("/post/testNotification", PostController.testNotification);
 //#endregion
-
 //#region app user service
 router.post("/app/user/add", AppUserController.createUser);
 router.post("/app/user/addExpoToken", AppUserController.addExpoToken);
@@ -251,6 +256,15 @@ router.post(
   ConversationController.findConversationByUsers
 );
 router.post("/conversation/message/add", ConversationController.addMessage);
+//#endregion
+
+//#region pet route
+router.post("/pet/add", PetController.add);
+router.get("/pet/get", PetController.get);
+router.delete("/pet/deletePet", PetController.deletePet);
+router.post("/pet/editPet", PetController.editPet);
+router.post("/pet/addFavoritePet", PetController.addFavoritePet);
+router.post("/pet/addIgnorePet", PetController.addIgnorePet);
 //#endregion
 
 // Upload to Cloudinary
