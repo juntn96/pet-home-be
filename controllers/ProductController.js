@@ -1,6 +1,5 @@
 const productService = require('../services/ProductService')
 
-
 const getProduct = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   let error, product;

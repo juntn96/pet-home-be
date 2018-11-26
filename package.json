@@ -21,6 +21,7 @@
     "cors": "^2.8.4",
     "debug": "~4.0.1",
     "dotenv": "^6.1.0",
+    "expo-server-sdk": "^3.0.1",
     "express": "~4.16.0",
     "express-form-data": "^2.0.6",
     "jsonwebtoken": "^8.3.0",
@@ -32,6 +33,7 @@
     "parse-error": "^0.2.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "socket.io": "^2.1.1",
     "uuid": "^3.3.2",
     "validator": "^10.8.0"
   },

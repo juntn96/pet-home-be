@@ -5,7 +5,7 @@ const locationSchema = mongoose.Schema({
 		type: String
 	},
 	name: {
-			type: String,
+    type: String,
 	},
 	ownerId: {
 		type: String,
@@ -35,6 +35,8 @@ const locationSchema = mongoose.Schema({
 		default: new Date().getTime(),
 	},
 });
+
+locationSchema.index({ location: "2dsphere" });
 
 let Location = module.exports = mongoose.model('Location', locationSchema);
 
