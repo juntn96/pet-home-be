@@ -88,7 +88,7 @@ router.get(
 );
 
 //Create Admin
-router.post("/admin/create", AuthController.createAdminUser);
+router.4("/admin/create", AuthController.createAdminUser);
 router.get(
   "/admin/wake-up",
   passport.authenticate("jwt", {
@@ -146,9 +146,8 @@ router.get(
   LocationController.getLocationProfile
 );
 
-router.get('/location/searchNear', LocationController.searchNearByLatLong);
-
-router.get('/location/searchDist', LocationController.searchDist)
+router.get('/location/searchNear/:long/:lat/:radius', LocationController.searchNearByLatLong);
+router.get('/location/searchDist/:long/:lat/:radius', LocationController.searchDist)
 
 //Product
 router.put(

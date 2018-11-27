@@ -47,14 +47,19 @@ const searchNearByLatLong = async (locationDetail) => {
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
 const searchDist = async (locationDetail) => {
+
+  let long = parseFloat(locationDetail.long);
+  let lat = parseFloat(locationDetail.lat);
+  let radius = parseInt(locationDetail.radius);
+
 	try {
     let listLocations = await Location.aggregate([
       {
         $geoNear: {
-          near: { type: "Point", coordinates: [ locationDetail.long , locationDetail.lat ] },
+          near: { type: "Point", coordinates: [ long , lat ] },
           key: "location",
           distanceField: "dist.calculated",
-          maxDistance: locationDetail.radius,
+          maxDistance: radius,
           minDistance: 0,
           includeLocs: "dist.location",
           spherical: true
@@ -63,7 +68,13 @@ const searchDist = async (locationDetail) => {
       { "$skip": 0 },
       // { "$limit": 5 }
     ]);
-		return listLocations;
+    let newArrays = listLocations.map( item =>  { 
+      const {_id, address, name, deletionFlag, dist} = item;
+      return {
+        _id, address, name, deletionFlag, dist
+      }
+    })
+    return newArrays;
 	} catch (e) {
     console.log(e);
 		return TE(res, 'Get locations failed', 503);
