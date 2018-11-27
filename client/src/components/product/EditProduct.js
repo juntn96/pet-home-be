@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
+import { getProductParentCategories ,getProductDetailById, updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -16,7 +16,7 @@ import {
   InputGroup,
   Button
 } from 'reactstrap';
-import Spinner from '../common/Spinner';
+import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
 import Images from './../uploadImage/Images'
@@ -29,7 +29,8 @@ const toastColor = {
   text: '#fff' 
 }
 
-class AddProduct extends Component {
+
+class EditProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,12 +40,14 @@ class AddProduct extends Component {
       typeProductCategory: '',
       loadingU: true,
       uploading: false,
-      images: []
+      images: [],
+      isUpdate: true
     };
+    
   }
-
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    this.props.getProductDetailById(this.props.location.state.id)
+    this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -56,35 +59,50 @@ class AddProduct extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
+      return {
+        name: nextProps.product.productDetail.productDetail.name,
+        description: nextProps.product.productDetail.productDetail.description,
+        price: nextProps.product.productDetail.productDetail.price,
+        typeProductCategory: nextProps.product.productDetail.productDetail.typeProductCategory,
+        images: nextProps.product.productDetail.productDetail.images,
+      }
+    }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
-    }
-    else return null;
+    }else return null
   }
 
   onChangeTypeProduct = e => {
-    this.setState({typeProductCategory: e.target.value});
+    this.setState({typeProductCategory: e.target.value,isUpdate: false});
   }
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value,isUpdate: false });
   }
 
   onSubmit = e => {
     e.preventDefault();
-
-    let imagesUrl = this.state.images.map( item => item.url);
-
+    if(this.state.name ===''
+    ||this.state.price ===''
+    ||this.state.images.length ===0){
+      if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
+      if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
+      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
+      return false;
+    }
+    
+    let imagesUrl =this.state.images[0].url !== undefined? this.state.images.map( item => item.url):this.state.images;
     const newProduct = {
+      id: this.props.location.state.id,
       name: this.state.name,
       ownerId: this.props.auth.user.user_id,
       typeId: this.state.typeProductCategory,
       description: this.state.description,
-      price: this.state.price,  
+      price: this.state.price,
       images: imagesUrl
     };
-
-    this.props.createProduct(newProduct, this.props.history);
+    this.props.updateProduct(newProduct, this.props.history);
   }
 
   onCancel = (e) => {
@@ -93,7 +111,7 @@ class AddProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id}>{item.name}</option>
+      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
     );
   }
 
@@ -169,7 +187,7 @@ class AddProduct extends Component {
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { productParentCategories , loading } = this.props.product;  
+    const { productParentCategories , loading } = this.props.product;
     const content = () => {
       switch(true) {
         case loadingU:
@@ -177,8 +195,8 @@ class AddProduct extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          return <Images 
-                  images={images} 
+          return <Images
+                  images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
                  />
@@ -186,7 +204,6 @@ class AddProduct extends Component {
           return <Buttons onChange={this.onChangeU} />
       }
     }
-    console.log(this.state);
     return (
       <div className="addProduct">
           <div className="row">
@@ -194,26 +211,39 @@ class AddProduct extends Component {
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
-                <strong>Add Product</strong>
+                <strong>Sửa sản phẩm</strong>
               </CardHeader>
               <CardBody>
-                <FormGroup>                  
+              <FormGroup row className="my-0 mt-2">
+                    <Col xs="7">
+                      <Label htmlFor="textarea-input">Ảnh</Label>
+                      <div className='container'>
+                        <Notifications />
+                        <div className='buttons'>
+                          {content()}
+                        </div>                        
+                      </div>
+                      <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
+                    </Col>
+                  </FormGroup>
+                <FormGroup>
                   <Label htmlFor="company">Tên sản phẩm</Label>
                   <input
-                    type="text"
+                    type="text" ref='nameValidate1'
                     className={classnames('form-control form-control-lg')}
                     placeholder="Tên sản phẩm"
                     name="name"
                     value={this.state.name}
                     onChange={this.onChange}
-                  />         
+                  />
+                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
                   <Label htmlFor="vat">Giá</Label>
                   <div className="controls">
                     <InputGroup className="input-prepend">
-                      <input
+                      <input ref='priceValidate1'
                         type="text"
                         className={classnames('form-control form-control-lg')}
                         placeholder="Giá"
@@ -222,9 +252,10 @@ class AddProduct extends Component {
                         onChange={this.onChange}
                       />
                       <InputGroupAddon addonType="append">
-                        <InputGroupText>.00</InputGroupText>
+                        <InputGroupText>vnđ</InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
+                    <div style={{display:'block'}} ref='priceValidate' class="invalid-feedback"></div>
                   </div>
                   </Col>
                 </FormGroup>
@@ -239,7 +270,6 @@ class AddProduct extends Component {
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
-                      <option>--Loại--</option>
                       {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
@@ -249,7 +279,7 @@ class AddProduct extends Component {
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
                         <textarea 
-                          className="form-control form-control-lg" 
+                          className="form-control form-control-lg"
                           name="description" 
                           id="textarea-input" 
                           rows="7"
@@ -259,21 +289,11 @@ class AddProduct extends Component {
                         </textarea>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="my-0 mt-2">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Ảnh</Label>
-                      <div className='container'>
-                        <Notifications />
-                        <div className='buttons'>
-                          {content()}
-                        </div>                        
-                      </div>
-                    </Col>
-                  </FormGroup>
+                  
                   <div style={{marginTop:20}}>
                   <FormGroup row className="my-0">
                     <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
+                      <Button block color="primary" onClick={this.onSubmit}>Lưu sản phẩm</Button>
                     </Col>
                     <Col col="5" sm="4" md="2" className="mb-xl-0">
                       <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
@@ -293,10 +313,10 @@ class AddProduct extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  product: state.product,
+  product: state.product
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(x));
+export default connect(mapStateToProps, { getProductParentCategories, getProductDetailById, updateProduct })(withRouter(EditProduct));
 
 
 

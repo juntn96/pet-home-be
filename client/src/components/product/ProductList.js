@@ -150,4 +150,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(AddProduct));
-

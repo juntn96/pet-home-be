@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import { Link } from 'react-router-dom';
-import { logoutUser } from '../../store/actions/authActions';
+import { logoutUser } from '../../../store/actions/authActions';
 import Img from 'react-image';
 
 const propTypes = {

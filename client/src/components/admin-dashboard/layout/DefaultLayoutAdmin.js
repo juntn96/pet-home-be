@@ -21,21 +21,21 @@ import {
 // sidebar nav config
 import navigation from './nav_config';
 // routes config
-import routes from './../../routes';
+import routes from '../../../routes';
 
 const propTypes = {
   children: PropTypes.node,
 };
 
 const defaultProps = {};
-class DefaultLayout extends Component {
+class DefaultLayoutAdmin extends Component {
   render() {
     return (
       <div className="app">
         <AppHeader fixed>
           <DefaultHeader />
         </AppHeader>
-        <div className="app-body">        
+        <div className="app-body">      
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
@@ -69,11 +69,11 @@ class DefaultLayout extends Component {
   }
 }
 
-DefaultLayout.propTypes = propTypes;
-DefaultLayout.defaultProps = defaultProps;
+DefaultLayoutAdmin.propTypes = propTypes;
+DefaultLayoutAdmin.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(DefaultLayout);
+export default connect(mapStateToProps)(DefaultLayoutAdmin);

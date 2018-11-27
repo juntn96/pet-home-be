@@ -15,12 +15,12 @@ module.exports.getLocationCategories = getLocationCategories;
 
 const getLocationProfile = async (id) => {
 	try {
-    let getProfile = await LocationModel.findOne({ownerId: id}).populate('ownerId').populate('typeId');
+    let getProfile = await LocationModel.findOne({ownerId: id}).populate('ownerId');
 		return getProfile;
 	}
 	catch (e) {
 		return TE(res, 'Get getLocationProfile failed', 503);
-	}		
+	}
 };
 module.exports.getLocationProfile = getLocationProfile;
 

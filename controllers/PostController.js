@@ -232,6 +232,16 @@ const getReports = async (req, res) => {
 };
 //#endregion
 
+const testNotification = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await PostService.testNotification();
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const temp = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -264,4 +274,6 @@ module.exports = {
   /////////////
   addReport,
   getReports,
+  //
+  testNotification
 };
