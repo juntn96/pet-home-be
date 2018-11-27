@@ -2,6 +2,7 @@ const authService = require('./../services/AuthService');
 const User = require('../models/User');
 const constants = require('../utils/constants');
 const phoneService = require('./../services/PhoneService');
+const userService = require('./../services/UserService');
 
 const forgotPassword = async function (req, res) {
 	if (!req.params.phoneNumber) {
@@ -69,3 +70,34 @@ const getUserById = async function (req, res, next) {
 	});
 };
 module.exports.getUserById = getUserById;
+
+const getAllUsers = async function (req, res, next) {
+	User.find({}).where('role').equals(constants.ROLE_USER)
+	.select('deletionFlag _id appName avatar')
+	.exec((err, results) => {
+		if (err) {
+			return ReE(res, err, 500);
+		}
+		if (results.length !== 0) {
+			ReS(res, {
+				status: true,
+				users: results
+			}, 200);
+		}else{
+			return ReE(res, 'Khong co nguoi dung nao ca', 404);
+		}
+	});
+};
+module.exports.getAllUsers = getAllUsers;
+
+const banUserById = async function (req, res, next) {
+	User.findByIdAndUpdate(req.body.id, { $set: { deletionFlag: req.body.deletionFlag }}, { new: true }, (err, results) => {
+		if (err) {
+			return ReE(res, err, 500);
+		}
+		return ReS(res, {
+			message: 'Thay doi thanh cong',
+		}, 200);
+	});
+};
+module.exports.banUserById = banUserById;

@@ -23,7 +23,6 @@ const LocationModel = require("./../models/Location");
 const PetController = require("../controllers/PetController");
 //#endregion
 
-const passport = require("passport");
 const path = require("path");
 
 require("./../middleware/passport")(passport);
@@ -271,5 +270,10 @@ router.post("/pet/addIgnorePet", PetController.addIgnorePet);
 // Upload to Cloudinary
 router.get("/wake-up", (req, res) => res.send("👌"));
 router.post("/image-upload", UploadController.uploadImage);
+
+//get all user: ADMIN
+router.get("/admin/users", UserController.getAllUsers);
+router.put("/admin/users", UserController.banUserById);
+
 
 module.exports = router;

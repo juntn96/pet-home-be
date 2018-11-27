@@ -46,9 +46,6 @@ class EditProduct extends Component {
     
   }
   componentDidMount() {
-    if(this.props.auth.user.role!=='1'){
-      this.props.history.push('/login');
-    }
     this.props.getProductDetailById(this.props.location.state.id)
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
