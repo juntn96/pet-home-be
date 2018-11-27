@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const ExpoService = require("./ExpoService");
+const mongoose = require("mongoose");
 //#region post controller
 const add = async data => {
   try {
@@ -248,14 +249,25 @@ const findVote = async (postId, voterId) => {
 
 const getVoteByType = async (postId, voteType) => {
   try {
-    const result = await Post.findById(postId, {
-      votes: {
-        $elemMatch: {
-          voteType: { $eq: voteType },
+    const result = await Post.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(postId),
         },
       },
-    });
-    return result.votes;
+      {
+        $project: {
+          votes: {
+            $filter: {
+              input: "$votes",
+              as: "vote",
+              cond: { $eq: ["$$vote.voteType", parseInt(voteType)] },
+            },
+          },
+        },
+      },
+    ]);
+    return result;
   } catch (error) {
     throw error;
   }
