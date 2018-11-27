@@ -267,7 +267,7 @@ const getVoteByType = async (postId, voteType) => {
         },
       },
     ]);
-    return result;
+    return result[0].votes;
   } catch (error) {
     throw error;
   }
