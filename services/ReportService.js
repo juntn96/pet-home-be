@@ -16,7 +16,7 @@ const updateReportStatus = async (reportId, updateOptions) => {
         for (const opt of updateOptions) {
             options[opt.propName] = opt.value;
         }
-        const result = await Pet.findByIdAndUpdate(
+        const result = await Report.findByIdAndUpdate(
             reportId,
             {
                 $set: options,
@@ -29,7 +29,7 @@ const updateReportStatus = async (reportId, updateOptions) => {
     } catch (error) {
         throw error;
     }
-}
+};
 
 module.exports = {
     addReport,

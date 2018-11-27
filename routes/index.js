@@ -257,6 +257,7 @@ router.post("/pet/addIgnorePet", PetController.addIgnorePet);
 //#region report route
 router.post("/report/addReport", ReportController.addReport);
 router.post("/report/updateReportStatus", ReportController.updateReportStatus);
+router.get("/report/getReportedPost", PostController.getReportedPost);
 //#endregion
 
 // Upload to Cloudinary

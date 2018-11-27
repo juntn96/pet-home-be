@@ -21,9 +21,8 @@ const petSchema = mongoose.Schema({
 		type: String,
 		ref: 'User'
 	},
-	typeId: {
+	breed: {
 		type: String,
-		ref: 'LocationCategory'
 	},
 	favoritePet: [{
 		petId: {

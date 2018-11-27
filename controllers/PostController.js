@@ -1,4 +1,6 @@
 const PostService = require("../services/PostService");
+const Report = require("../models/Report");
+const Post = require("../models/Post");
 
 //#region post controller
 const add = async (req, res) => {
@@ -241,6 +243,31 @@ const temp = async (req, res) => {
   }
 };
 
+const getReportedPost = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = Report.aggregate([
+      {
+        $group: {
+          _id: '$postId',
+          total_report: { $sum: 1 }
+        }
+      },
+      { "$sort": { "total_report": -1 } },
+    ]).exec(function (err, transactions) {
+      // Don't forget your error handling
+      // The callback with your transactions
+      // Assuming you are having a Tag model
+      Post.populate(transactions, { path: '_id' }, function (err, populatedTransactions) {
+        // Your populated translactions are inside populatedTransactions
+        return ReS(res, { populatedTransactions }, 200);
+      });
+    });
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   add,
   get,
@@ -264,4 +291,5 @@ module.exports = {
   /////////////
   addReport,
   getReports,
+  getReportedPost,
 };
