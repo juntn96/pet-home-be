@@ -33,7 +33,8 @@ class DefaultHeader extends Component {
             <NavLink href="/">Dashboard</NavLink>
           </NavItem> */}
           <NavItem className="px-3">
-            <NavLink href="/location">Thông tin địa điểm</NavLink>
+            {/* <NavLink href="/location">Thông tin địa điểm</NavLink> */}
+            <Link style={{textDecoration:'none'}} to="/locationDetail">Thông tin địa điểm</Link>
           </NavItem>
           {/* <NavItem className="px-3">
             <NavLink href="#">Settings</NavLink>

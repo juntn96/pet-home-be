@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 
 const AuthController = require("./../controllers/AuthController");
 const PhoneController = require("./../controllers/PhoneController");
@@ -17,15 +16,12 @@ const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 //#endregion
 
-const passport = require("passport");
-
 const LocationModel = require("./../models/Location");
 //#region trunghp
 const PetController = require("../controllers/PetController");
 //#endregion
 
-const path = require("path");
-
+const passport = require("passport");
 require("./../middleware/passport")(passport);
 
 //Auth controller
@@ -103,7 +99,7 @@ router.get(
 );
 
 //Create Admin
-router.4("/admin/create", AuthController.createAdminUser);
+router.post("/admin/create", AuthController.createAdminUser);
 router.get(
   "/admin/wake-up",
   passport.authenticate("jwt", {
@@ -154,7 +150,7 @@ router.post(
 
 //Location
 router.get(
-  "/location/profile/:id",
+  "/location/detail/:ownerId",
   passport.authenticate("jwt", {
     session: false,
   }),

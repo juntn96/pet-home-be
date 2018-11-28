@@ -107,7 +107,7 @@ class ChangePassword extends Component {
                     <Col col="3" sm="2" md="2" className="mb-3 mb-xl-0">
                       <Button style={{marginLeft:15}} block color="primary" onClick={this.onSubmit}>Lưu</Button>
                     </Col>
-                    <Col col="3" sm="1" md="1" className="mb-xl-0">
+                    <Col col="3" sm="2" md="2" className="mb-xl-0">
                       <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
                     </Col>
                   </FormGroup>
