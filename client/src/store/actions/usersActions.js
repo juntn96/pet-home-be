@@ -23,17 +23,5 @@ export const getAllUsers = () => dispatch => {
 
 export const banUserById = (user) => dispatch => {
   axios
-    .put(`/api/admin/users`,user)
-    .then(res =>
-      dispatch({
-        type: BAN_USER_BY_ID,
-        payload: res.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: BAN_USER_BY_ID,
-        payload: null
-      })
-    );
+    .put(`/api/admin/users`,user);
 };

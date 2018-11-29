@@ -78,14 +78,10 @@ const getAllUsers = async function (req, res, next) {
 		if (err) {
 			return ReE(res, err, 500);
 		}
-		if (results.length !== 0) {
-			ReS(res, {
-				status: true,
-				users: results
-			}, 200);
-		}else{
-			return ReE(res, 'Khong co nguoi dung nao ca', 404);
-		}
+		return ReS(res, {
+			status: true,
+			users: results
+		}, 200);
 	});
 };
 module.exports.getAllUsers = getAllUsers;
@@ -96,8 +92,21 @@ const banUserById = async function (req, res, next) {
 			return ReE(res, err, 500);
 		}
 		return ReS(res, {
-			message: 'Thay doi thanh cong',
+			message: 'Thay doi thanh cong'
 		}, 200);
 	});
 };
 module.exports.banUserById = banUserById;
+
+const getStatusUserById = async (req,res) =>{
+	User.findById(req.params.id).select('deletionFlag').exec((err, results) => {
+		if (err) {
+			return ReE(res, err, 500);
+		}
+		return ReS(res, {
+			message: 'Thay doi thanh cong',
+			deletionFlag: results.deletionFlag
+		}, 200);
+	});
+}
+module.exports.getStatusUserById =getStatusUserById;
