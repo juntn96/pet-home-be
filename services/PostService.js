@@ -284,7 +284,9 @@ const vote = async (postId, newVote, notification) => {
       if (newVote.voteType === oldVote.voteType) {
         return await removeVote(postId, newVote.voterId);
       } else {
-        return await editVote(postId, newVote);
+        const result = await editVote(postId, newVote);
+        ExpoService.sendNotifications(notification);
+        return result;
       }
     }
   } catch (error) {
