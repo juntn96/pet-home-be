@@ -26,6 +26,7 @@ class UserList extends Component {
 
   onSearch =(e) => {
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
+
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[1];
       if (td) {
@@ -43,7 +44,7 @@ class UserList extends Component {
     return (
     <div>
       <Row>
-        <Col xs="12" lg="12">
+        <Col xs="12" lg="8">
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
@@ -51,12 +52,12 @@ class UserList extends Component {
                   className="form-control" 
                   style={{float:"right", width:"20%"}} 
                   placeholder="Tìm kiếm"
-                  onChange={this.onChange}
+                  onChange={this.onSearch}
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
               { users.allusers.users === undefined  ? <Spinner /> :
-                <Table responsive>
+                <Table striped >
                   <thead>
                   <tr>
                     <th>Ảnh</th>

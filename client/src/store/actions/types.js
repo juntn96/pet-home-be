@@ -38,3 +38,5 @@ export const GET_PROFILE = "GET_PROFILE";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export const BAN_USER_BY_ID = "BAN_USER_BY_ID";
+
+export const GET_REPORTS = "GET_REPORTS";
