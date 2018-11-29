@@ -23,7 +23,7 @@ class Login extends Component {
       if(this.props.auth.user.role === 1){
         this.props.history.push('/product');
       } else {
-        this.props.history.push('/admin');
+        this.props.history.push('/admin/allusers');
       }
     }
   }
