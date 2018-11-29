@@ -78,8 +78,8 @@ router.get(
 router.post('/admin/create', AuthController.createAdminUser);
 router.get('/admin/wake-up', passport.authenticate('jwt', {
   session: false,
-}),(req, res) => res.send('👌'));
-router.post('/admin/addLocation',passport.authenticate('jwt', {
+}), (req, res) => res.send('👌'));
+router.post('/admin/addLocation', passport.authenticate('jwt', {
   session: false,
 }), AdminController.addLocation)
 
@@ -250,8 +250,10 @@ router.post("/pet/add", PetController.add);
 router.get("/pet/get", PetController.get);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
-router.post("/pet/addFavoritePet", PetController.addFavoritePet);
-router.post("/pet/addIgnorePet", PetController.addIgnorePet);
+router.post("/pet/addUserLikePet", PetController.addUserLikePet);
+router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
+router.get("/pet/getLikeNumber", PetController.getLikeNumber);
+router.get("/pet/getNotIgnoredPet", PetController.getNotIgnoredPet);
 //#endregion
 
 //#region report route

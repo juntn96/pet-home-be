@@ -49,12 +49,12 @@ const editPet = async (petId, updateOptions) => {
   }
 };
 
-const addFavoritePet = async (petId, favoriteId) => {
+const addUserLikePet = async (petId, likeId) => {
   try {
     const result = await Pet.findByIdAndUpdate(petId, {
       $push: {
-        favoritePet: {
-          petId: favoriteId,
+        likes: {
+          userId: likeId,
         },
       },
     });
@@ -62,14 +62,14 @@ const addFavoritePet = async (petId, favoriteId) => {
   } catch (error) {
     return error;
   }
-}
+};
 
-const addIgnorePet = async (petId, ignorePet) => {
+const addUserIgnorePet = async (petId, ignoreId) => {
   try {
     const result = await Pet.findByIdAndUpdate(petId, {
       $push: {
-        ignorePet: {
-          petId: ignorePet,
+        ignores: {
+          userId: ignoreId,
         },
       },
     });
@@ -77,13 +77,37 @@ const addIgnorePet = async (petId, ignorePet) => {
   } catch (error) {
     return error;
   }
-}
+};
+
+const getLikeNumber = async petId => {
+  try {
+    const result = await Pet.findById(petId);
+    return result.likes.length;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getNotIgnoredPet = async userId => {
+  try {
+    console.log(userId);
+    const result = await Pet.find({
+      "ignores.userId": { $ne: userId }
+    }
+    ).sort({ likes: -1 });
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
 
 module.exports = {
   add,
   get,
   deletePet,
   editPet,
-  addFavoritePet,
-  addIgnorePet,
-}
+  addUserLikePet,
+  addUserIgnorePet,
+  getLikeNumber,
+  getNotIgnoredPet,
+};
