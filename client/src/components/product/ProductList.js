@@ -43,7 +43,7 @@ class AddProduct extends Component {
     this.props.createProduct(newProduct, this.props.history);
   }
   editProduct = (e) => {
-    this.props.history.push('/product/add',{id: e.currentTarget.getElementsByTagName('input')[0].value});
+    this.props.history.push('/product/edit',{id: e.currentTarget.getElementsByTagName('input')[0].value});
   }
   onAddProduct =(e) => {
     this.props.history.push('/product/add',{id: ''});
