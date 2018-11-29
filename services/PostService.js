@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const ExpoService = require("./ExpoService");
+const AppUserService = require("./AppUserService");
 const mongoose = require("mongoose");
 //#region post controller
 const add = async data => {
@@ -276,8 +277,13 @@ const getVoteByType = async (postId, voteType) => {
 const vote = async (postId, newVote, notification) => {
   try {
     const oldVote = await findVote(postId, newVote.voterId);
+    const ownerId = notification.data.content.ownerId._id;
     if (!oldVote) {
       const result = await addVote(postId, newVote);
+      await AppUserService.addNotification({
+        userId: ownerId,
+        notification: notification.data,
+      });
       ExpoService.sendNotifications(notification);
       return result;
     } else {
@@ -285,6 +291,10 @@ const vote = async (postId, newVote, notification) => {
         return await removeVote(postId, newVote.voterId);
       } else {
         const result = await editVote(postId, newVote);
+        await AppUserService.addNotification({
+          userId: ownerId,
+          notification: notification.data,
+        });
         ExpoService.sendNotifications(notification);
         return result;
       }
