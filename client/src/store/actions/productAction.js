@@ -156,7 +156,7 @@ export const updateProductCategory = productCategories => dispatch => {
 };
 export const updateProduct = (product, history) => dispatch => {
   axios
-    .put(`/api/product/update`,product)
+    .put(`/api/product/update`, product)
     .then(res =>
       history.push('/product')
     )

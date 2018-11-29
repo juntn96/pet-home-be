@@ -25,6 +25,7 @@ import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
+import { getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 import { compose, withProps } from "recompose"
@@ -57,6 +58,7 @@ const MyMapComponent = compose(
 class Location extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.location.state.linkState)
     this.state = {
       name: '',
       description: '',
@@ -70,6 +72,7 @@ class Location extends Component {
 
   componentDidMount() {
     this.props.getProductParentCategories(this.props.auth.user.user_id);
+    this.props.getLocationCategories(Constants.PRIVATE_LOCATION);
     this.props.getLocations(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -172,15 +175,15 @@ class Location extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
+      <option key={index} value={item._id} >{item.name}</option>
     );
   }
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { productParentCategories , loading } = this.props.product;  
-    const { locationDetail } = this.props.location
-
+    // const { productParentCategories  } = this.props.product;  
+    const { locationDetail } = this.props.locationApp
+    const { locationCategories, loading } = this.props.locationApp;  
     const content = () => {
       switch(true) {
         case loadingU:
@@ -204,7 +207,7 @@ class Location extends Component {
               <Col xs="12" sm="12">
               <Card>
                 <CardHeader>
-                  <strong>Add Product</strong>
+                  <strong>Địa điểm</strong>
                 </CardHeader>
                 <CardBody>
                   <FormGroup row className="my-0 mt-2">
@@ -216,7 +219,7 @@ class Location extends Component {
                           {content()}
                         </div>                        
                       </div>
-                      <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
+                      <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
                 <FormGroup>
@@ -229,7 +232,7 @@ class Location extends Component {
                     value={this.state.name}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="company">Địa chỉ</Label>
@@ -241,12 +244,12 @@ class Location extends Component {
                     value={this.state.address}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0 mt-3">
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
-                    { productParentCategories === null || loading ? <Spinner /> :   
+                    { locationCategories === null || loading ? <Spinner /> :   
                     <Input 
                       type="select" 
                       name="ccyear" 
@@ -254,7 +257,7 @@ class Location extends Component {
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
-                      {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
+                      { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
                     </Col>
@@ -308,10 +311,10 @@ const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
   product: state.product,
-  location: state.locationApp
+  locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { getLocations, getProductParentCategories, getProductDetailById })(withRouter(Location));
+export default connect(mapStateToProps, { getLocations, getLocationCategories, getProductParentCategories, getProductDetailById })(withRouter(Location));
 
 
 

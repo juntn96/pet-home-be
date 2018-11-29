@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import { Link } from 'react-router-dom';
+import { getLocations } from '../../store/actions/locationAction';
 import { logoutUser } from '../../store/actions/authActions';
 import Img from 'react-image';
 
@@ -20,8 +21,14 @@ class DefaultHeader extends Component {
     this.props.logoutUser();
   }
  
-  render() {
+  componentDidMount() {
+    this.props.getLocations(this.props.auth.user.user_id);
+  }
 
+  render() {
+    console.log(this.props);
+    const { locationDetail } = this.props.locationApp
+    // console.log(locationDetail);
     // const { children, ...attributes } = this.props;
     return (
       <React.Fragment>
@@ -34,7 +41,10 @@ class DefaultHeader extends Component {
           </NavItem> */}
           <NavItem className="px-3">
             {/* <NavLink href="/location">Thông tin địa điểm</NavLink> */}
-            <Link style={{textDecoration:'none'}} to="/locationDetail">Thông tin địa điểm</Link>
+            <Link style={{textDecoration:'none'}} to={{
+                                                    pathname: '/locationDetail',
+                                                    state: { linkState: locationDetail }
+                                                  }}>Thông tin địa điểm</Link>
           </NavItem>
           {/* <NavItem className="px-3">
             <NavLink href="#">Settings</NavLink>
@@ -69,6 +79,7 @@ DefaultHeader.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { logoutUser })(DefaultHeader);
+export default connect(mapStateToProps, { getLocations, logoutUser })(DefaultHeader);

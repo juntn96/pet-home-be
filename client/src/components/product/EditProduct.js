@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getProductParentCategories ,getProductDetailById, updateProduct} from '../../store/actions/productAction';
+import { getProductParentCategories , updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -20,6 +20,7 @@ import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
 import Images from './../uploadImage/Images'
+import ImageUpdate from './../uploadImage/ImageUpdate'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
@@ -29,24 +30,24 @@ const toastColor = {
   text: '#fff' 
 }
 
-
 class EditProduct extends Component {
   constructor(props) {
     super(props);
+    const { _id, name, images, price, description, typeId} = this.props.location.state
     this.state = {
-      name: '',
-      description: '',
-      price: 0,
-      typeProductCategory: '',
+      id: _id,
+      name,
+      description,
+      price,
+      typeProductCategory: typeId,
       loadingU: true,
       uploading: false,
-      images: [],
+      images: images,
       isUpdate: true
     };
-    
   }
+
   componentDidMount() {
-    this.props.getProductDetailById(this.props.location.state.id)
     this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
@@ -59,15 +60,6 @@ class EditProduct extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
-      return {
-        name: nextProps.product.productDetail.productDetail.name,
-        description: nextProps.product.productDetail.productDetail.description,
-        price: nextProps.product.productDetail.productDetail.price,
-        typeProductCategory: nextProps.product.productDetail.productDetail.typeProductCategory,
-        images: nextProps.product.productDetail.productDetail.images,
-      }
-    }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
     }else return null
@@ -92,16 +84,16 @@ class EditProduct extends Component {
       return false;
     }
     
-    let imagesUrl =this.state.images[0].url !== undefined? this.state.images.map( item => item.url):this.state.images;
+    let imagesUrl = this.state.images;
     const newProduct = {
-      id: this.props.location.state.id,
+      id: this.state.id,
       name: this.state.name,
-      ownerId: this.props.auth.user.user_id,
       typeId: this.state.typeProductCategory,
       description: this.state.description,
       price: this.state.price,
       images: imagesUrl
     };
+
     this.props.updateProduct(newProduct, this.props.history);
   }
 
@@ -111,7 +103,9 @@ class EditProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
+      // <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
+      <option key={index} value={item._id} >{item.name}</option>
+
     );
   }
 
@@ -173,7 +167,7 @@ class EditProduct extends Component {
   }
 
   filter = id => {
-    return this.state.images.filter(image => image.public_id !== id)
+    return this.state.images.filter(image => image !== id)
   }
 
   removeImage = id => {
@@ -191,30 +185,30 @@ class EditProduct extends Component {
     const content = () => {
       switch(true) {
         case loadingU:
-          return <WakeUp />
+          return  <WakeUp />
         case uploading:
-          return <SpinnerU />
+          return  <SpinnerU />
         case images.length > 0:
-          return <Images
-                  images={images}
-                  removeImage={this.removeImage} 
-                  onError={this.onError}
-                 />
+          return  <ImageUpdate
+                    images={images}
+                    removeImage={this.removeImage} 
+                    onError={this.onError}
+                  />
         default:
           return <Buttons onChange={this.onChangeU} />
       }
     }
     return (
       <div className="addProduct">
-          <div className="row">
-            <div className="col-md-8">           
-              <Col xs="12" sm="12">
-            <Card>
-              <CardHeader>
-                <strong>Sửa sản phẩm</strong>
-              </CardHeader>
-              <CardBody>
-              <FormGroup row className="my-0 mt-2">
+        <div className="row">
+          <div className="col-md-8">           
+            <Col xs="12" sm="12">
+              <Card>
+                <CardHeader>
+                  <strong>Sửa sản phẩm</strong>
+                </CardHeader>
+                <CardBody>
+                  <FormGroup row className="my-0 mt-2">
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Ảnh</Label>
                       <div className='container'>
@@ -223,56 +217,56 @@ class EditProduct extends Component {
                           {content()}
                         </div>                        
                       </div>
-                      <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
+                      <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="company">Tên sản phẩm</Label>
-                  <input
-                    type="text" ref='nameValidate1'
-                    className={classnames('form-control form-control-lg')}
-                    placeholder="Tên sản phẩm"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                  />
-                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
-                </FormGroup>
-                <FormGroup row className="my-0">
-                  <Col xs="6">
-                  <Label htmlFor="vat">Giá</Label>
-                  <div className="controls">
-                    <InputGroup className="input-prepend">
-                      <input ref='priceValidate1'
-                        type="text"
-                        className={classnames('form-control form-control-lg')}
-                        placeholder="Giá"
-                        name="price"
-                        value={this.state.price}
-                        onChange={this.onChange}
-                      />
-                      <InputGroupAddon addonType="append">
-                        <InputGroupText>vnđ</InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                    <div style={{display:'block'}} ref='priceValidate' class="invalid-feedback"></div>
-                  </div>
-                  </Col>
-                </FormGroup>
-                <FormGroup row className="my-0 mt-3">
-                  <Col xs="6">
-                    <Label htmlFor="ccyear">Loại</Label>
-                    { productParentCategories === null || loading ? <Spinner /> :   
-                    <Input 
-                      type="select" 
-                      name="ccyear" 
-                      id="ccyear"
-                      value={this.state.typeProductCategory}
-                      onChange={this.onChangeTypeProduct}
-                      >
-                      {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
-                    </Input>
-                    }
+                  <FormGroup>
+                    <Label htmlFor="company">Tên sản phẩm</Label>
+                    <input
+                      type="text" ref='nameValidate1'
+                      className={classnames('form-control form-control-lg')}
+                      placeholder="Tên sản phẩm"
+                      name="name"
+                      value={this.state.name}
+                      onChange={this.onChange}
+                    />
+                    <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
+                  </FormGroup>
+                  <FormGroup row className="my-0">
+                    <Col xs="6">
+                    <Label htmlFor="vat">Giá</Label>
+                    <div className="controls">
+                      <InputGroup className="input-prepend">
+                        <input ref='priceValidate1'
+                          type="text"
+                          className={classnames('form-control form-control-lg')}
+                          placeholder="Giá"
+                          name="price"
+                          value={this.state.price}
+                          onChange={this.onChange}
+                        />
+                        <InputGroupAddon addonType="append">
+                          <InputGroupText>vnđ</InputGroupText>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      <div style={{display:'block'}} ref='priceValidate' className="invalid-feedback"></div>
+                    </div>
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="my-0 mt-3">
+                    <Col xs="6">
+                      <Label htmlFor="ccyear">Loại</Label>
+                      { productParentCategories === null || loading ? <Spinner /> :   
+                        <Input 
+                          type="select" 
+                          name="ccyear" 
+                          id="ccyear"
+                          value={this.state.typeProductCategory}
+                          onChange={this.onChangeTypeProduct}
+                          >
+                          {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
+                        </Input>
+                      }
                     </Col>
                   </FormGroup>
                   <FormGroup row className="my-0 mt-3">
@@ -288,23 +282,22 @@ class EditProduct extends Component {
                           onChange={this.onChange}>
                         </textarea>
                     </Col>
-                  </FormGroup>
-                  
+                  </FormGroup>                   
                   <div style={{marginTop:20}}>
-                  <FormGroup row className="my-0">
-                    <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Lưu sản phẩm</Button>
-                    </Col>
-                    <Col col="5" sm="4" md="2" className="mb-xl-0">
-                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
-                    </Col>
-                  </FormGroup>
+                    <FormGroup row className="my-0">
+                      <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
+                        <Button block color="primary" onClick={this.onSubmit}>Lưu sản phẩm</Button>
+                      </Col>
+                      <Col col="5" sm="4" md="2" className="mb-xl-0">
+                        <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
+                      </Col>
+                    </FormGroup>
                   </div>
-              </CardBody>
-            </Card>
-          </Col>
-            </div>
+                </CardBody>
+              </Card>
+            </Col>
           </div>
+        </div>
       </div>
     );
   }
@@ -316,7 +309,7 @@ const mapStateToProps = state => ({
   product: state.product
 });
 
-export default connect(mapStateToProps, { getProductParentCategories, getProductDetailById, updateProduct })(withRouter(EditProduct));
+export default connect(mapStateToProps, { getProductParentCategories, updateProduct })(withRouter(EditProduct));
 
 
 

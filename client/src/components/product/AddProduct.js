@@ -165,7 +165,7 @@ class AddProduct extends Component {
   }
 
   removeImage = id => {
-    this.setState({ images: this.filter(id) })
+    this.setState({ images: this.filter(id) }, () => console.log(this.state.images))
   }
 
   onError = id => {
@@ -176,6 +176,7 @@ class AddProduct extends Component {
   render() {
     const { loadingU, uploading, images } = this.state
     const { productParentCategories , loading } = this.props.product;  
+    console.log(images)
     const content = () => {
       switch(true) {
         case loadingU:
@@ -183,6 +184,7 @@ class AddProduct extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
+          console.log(images)
           return <Images 
                   images={images}
                   removeImage={this.removeImage} 
