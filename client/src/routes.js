@@ -5,6 +5,7 @@ import ProductCategory from './components/product/ProductCategory';
 import EditProduct from './components/product/EditProduct';
 import Profile from './components/profile/Profile';
 import ChangePassword from './components/auth/ChangePassword';
+import UserList from './components/admin-dashboard/manage-users/UserList';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -23,7 +24,7 @@ const routes = [
     { path: '/profile', exact: true, name: 'Thông tin cá nhân', component: Profile },
     { path: '/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePassword },
 
-    { path: '/', exact: true, name: 'Trang Chủ', component: ProductList },
+    { path: '/admin/allusers', exact: true, name: 'Tất cả người dùng', component: UserList },
 
 ]
 export default routes;

@@ -6,6 +6,7 @@ import phoneReducer from './phoneReducer';
 import productReducer from './productReducer.js';
 import {RESET_STATE} from './../actions/types';
 import profileReducer from './profileReducer';
+import allUserReducer from './allUserReducer';
 
 const appReducer = combineReducers({
   auth: authReducer,
@@ -13,7 +14,8 @@ const appReducer = combineReducers({
   locationApp: locationReducer,
   sendCodeBySMS: phoneReducer,
   product: productReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  allusers: allUserReducer
 });
 
 export const rootReducer = (state, action) => {

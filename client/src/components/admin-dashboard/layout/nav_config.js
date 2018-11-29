@@ -2,7 +2,7 @@ export default {
     items: [
       {
         name: 'Quản lý người dùng',
-        url: '/admin/users',
+        url: '/admin/allusers',
         icon: 'icon-user',
       },
       {
