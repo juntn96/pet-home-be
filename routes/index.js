@@ -274,6 +274,8 @@ router.post("/image-upload", UploadController.uploadImage);
 //get all user: ADMIN
 router.get("/admin/users", UserController.getAllUsers);
 router.put("/admin/users", UserController.banUserById);
+// get
+router.get("/admin/users/status/:id", UserController.getStatusUserById);
 
 
 module.exports = router;

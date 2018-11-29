@@ -34,7 +34,7 @@ class Login extends Component {
         if(nextProps.auth.user.role === 1){
           nextProps.history.push('/product');
         } else {
-          nextProps.history.push('/admin');
+          nextProps.history.push('/admin/allusers');
         }
     }
     if (nextProps.errors) {

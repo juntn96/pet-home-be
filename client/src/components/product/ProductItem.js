@@ -7,7 +7,7 @@ import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationIt
 import Img from 'react-image';
 import Spinner from '../common/Spinner';
 
-class AddProduct extends Component {
+class ProductItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,7 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    this.props.getProductByIds(this.props.auth.user.user_id); 
+    // this.props.getProductByIds(this.props.auth.user.user_id); 
   }
 
   onChangeTypeProduct = (e) => {
@@ -129,4 +129,4 @@ const mapStateToProps = state => ({
   product: state.product,
 });
 
-export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(AddProduct));
+export default connect(mapStateToProps, { createProduct, getProductByIds,deleteProduct })(withRouter(ProductItem));
