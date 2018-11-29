@@ -21,22 +21,9 @@ const petSchema = mongoose.Schema({
 		type: String,
 		ref: 'User'
 	},
-	typeId: {
+	breed: {
 		type: String,
-		ref: 'LocationCategory'
 	},
-	favoritePet: [{
-		petId: {
-			type: String,
-		},
-		_id: false,
-	}],
-	ignorePet: [{
-		petId: {
-			type: String,
-		},
-		_id: false,
-	}],
 	gender: {
 		type: String,
 	},
@@ -44,6 +31,16 @@ const petSchema = mongoose.Schema({
 		type: String,
 	},
 	images: [imageSchema],
+	likes: [{
+		userId: {
+			type: String,
+		},
+	}],
+	ignores: [{
+		userId: {
+			type: String,
+		},
+	}],
 	deletionFlag: {
 		type: Boolean,
 		default: false,

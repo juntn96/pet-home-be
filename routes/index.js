@@ -21,6 +21,7 @@ const passport = require("passport");
 const LocationModel = require("./../models/Location");
 //#region trunghp
 const PetController = require("../controllers/PetController");
+const ReportController = require("../controllers/ReportController");
 //#endregion
 
 const path = require("path");
@@ -263,8 +264,16 @@ router.post("/pet/add", PetController.add);
 router.get("/pet/get", PetController.get);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
-router.post("/pet/addFavoritePet", PetController.addFavoritePet);
-router.post("/pet/addIgnorePet", PetController.addIgnorePet);
+router.post("/pet/addUserLikePet", PetController.addUserLikePet);
+router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
+router.get("/pet/getLikeNumber", PetController.getLikeNumber);
+router.get("/pet/getNotIgnoredPet", PetController.getNotIgnoredPet);
+//#endregion
+
+//#region report route
+router.post("/report/addReport", ReportController.addReport);
+router.post("/report/updateReportStatus", ReportController.updateReportStatus);
+router.get("/report/getReportedPost", PostController.getReportedPost);
 //#endregion
 
 // Upload to Cloudinary

@@ -1,5 +1,8 @@
 const Post = require("../models/Post");
 const ExpoService = require("./ExpoService");
+const ReportService = require("../services/ReportService");
+const Report = require("../models/Report");
+
 //#region post controller
 const add = async data => {
   try {
@@ -273,7 +276,7 @@ const vote = async (postId, newVote) => {
         return await editVote(postId, newVote);
       }
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const addVote = async (postId, vote) => {

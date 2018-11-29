@@ -9,8 +9,8 @@ const forgotPassword = async function (req, res) {
 		ReS(res, { message: 'Bad request' }, 400);
 	}
 	else {
-    let objUser = await User.findOne({ phoneNumber: req.params.phoneNumber });
-    
+		let objUser = await User.findOne({ phoneNumber: req.params.phoneNumber });
+
 		if (objUser) {
 			const newPassword = 'Ph@' + Math.floor(10000 + 89999 * Math.random());
 			objUser.set({ password: newPassword });
@@ -18,7 +18,7 @@ const forgotPassword = async function (req, res) {
 			if (objUserReturn) {
 				let [errors, status] = await to(phoneService.sendSMSPassword(req.params.phoneNumber, newPassword));
 				if (errors) {
-					return ReEM2(res, 'Có lỗi khi gửi message!',400);
+					return ReEM2(res, 'Có lỗi khi gửi message!', 400);
 				} else {
 					return ReS(res, {
 						status: true,
@@ -35,13 +35,13 @@ const forgotPassword = async function (req, res) {
 module.exports.forgotPassword = forgotPassword;
 
 const getUserById = async function (req, res, next) {
-  const userId = req.params.userId;
+	const userId = req.params.userId;
 	if (!userId) {
 		ReE(res, {
 			status: false,
 			message: 'Vui lòng nhập userId',
 		}, 400);
-  }
+	}
 
 	User.find({
 		_id: userId,
@@ -56,11 +56,11 @@ const getUserById = async function (req, res, next) {
 		}
 		let user = results[0];
 		if (user && user.role === constants.ROLE_LOCATION_MANAGER) {
-          ReS(res, {
-            status: true,
-            user: user.toWeb(),
-            locationDetail: null,
-          }, 200);
+			ReS(res, {
+				status: true,
+				user: user.toWeb(),
+				locationDetail: null,
+			}, 200);
 		} else {
 			ReS(res, {
 				status: true,
