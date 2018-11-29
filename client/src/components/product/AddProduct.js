@@ -211,7 +211,7 @@ class AddProduct extends Component {
                         {content()}
                       </div>                        
                     </div>
-                    <div style={{display:'block'}} ref='imageValidate' class="invalid-feedback"></div>
+                    <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                   </Col>
                 </FormGroup>
                 <FormGroup>
@@ -224,7 +224,7 @@ class AddProduct extends Component {
                     value={this.state.name}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='nameValidate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0">
                   <Col xs="6">
@@ -243,7 +243,7 @@ class AddProduct extends Component {
                         <InputGroupText>vnđ</InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
-                    <div ref='priceValidate' style={{display:'block'}}  class="invalid-feedback"></div>
+                    <div ref='priceValidate' style={{display:'block'}}  className="invalid-feedback"></div>
                   </div>
                   </Col>
                 </FormGroup>

@@ -68,7 +68,7 @@ class App extends Component {
               <PrivateRoute path="/product/category" component={DefaultLayout} />
               <PrivateRoute path="/locationDetail" component={DefaultLayout} />
               {/* admin */}
-              <PrivateRoute path="/admin" component={DefaultLayoutAdmin}/>
+              <PrivateRoute path="/admin/allusers" component={DefaultLayoutAdmin}/>
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>

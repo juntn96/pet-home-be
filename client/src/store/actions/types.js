@@ -37,4 +37,6 @@ export const GET_PROFILE = "GET_PROFILE";
 
 
 // FOR ADMIN ROLE
+export const GET_ALL_USERS = "GET_ALL_USERS";
 
+export const BAN_USER_BY_ID = "BAN_USER_BY_ID";
