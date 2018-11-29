@@ -278,7 +278,7 @@ const vote = async (postId, newVote, notification) => {
     const oldVote = await findVote(postId, newVote.voterId);
     if (!oldVote) {
       const result = await addVote(postId, newVote);
-      await ExpoService.sendNotifications(notification);
+      ExpoService.sendNotifications(notification);
       return result;
     } else {
       if (newVote.voteType === oldVote.voteType) {
