@@ -6,7 +6,7 @@ import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import UserItem from './UserItem'
 
-class UserList extends Component {
+class ReportList extends Component {
 
   constructor(props){
     super(props);
@@ -47,7 +47,7 @@ class UserList extends Component {
         <Col xs="12" lg="8">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Danh sách tài khoản
                 <input type="text" 
                   className="form-control" 
                   style={{float:"right", width:"20%"}} 
@@ -57,7 +57,7 @@ class UserList extends Component {
               </CardHeader>
               <CardBody>
               { users.allusers.users === undefined  ? <Spinner /> :
-                <Table striped >
+                <Table responsive>
                   <thead>
                   <tr>
                     <th>Ảnh</th>
@@ -85,5 +85,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(UserList));
+export default connect(mapStateToProps, { getAllUsers})(withRouter(ReportList));
 

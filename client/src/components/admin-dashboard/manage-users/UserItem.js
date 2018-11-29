@@ -27,7 +27,8 @@ class UserItem extends Component {
   _requestGetDelectionFlag = () => {
     axios.get(`/api/admin/users/status/${this.props.userDetail._id}`).then(res => {
       this.setState({
-        deletionFlag: res.data.deletionFlag
+        deletionFlag: res.data.deletionFlag,
+        isLoading: false
       })
     }).catch(err =>{
       //todo
@@ -35,6 +36,9 @@ class UserItem extends Component {
   }
 
   _onClickBanUser = () => {
+    this.setState({
+      isLoading: true,
+    })
     this._requestBanUser();
   }
 
@@ -46,12 +50,12 @@ class UserItem extends Component {
     const text = deletionFlag ? "Không hoạt động" : "Đang hoạt động";
     const {userDetail} = this.props
     return (
-      <tr key={key}>
+      <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}}>
         <td><Img src={userDetail.avatar} style={{height:55,width:55}}/></td>
-        <td>{userDetail.appName}</td>
-        <td><Badge color={style}>{text}</Badge></td>
-        {this.state.deletionFlag?<td><Button color="success" size="sm" onClick={this._onClickBanUser}>Bỏ cấm</Button></td>
-          :<td><Button color="warning" size="sm" onClick={this._onClickBanUser}>Cấm</Button></td>}
+        <td style={{verticalAlign:"middle"}}>{userDetail.appName}</td>
+        <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
+        {this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Bỏ cấm</Button></td>
+          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Cấm</Button></td>}
       </tr>
     )
   }

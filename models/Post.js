@@ -9,15 +9,6 @@ let commentSchema = mongoose.Schema({
   },
 });
 
-let reportSchema = mongoose.Schema({
-  userReportId: { type: String, ref: "User" },
-  content: { type: String },
-  createdAt: {
-    type: Number,
-    default: new Date().getTime(),
-  },
-});
-
 let imageSchema = mongoose.Schema({
   url: { type: String },
   width: {
@@ -52,7 +43,6 @@ let postSchema = mongoose.Schema({
   votes: [voteSchema],
   comments: [commentSchema],
   images: [imageSchema],
-  reports: [reportSchema],
   createdAt: {
     type: Number,
     default: new Date().getTime(),
