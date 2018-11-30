@@ -29,7 +29,6 @@ class Login extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log(nextProps.errors)
     if (nextProps.auth.isAuthenticated) {
         if(nextProps.auth.user.role === 1){
           nextProps.history.push('/product');

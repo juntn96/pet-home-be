@@ -19,7 +19,6 @@ import {
 import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
-import Images from './../uploadImage/Images'
 import ImageUpdate from './../uploadImage/ImageUpdate'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
@@ -33,6 +32,7 @@ const toastColor = {
 class EditProduct extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.location.state);
     const { _id, name, images, price, description, typeId} = this.props.location.state
     this.state = {
       id: _id,
@@ -40,9 +40,9 @@ class EditProduct extends Component {
       description,
       price,
       typeProductCategory: typeId,
+      images: images,
       loadingU: true,
       uploading: false,
-      images: images,
       isUpdate: true
     };
   }

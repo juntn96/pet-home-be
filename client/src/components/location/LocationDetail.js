@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getProductParentCategories ,getProductDetailById } from '../../store/actions/productAction';
 import { getLocations } from '../../store/actions/locationAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -20,7 +19,7 @@ import {
 import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
-import Images from './../uploadImage/Images'
+import ImageUpdate from './../uploadImage/ImageUpdate'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
@@ -58,12 +57,17 @@ const MyMapComponent = compose(
 class Location extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.location.state.linkState)
+    console.log(this.props.location.state.linkState[0])
+
+    const {description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState[0];
     this.state = {
-      name: '',
-      description: '',
-      address: '',
-      typeProductCategory: '',
+      address ,
+      images,
+      location,
+      name,
+      systemRating,
+      typeLocationCategory: typeId ,
+      description,
       loadingU: true,
       uploading: false,
       images: []
@@ -71,9 +75,7 @@ class Location extends Component {
   }
 
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id);
     this.props.getLocationCategories(Constants.PRIVATE_LOCATION);
-    this.props.getLocations(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -179,10 +181,12 @@ class Location extends Component {
     );
   }
 
+  onChangeTypeLocation = e => {
+    this.setState({typeLocationCategory: e.target.value,isUpdate: false});
+  }
+
   render() {
     const { loadingU, uploading, images } = this.state
-    // const { productParentCategories  } = this.props.product;  
-    const { locationDetail } = this.props.locationApp
     const { locationCategories, loading } = this.props.locationApp;  
     const content = () => {
       switch(true) {
@@ -191,7 +195,7 @@ class Location extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          return <Images 
+          return <ImageUpdate 
                   images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
@@ -254,8 +258,8 @@ class Location extends Component {
                       type="select" 
                       name="ccyear" 
                       id="ccyear"
-                      value={this.state.typeProductCategory}
-                      onChange={this.onChangeTypeProduct}
+                      value={this.state.typeLocationCategory}
+                      onChange={this.onChangeTypeLocation}
                       >
                       { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
@@ -279,7 +283,7 @@ class Location extends Component {
                   <div style={{marginTop:20}}>
                     <FormGroup row className="my-0">
                       <Col col="6" sm="4" md="4" className="mb-3 mb-xl-0">
-                        <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
+                        <Button block color="primary" onClick={this.onSubmit}>Cập nhật</Button>
                       </Col>
                       <Col col="5" sm="4" md="2" className="mb-xl-0">
                         <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
@@ -314,7 +318,7 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { getLocations, getLocationCategories, getProductParentCategories, getProductDetailById })(withRouter(Location));
+export default connect(mapStateToProps, { getLocationCategories })(withRouter(Location));
 
 
 

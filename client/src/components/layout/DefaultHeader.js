@@ -26,9 +26,7 @@ class DefaultHeader extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { locationDetail } = this.props.locationApp
-    // console.log(locationDetail);
     // const { children, ...attributes } = this.props;
     return (
       <React.Fragment>
@@ -36,19 +34,12 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="d-md-down-none" navbar>
-          {/* <NavItem className="px-3">
-            <NavLink href="/">Dashboard</NavLink>
-          </NavItem> */}
           <NavItem className="px-3">
-            {/* <NavLink href="/location">Thông tin địa điểm</NavLink> */}
             <Link style={{textDecoration:'none'}} to={{
                                                     pathname: '/locationDetail',
                                                     state: { linkState: locationDetail }
                                                   }}>Thông tin địa điểm</Link>
           </NavItem>
-          {/* <NavItem className="px-3">
-            <NavLink href="#">Settings</NavLink>
-          </NavItem> */}
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
