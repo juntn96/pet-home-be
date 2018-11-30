@@ -84,7 +84,7 @@ class EditProduct extends Component {
       return false;
     }
     
-    let imagesUrl = this.state.images;
+    let imagesUrl = this.state.images.map( item => item.url!== undefined ?item.url: item);
     const newProduct = {
       id: this.state.id,
       name: this.state.name,
@@ -167,7 +167,10 @@ class EditProduct extends Component {
   }
 
   filter = id => {
-    return this.state.images.filter(image => image !== id)
+    if( this.state.images[0].secure_url !== undefined )
+      return this.state.images.filter(image => image.secure_url!== id )
+    else
+      return this.state.images.filter(image => image!== id )
   }
 
   removeImage = id => {
