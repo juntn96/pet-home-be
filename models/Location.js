@@ -19,11 +19,21 @@ const locationSchema = mongoose.Schema({
     type: String,
     ref: 'LocationCategory'
   },
-  images: [{
-    type: String
-  }],
+  images: [
+    {
+      public_id: String,
+      width: Number,
+      height: Number,
+      format: String,
+      bytes: Number,
+      secure_url: String
+    }
+  ],
   systemRating: {
     type: Number
+  },
+  description: {
+    type: String
   },
 	deletionFlag: {
 		type: Boolean,

@@ -4,6 +4,8 @@ import { Container } from 'reactstrap';
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
     AppAside,
     AppBreadcrumb,
@@ -21,7 +23,11 @@ import navigation from './nav_config';
 // routes config
 import routes from './../../routes';
 
+const propTypes = {
+  children: PropTypes.node,
+};
 
+const defaultProps = {};
 class DefaultLayout extends Component {
   render() {
     return (
@@ -46,7 +52,7 @@ class DefaultLayout extends Component {
                       <route.component {...props} />
                     )} />)
                     : (null);
-                },
+                }
               )}
             </Switch>
             </Container>
@@ -63,4 +69,11 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+DefaultLayout.propTypes = propTypes;
+DefaultLayout.defaultProps = defaultProps;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(DefaultLayout);
