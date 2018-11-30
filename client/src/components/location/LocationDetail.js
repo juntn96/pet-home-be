@@ -14,17 +14,18 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Button
+  Button,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
-import ImageUpdate from './../uploadImage/ImageUpdate'
+import Images from './../uploadImage/Images'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
-import { getLocationCategories } from '../../store/actions/locationAction'
+import { updateLocation, getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 import { compose, withProps } from "recompose"
@@ -53,14 +54,14 @@ const MyMapComponent = compose(
   </GoogleMap>
 )
 
-
 class Location extends Component {
   constructor(props) {
     super(props);
     console.log(this.props.location.state.linkState[0])
 
-    const {description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState[0];
+    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState[0];
     this.state = {
+      _id,
       address ,
       images,
       location,
@@ -70,7 +71,8 @@ class Location extends Component {
       description,
       loadingU: true,
       uploading: false,
-      images: []
+      images: images,
+      modal: false
     };
   }
 
@@ -97,8 +99,46 @@ class Location extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.locationApp !== prevProps.locationApp) {
+      this.setState({
+        modal: !this.state.modal
+      });
+    }
+  }
+
   onSubmit = e => {
-    
+    e.preventDefault();
+    if(this.state.name ===''
+    ||this.state.address ===''){
+      if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên địa điểm';this.refs.nameValidate1.classList.add('is-invalid')}
+      if(this.state.address ==='') {this.refs.addressValidate.innerHTML ='Vui lòng nhập địa chỉ';this.refs.addressValidate1.classList.add('is-invalid')}
+      if(this.state.description ===0) {this.refs.descriptionValidate.innerHTML ='Vui lòng mổ tả';this.refs.descriptionValidate1.classList.add('is-invalid')}
+      return false;
+    }
+
+    const { name, _id, typeId, description, address, location, images} = this.state
+
+    const updatedImages = images.map(item => { 
+      return {
+        public_id: item.public_id,
+        width: item.width,
+        height: item.height,
+        format: item.format,
+        bytes: item.bytes,
+        secure_url: item.secure_url
+    }})
+
+    const updatedLocation = {
+      name,
+      _id,
+      typeId,
+      description,
+      address,
+      images: updatedImages,
+      location: this.state.location
+    };
+    this.props.updateLocation(updatedLocation, this.props.history);
   }
 
   onCancel = (e) => {
@@ -111,8 +151,8 @@ class Location extends Component {
     const errs = [] 
     const files = Array.from(e.target.files)
 
-    if (files.length > 3) {
-      const msg = 'Only 3 images can be uploaded at a time'
+    if (files.length > 5) {
+      const msg = 'Bạn chỉ co thể tải lên 5 ảnh'
       return this.toast(msg, 'custom', 2000, toastColor)  
     }
 
@@ -122,11 +162,11 @@ class Location extends Component {
     files.forEach((file, i) => {
 
       if (types.every(type => file.type !== type)) {
-        errs.push(`'${file.type}' is not a supported format`)
+        errs.push(`'${file.type}' không phải dịnh dạng phù hợp`)
       }
 
       if (file.size > 150000) {
-        errs.push(`'${file.name}' is too large, please pick a smaller file`)
+        errs.push(`'${file.name}' quá lớn, bạn hãy chọn file kích cỡ nhỏ hơn`)
       }
 
       formData.append(i, file)
@@ -185,9 +225,24 @@ class Location extends Component {
     this.setState({typeLocationCategory: e.target.value,isUpdate: false});
   }
 
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  getLatLong = (event) =>{    
+    var lat = event.latLng.lat(), long = event.latLng.lng();
+    this.setState({
+      latlong:{
+        lat:lat, lng:long
+      }
+    });
+  }
+
   render() {
     const { loadingU, uploading, images } = this.state
-    const { locationCategories, loading } = this.props.locationApp;  
+    const { locationCategories, loading, error } = this.props.locationApp;  
     const content = () => {
       switch(true) {
         case loadingU:
@@ -195,7 +250,7 @@ class Location extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          return <ImageUpdate 
+          return <Images 
                   images={images}
                   removeImage={this.removeImage} 
                   onError={this.onError}
@@ -208,7 +263,7 @@ class Location extends Component {
       <div className="addProduct">
         <div className="row">
           <div className="col-md-7">           
-              <Col xs="12" sm="12">
+            <Col xs="12" sm="12">
               <Card>
                 <CardHeader>
                   <strong>Địa điểm</strong>
@@ -240,7 +295,7 @@ class Location extends Component {
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="company">Địa chỉ</Label>
-                  <input ref='nameValidate1'
+                  <input ref='addressValidate1'
                     type="text"
                     className={classnames('form-control form-control-lg')}
                     placeholder="Địa chỉ"
@@ -248,7 +303,7 @@ class Location extends Component {
                     value={this.state.address}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0 mt-3">
                   <Col xs="6">
@@ -270,6 +325,7 @@ class Location extends Component {
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Mô tả</Label>
                         <textarea
+                          ref='descriptionValidate1'
                           className="form-control form-control-lg"
                           name="description" 
                           id="textarea-input" 
@@ -278,6 +334,7 @@ class Location extends Component {
                           value={this.state.description}
                           onChange={this.onChange}>
                         </textarea>
+                        <div style={{display:'block'}} ref='descriptionValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
                   <div style={{marginTop:20}}>
@@ -293,19 +350,30 @@ class Location extends Component {
                 </CardBody>
               </Card>
             </Col>
+          </div> 
+          <div className="col-md-7">
             <Col xs="6" sm="6">
-            {/* <div className="google-map">
-              <MyMapComponent
-                onMarkerClick={this.handleMarkerClick}
-                onMapClick={this.getLatLong}
-                getLatLong={this.state.latlong}
-                long
-                lat
-              />
-              </div> */}
+                <div className="google-map">
+                  <MyMapComponent
+                    onMarkerClick={this.handleMarkerClick}
+                    onMapClick={this.getLatLong}
+                    getLatLong={this.state.latlong}
+                    long={this.state.location[0]}
+                    lat={this.state.location[1]}
+                  />
+                </div>
             </Col>
-          </div>            
+          </div>           
         </div>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Lỗi</ModalHeader>
+          <ModalBody>
+            Đã có lỗi xảy ra trong quá trình cập nhật
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggle}>Đóng</Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
@@ -318,7 +386,7 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { getLocationCategories })(withRouter(Location));
+export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(Location));
 
 
 

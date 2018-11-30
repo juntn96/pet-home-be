@@ -82,3 +82,10 @@ const searchDist = async (locationDetail) => {
 	}		
 };
 module.exports.searchDist = searchDist;
+
+const updateLocation = async (locationDetail) => {
+  console.log(locationDetail);
+  [error, locaion] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
+  if (error) TE(error);
+}
+module.exports.updateLocation= updateLocation;

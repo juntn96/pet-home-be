@@ -72,3 +72,14 @@ const searchDist = async function (req, res) {
   }  				
 };
 module.exports.searchDist = searchDist;
+
+const updateLocation = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  let error, location;
+  [error, location] = await to(locationService.updateLocation(req.body));
+  if (error) return ReE(res, 'Không cập nhật địa điểm', 422);
+  return ReS(res, {
+    message: 'Update location successfully'
+  }, 200);
+}
+module.exports.updateLocation = updateLocation;

@@ -40,12 +40,6 @@ router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 // }), UserController.getUserById);
 router.get("/users/detail/:userId", UserController.getUserById);
 
-//Location Category
-router.get(
-  "/location/locationCategories",
-  LocationController.getLocationCategories
-);
-
 //Product
 router.post(
   "/product/add",
@@ -65,12 +59,6 @@ router.get(
 //User
 router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 router.get("/users/detail/:userId", UserController.getUserById);
-
-//Location Category
-router.get(
-  "/location/locationCategories/:type",
-  LocationController.getLocationCategories
-);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
@@ -157,9 +145,16 @@ router.get(
   }),
   LocationController.getLocationProfile
 );
+router.put(
+  "/location/update",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  LocationController.updateLocation
+);
 
 router.get('/location/searchNear/:long/:lat/:radius', LocationController.searchNearByLatLong);
-router.get('/location/searchDist/:long/:lat/:radius', LocationController.searchDist)
+router.get('/location/searchDist/:long/:lat/:radius', LocationController.searchDist);
 
 //Product
 router.put(
