@@ -4,6 +4,7 @@ import {
   CLEAR_ERRORS,
   GET_LOCATIONCATEGORIES,
   CATEGORY_LOADING,
+  GET_LOCATION_DETAIL
 } from './types';
 
 // Get Posts
@@ -20,6 +21,24 @@ export const getLocationCategories = type => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_LOCATIONCATEGORIES,
+        payload: null
+      })
+    );
+};
+
+// Get location detail
+export const getLocations = ownerId => dispatch => {
+  axios
+    .get(`/api/location/detail/${ownerId}`)
+    .then(res =>
+      dispatch({
+        type: GET_LOCATION_DETAIL,
+        payload: res.data.locationProfile
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_LOCATION_DETAIL,
         payload: null
       })
     );

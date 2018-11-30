@@ -1,4 +1,7 @@
 const Post = require("../models/Post");
+const ExpoService = require("./ExpoService");
+const ReportService = require("../services/ReportService");
+const Report = require("../models/Report");
 
 //#region post controller
 const add = async data => {
@@ -16,7 +19,7 @@ const get = async () => {
   try {
     const result = await Post.find({ status: { $eq: 1 } })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
     return result;
   } catch (error) {
@@ -41,7 +44,7 @@ const getPublicByTypeId = async typeId => {
       $and: [{ typeId }, { status: 1 }],
     })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
     return result;
   } catch (error) {
@@ -53,7 +56,7 @@ const getByOwnerId = async ownerId => {
   try {
     const result = await Post.find({ ownerId })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
     return result;
   } catch (error) {
@@ -160,11 +163,14 @@ const removeImage = async (postId, imageId) => {
 //#region comment controller
 const getComments = async postId => {
   try {
-    const result = await Post.findById(postId).populate("comments.userCommentId", {
-      _id: 1,
-      appName: 1,
-      avatar: 1,
-    });
+    const result = await Post.findById(postId).populate(
+      "comments.userCommentId",
+      {
+        _id: 1,
+        appName: 1,
+        avatar: 1,
+      }
+    );
     return result.comments;
   } catch (error) {
     throw error;
@@ -270,7 +276,7 @@ const vote = async (postId, newVote) => {
         return await editVote(postId, newVote);
       }
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const addVote = async (postId, vote) => {
@@ -381,6 +387,17 @@ const addReport = async (postId, report) => {
 };
 //#endregion
 
+const testNotification = async p => {
+  try {
+    const result = await ExpoService.sendNotifications("1", [
+      "ExponentPushToken[OUu4s1LnwxqRi170yT_G4-]",
+    ]);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const t = async p => {
   try {
     //todo
@@ -413,4 +430,6 @@ module.exports = {
   /////////////
   addReport,
   getReports,
+  //
+  testNotification,
 };

@@ -25,6 +25,9 @@ const locationSchema = mongoose.Schema({
   systemRating: {
     type: Number
   },
+  description: {
+    type: String
+  },
 	deletionFlag: {
 		type: Boolean,
 		default: false,

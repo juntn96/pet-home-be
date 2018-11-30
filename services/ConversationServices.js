@@ -44,8 +44,7 @@ const getMessagesInConversation = async conversationId => {
       "messages.sender",
       { _id: 1, appName: 1, avatar: 1 }
     );
-    let messages = result.messages.sort((a, b) => a.createdAt < b.createdAt);
-    return messages;
+    return result;
   } catch (error) {
     throw error;
   }

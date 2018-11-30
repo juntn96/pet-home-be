@@ -1,21 +1,46 @@
 const mongoose = require('mongoose');
 
+const imageSchema = mongoose.Schema({
+	url: { type: String },
+	width: {
+		type: Number,
+		default: 0,
+	},
+	height: {
+		type: Number,
+		default: 0,
+	},
+	publicId: { type: String },
+});
+
 const petSchema = mongoose.Schema({
-  address: [childRecords],
 	name: {
 		type: String,
-  },
-  ownerId: {
-    type: String,
-    ref: 'User'
-  },
-  typeId: { 
-    type: String, 
-    ref: 'LocationCategory'
-  },
-  favoritePet: [{
-    type: String
-  }],
+	},
+	ownerId: {
+		type: String,
+		ref: 'User'
+	},
+	breed: {
+		type: String,
+	},
+	gender: {
+		type: String,
+	},
+	branch: {
+		type: String,
+	},
+	images: [imageSchema],
+	likes: [{
+		userId: {
+			type: String,
+		},
+	}],
+	ignores: [{
+		userId: {
+			type: String,
+		},
+	}],
 	deletionFlag: {
 		type: Boolean,
 		default: false,
@@ -30,7 +55,7 @@ const petSchema = mongoose.Schema({
 	},
 });
 
-let Location = module.exports = mongoose.model('Pet', petSchema);
+let Pet = module.exports = mongoose.model('Pet', petSchema);
 
 petSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();

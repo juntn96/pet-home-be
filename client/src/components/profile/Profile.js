@@ -1,95 +1,101 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductByIds, getProfile } from '../../store/actions/productAction';
-import PropTypes from 'prop-types';
-import { withRouter,Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination,Button, PaginationItem, PaginationLink, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
-import Img from 'react-image';
-import Spinner from '../common/Spinner';
+import {  getProfile } from '../../store/actions/profileAction';
+import { withRouter } from 'react-router-dom';
+import {  Card, CardBody, CardHeader, Col, Row} from 'reactstrap';
+import { compose, withProps } from "recompose"
+import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
 
+const MyMapComponent = compose(
+  withProps({
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDZM7hoDN16cKoeHixvIrEyzEU-zlLzA10&v=3.exp&libraries=geometry,drawing,places",
+    loadingElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `100%` }} />,
+    mapElement: <div style={{ height: `100%` }} />,
+  }),
+  withScriptjs,
+  withGoogleMap
+)((props) =>
+  <GoogleMap
+    defaultZoom={8}
+    defaultCenter={{ lat: 21.029210, lng: 105.852470 }}
+  >
+  {<Marker position={props.getLatLong} />}
+  </GoogleMap>
+)
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      desciption: '',
-      price: 0,
-      image: []
+      address:'' ,
+      systemRating: null,
+      location:  [],
+      avatar: '',
+      phoneNumber: null,
+      role: null
     };
   }
 
   componentDidMount() {
-    this.props.getProductByIds(this.props.auth.user.user_id); 
+    this.props.getProfile(this.props.auth.user.user_id)
   }
-
-  onChangeTypeProduct = (e) => {
-    this.setState({typeLocation: e.target.value});
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.profile.profile.locationProfile !== undefined ){
+      console.log(nextProps.profile.profile.locationProfile )
+      return {
+        address: nextProps.profile.profile.locationProfile.address ,
+        systemRating: nextProps.profile.profile.locationProfile.systemRating,
+        location: nextProps.profile.profile.locationProfile.location ,
+        avatar: nextProps.profile.profile.locationProfile.ownerId.avatar ,
+        phoneNumber: nextProps.profile.profile.locationProfile.ownerId.phoneNumber ,
+        role: nextProps.profile.profile.locationProfile.ownerId.role
+      }
+    }
+    if (nextProps.errors) {
+      return { errors: nextProps.errors};
+    }else return null
   }
-
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  onSubmit = (e) => {
-    e.preventDefault();
-
-    const newProduct = {
-      name: this.state.name,
-      desciption: this.state.desciption,
-      price: this.state.price,
-      image: this.state.image
-    };
-
-    this.props.createProduct(newProduct, this.props.history);
-  }
-  editProduct = (e) => {
-    this.props.history.push('/product/add',{id: e.currentTarget.getElementsByTagName('input')[0].value});
-  }
-  deleteProduct =(e) => {
-    console.log(e.currentTarget.getElementsByTagName('input')[0].value)
-    this.props.deleteProduct({id:e.currentTarget.getElementsByTagName('input')[0].value})
-  }
-  renderProductItem = (item, index) => {
-    return (
-      <tr key={index}>
-        
-        <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
-        <td>{item.name}</td>
-        <td>{item.price}</td>
-        
-        <td><Badge color="danger">Đồ ăn</Badge></td>
-
-        <td>
-          <Button color="success" size="sm" onClick={this.editProduct}><i className="fa fa-pencil-square-o"></i><input type="hidden" value={item._id}/></Button>
-          <Button color="danger" size="sm" onClick={this.deleteProduct}><i className="fa fa-trash"></i><input type="hidden" value={item._id}/></Button>
-        </td>
-      </tr>
-    );
-  }
-
   render() {
-    const { productByUserIds , loading } = this.props.product; 
+    const profile = this.props.profile;
+    console.log(profile)
     return (
       <div className="product-container">   
-        <FormGroup row>
-            <Col sm="8">
-            <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <Button type="button" color="primary" size="lg"><i className="fa fa-search"></i> Tìm kiếm</Button>
-              </InputGroupAddon>
-              <Input type="text" id="input1-group2" size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
-            </InputGroup>
-            </Col>
-            <Link to="/product/add" className="btn btn-lg btn-primary"><i className="fa fa-plus">  Thêm sản phẩm</i></Link>
-        </FormGroup>
         <Row>
         <Col xs="12" lg="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Thông tin cá nhân
               </CardHeader>
               <CardBody>
- 
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Địa chỉ</label>
+                <div class="col-sm-10">
+                <label for="staticEmail" class="col-sm-2 col-form-label">{this.state.address}</label>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Số điện thoại</label>
+                <div class="col-sm-10">
+                <label for="staticEmail" class="col-sm-2 col-form-label">{this.state.phoneNumber}</label>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Đánh giá</label>
+                <div class="col-sm-10">
+                <label for="staticEmail" class="col-sm-2 col-form-label">{this.state.systemRating}</label>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Quyên</label>
+                <div class="col-sm-10">
+                <label for="staticEmail" class="col-sm-2 col-form-label">{this.state.role===1?'Quản lý địa điểm':'Người dùng'}</label>
+                </div>
+              </div>
+              <div style={{width:600,height:370}}>
+              <MyMapComponent
+                getLatLong={{lat:this.state.location[0],lng:this.state.location[0]}}
+              />
+              </div>
               </CardBody>
             </Card>
           </Col>
@@ -99,15 +105,10 @@ class Profile extends Component {
   }
 }
 
-AddProduct.propTypes = {
-  createProduct: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};
-
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  profile: state.profile
 });
 
 export default connect(mapStateToProps, { getProfile })(withRouter(Profile));
