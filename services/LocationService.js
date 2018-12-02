@@ -41,7 +41,6 @@ const searchNearByLatLong = async (locationDetail) => {
      });
 		return listLocations;
 	} catch (e) {
-    console.log(e);
 		return TE(res, 'Get locations failed', 503);
 	}		
 };
@@ -52,7 +51,6 @@ const searchDist = async (locationDetail) => {
   let long = parseFloat(locationDetail.long);
   let lat = parseFloat(locationDetail.lat);
   let radius = parseInt(locationDetail.radius);
-
 	try {
     let listLocations = await Location.aggregate([
       {
@@ -67,17 +65,14 @@ const searchDist = async (locationDetail) => {
         }
       },
       { "$skip": 0 },
-      // { "$limit": 5 }
-    ]);
-    let newArrays = listLocations.map( item =>  { 
-      const {_id, address, name, deletionFlag, dist, systemRating, images} = item;
-      return {
-        _id, address, name, deletionFlag, dist, systemRating, images
-      }
-    })
-    return newArrays;
+    ]).exec(function (err, docs) {
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        return populatedTransactions.populatedTransactions;
+      });
+    });
+    return locations
 	} catch (e) {
-    console.log(e);
 		return TE(res, 'Get locations failed', 503);
 	}		
 };
