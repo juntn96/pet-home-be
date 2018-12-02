@@ -70,9 +70,9 @@ const searchDist = async (locationDetail) => {
       // { "$limit": 5 }
     ]);
     let newArrays = listLocations.map( item =>  { 
-      const {_id, address, name, deletionFlag, dist} = item;
+      const {_id, address, name, deletionFlag, dist, systemRating, images} = item;
       return {
-        _id, address, name, deletionFlag, dist
+        _id, address, name, deletionFlag, dist, systemRating, images
       }
     })
     return newArrays;
