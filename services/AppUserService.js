@@ -47,9 +47,33 @@ const removeExpoToken = async ({ userId }) => {
   }
 };
 
+const addNotification = async ({ userId, notification }) => {
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      $push: {
+        notifications: notification,
+      },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getNotifications = async userId => {
+  try {
+    const result = await User.findById(userId);
+    return result.notifications;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   addExpoToken,
   removeExpoToken,
-  findUserByFbId
+  findUserByFbId,
+  addNotification,
+  getNotifications,
 };
