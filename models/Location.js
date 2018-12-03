@@ -30,7 +30,8 @@ const locationSchema = mongoose.Schema({
     }
   ],
   systemRating: {
-    type: Number
+    type: Number,
+    default: 0
   },
   description: {
     type: String
