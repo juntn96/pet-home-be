@@ -101,17 +101,20 @@ const searchDist = async function (req, res) {
             name, typeId, systemRating, description, images, dist } = item;
           const { calculated } = dist;
           const { coordinates } = location;
-          // const long = coordinates[0];
-          // const lat = coordinates[1];
           const coordinate = {
             longitude: coordinates[0],
             latitude: coordinates[1]
-          }
-          console.log(coordinates);
+          }        
           const distance = calculated.toFixed(0);
+          let distanceField;
+          if(distance < 1000) {
+            distanceField = distance + 'm';
+          } else {
+            distanceField = (distance / 1000).toFixed(1) + 'km';
+          }
           return {
             _id, deletionFlag, address,
-            name, typeId, systemRating, description, images, distance,coordinate
+            name, typeId, systemRating, description, images, distanceField ,coordinate
           }
         })
         return ReS(res, { listLocation }, 200);
