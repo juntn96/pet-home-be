@@ -101,12 +101,17 @@ const searchDist = async function (req, res) {
             name, typeId, systemRating, description, images, dist } = item;
           const { calculated } = dist;
           const { coordinates } = location;
-          const long = coordinates[0];
-          const lat = coordinates[1];
+          // const long = coordinates[0];
+          // const lat = coordinates[1];
+          const coordinate = {
+            longitude: coordinates[0],
+            latitude: coordinates[1]
+          }
+          console.log(coordinates);
           const distance = calculated.toFixed(0);
           return {
-            _id, lat, long, deletionFlag, address,
-            name, typeId, systemRating, description, images, distance
+            _id, deletionFlag, address,
+            name, typeId, systemRating, description, images, distance,coordinate
           }
         })
         return ReS(res, { listLocation }, 200);
@@ -117,6 +122,8 @@ const searchDist = async function (req, res) {
 	}					
 };
 module.exports.searchDist = searchDist;
+
+
 
 const updateLocation = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
