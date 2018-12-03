@@ -14,6 +14,7 @@ const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
 const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
+const NotificationController = require("../controllers/NotificationController");
 //#endregion
 
 const LocationModel = require("./../models/Location");
@@ -153,8 +154,14 @@ router.put(
   LocationController.updateLocation
 );
 
-router.get('/location/searchNear/:long/:lat/:radius', LocationController.searchNearByLatLong);
-router.get('/location/searchDist/:long/:lat/:radius', LocationController.searchDist);
+router.get(
+  "/location/searchNear/:long/:lat/:radius",
+  LocationController.searchNearByLatLong
+);
+router.get(
+  "/location/searchDist/:long/:lat/:radius",
+  LocationController.searchDist
+);
 
 //Product
 router.put(
@@ -272,6 +279,11 @@ router.post("/report/updateReportStatus", ReportController.updateReportStatus);
 router.get("/report/getReportedPost", PostController.getReportedPost);
 //#endregion
 
+//#region notification
+router.post("/app/notification/add", NotificationController.addNotification);
+router.get("/app/notification/:userId", NotificationController.getNotifications);
+//#endregion
+
 // Upload to Cloudinary
 router.get("/wake-up", (req, res) => res.send("👌"));
 router.post("/image-upload", UploadController.uploadImage);
@@ -281,6 +293,5 @@ router.get("/admin/users", UserController.getAllUsers);
 router.put("/admin/users", UserController.banUserById);
 // get
 router.get("/admin/users/status/:id", UserController.getStatusUserById);
-
 
 module.exports = router;

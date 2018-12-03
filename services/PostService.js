@@ -4,6 +4,7 @@ const AppUserService = require("./AppUserService");
 const mongoose = require("mongoose");
 const ReportService = require("../services/ReportService");
 const Report = require("../models/Report");
+const NotificationService = require("./NotificationService");
 
 //#region post controller
 const add = async data => {
@@ -280,25 +281,16 @@ const getVoteByType = async (postId, voteType) => {
 const vote = async (postId, newVote, notification) => {
   try {
     const oldVote = await findVote(postId, newVote.voterId);
-    const ownerId = notification.data.content.ownerId._id;
     if (!oldVote) {
       const result = await addVote(postId, newVote);
-      await AppUserService.addNotification({
-        userId: ownerId,
-        notification: notification.data,
-      });
-      ExpoService.sendNotifications(notification);
+      await NotificationService.addNotification(notification);
       return result;
     } else {
       if (newVote.voteType === oldVote.voteType) {
         return await removeVote(postId, newVote.voterId);
       } else {
         const result = await editVote(postId, newVote);
-        await AppUserService.addNotification({
-          userId: ownerId,
-          notification: notification.data,
-        });
-        ExpoService.sendNotifications(notification);
+        await NotificationService.addNotification(notification);
         return result;
       }
     }
