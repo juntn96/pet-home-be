@@ -21,6 +21,15 @@ const findUserByFbId = async facebookId => {
   }
 };
 
+const findUser = async userId => {
+  try {
+    const result = await User.findById(userId);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const addExpoToken = async ({ userId, expoToken }) => {
   try {
     const result = await User.findByIdAndUpdate(userId, {
@@ -70,10 +79,11 @@ const getNotifications = async userId => {
 };
 
 module.exports = {
+  findUserByFbId,
   createUser,
+  findUser,
   addExpoToken,
   removeExpoToken,
-  findUserByFbId,
   addNotification,
   getNotifications,
 };
