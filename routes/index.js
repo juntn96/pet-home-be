@@ -238,6 +238,7 @@ router.post("/app/user/add", AppUserController.createUser);
 router.post("/app/user/addExpoToken", AppUserController.addExpoToken);
 router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
 router.post("/app/user/findByFbId", AppUserController.findUserByFbId);
+router.get("/app/user/:userId", AppUserController.findUser);
 router.post("/app/user/notification/add", AppUserController.addNotification);
 router.get(
   "/app/user/notification/:userId",

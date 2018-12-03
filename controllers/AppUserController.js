@@ -30,6 +30,17 @@ const findUserByFbId = async (req, res) => {
   }
 };
 
+const findUser = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const userId = req.params.userId;
+    const result = await AppUserService.findUser(userId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const addExpoToken = async (req, res) => {
   try {
     const result = await AppUserService.addExpoToken(req.body);
@@ -69,8 +80,9 @@ const getNotifications = async (req, res) => {
 module.exports = {
   createUser,
   addExpoToken,
+  findUser,
   removeExpoToken,
   findUserByFbId,
   addNotification,
-  getNotifications
+  getNotifications,
 };
