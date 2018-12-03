@@ -66,14 +66,14 @@ const searchDist = async (locationDetail) => {
       },
       { "$skip": 0 },
     ]).exec(function (err, docs) {
+      if(err) return err;
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
         if (err) return err;
-        return populatedTransactions.populatedTransactions;
+        return populatedTransactions;
       });
     });
-    return locations
 	} catch (e) {
-		return TE(res, 'Get locations failed', 503);
+		return e;
 	}		
 };
 module.exports.searchDist = searchDist;
