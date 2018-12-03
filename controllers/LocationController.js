@@ -61,14 +61,12 @@ module.exports.searchNearByLatLong = searchNearByLatLong;
 // const searchDist = async function (req, res) {
 //   res.setHeader('Content-Type', 'application/json');
 //   let erro, locations;
-//   // [erro, locations] = await to(locationService.searchDist(req.params));
-//   let haha = await to(locationService.searchDist(req.params));
-//   console.log(haha);
+//   [erro, locations] = await to(locationService.searchDist(req.params));
 //   if (erro) {
 //     return ReE(res, 'Get locations dist failed', 422);
 //   }	
 //   if (locations) {
-//     return ReS(res, { message: 'Get locations dist success', locationCategories: locations }, 200);
+//     return ReS(res, { message: 'Get locations dist success', locations: locations }, 200);
 //   }
 //   else {
 //     return ReE(res, 'Get locations dist failed', 503);
@@ -98,6 +96,7 @@ const searchDist = async function (req, res) {
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
         if (err) return err;
+        
         return ReS(res, { populatedTransactions }, 200);
       });
     });
