@@ -96,17 +96,20 @@ const searchDist = async function (req, res) {
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
         if (err) return err;
-        const listLoction = populatedTransactions.map(item  => {
+        const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
             name, typeId, systemRating, description, images, dist } = item;
           const { calculated } = dist;
+          const { coordinates } = location;
+          const long = coordinates[0];
+          const lat = coordinates[1];
           const distance = calculated.toFixed(0);
           return {
-            _id, location, deletionFlag, address,
+            _id, lat, long, deletionFlag, address,
             name, typeId, systemRating, description, images, distance
           }
         })
-        return ReS(res, { listLoction }, 200);
+        return ReS(res, { listLocation }, 200);
       });
     });
 	} catch (e) {
