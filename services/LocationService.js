@@ -84,3 +84,4 @@ const updateLocation = async (locationDetail) => {
   if (error) TE(error);
 }
 module.exports.updateLocation= updateLocation;
+
