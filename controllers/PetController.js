@@ -80,7 +80,7 @@ const addUserIgnorePet = async (req, res) => {
 const getLikeNumber = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
-        const petId = req.body.petId;
+        const petId = req.query.petId;
         const totalLikes = await PetService.getLikeNumber(petId);
         return ReS(res, { totalLikes }, 200);
     } catch (error) {
@@ -91,7 +91,7 @@ const getLikeNumber = async (req, res) => {
 const getNotIgnoredPet = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
-        const userId = req.body.userId;
+        const userId = req.query.userId;
         const result = await PetService.getNotIgnoredPet(userId);
         return ReS(res, { result }, 200);
     } catch (error) {
