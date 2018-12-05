@@ -211,6 +211,7 @@ router.put(
 router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
+router.get("/post/getById/:postId", PostController.getById);
 router.get("/post/get/:typeId", PostController.getPublicByTypeId);
 router.post("/post/add", PostController.add);
 router.put("/post/edit", PostController.editPost);
@@ -282,7 +283,10 @@ router.get("/report/getReportedPost", PostController.getReportedPost);
 
 //#region notification
 router.post("/app/notification/add", NotificationController.addNotification);
-router.get("/app/notification/:userId", NotificationController.getNotifications);
+router.get(
+  "/app/notification/:userId",
+  NotificationController.getNotifications
+);
 //#endregion
 
 // Upload to Cloudinary
