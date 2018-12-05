@@ -28,7 +28,6 @@ module.exports.getLocationCategories = getLocationCategories;
 const getLocationProfile = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationProfile;
-  console.log(req.params);
   [erro, locationProfile] = await to(locationService.getLocationProfile(req.params.ownerId));
   if (erro) {
     return ReE(res, 'Get getLocationProfile failed', 422);
@@ -57,22 +56,6 @@ const searchNearByLatLong = async function (req, res) {
   }				
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
-
-// const searchDist = async function (req, res) {
-//   res.setHeader('Content-Type', 'application/json');
-//   let erro, locations;
-//   [erro, locations] = await to(locationService.searchDist(req.params));
-//   if (erro) {
-//     return ReE(res, 'Get locations dist failed', 422);
-//   }	
-//   if (locations) {
-//     return ReS(res, { message: 'Get locations dist success', locations: locations }, 200);
-//   }
-//   else {
-//     return ReE(res, 'Get locations dist failed', 503);
-//   }  				
-// };
-// module.exports.searchDist = searchDist;
 
 const searchDist = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -116,7 +99,7 @@ const searchDist = async function (req, res) {
             _id, deletionFlag, address,
             name, typeId, systemRating, description, images, distanceField ,coordinate
           }
-        })
+        }).filter(item => item.deletionFlag !== true);
         return ReS(res, { listLocation }, 200);
       });
     });
@@ -126,9 +109,277 @@ const searchDist = async function (req, res) {
 };
 module.exports.searchDist = searchDist;
 
+const searchAllLocations = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const search_keyword = req.query.search_keyword;
+  const ratingGt = req.query.ratingGt;
+  const ratingLt = req.query.ratingLt;
+  const radius = parseInt(req.query.radius);
+  const lat = parseFloat(req.query.lat);
+  const long = parseFloat(req.query.long);
+  let listLocations = [];
+  let listLocationDist = [];
 
+	try {
+    if (req.query.search_keyword && req.query.ratingGt && req.query.radius && req.query.lat) {
+      listLocations = await Location.find({      
+          deletionFlag: false,
+          $text: { $search: search_keyword }, 
+          location : {
+            $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+          },
+          systemRating: { $gte: ratingGt , $lte: ratingLt}
+        }
+      );
+      let result = await Location.aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [ long , lat ] },
+            key: "location",
+            distanceField: "dist.calculated",
+            maxDistance: radius,
+            minDistance: 0,
+            includeLocs: "dist.location",
+            spherical: true
+          }
+        },
+        { "$skip": 0 },
+      ]).exec(function (err, docs) {
+        LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+          if (err) return err;
+          listLocationDist = populatedTransactions.map(item  => {
+            const { _id, location, deletionFlag, address,
+              name, typeId, systemRating, description, images, dist } = item;
+            const { calculated } = dist;
+            const { coordinates } = location;
+            const coordinate = {
+              longitude: coordinates[0],
+              latitude: coordinates[1]
+            }        
+            const distance = calculated.toFixed(0);
+            let distanceField;
+            if(distance < 1000) {
+              distanceField = distance + 'm';
+            } else {
+              distanceField = (distance / 1000).toFixed(1) + 'km';
+            }
+            return {
+              _id, deletionFlag, address,
+              name, typeId, systemRating, description, images, distanceField ,coordinate
+            }
+          });
+          let result2 = [];
+          for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+            for (let index2 = 0; index2 < listLocations.length; index2++) {
+              if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+                result2.push(listLocationDist[index1]);                
+              }
+            }
+          }
+          return ReS(res, { result2 }, 200);
+        });
+      });
+    } else if (req.query.search_keyword) {
+      listLocations = await Location.find({  
+          deletionFlag: false,    
+          $text: { $search: search_keyword }, 
+        }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.ratingGt) {
+      listLocations = await Location.find({  
+          deletionFlag: false,    
+          systemRating: { $gte: ratingGt , $lte: ratingLt}
+        }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.search_keyword && req.query.ratingGt) {
+      listLocations = await Location.find({      
+          deletionFlag: false,
+          $text: { $search: search_keyword }, 
+          systemRating: { $gte: ratingGt , $lte: ratingLt}
+        }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.ratingGt && req.query.radius && req.query.lat) {
+      listLocations = await Location.find({ 
+          deletionFlag: false,     
+          location : {
+            $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+          },
+          systemRating: { $gte: ratingGt , $lte: ratingLt}
+        }
+      );
+      let result = await Location.aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [ long , lat ] },
+            key: "location",
+            distanceField: "dist.calculated",
+            maxDistance: radius,
+            minDistance: 0,
+            includeLocs: "dist.location",
+            spherical: true
+          }
+        },
+        { "$skip": 0 },
+      ]).exec(function (err, docs) {
+        LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+          if (err) return err;
+          listLocationDist = populatedTransactions.map(item  => {
+            const { _id, location, deletionFlag, address,
+              name, typeId, systemRating, description, images, dist } = item;
+            const { calculated } = dist;
+            const { coordinates } = location;
+            const coordinate = {
+              longitude: coordinates[0],
+              latitude: coordinates[1]
+            }        
+            const distance = calculated.toFixed(0);
+            let distanceField;
+            if(distance < 1000) {
+              distanceField = distance + 'm';
+            } else {
+              distanceField = (distance / 1000).toFixed(1) + 'km';
+            }
+            return {
+              _id, deletionFlag, address,
+              name, typeId, systemRating, description, images, distanceField ,coordinate
+            }
+          });
+          let result2 = [];
+          for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+            for (let index2 = 0; index2 < listLocations.length; index2++) {
+              if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+                result2.push(listLocationDist[index1]);                
+              }
+            }
+          }
+          return ReS(res, { result2 }, 200);
+        });
+      });
+    } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+      listLocations = await Location.find({   
+          deletionFlag: false,   
+          $text: { $search: search_keyword }, 
+          location : {
+            $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+          },
+        }
+      );
+      let result = await Location.aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [ long , lat ] },
+            key: "location",
+            distanceField: "dist.calculated",
+            maxDistance: radius,
+            minDistance: 0,
+            includeLocs: "dist.location",
+            spherical: true
+          }
+        },
+        { "$skip": 0 },
+      ]).exec(function (err, docs) {
+        LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+          if (err) return err;
+          listLocationDist = populatedTransactions.map(item  => {
+            const { _id, location, deletionFlag, address,
+              name, typeId, systemRating, description, images, dist } = item;
+            const { calculated } = dist;
+            const { coordinates } = location;
+            const coordinate = {
+              longitude: coordinates[0],
+              latitude: coordinates[1]
+            }        
+            const distance = calculated.toFixed(0);
+            let distanceField;
+            if(distance < 1000) {
+              distanceField = distance + 'm';
+            } else {
+              distanceField = (distance / 1000).toFixed(1) + 'km';
+            }
+            return {
+              _id, deletionFlag, address,
+              name, typeId, systemRating, description, images, distanceField ,coordinate
+            }
+          });
+          let result2 = [];
+          for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+            for (let index2 = 0; index2 < listLocations.length; index2++) {
+              if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+                result2.push(listLocationDist[index1]);                
+              }
+            }
+          }
+          return ReS(res, { result2 }, 200);
+        });
+      });
+    } else if (req.query.radius && req.query.lat) {
+      listLocations = await Location.find({   
+          deletionFlag: false,   
+          location : {
+            $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+          },
+        }
+      );
+      let result = await Location.aggregate([
+        {
+          $geoNear: {
+            near: { type: "Point", coordinates: [ long , lat ] },
+            key: "location",
+            distanceField: "dist.calculated",
+            maxDistance: radius,
+            minDistance: 0,
+            includeLocs: "dist.location",
+            spherical: true
+          }
+        },
+        { "$skip": 0 },
+      ]).exec(function (err, docs) {
+        LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+          if (err) return err;
+          listLocationDist = populatedTransactions.map(item  => {
+            const { _id, location, deletionFlag, address,
+              name, typeId, systemRating, description, images, dist } = item;
+            const { calculated } = dist;
+            const { coordinates } = location;
+            const coordinate = {
+              longitude: coordinates[0],
+              latitude: coordinates[1]
+            }        
+            const distance = calculated.toFixed(0);
+            let distanceField;
+            if(distance < 1000) {
+              distanceField = distance + 'm';
+            } else {
+              distanceField = (distance / 1000).toFixed(1) + 'km';
+            }
+            return {
+              _id, deletionFlag, address,
+              name, typeId, systemRating, description, images, distanceField ,coordinate
+            }
+          });
+          let result2 = [];
+          for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+            for (let index2 = 0; index2 < listLocations.length; index2++) {
+              if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+                result2.push(listLocationDist[index1]);                
+              }
+            }
+          }
+          return ReS(res, { result2 }, 200);
+        });
+      });
+    }
 
-const updateLocation = async (req, res)=> {
+	} catch (e) {
+		return ReE(res, error, 422);
+	}					
+};
+module.exports.searchAllLocations = searchAllLocations;
+
+const updateLocation = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   let error, location;
   [error, location] = await to(locationService.updateLocation(req.body));
