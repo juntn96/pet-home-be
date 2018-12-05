@@ -265,13 +265,13 @@ router.post("/conversation/message/add", ConversationController.addMessage);
 
 //#region pet route
 router.post("/pet/add", PetController.add);
-router.get("/pet/get", PetController.get);
+router.get("/pet/get/:userId", PetController.getByUser);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
 router.post("/pet/addUserLikePet", PetController.addUserLikePet);
 router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
 router.get("/pet/getLikeNumber", PetController.getLikeNumber);
-router.get("/pet/getNotIgnoredPet", PetController.getNotIgnoredPet);
+router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
 //#endregion
 
 //#region report route
