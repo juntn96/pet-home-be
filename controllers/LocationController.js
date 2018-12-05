@@ -99,7 +99,7 @@ const searchDist = async function (req, res) {
             _id, deletionFlag, address,
             name, typeId, systemRating, description, images, distanceField ,coordinate
           }
-        })
+        }).filter(item => item.deletionFlag !== true);
         return ReS(res, { listLocation }, 200);
       });
     });
@@ -123,6 +123,7 @@ const searchAllLocations = async function (req, res) {
 	try {
     if (req.query.search_keyword && req.query.ratingGt && req.query.radius && req.query.lat) {
       listLocations = await Location.find({      
+          deletionFlag: false,
           $text: { $search: search_keyword }, 
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
@@ -179,26 +180,30 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword) {
-      listLocations = await Location.find({      
+      listLocations = await Location.find({  
+          deletionFlag: false,    
           $text: { $search: search_keyword }, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
     } else if (req.query.ratingGt) {
-      listLocations = await Location.find({      
+      listLocations = await Location.find({  
+          deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
     } else if (req.query.search_keyword && req.query.ratingGt) {
       listLocations = await Location.find({      
+          deletionFlag: false,
           $text: { $search: search_keyword }, 
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
     } else if (req.query.ratingGt && req.query.radius && req.query.lat) {
-      listLocations = await Location.find({      
+      listLocations = await Location.find({ 
+          deletionFlag: false,     
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
           },
@@ -254,7 +259,8 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
-      listLocations = await Location.find({      
+      listLocations = await Location.find({   
+          deletionFlag: false,   
           $text: { $search: search_keyword }, 
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
@@ -310,7 +316,8 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.radius && req.query.lat) {
-      listLocations = await Location.find({      
+      listLocations = await Location.find({   
+          deletionFlag: false,   
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
           },
