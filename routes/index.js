@@ -162,6 +162,10 @@ router.get(
   "/location/searchDist/:long/:lat/:radius",
   LocationController.searchDist
 );
+router.get(
+  "/location/searchAllLocations",
+  LocationController.searchAllLocations
+);
 
 //Product
 router.put(
