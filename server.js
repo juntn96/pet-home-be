@@ -8,7 +8,6 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const mongodbUri = require("mongodb-uri");
 const http = require("http");
-const cors = require("cors");
 
 const formData = require("express-form-data");
 const debug = require("debug")("pet-home:server");
@@ -87,10 +86,6 @@ app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
-
-// app.use(cors({
-//   origin: CONFIG.CLIENT_ORIGIN
-// }));
 
 app.use(formData.parse());
 

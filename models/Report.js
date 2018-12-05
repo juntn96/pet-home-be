@@ -8,17 +8,17 @@ let ReportSchema = mongoose.Schema({
 	reportedId: {
 		type: String,
 		ref: 'User'
-  },
-  postId: {
-    type: String,
-    ref: 'Post'
-  },
+	},
+	postId: {
+		type: String,
+		ref: 'Post'
+	},
 	description: {
 		type: String
 	},
 	status: {
-		type: Boolean,
-		default: false
+		type: Number,
+		default: 1
 	},
 	createdAt: {
 		type: Number,

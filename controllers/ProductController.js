@@ -45,9 +45,9 @@ const updateProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
   let error, product;
   [error, product] = await to(productService.updateProduct(req.body));
-  if (error) return ReE(res, 'Không thể tạo thêm sản phẩm', 422);
+  if (error) return ReE(res, 'Không thể update sản phẩm', 422);
   return ReS(res, {
-    message: 'Create new product successfully'
+    message: 'Update product successfully'
   }, 200);
 }
 module.exports.updateProduct = updateProduct;
@@ -56,7 +56,7 @@ const getProductDetailById = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
   let error, productDetail;
   [error, productDetail] = await to(productService.getProductById(req.params.id));
-  if (error) return ReE(res, 'Không thể laasy thêm sản phẩm', 422);
+  if (error) return ReE(res, 'Không thể lấy thêm sản phẩm', 422);
   return ReS(res, {
     productDetail: productDetail,
     message: 'Lấy thành công'
