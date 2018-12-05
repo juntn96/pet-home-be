@@ -33,7 +33,7 @@ const get = async (req, res) => {
 const deletePet = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
-        const id = req.body.id;
+        const id = req.query.id;
         const result = await PetService.deletePet(id);
         return ReS(res, { result }, 200);
     } catch (error) {
