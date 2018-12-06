@@ -40,6 +40,16 @@ const getByUser = async (req, res) => {
   }
 };
 
+const getPet = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await PetService.getPet(req.params.userId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const deletePet = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -67,8 +77,8 @@ const addUserLikePet = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
     const petId = req.body.petId;
-    const favoritedId = req.body.favoritedId;
-    const result = await PetService.addUserLikePet(petId, favoritedId);
+    const userId = req.body.userId;
+    const result = await PetService.addUserLikePet(petId, userId);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -79,8 +89,8 @@ const addUserIgnorePet = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
     const petId = req.body.petId;
-    const ignoredId = req.body.ignoredId;
-    const result = await PetService.addUserIgnorePet(petId, ignoredId);
+    const userId = req.body.userId;
+    const result = await PetService.addUserIgnorePet(petId, userId);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -90,9 +100,9 @@ const addUserIgnorePet = async (req, res) => {
 const getLikeNumber = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
-    const petId = req.body.petId;
-    const totalLikes = await PetService.getLikeNumber(petId);
-    return ReS(res, { totalLikes }, 200);
+    const petId = req.params.petId;
+    const result = await PetService.getLikeNumber(petId);
+    return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
   }
@@ -112,6 +122,7 @@ const getNotIgnoredPet = async (req, res) => {
 module.exports = {
   add,
   getByUser,
+  getPet,
   deletePet,
   editPet,
   addUserLikePet,

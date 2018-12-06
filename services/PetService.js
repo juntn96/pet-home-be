@@ -22,6 +22,15 @@ const getByUser = async userId => {
   }
 };
 
+const getPet = async (userId = "") => {
+  try {
+    const result = await Pet.find({ ownerId: { $ne: userId } });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deletePet = async _id => {
   try {
     const result = await Pet.findByIdAndRemove(_id);
@@ -52,33 +61,63 @@ const editPet = async (petId, updateOptions) => {
   }
 };
 
-const addUserLikePet = async (petId, likeId) => {
+const addUserLikePet = async (petId, userId) => {
   try {
+    const liked = await isLiked(petId, userId);
+    if (liked) return await unlike(petId, userId);
     const result = await Pet.findByIdAndUpdate(petId, {
       $push: {
         likes: {
-          user: likeId,
+          user: userId,
         },
       },
     });
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
-const addUserIgnorePet = async (petId, ignoreId) => {
+const unlike = async (petId, userId) => {
+  try {
+    const result = await Pet.findByIdAndUpdate(petId, {
+      $pull: {
+        likes: {
+          user: userId,
+        },
+      },
+    });
+    return result;
+  } catch (error) {}
+};
+
+const isLiked = async (petId, userId) => {
+  try {
+    const result = await Pet.findById(petId, {
+      likes: {
+        $elemMatch: {
+          user: userId,
+        },
+      },
+    });
+    return result.likes[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addUserIgnorePet = async (petId, userId) => {
   try {
     const result = await Pet.findByIdAndUpdate(petId, {
       $push: {
         ignores: {
-          userId: ignoreId,
+          user: userId,
         },
       },
     });
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -87,25 +126,32 @@ const getLikeNumber = async petId => {
     const result = await Pet.findById(petId);
     return result.likes.length;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 const getNotIgnoredPet = async userId => {
   try {
-    console.log(userId);
     const result = await Pet.find({
-      "ignores.user": { $ne: userId },
+      $and: [
+        {
+          "ignores.user": { $ne: userId },
+        },
+        {
+          ownerId: { $ne: userId }
+        }
+      ]
     }).sort({ likes: -1 });
     return result;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 module.exports = {
   add,
   getByUser,
+  getPet,
   deletePet,
   editPet,
   addUserLikePet,

@@ -271,11 +271,12 @@ router.post("/conversation/message/add", ConversationController.addMessage);
 //#region pet route
 router.post("/pet/add", PetController.add);
 router.get("/pet/get/:userId", PetController.getByUser);
+router.get("/pet/getPet/:userId", PetController.getPet);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
-router.post("/pet/addUserLikePet", PetController.addUserLikePet);
-router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
-router.get("/pet/getLikeNumber", PetController.getLikeNumber);
+router.post("/pet/like", PetController.addUserLikePet);
+router.post("/pet/ignore", PetController.addUserIgnorePet);
+router.get("/pet/getLikeNumber/:petId", PetController.getLikeNumber);
 router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
 //#endregion
 

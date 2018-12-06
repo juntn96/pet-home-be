@@ -43,6 +43,7 @@ const petSchema = mongoose.Schema({
         type: String,
         ref: "User",
       },
+      _id: false
     },
   ],
   ignores: [
@@ -51,6 +52,7 @@ const petSchema = mongoose.Schema({
         type: String,
         ref: "User",
       },
+      _id: false
     },
   ],
   deletionFlag: {
