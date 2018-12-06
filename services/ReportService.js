@@ -1,4 +1,5 @@
 const Report = require("../models/Report");
+const Post = require("../models/Post");
 
 const addReport = async data => {
     try {
@@ -31,7 +32,30 @@ const updateReportStatus = async (reportId, updateOptions) => {
     }
 };
 
+const getAllReports = async () => {
+	try {
+    let res  = Report.aggregate().group({_id: '$postId' , count: { $sum: 1 }})
+    .exec((err, res) => {
+      return res;
+    })
+	}
+	catch (e) {
+		return TE(res, 'Get report failed', 503);
+	}
+};
+
+// const getTotalReports = async () => {
+// 	try {
+//     let res  = await Report.aggregate().group({_id: '$postId' , count: { $sum: 1 }})
+//     return res;
+// 	}
+// 	catch (e) {
+// 		return TE(res, 'Get report failed', 503);
+// 	}
+// };
+
 module.exports = {
     addReport,
     updateReportStatus,
+    getAllReports
 }

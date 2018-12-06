@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
-import UserItem from './UserItem'
 
 class ReportList extends Component {
 
@@ -56,7 +55,7 @@ class ReportList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { users.allusers.users === undefined  ? <Spinner /> :
+              {/* { users.allusers.users === undefined  ? <Spinner /> :
                 <Table responsive>
                   <thead>
                   <tr>
@@ -70,7 +69,7 @@ class ReportList extends Component {
                     {users.allusers.users !== undefined && users.allusers.users.map((item, index) => <UserItem userDetail={item} key={index} />)}
                   </tbody>
                 </Table>
-                }
+                } */}
               </CardBody>
             </Card>
           </Col>

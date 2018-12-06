@@ -8,7 +8,19 @@ export default {
       {
         name: 'Quản lý thể loại',
         url: '/admin/category',
-        icon: 'icon-list'
+        icon: 'icon-list',
+        children: [
+          {
+            name: 'Bài viết',
+            url: '/admin/category/post',
+            icon: 'icon-pencil',
+          },
+          {
+            name: 'Địa điểm',
+            url: '/admin/category/location',
+            icon: 'icon-puzzle',
+          }
+        ]
       },
       {
         name: 'Quản lý địa điểm',

@@ -48,11 +48,17 @@ class UserItem extends Component {
     const { deletionFlag } = this.state
     const style = deletionFlag ? "secondary" : "danger";
     const text = deletionFlag ? "Không hoạt động" : "Đang hoạt động";
+    
     const {userDetail} = this.props
+    const date = new Date(userDetail.createdAt).toLocaleDateString() + ' ' + new Date(userDetail.createdAt).toLocaleTimeString();
     return (
       <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}}>
         <td><Img src={userDetail.avatar} style={{height:55,width:55}}/></td>
-        <td style={{verticalAlign:"middle"}}>{userDetail.appName}</td>
+        <td style={{verticalAlign:"middle"}}>
+        <div>{userDetail.appName}</div>
+          <div className="small text-muted">Đăng ký lúc: {date}
+          </div>
+        </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Bỏ cấm</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Cấm</Button></td>}

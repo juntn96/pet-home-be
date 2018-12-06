@@ -1,6 +1,7 @@
 const PostService = require("../services/PostService");
 const Report = require("../models/Report");
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 //#region post controller
 const add = async (req, res) => {
@@ -264,13 +265,20 @@ const getReportedPost = async (req, res) => {
         }
       },
       { "$sort": { "total_report": -1 } },
-    ]).exec(function (err, transactions) {
+    ])
+    .exec(function (err, transactions) {
       // Don't forget your error handling
       // The callback with your transactions
       // Assuming you are having a Tag model
-      Post.populate(transactions, { path: '_id' }, function (err, populatedTransactions) {
+      Post.populate(transactions, { path: '_id' },async (err, populatedTransactions) => {
+      // Your populated translactions are inside populatedTransactions
         // Your populated translactions are inside populatedTransactions
-        return ReS(res, { populatedTransactions }, 200);
+        let results=[];
+        populatedTransactions.map( async item => {
+          let users = await getPosterById(item._id.ownerId);
+          results.push({post: item._id, total_report: item.total_report, user: users})
+        });
+        return ReS(res, { results }, 200);
       });
     });
   } catch (error) {
@@ -278,6 +286,14 @@ const getReportedPost = async (req, res) => {
   }
 };
 
+const getPosterById = async (id) => {
+  try {
+    let user = await User.findById(id).select('appName _id');
+    return user;
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+}
 module.exports = {
   add,
   get,

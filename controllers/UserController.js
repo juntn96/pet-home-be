@@ -73,7 +73,6 @@ module.exports.getUserById = getUserById;
 
 const getAllUsers = async function (req, res, next) {
 	User.find({}).where('role').equals(constants.ROLE_USER)
-	.select('deletionFlag _id appName avatar')
 	.exec((err, results) => {
 		if (err) {
 			return ReE(res, err, 500);
