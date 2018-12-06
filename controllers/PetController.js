@@ -108,6 +108,18 @@ const getLikeNumber = async (req, res) => {
   }
 };
 
+const isLiked = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const petId = req.query.petId;
+    const userId = req.query.userId;
+    const result = await PetService.isLiked(petId, userId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const getNotIgnoredPet = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -125,6 +137,7 @@ module.exports = {
   getPet,
   deletePet,
   editPet,
+  isLiked,
   addUserLikePet,
   addUserIgnorePet,
   getLikeNumber,

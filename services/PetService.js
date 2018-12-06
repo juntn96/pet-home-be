@@ -154,6 +154,7 @@ module.exports = {
   getPet,
   deletePet,
   editPet,
+  isLiked,
   addUserLikePet,
   addUserIgnorePet,
   getLikeNumber,

@@ -275,6 +275,7 @@ router.get("/pet/getPet/:userId", PetController.getPet);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
 router.post("/pet/like", PetController.addUserLikePet);
+router.get("/pet/isLiked", PetController.isLiked);
 router.post("/pet/ignore", PetController.addUserIgnorePet);
 router.get("/pet/getLikeNumber/:petId", PetController.getLikeNumber);
 router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
