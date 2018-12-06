@@ -15,6 +15,18 @@ const getNotifications = async userId => {
   try {
     const result = await Notification.aggregate([
       { $match: { receiver: userId } },
+      { $addFields: { sender: { $toObjectId: "$sender" } } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "sender",
+          foreignField: "_id",
+          as: "sender",
+        },
+      },
+      {
+        $unwind: "$sender"
+      }
     ]);
     return result;
   } catch (error) {
