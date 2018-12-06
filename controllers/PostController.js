@@ -54,6 +54,17 @@ const getPublicByTypeId = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const postId = req.params.postId;
+    const result = await PostService.findPostById(postId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const editPost = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -186,8 +197,9 @@ const vote = async (req, res) => {
     const postId = req.body.postId;
     const voterId = req.body.voterId;
     const voteType = req.body.voteType;
+    const notification = req.body.notification;
     const data = { voterId, voteType };
-    const result = await PostService.vote(postId, data);
+    const result = await PostService.vote(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -235,6 +247,16 @@ const getReports = async (req, res) => {
 };
 //#endregion
 
+const testNotification = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await PostService.testNotification();
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const temp = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -280,6 +302,7 @@ const getReportedPost = async (req, res) => {
 module.exports = {
   add,
   get,
+  getById,
   editPost,
   postTextSearch,
   getByOwnerId,
@@ -300,5 +323,7 @@ module.exports = {
   /////////////
   addReport,
   getReports,
+  //
+  testNotification,
   getReportedPost,
 };

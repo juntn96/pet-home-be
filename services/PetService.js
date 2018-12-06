@@ -1,4 +1,4 @@
-const Pet = require('./../models/Pet');
+const Pet = require("./../models/Pet");
 
 const add = async data => {
   try {
@@ -10,10 +10,13 @@ const add = async data => {
   }
 };
 
-const get = async () => {
+const getByUser = async userId => {
   try {
-    const pets = await Pet.find();
-    return pets;
+    const result = await Pet.find({ ownerId: userId }).select({
+      likes: 0,
+      ignores: 0,
+    });
+    return result;
   } catch (error) {
     throw error;
   }
@@ -54,7 +57,7 @@ const addUserLikePet = async (petId, likeId) => {
     const result = await Pet.findByIdAndUpdate(petId, {
       $push: {
         likes: {
-          userId: likeId,
+          user: likeId,
         },
       },
     });
@@ -92,9 +95,8 @@ const getNotIgnoredPet = async userId => {
   try {
     console.log(userId);
     const result = await Pet.find({
-      "ignores.userId": { $ne: userId }
-    }
-    ).sort({ likes: -1 });
+      "ignores.user": { $ne: userId },
+    }).sort({ likes: -1 });
     return result;
   } catch (error) {
     return error;
@@ -103,7 +105,7 @@ const getNotIgnoredPet = async userId => {
 
 module.exports = {
   add,
-  get,
+  getByUser,
   deletePet,
   editPet,
   addUserLikePet,

@@ -44,10 +44,10 @@ module.exports.createAdminUser = createAdminUser;
 // @access  Public
 const login = async function (req, res) {
   let err, user;
+  
   const { errors, isValid } = validateLoginInput(req.body);
   // Check Validation
   if (!isValid) {
-    console.log(errors);
     return ReE(res, errors , 400)
   }
 	[err, user] = await to(authService.authUser(req.body));

@@ -14,6 +14,7 @@ const PostCategoryController = require("../controllers/PostCategoryController");
 const PostController = require("../controllers/PostController");
 const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
+const NotificationController = require("../controllers/NotificationController");
 //#endregion
 
 const LocationModel = require("./../models/Location");
@@ -23,8 +24,6 @@ const ReportController = require("../controllers/ReportController");
 //#endregion
 
 const passport = require("passport");
-const path = require("path");
-
 require("./../middleware/passport")(passport);
 
 //Auth controller
@@ -41,12 +40,6 @@ router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 // 	session: false,
 // }), UserController.getUserById);
 router.get("/users/detail/:userId", UserController.getUserById);
-
-//Location Category
-router.get(
-  "/location/locationCategories",
-  LocationController.getLocationCategories
-);
 
 //Product
 router.post(
@@ -68,20 +61,22 @@ router.get(
 router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 router.get("/users/detail/:userId", UserController.getUserById);
 
-//Location Category
-router.get(
-  "/location/locationCategories/:type",
-  LocationController.getLocationCategories
-);
-
 //Create Admin
-router.post('/admin/create', AuthController.createAdminUser);
-router.get('/admin/wake-up', passport.authenticate('jwt', {
-  session: false,
-}), (req, res) => res.send('👌'));
-router.post('/admin/addLocation', passport.authenticate('jwt', {
-  session: false,
-}), AdminController.addLocation)
+router.post("/admin/create", AuthController.createAdminUser);
+router.get(
+  "/admin/wake-up",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  (req, res) => res.send("👌")
+);
+router.post(
+  "/admin/addLocation",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AdminController.addLocation
+);
 
 //User
 router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
@@ -145,16 +140,32 @@ router.post(
 
 //Location
 router.get(
-  "/location/profile/:id",
+  "/location/detail/:ownerId",
   passport.authenticate("jwt", {
     session: false,
   }),
   LocationController.getLocationProfile
 );
+router.put(
+  "/location/update",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  LocationController.updateLocation
+);
 
-router.get('/location/searchNear', LocationController.searchNearByLatLong);
-
-router.get('/location/searchDist', LocationController.searchDist)
+router.get(
+  "/location/searchNear/:long/:lat/:radius",
+  LocationController.searchNearByLatLong
+);
+router.get(
+  "/location/searchDist/:long/:lat/:radius",
+  LocationController.searchDist
+);
+router.get(
+  "/location/searchAllLocations",
+  LocationController.searchAllLocations
+);
 
 //Product
 router.put(
@@ -204,6 +215,7 @@ router.put(
 router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
+router.get("/post/getById/:postId", PostController.getById);
 router.get("/post/get/:typeId", PostController.getPublicByTypeId);
 router.post("/post/add", PostController.add);
 router.put("/post/edit", PostController.editPost);
@@ -223,9 +235,20 @@ router.post("/post/vote", PostController.vote);
 ///////////////////////////////////
 router.post("/post/report/add", PostController.addReport);
 router.get("/post/report/:postId", PostController.getReports);
+////
+router.post("/post/testNotification", PostController.testNotification);
 //#endregion
 //#region app user service
 router.post("/app/user/add", AppUserController.createUser);
+router.post("/app/user/addExpoToken", AppUserController.addExpoToken);
+router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
+router.post("/app/user/findByFbId", AppUserController.findUserByFbId);
+router.get("/app/user/:userId", AppUserController.findUser);
+router.post("/app/user/notification/add", AppUserController.addNotification);
+router.get(
+  "/app/user/notification/:userId",
+  AppUserController.getNotifications
+);
 //#endregion
 
 //#region conversation
@@ -247,13 +270,13 @@ router.post("/conversation/message/add", ConversationController.addMessage);
 
 //#region pet route
 router.post("/pet/add", PetController.add);
-router.get("/pet/get", PetController.get);
+router.get("/pet/get/:userId", PetController.getByUser);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
 router.post("/pet/addUserLikePet", PetController.addUserLikePet);
 router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
 router.get("/pet/getLikeNumber", PetController.getLikeNumber);
-router.get("/pet/getNotIgnoredPet", PetController.getNotIgnoredPet);
+router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
 //#endregion
 
 //#region report route
@@ -262,8 +285,22 @@ router.post("/report/updateReportStatus", ReportController.updateReportStatus);
 router.get("/report/getReportedPost", PostController.getReportedPost);
 //#endregion
 
+//#region notification
+router.post("/app/notification/add", NotificationController.addNotification);
+router.get(
+  "/app/notification/:userId",
+  NotificationController.getNotifications
+);
+//#endregion
+
 // Upload to Cloudinary
 router.get("/wake-up", (req, res) => res.send("👌"));
 router.post("/image-upload", UploadController.uploadImage);
+
+//get all user: ADMIN
+router.get("/admin/users", UserController.getAllUsers);
+router.put("/admin/users", UserController.banUserById);
+// get
+router.get("/admin/users/status/:id", UserController.getStatusUserById);
 
 module.exports = router;
