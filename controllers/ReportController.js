@@ -4,11 +4,10 @@ const addReport = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
         const reporterId = req.body.reporterId;
-        const reportedId = req.body.reportedId;
         const postId = req.body.postId;
         const description = req.body.description;
 
-        const data = { reporterId, reportedId, postId, description };
+        const data = { reporterId, postId, description };
 
         const result = await ReportService.addReport(data);
         return ReS(res, { result }, 200);
