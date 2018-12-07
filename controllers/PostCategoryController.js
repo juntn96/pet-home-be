@@ -49,7 +49,8 @@ const updateNameById = async (req, res) => {
   try {
     const id = req.body.id;
     const name = req.body.name;
-    const result = await postCategoryService.updateNameById(id, name);
+    console.log(req.body)
+    const result = await postCategoryService.updateNameById(id,req.body.field, name);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);

@@ -57,7 +57,7 @@ class UserList extends Component {
               </CardHeader>
               <CardBody>
               { users.allusers.users === undefined  ? <Spinner /> :
-                <Table striped >
+                <Table hover responsive >
                   <thead>
                   <tr>
                     <th>Ảnh</th>

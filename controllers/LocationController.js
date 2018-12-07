@@ -18,9 +18,32 @@ const getLocationCategories = async function (req, res) {
   else {
     return ReE(res, 'Get locationCategories failed', 503);
   }
-  				
 };
 module.exports.getLocationCategories = getLocationCategories;
+
+const updateLocationCategories = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const result = await locationService.updateLocationCategoryById(req.body.id,req.body.field,req.body.value);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+module.exports.updateLocationCategories = updateLocationCategories;
+
+const addLocationCategory = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const result = await locationService.addLocationCategory(req.body.name);
+    console.log('>> ', result)
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
+module.exports.addLocationCategory = addLocationCategory;
 
 // @route   GET api/location/profile/:id
 // @desc    Get location by user_id
@@ -53,7 +76,7 @@ const searchNearByLatLong = async function (req, res) {
   }
   else {
     return ReE(res, 'Get locations failed', 503);
-  }				
+  }
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 

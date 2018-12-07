@@ -41,6 +41,17 @@ router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 // }), UserController.getUserById);
 router.get("/users/detail/:userId", UserController.getUserById);
 
+//Location Category
+router.get(
+  "/location/locationCategories",
+  LocationController.getLocationCategories
+);
+router.post(
+  "/admin/location/locationCategories",
+  LocationController.addLocationCategory
+);
+router.put("/admin/location/locationCategories",LocationController.updateLocationCategories);
+
 //Product
 router.post(
   "/product/add",
@@ -81,12 +92,6 @@ router.post(
 //User
 router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 router.get("/users/detail/:userId", UserController.getUserById);
-
-//Location Category
-router.get(
-  "/location/locationCategories/:type",
-  LocationController.getLocationCategories
-);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
