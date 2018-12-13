@@ -5,7 +5,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {getAllUsers} from '../../../store/actions/usersActions'
-class ReportItem extends Component {
+class LocationItem extends Component {
 
   constructor(props){
     super(props);
@@ -86,5 +86,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(ReportItem));
+export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationItem));
 

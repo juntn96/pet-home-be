@@ -72,6 +72,7 @@ class App extends Component {
               <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/location" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/post" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />
               {/* <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} /> */}
             </Switch>

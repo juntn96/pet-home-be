@@ -4,10 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
-import ReportItem from './ReportItem'
+import LocationItem from './LocationItem'
 import axios from 'axios';
 
-class ReportList extends Component {
+class LocationAdmin extends Component {
 
   constructor(props){
     super(props);
@@ -84,7 +84,7 @@ class ReportList extends Component {
                   </thead>
                   <tbody ref="tableSearch">
                     { reports.map((item, index) =>
-                      item.postDetail.length !==0 ? <ReportItem reportDetail={item.postDetail[0]} key={index} totalReports={item.totalReport}/>:'')}
+                      item.postDetail.length !==0 ? <LocationItem reportDetail={item.postDetail[0]} key={index} totalReports={item.totalReport}/>:'')}
                   </tbody>
                 </Table>
                 }
@@ -102,5 +102,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(ReportList));
+export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationAdmin));
 

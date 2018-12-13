@@ -21,7 +21,15 @@ const get = async (req, res) => {
     return ReE(res, error, 422);
   }
 };
-
+const getByID = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const categories = await postCategoryService.findById(req.params.typeId);
+    return ReS(res, { categories }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
 const findByName = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -63,4 +71,5 @@ module.exports = {
   deleteById,
   findByName,
   updateNameById,
+  getByID
 };

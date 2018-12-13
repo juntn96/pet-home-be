@@ -10,6 +10,7 @@ import LocationDetail from './components/location/LocationDetail';
 import ReportList from './components/admin-dashboard/manage-reports/ReportList';
 import PostCategory from './components/admin-dashboard/manage-category/PostCategory';
 import LocationCategory from './components/admin-dashboard/manage-category/LocationCategory';
+import LocationAdmin from './components/admin-dashboard/manage-location/LocationAdmin';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -32,5 +33,6 @@ const routes = [
     { path: '/admin/report', exact: true, name: 'Báo cáo', component: ReportList },
     { path: '/admin/category/location', exact: true, name: 'Thể loại địa điểm', component: LocationCategory },
     { path: '/admin/category/post', exact: true, name: 'Thể loại bài viết', component: PostCategory },
+    { path: '/admin/location', exact: true, name: 'Quản lý địa điểm', component: LocationAdmin },
 ]
 export default routes;

@@ -254,38 +254,6 @@ const temp = async (req, res) => {
   }
 };
 
-const getReportedPost = async (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  try {
-    const result = Report.aggregate([
-      {
-        $group: {
-          _id: '$postId',
-          total_report: { $sum: 1 }
-        }
-      },
-      { "$sort": { "total_report": -1 } },
-    ])
-    .exec(function (err, transactions) {
-      // Don't forget your error handling
-      // The callback with your transactions
-      // Assuming you are having a Tag model
-      Post.populate(transactions, { path: '_id' },async (err, populatedTransactions) => {
-      // Your populated translactions are inside populatedTransactions
-        // Your populated translactions are inside populatedTransactions
-        let results=[];
-        populatedTransactions.map( async item => {
-          let users = await getPosterById(item._id.ownerId);
-          results.push({post: item._id, total_report: item.total_report, user: users})
-        });
-        return ReS(res, { results }, 200);
-      });
-    });
-  } catch (error) {
-    return ReE(res, error, 422);
-  }
-};
-
 const getPosterById = async (id) => {
   try {
     let user = await User.findById(id).select('appName _id');
@@ -294,6 +262,16 @@ const getPosterById = async (id) => {
     return ReE(res, error, 422);
   }
 }
+const getPostById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    let result = await PostService.findPostById(req.params.postId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   add,
   get,
@@ -302,6 +280,7 @@ module.exports = {
   getByOwnerId,
   getPublicByTypeId,
   deleteById,
+  
   ////////////
   getImages,
   addImages,
@@ -319,5 +298,6 @@ module.exports = {
   getReports,
   //
   testNotification,
-  getReportedPost,
+  //
+  getPostById
 };
