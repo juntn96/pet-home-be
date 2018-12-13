@@ -25,8 +25,31 @@ const getNotifications = async userId => {
         },
       },
       {
-        $unwind: "$sender"
-      }
+        $unwind: "$sender",
+      },
+    ]);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getNotificationsByType = async (userId, type) => {
+  try {
+    const result = await Notification.aggregate([
+      { $match: { receiver: userId, type } },
+      { $addFields: { sender: { $toObjectId: "$sender" } } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "sender",
+          foreignField: "_id",
+          as: "sender",
+        },
+      },
+      {
+        $unwind: "$sender",
+      },
     ]);
     return result;
   } catch (error) {
@@ -37,4 +60,5 @@ const getNotifications = async userId => {
 module.exports = {
   addNotification,
   getNotifications,
+  getNotificationsByType,
 };

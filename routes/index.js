@@ -293,6 +293,10 @@ router.get(
   "/app/notification/:userId",
   NotificationController.getNotifications
 );
+router.get(
+  "/app/notification/getType/:userId/:type",
+  NotificationController.getNotificationsByType
+);
 //#endregion
 
 // Upload to Cloudinary
