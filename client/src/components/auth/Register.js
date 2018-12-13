@@ -108,12 +108,13 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2,
       typeId: this.state.typeLocation,
-      phoneNumber: '0969255141',
+      phoneNumber: this.state.phone,
       address: this.state.address,
       location:location,
       role: 1
     };
     this.props.registerUser(newUser, this.props.history);
+    this.props.history.push('/register-success');
   }
 
   getLatLong = (event) =>{    
@@ -187,7 +188,7 @@ class Register extends Component {
                   <div style={{display:'block'}} ref='password2Validate' className="invalid-feedback"></div>
                 </div>
                 <div className="form-group">
-                  {/* <input
+                  <input
                     type="text"
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.address
@@ -196,12 +197,12 @@ class Register extends Component {
                     name="address"
                     value={this.state.address}
                     onChange={this.onChange}
-                  /> */}
-                  <Geosuggest className='form-control form-control-lg' onSuggestSelect={this.getLocationCenter} placeholder='Địa chỉ'/>
+                  />
+                  {/* <Geosuggest className='form-control form-control-lg' onSuggestSelect={this.getLocationCenter} placeholder='Địa chỉ'/> */}
                   <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
                 </div>
                 <div className="form-group" >
-                    { locationCategories === null || loading ? <Spinner /> :            
+                    { locationCategories === null || loading ? <Spinner /> :
                       <SelectListGroup
                         placeholder="Loại địa điểm"
                         name="typeLocation"
