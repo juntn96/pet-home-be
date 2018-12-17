@@ -1,4 +1,5 @@
 const Pet = require("./../models/Pet");
+const Notification = require("../models/Notification");
 
 const add = async data => {
   try {
@@ -138,10 +139,28 @@ const getNotIgnoredPet = async userId => {
           "ignores.user": { $ne: userId },
         },
         {
-          ownerId: { $ne: userId }
-        }
-      ]
+          ownerId: { $ne: userId },
+        },
+      ],
     }).sort({ likes: -1 });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const changeRequestStatus = async (notificationId, status) => {
+  try {
+    const result = await Notification.findByIdAndUpdate(
+      {
+        _id: notificationId,
+      },
+      {
+        $set: {
+          "content.status": status,
+        },
+      }
+    );
     return result;
   } catch (error) {
     throw error;
@@ -159,4 +178,5 @@ module.exports = {
   addUserIgnorePet,
   getLikeNumber,
   getNotIgnoredPet,
+  changeRequestStatus,
 };

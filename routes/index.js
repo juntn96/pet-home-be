@@ -279,6 +279,7 @@ router.get("/pet/isLiked", PetController.isLiked);
 router.post("/pet/ignore", PetController.addUserIgnorePet);
 router.get("/pet/getLikeNumber/:petId", PetController.getLikeNumber);
 router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
+router.post("/pet/changeRequestStatus", PetController.changeRequestStatus);
 //#endregion
 
 //#region report route

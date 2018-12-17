@@ -131,6 +131,18 @@ const getNotIgnoredPet = async (req, res) => {
   }
 };
 
+const changeRequestStatus = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const notificationId = req.body.notificationId;
+    const status = req.body.status;
+    const result = await PetService.changeRequestStatus(notificationId, status);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   add,
   getByUser,
@@ -142,4 +154,5 @@ module.exports = {
   addUserIgnorePet,
   getLikeNumber,
   getNotIgnoredPet,
+  changeRequestStatus
 };

@@ -37,7 +37,7 @@ const getNotifications = async userId => {
 const getNotificationsByType = async (userId, type) => {
   try {
     const result = await Notification.aggregate([
-      { $match: { receiver: userId, type } },
+      { $match: { $or: [{ sender: userId }, { receiver: userId}], type } },
       { $addFields: { sender: { $toObjectId: "$sender" } } },
       {
         $lookup: {
