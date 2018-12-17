@@ -50,6 +50,16 @@ const getPet = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await PetService.getById(req.params.petId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const deletePet = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -147,6 +157,7 @@ module.exports = {
   add,
   getByUser,
   getPet,
+  getById,
   deletePet,
   editPet,
   isLiked,

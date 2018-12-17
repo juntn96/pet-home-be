@@ -32,6 +32,15 @@ const getPet = async (userId = "") => {
   }
 };
 
+const getById = async petId => {
+  try {
+    const result = await Pet.findById(petId).select({ likes: 0, ignores: 0 });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deletePet = async _id => {
   try {
     const result = await Pet.findByIdAndRemove(_id);
@@ -171,6 +180,7 @@ module.exports = {
   add,
   getByUser,
   getPet,
+  getById,
   deletePet,
   editPet,
   isLiked,

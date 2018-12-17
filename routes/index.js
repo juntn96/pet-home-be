@@ -272,6 +272,7 @@ router.post("/conversation/message/add", ConversationController.addMessage);
 router.post("/pet/add", PetController.add);
 router.get("/pet/get/:userId", PetController.getByUser);
 router.get("/pet/getPet/:userId", PetController.getPet);
+router.get("/pet/getById/:petId", PetController.getById);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
 router.post("/pet/like", PetController.addUserLikePet);
