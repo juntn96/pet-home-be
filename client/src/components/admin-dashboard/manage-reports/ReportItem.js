@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
-import Img from 'react-image';
+
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -40,15 +40,32 @@ class ReportItem extends Component {
     });
   }
 
-  _onClickBanUser = () => {
+  _getReportById = () => {
+    
+  }
+
+  _onClickBanUser = (e) => {
+    e.preventDefault();
     this.setState({
       isLoading: true,
     })
     this._requestBanUser();
   }
 
+  _showModal =(e) => {
+    e.preventDefault();
+    window.showReportDetail();
+    axios.get(`/api/report/${this.props.reportDetail._id}`).then(res => {
+      const data = {post:this.props.reportDetail, allReport: res.data.result }
+      this.props.onShowDetail(data)
+    }).catch(err =>{
+      //todo
+    });
+    
+  }
+
   render(){
-    const key = this.props.key;
+    const key = this.props.index;
     const users = this.props.allusers;
     const { deletionFlag } = this.state
     const style = deletionFlag !==1 ? "secondary" : "danger";
@@ -58,7 +75,6 @@ class ReportItem extends Component {
     if(users.allusers.users !== undefined){
       owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
     }
-    console.log(owerName);
     const date = new Date(reportDetail.createdAt).toLocaleDateString() + ' ' + new Date(reportDetail.createdAt).toLocaleTimeString();
     return (
       <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}}>
@@ -75,6 +91,7 @@ class ReportItem extends Component {
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
         {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Cấm người dùng</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hủy</Button></td>}
+          <td><a style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
       </tr>
     )
   }

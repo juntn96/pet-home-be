@@ -48,6 +48,15 @@ const getAllReports = async () => {
   }
 };
 
+const getReportByPostId = async (postId) => {
+  try {
+    let result = null;
+    result = await Report.find({postId: postId}).populate('reporterId');
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
 // const getTotalReports = async () => {
 // 	try {
 //     let res  = await Report.aggregate().group({_id: '$postId' , count: { $sum: 1 }})
@@ -61,5 +70,6 @@ const getAllReports = async () => {
 module.exports = {
     addReport,
     updateReportStatus,
-    getAllReports
+    getAllReports,
+    getReportByPostId
 }

@@ -125,8 +125,9 @@ class PostCategory extends Component {
           <Col>
             <Card >
               <CardHeader>
-                <div className="form-group row">
+                <div className="form-group row" >
                   <input className="form-control col-sm-2 " placeholder="Tìm theo tên" onChange={this._onSearch} name="name" />
+                  <div style={{display:"none"}}>
                   <div className="form-check">
                     <input className="form-check-input" ref='all' onClick={this._filterByStatus} type="radio" name="exampleRadios" id="all" value="option1" checked/>
                     <label className="form-check-label" for="all">
@@ -144,7 +145,7 @@ class PostCategory extends Component {
                     <label className="form-check-label" for="off">
                     Không hoạt động
                     </label>
-                  </div>
+                  </div></div>
                   <div className="card-header-actions">
                     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#addModal"><i className="fa fa-plus"></i>  Thêm mới</button>
                   </div>

@@ -23,12 +23,11 @@ class PostCategoryIttem extends Component {
     const { postCate } = this.props;
     const date = new Date(postCate.updatedAt).toLocaleDateString();
     const typeColor = postCate.deletionFlag ? 'card-accent-secondary' : 'card-accent-warning';
-    const classnametype = postCate.deletionFlag ? 'badge-secondary' : 'badge-success';
     return (<Col xs="12" sm="4" md="3" className="itemSearch" >
       <input type="hidden" className="statusFlagPost" value={postCate.deletionFlag ? 'off' : 'on'} />
       <Card className={typeColor} >
         <CardHeader>
-          {postCate.name}
+          <span ref="nameItem" className="nameItem">{postCate.name}</span>
           <div className="card-header-actions">
             <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#editModal"><i className="icon-pencil"></i></a>
             <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#exampleModal">

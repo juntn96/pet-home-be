@@ -152,3 +152,14 @@ const searchDist = async (locationDetail) => {
   }
 };
 module.exports.searchDist = searchDist;
+
+const getAllLocations = async () => {
+  try {
+    let listLocationCategory = await Location.find().populate('ownerId').populate('typeId')
+    return listLocationCategory;
+  }
+  catch (e) {
+    return TE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.getAllLocations = getAllLocations;

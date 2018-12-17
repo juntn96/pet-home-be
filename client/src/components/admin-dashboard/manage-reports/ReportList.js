@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux';
+import Img from 'react-image';
 import { withRouter } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row,Table, Badge } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'
@@ -14,7 +15,9 @@ class ReportList extends Component {
     this.state = {
       userId : '',
       deletionFlag: false,
-      reports : []
+      reports : [],
+      detail: null,
+      rqDetail: []
     }
   }
 
@@ -32,7 +35,6 @@ class ReportList extends Component {
         reports: res.data.result,
         isLoading: false
       })
-      console.log(res.data.result)
     }).catch(err =>{
       //todo
     });
@@ -52,6 +54,27 @@ class ReportList extends Component {
       }
     }
   }
+  detailHandle = (obj) => {
+    this.setState({detail:obj.post, rqDetail: obj.allReport})
+  }
+  renderContent =  () => {
+    return (<div>
+      
+      <div>{this.state.detail.title}</div>
+      {this.state.detail!==null? this.state.detail.images.map(item => <Img src={item.url} style={{height:200,width:200}}></Img>):''}
+      <br />
+      <small style={{marginTop:20}} className="text-muted">Nội dung báo cáo:</small>
+      {this.state.rqDetail.map(item => <div>
+        <hr/>
+        <div>
+          <strong >{item.reporterId.appName}</strong><small className="text-muted">{new Date(item.updatedAt).toDateString()}</small>
+          <br />
+          <span className="text-muted">{item.description}</span>
+        </div>
+      </div>)}
+    </div>)
+  }
+
 
   render(){
     const reports = this.state.reports;
@@ -80,11 +103,12 @@ class ReportList extends Component {
                     <th>Số lần bị reports</th>
                     <th>Trạng thái</th>
                     <th style={{width:'9%'}}>Xử lý người dùng này</th>
+                    <th></th>
                   </tr>
                   </thead>
                   <tbody ref="tableSearch">
                     { reports.map((item, index) =>
-                      item.postDetail.length !==0 ? <ReportItem reportDetail={item.postDetail[0]} key={index} totalReports={item.totalReport}/>:'')}
+                      item.postDetail.length !==0 ? <ReportItem onShowDetail={this.detailHandle} reportDetail={item.postDetail[0]} index={index} totalReports={item.totalReport}/>:'')}
                   </tbody>
                 </Table>
                 }
@@ -92,6 +116,21 @@ class ReportList extends Component {
             </Card>
           </Col>
         </Row>
+        <div ref="" className="modal fade" id="showReportDetail" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4> Chi tiết </h4>
+              </div>
+              <div className="modal-body">
+              {this.state.detail!==null ?this.renderContent() :<Spinner />}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>)
   }
 

@@ -51,6 +51,10 @@ router.post(
 );
 router.put("/admin/location/locationCategories",LocationController.updateLocationCategories);
 
+
+// Location admin
+router.get("/admin/getLocation", LocationController.getAllLocations);
+
 //Product
 router.post(
   "/product/add",
@@ -271,6 +275,7 @@ router.get("/pet/getNotIgnoredPet", PetController.getNotIgnoredPet);
 router.post("/report/addReport", ReportController.addReport);
 router.put("/report/updateReportStatus", ReportController.updateReportStatus);
 router.get("/report/getReportedPost", ReportController.adminGetAllReports);
+router.get("/report/:postId", ReportController.getReportByPostId);
 //#endregion
 
 // Upload to Cloudinary

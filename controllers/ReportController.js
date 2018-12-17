@@ -33,15 +33,23 @@ const adminGetAllReports = async (req, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
         const result = await ReportService.getAllReports();
-        console.log(result)
         return ReS(res, { result }, 200);
     } catch (error) {
         return ReE(res, error, 422);
     }
 };
-
+const getReportByPostId = async (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const result = await ReportService.getReportByPostId(req.params.postId);
+        return ReS(res, { result }, 200);
+    } catch (error) {
+        return ReE(res, error, 422);
+    }
+};
 module.exports = {
     addReport,
     updateReportStatus,
-    adminGetAllReports
+    adminGetAllReports,
+    getReportByPostId
 };

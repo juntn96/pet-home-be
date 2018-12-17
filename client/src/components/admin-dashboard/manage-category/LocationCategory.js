@@ -156,9 +156,10 @@ class LocationCategory extends Component {
           <Col>
             <Card >
               <CardHeader>
-                <div className="form-group row">
+                <div className="form-group row" >
                   <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" />
-                  <div className="form-check form-check-inline">
+                 <div style={{display:"none"}}>
+                 <div className="form-check form-check-inline">
                     <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox1" ref='all' name="all" checked disabled/>
                     <label className="form-check-label" for="inlineCheckbox1">Tất cả</label>
                   </div>
@@ -170,6 +171,7 @@ class LocationCategory extends Component {
                     <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox3" ref='off' name="off"/>
                     <label className="form-check-label" for="inlineCheckbox3">Không hoạt động</label>
                   </div>
+                 </div>
                   <div className="card-header-actions">
                     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#addModalLocation"><i className="fa fa-plus"></i>  Thêm mới</button>
                   </div>

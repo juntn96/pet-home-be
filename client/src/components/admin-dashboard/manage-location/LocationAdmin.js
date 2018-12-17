@@ -14,25 +14,24 @@ class LocationAdmin extends Component {
     this.state = {
       userId : '',
       deletionFlag: false,
-      reports : []
+      locations : []
     }
   }
 
   componentDidMount(){
-    this._getAllReports();
+    this._getAllLocations();
   }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  _getAllReports = () => {
-    axios.get('/api/report/getReportedPost').then(res => {
+  _getAllLocations = () => {
+    axios.get('/api/admin/getLocation').then(res => {
       this.setState({
-        reports: res.data.result,
+        locations: res.data.locations,
         isLoading: false
       })
-      console.log(res.data.result)
     }).catch(err =>{
       //todo
     });
@@ -54,7 +53,7 @@ class LocationAdmin extends Component {
   }
 
   render(){
-    const reports = this.state.reports;
+    const locations = this.state.locations;
     return (
     <div>
       <Row>
@@ -70,7 +69,7 @@ class LocationAdmin extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { reports === null  ? <Spinner /> :
+              { locations === null  ? <Spinner /> :
                 <Table hover responsive >
                   <thead>
                   <tr>
@@ -83,8 +82,8 @@ class LocationAdmin extends Component {
                   </tr>
                   </thead>
                   <tbody ref="tableSearch">
-                    { reports.map((item, index) =>
-                      item.postDetail.length !==0 ? <LocationItem reportDetail={item.postDetail[0]} key={index} totalReports={item.totalReport}/>:'')}
+                    { locations.map((item, index) =>
+                      <LocationItem location={item} key={index}/>)}
                   </tbody>
                 </Table>
                 }

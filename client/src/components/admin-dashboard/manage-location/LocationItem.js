@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
-import Img from 'react-image';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -15,14 +14,13 @@ class LocationItem extends Component {
   }
 
   componentDidMount(){
-    const reportDetail = this.props.reportDetail;
   }
 
   _requestBanUser = () => {
-    const reportDetail = this.props.reportDetail;
-    const user = {id: reportDetail.ownerId,deletionFlag : this.state.deletionFlag === 1? false:true}
+    const location = this.props.location;
+    const user = {id: location.ownerId,deletionFlag : this.state.deletionFlag === 1? false:true}
     axios.put('/api/admin/users', user).then(res => {
-      const update = {id: this.props.reportDetail._id,deletionFlag: this.state.deletionFlag?0:1 }
+      const update = {id: this.props.location._id,deletionFlag: this.state.deletionFlag?0:1 }
       axios.put('/api/report/updateReportStatus', update).then(res =>{
         this._requestGetDelectionFlag();
       })
@@ -30,7 +28,7 @@ class LocationItem extends Component {
   }
 
   _requestGetDelectionFlag = () => {
-    axios.get(`/api/post/getById/${this.props.reportDetail._id}`).then(res => {
+    axios.get(`/api/post/getById/${this.props.location._id}`).then(res => {
       this.setState({
         deletionFlag: res.data.result.deletionFlag,
         isLoading: false
@@ -47,6 +45,10 @@ class LocationItem extends Component {
     this._requestBanUser();
   }
 
+  _showModal =() => {
+    window.showReportDetail();
+  }
+
   render(){
     const key = this.props.key;
     const users = this.props.allusers;
@@ -54,18 +56,16 @@ class LocationItem extends Component {
     const style = deletionFlag !==1 ? "secondary" : "danger";
     const text = deletionFlag !==1? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
-    const {reportDetail, totalReports,owner} = this.props;
+    const {location} = this.props;
     if(users.allusers.users !== undefined){
-      owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
+      owerName = users.allusers.users.filter(item => item._id === location.ownerId )
     }
-    console.log(owerName);
-    const date = new Date(reportDetail.createdAt).toLocaleDateString() + ' ' + new Date(reportDetail.createdAt).toLocaleTimeString();
+    const date = new Date(location.createdAt).toLocaleDateString() + ' ' + new Date(location.createdAt).toLocaleTimeString();
     return (
-      <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}}>
-        <td style={{verticalAlign:"middle"}}>{reportDetail.title}</td>
+      <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}} onClick={this._showModal}>
+        <td style={{verticalAlign:"middle"}}>{location.title}</td>
         <td style={{verticalAlign:"middle"}}>{owerName.length !==0 ? owerName[0].appName:'unknown'}</td>
         <td style={{verticalAlign:"middle"}}>{date}</td>
-        <td style={{verticalAlign:"middle"}}>{totalReports}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {/* <td style={{verticalAlign:"middle"}}>
         <div>{userDetail.appName}</div>
