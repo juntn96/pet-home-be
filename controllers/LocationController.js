@@ -152,8 +152,16 @@ const searchDist = async function (req, res) {
             distanceField = (distance / 1000).toFixed(1) + 'km';
           }
           return {
-            _id, deletionFlag, address,
-            name, typeId, systemRating, description, images, distanceField ,coordinate
+            _id, 
+            deletionFlag, 
+            address,
+            name, 
+            typeId, 
+            systemRating, 
+            description, 
+            images, 
+            distance: distanceField,
+            coordinate
           }
         }).filter(item => item.deletionFlag !== true);
         return ReS(res, { listLocation }, 200);
