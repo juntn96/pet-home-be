@@ -1,5 +1,6 @@
 const Pet = require("./../models/Pet");
 const Notification = require("../models/Notification");
+const ExpoService = require("./ExpoService");
 
 const add = async data => {
   try {
@@ -158,8 +159,9 @@ const getNotIgnoredPet = async userId => {
   }
 };
 
-const changeRequestStatus = async (notificationId, status) => {
+const changeRequestStatus = async (notificationId, status, notification) => {
   try {
+    ExpoService.sendNotifications(notification);
     const result = await Notification.findByIdAndUpdate(
       {
         _id: notificationId,

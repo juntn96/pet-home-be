@@ -146,7 +146,12 @@ const changeRequestStatus = async (req, res) => {
   try {
     const notificationId = req.body.notificationId;
     const status = req.body.status;
-    const result = await PetService.changeRequestStatus(notificationId, status);
+    const notification = req.body.notification;
+    const result = await PetService.changeRequestStatus(
+      notificationId,
+      status,
+      notification
+    );
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -165,5 +170,5 @@ module.exports = {
   addUserIgnorePet,
   getLikeNumber,
   getNotIgnoredPet,
-  changeRequestStatus
+  changeRequestStatus,
 };
