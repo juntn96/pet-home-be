@@ -51,6 +51,9 @@ const getNotificationsByType = async (userId, type) => {
             },
           ],
           type,
+          hidden: {
+            $nin: [userId],
+          },
         },
       },
       {
@@ -88,8 +91,28 @@ const getNotificationsByType = async (userId, type) => {
   }
 };
 
+const hiddenNotification = async (notificationId, userId) => {
+  try {
+    const result = await Notification.findByIdAndUpdate(
+      notificationId,
+      {
+        $push: {
+          hidden: userId,
+        },
+      },
+      {
+        new: false,
+      }
+    );
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   addNotification,
   getNotifications,
   getNotificationsByType,
+  hiddenNotification,
 };

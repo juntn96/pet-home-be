@@ -33,8 +33,23 @@ const getNotificationsByType = async (req, res) => {
   }
 };
 
+const hiddenNotification = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const notificationId = req.body.notificationId;
+    const result = await NotificationService.hiddenNotification(
+      notificationId,
+      userId
+    );
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   addNotification,
   getNotifications,
   getNotificationsByType,
+  hiddenNotification
 };

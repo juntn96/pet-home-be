@@ -291,6 +291,7 @@ router.get("/report/getReportedPost", PostController.getReportedPost);
 
 //#region notification
 router.post("/app/notification/add", NotificationController.addNotification);
+router.post("/app/notification/hide", NotificationController.hiddenNotification);
 router.get(
   "/app/notification/:userId",
   NotificationController.getNotifications
