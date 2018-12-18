@@ -54,6 +54,17 @@ const getPublicByTypeId = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const postId = req.params.postId;
+    const result = await PostService.findPostById(postId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const editPost = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -298,6 +309,7 @@ const getPosterById = async (id) => {
 module.exports = {
   add,
   get,
+  getById,
   editPost,
   postTextSearch,
   getByOwnerId,

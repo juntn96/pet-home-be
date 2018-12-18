@@ -234,6 +234,7 @@ router.put(
 router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
+router.get("/post/getById/:postId", PostController.getById);
 router.get("/post/get/:typeId", PostController.getPublicByTypeId);
 router.post("/post/add", PostController.add);
 router.put("/post/edit", PostController.editPost);
@@ -289,12 +290,16 @@ router.post("/conversation/message/add", ConversationController.addMessage);
 //#region pet route
 router.post("/pet/add", PetController.add);
 router.get("/pet/get/:userId", PetController.getByUser);
+router.get("/pet/getPet/:userId", PetController.getPet);
+router.get("/pet/getById/:petId", PetController.getById);
 router.delete("/pet/deletePet", PetController.deletePet);
 router.post("/pet/editPet", PetController.editPet);
-router.post("/pet/addUserLikePet", PetController.addUserLikePet);
-router.post("/pet/addUserIgnorePet", PetController.addUserIgnorePet);
-router.get("/pet/getLikeNumber", PetController.getLikeNumber);
+router.post("/pet/like", PetController.addUserLikePet);
+router.get("/pet/isLiked", PetController.isLiked);
+router.post("/pet/ignore", PetController.addUserIgnorePet);
+router.get("/pet/getLikeNumber/:petId", PetController.getLikeNumber);
 router.get("/pet/getNotIgnoredPet/:userId", PetController.getNotIgnoredPet);
+router.post("/pet/changeRequestStatus", PetController.changeRequestStatus);
 //#endregion
 
 //#region report route
@@ -305,7 +310,15 @@ router.get("/report/getReportedPost", PostController.getReportedPost);
 
 //#region notification
 router.post("/app/notification/add", NotificationController.addNotification);
-router.get("/app/notification/:userId", NotificationController.getNotifications);
+router.post("/app/notification/hide", NotificationController.hiddenNotification);
+router.get(
+  "/app/notification/:userId",
+  NotificationController.getNotifications
+);
+router.get(
+  "/app/notification/getType/:userId/:type",
+  NotificationController.getNotificationsByType
+);
 //#endregion
 
 // Upload to Cloudinary

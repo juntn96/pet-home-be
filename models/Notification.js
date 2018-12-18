@@ -6,6 +6,7 @@ let NotificationSchema = mongoose.Schema({
   content: { type: Object },
   type: { type: String },
   message: { type: String },
+  hidden: { type: Array },
   createdAt: {
     type: Number,
     default: new Date().getTime(),

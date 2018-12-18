@@ -99,7 +99,7 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).select({votes: 0, comments: 0});
     return post;
   } catch (error) {
     throw error;
@@ -435,6 +435,7 @@ module.exports = {
   postTextSearch,
   getByOwnerId,
   getPublicByTypeId,
+  findPostById,
   /////////////////
   getImages,
   addImages,
