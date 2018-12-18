@@ -172,6 +172,25 @@ const changeRequestStatus = async (notificationId, status, notification) => {
         },
       }
     );
+    await changeMessage(notificationId, notification.data.message);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const changeMessage = async (notificationId, message) => {
+  try {
+    const result = await Notification.findByIdAndUpdate(
+      {
+        _id: notificationId,
+      },
+      {
+        $set: {
+          message,
+        },
+      }
+    );
     return result;
   } catch (error) {
     throw error;
