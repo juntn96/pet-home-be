@@ -13,7 +13,7 @@ import {
 export const getLocationCategories = type => dispatch => {
   dispatch(setCategoryLoading());
   axios
-    .get(`/api/location/locationCategories/${type}`)
+    .get(`/api/location/locationCategoriesByType/${type}`)
     .then(res =>
       dispatch({
         type: GET_LOCATIONCATEGORIES,

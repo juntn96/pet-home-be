@@ -43,6 +43,11 @@ router.get("/users/detail/:userId", UserController.getUserById);
 
 //Location Category
 router.get(
+  "/location/locationCategoriesByType/:type",
+  LocationController.getLocationCategoriesByType
+);
+
+router.get(
   "/location/locationCategories",
   LocationController.getLocationCategories
 );
@@ -171,6 +176,10 @@ router.get(
   "/location/searchAllLocations",
   LocationController.searchAllLocations
 );
+router.get(
+  "/location/locationProduct/:ownerId",
+  LocationController.getLocationWithAllProduct
+)
 
 //Product
 router.put(
@@ -187,11 +196,16 @@ router.put(
   }),
   ProductController.updateProduct
 );
+// router.get(
+//   "/product/:id",
+//   passport.authenticate("jwt", {
+//     session: false,
+//   }),
+//   ProductController.getProductDetailById
+// );
+
 router.get(
   "/product/:id",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
   ProductController.getProductDetailById
 );
 router.put(

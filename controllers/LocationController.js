@@ -21,6 +21,23 @@ const getLocationCategories = async function (req, res) {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
+
+const getLocationCategoriesByType = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, locationCategories;
+  [erro, locationCategories] = await to(locationService.getLocationCategoriesByType());
+  if (erro) {
+    return ReE(res, 'Get locationCategories failed', 422);
+  }	
+  if (locationCategories) {
+    return ReS(res, { message: 'Get locationCategories success', locationCategories: locationCategories }, 200);
+  }
+  else {
+    return ReE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.getLocationCategoriesByType = getLocationCategoriesByType;
+
 const updateLocationCategories = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -63,6 +80,22 @@ const getLocationProfile = async function (req, res) {
   } 				
 };
 module.exports.getLocationProfile = getLocationProfile;
+
+const getLocationWithAllProduct = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, locationProduct;
+  [erro, locationProduct] = await to(locationService.getLocationWithAllProduct(req.params.ownerId));
+  if (erro) {
+    return ReE(res, 'Get location and product failed', 422);
+  }	
+  if (locationProduct) {
+    return ReS(res, { message: 'Get location and product success', locationProduct: locationProduct }, 200);
+  }
+  else {
+    return ReE(res, 'Get location and product failed', 503);
+  } 				
+};
+module.exports.getLocationWithAllProduct = getLocationWithAllProduct;
 
 const searchNearByLatLong = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
