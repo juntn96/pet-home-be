@@ -113,6 +113,27 @@ const searchNearByLatLong = async function (req, res) {
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
+const searchLocationByCategory = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const typeIdArray = req.query.typeIdArray
+  try {
+    if(req.query.typeId){
+      listLocations = await Location.find({      
+        deletionFlag: false,
+        $and: [
+          // { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"}, { typeId: "5bedaa87e70319065e849f50"}, { typeId: "5bd0bc024c1c4b287902d4c3"} ] }
+          // { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"}, { typeId: "5bedaa87e70319065e849f50"} ] }
+          { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"} ] }
+        ]
+      })
+      return ReS(res, { listLocations }, 200);
+    }
+  } catch (e) {
+		return ReE(res, error, 422);
+	}		
+}
+module.exports.searchLocationByCategory = searchLocationByCategory;
+
 const searchDist = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let long = parseFloat(req.params.long);

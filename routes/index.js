@@ -180,6 +180,10 @@ router.get(
   "/location/locationProduct/:ownerId",
   LocationController.getLocationWithAllProduct
 )
+router.get(
+  "/location/locationByCategory",
+  LocationController.searchLocationByCategory
+)
 
 //Product
 router.put(
