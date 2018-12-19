@@ -268,10 +268,9 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword) {
-      console.log(req.query.search_keyword)
       listLocations = await Location.find({  
           deletionFlag: false,    
-          $text: { $search: search_keyword }, 
+          $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
@@ -285,7 +284,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.ratingGt) {
       listLocations = await Location.find({      
           deletionFlag: false,
-          $text: { $search: search_keyword }, 
+          $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
@@ -350,7 +349,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
       listLocations = await Location.find({   
           deletionFlag: false,   
-          $text: { $search: search_keyword }, 
+          $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
           },
@@ -471,7 +470,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.typeIdArray){
       listLocations = await Location.find({  
         deletionFlag: false,    
-        $text: { $search: search_keyword }, 
+        $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
         $and: [
           { $or : typeIdArray }
         ]
@@ -490,7 +489,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray) {
       listLocations = await Location.find({      
           deletionFlag: false,
-          $text: { $search: search_keyword }, 
+          $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
           systemRating: { $gte: ratingGt , $lte: ratingLt},
           $and: [
             { $or : typeIdArray }
