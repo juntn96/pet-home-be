@@ -84,7 +84,7 @@ module.exports.getLocationProfile = getLocationProfile;
 const getLocationWithAllProduct = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationProduct;
-  [erro, locationProduct] = await to(locationService.getLocationWithAllProduct(req.params.ownerId));
+  [erro, locationProduct] = await to(locationService.getLocationWithAllProduct(req.query.ownerId));
   if (erro) {
     return ReE(res, 'Get location and product failed', 422);
   }	

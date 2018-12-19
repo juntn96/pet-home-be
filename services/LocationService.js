@@ -98,7 +98,6 @@ module.exports.getTotalCountLocationByTypeId = getTotalCountLocationByTypeId;
 const getLocationProfile = async (ownerId) => {
   try {
     let getProfile = await Location.find({ ownerId: ownerId });
-    console.log(getProfile);
     return getProfile;
   }
   catch (e) {
@@ -109,7 +108,7 @@ module.exports.getLocationProfile = getLocationProfile;
 
 const getLocationWithAllProduct = async (ownerId) => {
   try {
-    let getLocation = await Location.find({ ownerId: ownerId }).populate({path: 'typeId'});
+    let getLocation = await Location.find({ ownerId: ownerId }).populate('ownerId').populate({path: 'typeId'});
     let locationProduct = getLocation[0];
     
     let product = await Product.find({ ownerId: ownerId });
