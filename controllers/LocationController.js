@@ -268,6 +268,7 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword) {
+      console.log(req.query.search_keyword)
       listLocations = await Location.find({  
           deletionFlag: false,    
           $text: { $search: search_keyword }, 
