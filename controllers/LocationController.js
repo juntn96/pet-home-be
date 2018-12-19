@@ -120,7 +120,7 @@ const searchLocationByCategory = async function (req, res) {
   // const typeIdArray = [ { typeId: "5bedabb2b3c51a06927c35bb"} ] ;
   // const search_keyword = "FPT";
   try {
-    if(req.query.typeId){
+    if(req.query.typeIdArray){
       listLocations = await Location.find({      
         deletionFlag: false,
         // $text: { $search: search_keyword }, 
