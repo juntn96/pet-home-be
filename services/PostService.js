@@ -453,4 +453,5 @@ module.exports = {
   getReports,
   //
   testNotification,
+  findPostById
 };

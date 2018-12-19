@@ -57,6 +57,10 @@ router.post(
 );
 router.put("/admin/location/locationCategories",LocationController.updateLocationCategories);
 
+
+// Location admin
+router.get("/admin/getLocation", LocationController.getAllLocations);
+
 //Product
 router.post(
   "/product/add",
@@ -228,6 +232,7 @@ router.post("/phone/verify", PhoneController.verifyPhoneVerifyCode);
 router.get("/post/category/get", PostCategoryController.get);
 router.post("/post/category/add", PostCategoryController.add);
 router.delete("/post/category/deleteById", PostCategoryController.deleteById);
+router.get("/post/category/:typeId", PostCategoryController.getByID);
 router.put(
   "/post/category/updateNameById",
   PostCategoryController.updateNameById
@@ -235,6 +240,7 @@ router.put(
 //#endregion
 
 //#region post route
+router.get("/post/getById/:postId", PostController.getPostById);
 router.get("/post/get", PostController.get);
 router.get("/post/search", PostController.postTextSearch);
 router.get("/post/:ownerId", PostController.getByOwnerId);
@@ -308,8 +314,9 @@ router.post("/pet/changeRequestStatus", PetController.changeRequestStatus);
 
 //#region report route
 router.post("/report/addReport", ReportController.addReport);
-router.post("/report/updateReportStatus", ReportController.updateReportStatus);
-router.get("/report/getReportedPost", PostController.getReportedPost);
+router.put("/report/updateReportStatus", ReportController.updateReportStatus);
+router.get("/report/getReportedPost", ReportController.adminGetAllReports);
+router.get("/report/:postId", ReportController.getReportByPostId);
 //#endregion
 
 //#region notification

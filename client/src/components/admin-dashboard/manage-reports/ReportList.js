@@ -1,9 +1,12 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux';
+import Img from 'react-image';
 import { withRouter } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row,Table, Badge } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
+import ReportItem from './ReportItem'
+import axios from 'axios';
 
 class ReportList extends Component {
 
@@ -11,16 +14,30 @@ class ReportList extends Component {
     super(props);
     this.state = {
       userId : '',
-      deletionFlag: false
+      deletionFlag: false,
+      reports : [],
+      detail: null,
+      rqDetail: []
     }
   }
 
   componentDidMount(){
-    this.props.getAllUsers();
+    this._getAllReports();
   }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  _getAllReports = () => {
+    axios.get('/api/report/getReportedPost').then(res => {
+      this.setState({
+        reports: res.data.result,
+        isLoading: false
+      })
+    }).catch(err =>{
+      //todo
+    });
   }
 
   onSearch =(e) => {
@@ -37,16 +54,37 @@ class ReportList extends Component {
       }
     }
   }
+  detailHandle = (obj) => {
+    this.setState({detail:obj.post, rqDetail: obj.allReport})
+  }
+  renderContent =  () => {
+    return (<div>
+      
+      <div>{this.state.detail.title}</div>
+      {this.state.detail!==null? this.state.detail.images.map(item => <Img src={item.url} style={{height:200,width:200}}></Img>):''}
+      <br />
+      <small style={{marginTop:20}} className="text-muted">Nội dung báo cáo:</small>
+      {this.state.rqDetail.map(item => <div>
+        <hr/>
+        <div>
+          <strong >{item.reporterId.appName}</strong><small className="text-muted">{new Date(item.updatedAt).toDateString()}</small>
+          <br />
+          <span className="text-muted">{item.description}</span>
+        </div>
+      </div>)}
+    </div>)
+  }
+
 
   render(){
-    const users = this.props.allusers;
+    const reports = this.state.reports;
     return (
     <div>
       <Row>
-        <Col xs="12" lg="8">
+        <Col xs="12" lg="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách tài khoản
+                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
                 <input type="text" 
                   className="form-control" 
                   style={{float:"right", width:"20%"}} 
@@ -55,25 +93,44 @@ class ReportList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              {/* { users.allusers.users === undefined  ? <Spinner /> :
-                <Table responsive>
+              { reports === null  ? <Spinner /> :
+                <Table hover responsive >
                   <thead>
                   <tr>
-                    <th>Ảnh</th>
-                    <th>Tên người dùng</th>
-                    <th>Trạng thái hoạt động</th>
-                    <th style={{width:'9%'}}>Xử lý</th>
+                    <th>Nội dung bài viết</th>
+                    <th>Người viết</th>
+                    <th>Ngày đăng</th>
+                    <th>Số lần bị reports</th>
+                    <th>Trạng thái</th>
+                    <th style={{width:'9%'}}>Xử lý người dùng này</th>
+                    <th></th>
                   </tr>
                   </thead>
                   <tbody ref="tableSearch">
-                    {users.allusers.users !== undefined && users.allusers.users.map((item, index) => <UserItem userDetail={item} key={index} />)}
+                    { reports.map((item, index) =>
+                      item.postDetail.length !==0 ? <ReportItem onShowDetail={this.detailHandle} reportDetail={item.postDetail[0]} index={index} totalReports={item.totalReport}/>:'')}
                   </tbody>
                 </Table>
-                } */}
+                }
               </CardBody>
             </Card>
           </Col>
         </Row>
+        <div ref="" className="modal fade" id="showReportDetail" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4> Chi tiết </h4>
+              </div>
+              <div className="modal-body">
+              {this.state.detail!==null ?this.renderContent() :<Spinner />}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>)
   }
 

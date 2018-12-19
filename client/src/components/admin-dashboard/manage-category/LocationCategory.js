@@ -120,29 +120,12 @@ class LocationCategory extends Component {
     this.oldName = obj.name;
     this.setState({ name: obj.name, itemId: obj.id, deletionFlg: obj.deletionFlag })
   }
-  _changeStatusCheckbox = (e) => {
-    if(e.target.name === 'all'){
-      if(this.refs.all.checked){
-        this.refs.all.checked = true;
-        this.refs.on.checked = false;
-        this.refs.off.checked = false;
-      }
-    }
-    if(this.refs.on.checked || this.refs.off.checked){
-      this.refs.all.checked = false;
-    }
-    if((this.refs.on.checked && this.refs.off.checked) || (!this.refs.on.checked && !this.refs.off.checked) ){
-      this.refs.all.checked = true;
-      this.refs.on.checked = false;
-      this.refs.off.checked = false;
-    }
-  }
+
   _filter = (val) => {
     const list = this.refs.search.getElementsByClassName('statusFlagLocation');
     const itemm = this.refs.search.getElementsByClassName('itemSearchLocation');
     for (let i = 0; i < list.length; i++) {
       if (list[i].value === val) {
-        console.log(list[i].value)
         itemm[i].style.display = '';
       }
       else {
@@ -151,12 +134,11 @@ class LocationCategory extends Component {
     }
   }
   _filterByStatus = (e) => {
-    this._changeStatusCheckbox(e);
-    if(this.refs.all.checked)
+    if(e.target.id ==='all')
       this._showAll()
-    else if(this.refs.on.checked){
+    else if(e.target.id ==='on'){
       this._filter('on')
-    }else if(this.refs.off.checked){
+    }else if(e.target.id ==='off'){
       this._filter('off')
     }
   }
@@ -174,23 +156,25 @@ class LocationCategory extends Component {
           <Col>
             <Card >
               <CardHeader>
-                <div className="form-group row">
-                <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" />
-                <div className="form-check form-check-inline">
-                  <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox1" ref='all' name="all" checked disabled/>
-                  <label className="form-check-label" for="inlineCheckbox1">Tất cả</label>
-                </div>
-                <div className="form-check form-check-inline">
-                  <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox2" ref='on' name="on"/>
-                  <label className="form-check-label" for="inlineCheckbox2">Hoạt động</label>
-                </div>
-                <div className="form-check form-check-inline">
-                  <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox3" ref='off' name="off"/>
-                  <label className="form-check-label" for="inlineCheckbox3">Không hoạt động</label>
-                </div>
-                <div className="card-header-actions">
-                  <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#addModalLocation"><i className="fa fa-plus"></i>  Thêm mới</button>
-                </div>
+                <div className="form-group row" >
+                  <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" />
+                 <div style={{display:"none"}}>
+                 <div className="form-check form-check-inline">
+                    <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox1" ref='all' name="all" checked disabled/>
+                    <label className="form-check-label" for="inlineCheckbox1">Tất cả</label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox2" ref='on' name="on"/>
+                    <label className="form-check-label" for="inlineCheckbox2">Hoạt động</label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox3" ref='off' name="off"/>
+                    <label className="form-check-label" for="inlineCheckbox3">Không hoạt động</label>
+                  </div>
+                 </div>
+                  <div className="card-header-actions">
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#addModalLocation"><i className="fa fa-plus"></i>  Thêm mới</button>
+                  </div>
                 </div>
               </CardHeader>
             </Card>

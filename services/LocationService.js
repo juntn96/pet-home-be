@@ -192,3 +192,14 @@ const updateLocation = async (locationDetail) => {
 }
 module.exports.updateLocation= updateLocation;
 
+
+const getAllLocations = async () => {
+  try {
+    let listLocationCategory = await Location.find().populate('ownerId').populate('typeId')
+    return listLocationCategory;
+  }
+  catch (e) {
+    return TE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.getAllLocations = getAllLocations;

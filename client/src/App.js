@@ -7,6 +7,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import ForgetPass from './components/auth/ForgetPass';
 import SendPassSuccess from './components/auth/SendPassSuccess';
+import RegisterSuccess from './components/auth/RegisterSuccess';
 
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
@@ -55,7 +56,8 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
-            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />  
+            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />
+            <Route exact path="/register-success" component={RegisterSuccess} />
             <Route exact path="/upload" component={UploadImage} />
             <Switch>
               {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
@@ -72,6 +74,7 @@ class App extends Component {
               <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/location" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/post" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />
               {/* <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} /> */}
             </Switch>
