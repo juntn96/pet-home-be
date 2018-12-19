@@ -54,6 +54,17 @@ const getPublicByTypeId = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const postId = req.params.postId;
+    const result = await PostService.findPostById(postId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const editPost = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -186,8 +197,9 @@ const vote = async (req, res) => {
     const postId = req.body.postId;
     const voterId = req.body.voterId;
     const voteType = req.body.voteType;
+    const notification = req.body.notification;
     const data = { voterId, voteType };
-    const result = await PostService.vote(postId, data);
+    const result = await PostService.vote(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -275,6 +287,7 @@ const getPostById = async (req, res) => {
 module.exports = {
   add,
   get,
+  getById,
   editPost,
   postTextSearch,
   getByOwnerId,

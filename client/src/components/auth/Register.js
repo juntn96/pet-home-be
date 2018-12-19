@@ -128,7 +128,6 @@ class Register extends Component {
 
   getLocationCenter =(suggest) => {
     if(suggest!== undefined){
-      console.log(suggest.description);
       this.setState({location:suggest.location,address:suggest.description})
     }
   }

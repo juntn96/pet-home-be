@@ -1,14 +1,12 @@
 const { Expo } = require("expo-server-sdk");
 let expo = new Expo();
-const sendNotifications = (data, tokens) => {
+const sendNotifications = ({ tokens, data }) => {
   const messages = tokens.map(token => {
     return {
       to: token,
       sound: "default",
-      body: "testing",
-      data: {
-        message: "Hello"
-      },
+      body: data.message,
+      data,
     };
   });
   return Promise.all(

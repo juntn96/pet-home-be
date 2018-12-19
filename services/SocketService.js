@@ -15,7 +15,6 @@ class SocketService {
 }
 
 const onConnection = socket => {
-  console.log("socket connected: ", socket.id);
   socket.on("joinConversation", conversation =>
     joinConversation(socket, conversation)
   );
@@ -23,7 +22,6 @@ const onConnection = socket => {
     sendMessage(socket, data);
   });
   socket.on("disconnect", reason => {
-    console.log(`socket ${socket.id} disconnected: `, reason);
     socket.leaveAll();
   });
 };
@@ -33,7 +31,7 @@ const joinConversation = (socket, conversation) => {
   socket.join(conversation._id);
 };
 
-const sendMessage = async (socket, data) => {
+const sendMessage = async data => {
   try {
     const io = socketService.io;
     const messageData = {
