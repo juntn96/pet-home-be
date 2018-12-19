@@ -198,7 +198,7 @@ module.exports.searchDist = searchDist;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  const search_keyword = req.query.search_keyword;
+  const search_keyword = req.query.search_keyword.toString();
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
