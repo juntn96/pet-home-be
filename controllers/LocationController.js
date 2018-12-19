@@ -115,17 +115,19 @@ module.exports.searchNearByLatLong = searchNearByLatLong;
 
 const searchLocationByCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  const typeIdArray = req.query.typeIdArray
+  let listLocations = [];
+  // const typeIdArray = req.query.typeIdArray;
+  const typeIdArray = [ { typeId: "5bedabb2b3c51a06927c35bb"} ] ;
+  const search_keyword = "FPT";
   try {
     if(req.query.typeId){
       listLocations = await Location.find({      
         deletionFlag: false,
+        $text: { $search: search_keyword }, 
         $and: [
-          // { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"}, { typeId: "5bedaa87e70319065e849f50"}, { typeId: "5bd0bc024c1c4b287902d4c3"} ] }
-          // { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"}, { typeId: "5bedaa87e70319065e849f50"} ] }
-          { $or : [ { typeId: "5bedabb2b3c51a06927c35bb"} ] }
+          { $or : typeIdArray }
         ]
-      })
+      }).populate({ path: 'typeId' })
       return ReS(res, { listLocations }, 200);
     }
   } catch (e) {
@@ -202,6 +204,7 @@ const searchAllLocations = async function (req, res) {
   const radius = parseInt(req.query.radius);
   const lat = parseFloat(req.query.lat);
   const long = parseFloat(req.query.long);
+  const typeIdArray = req.query.typeIdArray;
   let listLocations = [];
   let listLocationDist = [];
 
@@ -250,7 +253,7 @@ const searchAllLocations = async function (req, res) {
             }
             return {
               _id, deletionFlag, address,
-              name, typeId, systemRating, description, images, distanceField ,coordinate
+              name, typeId, systemRating, description, images, distance: distanceField ,coordinate
             }
           });
           let result2 = [];
@@ -329,7 +332,7 @@ const searchAllLocations = async function (req, res) {
             }
             return {
               _id, deletionFlag, address,
-              name, typeId, systemRating, description, images, distanceField ,coordinate
+              name, typeId, systemRating, description, images, distance: distanceField ,coordinate
             }
           });
           let result2 = [];
@@ -386,7 +389,7 @@ const searchAllLocations = async function (req, res) {
             }
             return {
               _id, deletionFlag, address,
-              name, typeId, systemRating, description, images, distanceField ,coordinate
+              name, typeId, systemRating, description, images,distance: distanceField ,coordinate
             }
           });
           let result2 = [];
@@ -442,7 +445,7 @@ const searchAllLocations = async function (req, res) {
             }
             return {
               _id, deletionFlag, address,
-              name, typeId, systemRating, description, images, distanceField ,coordinate
+              name, typeId, systemRating, description, images, distance: distanceField ,coordinate
             }
           });
           let result2 = [];
@@ -456,8 +459,45 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { result2 }, 200);
         });
       });
+    } else if (req.query.typeIdArray){
+      listLocations = await Location.find({      
+        deletionFlag: false,
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }).populate({ path: 'typeId' })
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.search_keyword && req.query.typeIdArray){
+      listLocations = await Location.find({  
+        deletionFlag: false,    
+        $text: { $search: search_keyword }, 
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.ratingGt && req.query.typeIdArray) {
+      listLocations = await Location.find({  
+          deletionFlag: false,    
+          systemRating: { $gte: ratingGt , $lte: ratingLt},
+          $and: [
+            { $or : typeIdArray }
+          ]
+        }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray) {
+      listLocations = await Location.find({      
+          deletionFlag: false,
+          $text: { $search: search_keyword }, 
+          systemRating: { $gte: ratingGt , $lte: ratingLt},
+          $and: [
+            { $or : typeIdArray }
+          ]
+        }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
     }
-
 	} catch (e) {
 		return ReE(res, error, 422);
 	}					
