@@ -116,14 +116,14 @@ module.exports.searchNearByLatLong = searchNearByLatLong;
 const searchLocationByCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let listLocations = [];
-  // const typeIdArray = req.query.typeIdArray;
-  const typeIdArray = [ { typeId: "5bedabb2b3c51a06927c35bb"} ] ;
-  const search_keyword = "FPT";
+  const typeIdArray = req.query.typeIdArray;
+  // const typeIdArray = [ { typeId: "5bedabb2b3c51a06927c35bb"} ] ;
+  // const search_keyword = "FPT";
   try {
     if(req.query.typeId){
       listLocations = await Location.find({      
         deletionFlag: false,
-        $text: { $search: search_keyword }, 
+        // $text: { $search: search_keyword }, 
         $and: [
           { $or : typeIdArray }
         ]
