@@ -274,6 +274,7 @@ router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
 router.post("/app/user/findByFbId", AppUserController.findUserByFbId);
 router.get("/app/user/:userId", AppUserController.findUser);
 router.post("/app/user/notification/add", AppUserController.addNotification);
+router.post("/app/user/editInfo", AppUserController.editAppInfo);
 router.get(
   "/app/user/notification/:userId",
   AppUserController.getNotifications
@@ -321,7 +322,10 @@ router.get("/report/:postId", ReportController.getReportByPostId);
 
 //#region notification
 router.post("/app/notification/add", NotificationController.addNotification);
-router.post("/app/notification/hide", NotificationController.hiddenNotification);
+router.post(
+  "/app/notification/hide",
+  NotificationController.hiddenNotification
+);
 router.get(
   "/app/notification/:userId",
   NotificationController.getNotifications

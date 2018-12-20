@@ -68,6 +68,9 @@ const UserSchema = mongoose.Schema({
   avatar: {
     type: String,
   },
+  background: {
+    type: String
+  },
   role: {
     type: Number,
   },

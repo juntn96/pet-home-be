@@ -69,6 +69,17 @@ const addNotification = async ({ userId, notification }) => {
   }
 };
 
+const editAppInfo = async ({ userId, updateOption }) => {
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      $set: updateOption,
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getNotifications = async userId => {
   try {
     const result = await User.findById(userId);
@@ -86,4 +97,5 @@ module.exports = {
   removeExpoToken,
   addNotification,
   getNotifications,
+  editAppInfo,
 };
