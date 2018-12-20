@@ -188,6 +188,7 @@ router.get(
   "/location/locationByCategory",
   LocationController.searchLocationByCategory
 )
+router.get("/location/getAllActiveLocation", LocationController.getAllActiveLocation);
 
 //Product
 router.put(

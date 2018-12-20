@@ -199,3 +199,14 @@ const getAllLocations = async () => {
   }
 };
 module.exports.getAllLocations = getAllLocations;
+
+const getAllActiveLocation = async () => {
+  try {
+    let listLocationCategory = await Location.find({ deletionFlag: false}).populate('ownerId').populate('typeId')
+    return listLocationCategory;
+  }
+  catch (e) {
+    return TE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.getAllActiveLocation = getAllActiveLocation;

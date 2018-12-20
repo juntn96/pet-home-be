@@ -212,6 +212,21 @@ const getAllLocations = async function (req, res) {
 };
 module.exports.getAllLocations = getAllLocations;
 
+const getAllActiveLocation = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, location;
+  [erro, location] = await to(locationService.getAllActiveLocation());
+  if (erro) {
+    return ReE(res, 'Get location failed', 422);
+  }	
+  if (location) {
+    return ReS(res, { message: 'Get location success', locations: location }, 200);
+  }
+  else {
+    return ReE(res, 'Get location failed', 503);
+  }
+};
+module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
