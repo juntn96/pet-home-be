@@ -112,7 +112,7 @@ const getLocationWithAllProduct = async (ownerId) => {
     let locationProduct = getLocation[0];
     const product = await Product.find({ ownerId: ownerId });
     locationProduct.products = product;
-    const locationProduct = {
+    const locationDetail = {
       long: locationProduct.location.coordinates[0],
       lat: locationProduct.location.coordinates[1],
       systemRating: locationProduct.systemRating,
@@ -123,7 +123,7 @@ const getLocationWithAllProduct = async (ownerId) => {
       images: locationProduct.images,
       products: product
     };
-    return locationProduct
+    return locationDetail
   }
   catch (e) {
     return TE(res, 'Get getLocationProfile failed', 503);
@@ -185,8 +185,7 @@ const searchDist = async (locationDetail) => {
 module.exports.searchDist = searchDist;
 
 const updateLocation = async (locationDetail) => {
-  console.log(locationDetail);
-  [error, locaion] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
+  [error, location] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
   if (error) TE(error);
 }
 module.exports.updateLocation= updateLocation;
