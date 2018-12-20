@@ -181,7 +181,7 @@ router.get(
   LocationController.searchAllLocations
 );
 router.get(
-  "/location/locationProduct/:ownerId",
+  "/location/locationProduct",
   LocationController.getLocationWithAllProduct
 )
 router.get(
