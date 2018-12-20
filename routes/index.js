@@ -61,25 +61,6 @@ router.put("/admin/location/locationCategories",LocationController.updateLocatio
 // Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
 
-//Product
-router.post(
-  "/product/add",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.addProduct
-);
-router.get(
-  "/product/productByUserIds/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.getProductByIds
-);
-
-//User
-router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
-router.get("/users/detail/:userId", UserController.getUserById);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
@@ -96,44 +77,6 @@ router.post(
     session: false,
   }),
   AdminController.addLocation
-);
-
-//User
-router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
-router.get("/users/detail/:userId", UserController.getUserById);
-
-//Create Admin
-router.post("/admin/create", AuthController.createAdminUser);
-router.get(
-  "/admin/wake-up",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  (req, res) => res.send("👌")
-);
-router.post(
-  "./admin/addLocation",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  AdminController.addLocation
-);
-
-//Product
-router.post(
-  "/product/add",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.addProduct
-);
-
-router.get(
-  "/product/productByUserIds/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.getProductByIds
 );
 
 // get product category
@@ -205,16 +148,8 @@ router.put(
   }),
   ProductController.updateProduct
 );
-// router.get(
-//   "/product/:id",
-//   passport.authenticate("jwt", {
-//     session: false,
-//   }),
-//   ProductController.getProductDetailById
-// );
-
 router.get(
-  "/product/:id",
+  "/product/productDetailById/:id",
   ProductController.getProductDetailById
 );
 router.put(
@@ -223,6 +158,28 @@ router.put(
     session: false,
   }),
   ProductController.updateProductParentCategory
+);
+router.post(
+  "/product/add",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.addProduct
+);
+router.get(
+  "/product/productByUserIds/:ownerId",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.getProductByIds
+);
+router.get(
+  "/product/productByIdForApp",
+  ProductController.getProductDetailByIdForApp
+);
+router.get(
+  "/product/productInOneCategories",
+  ProductController.getProductInOneCategories
 );
 
 //Phone

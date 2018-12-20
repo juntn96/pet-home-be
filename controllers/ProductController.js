@@ -64,6 +64,31 @@ const getProductDetailById = async (req, res)=> {
 }
 module.exports.getProductDetailById = getProductDetailById;
 
+const getProductDetailByIdForApp = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  console.log("Vao day")
+  let error, productDetailForApp;
+  [error, productDetailForApp] = await to(productService.getProductByIdForApp(req.query.id));
+  if (error) return ReE(res, 'Không thể lấy sản phẩm', 422);
+  return ReS(res, {
+    productDetailForApp: productDetailForApp,
+    message: 'Lấy thành công'
+  }, 200);
+}
+module.exports.getProductDetailByIdForApp = getProductDetailByIdForApp;
+
+const getProductInOneCategories = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  let error, productInOneCategories;
+  [error, productInOneCategories] = await to(productService.getProductInOneCategories(req.query.typeId));
+  if (error) return ReE(res, 'Không thể get thêm sản phẩm', 422);
+  return ReS(res, {
+    productInOneCategories: productInOneCategories,
+    message: 'Lấy thành công'
+  }, 200);
+}
+module.exports.getProductInOneCategories = getProductInOneCategories;
+
 const getProductParentCategories = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const ownerId = req.params.ownerId;

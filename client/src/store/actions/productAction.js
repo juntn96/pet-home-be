@@ -89,7 +89,7 @@ export const getProductByIds = ownerId => dispatch => {
 
 export const getProductDetailById = id => dispatch => {
   axios
-    .get(`/api/product/${id}`)
+    .get(`/api/product/productDetailById/${id}`)
     .then(res =>
       dispatch({
         type: GET_PRODUCT_DETAIL,
