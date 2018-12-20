@@ -111,6 +111,7 @@ const getLocationWithAllProduct = async query => {
     const getLocation = await Location.findById(query._id).populate('ownerId').populate({path: 'typeId'});
     const product = await Product.find({ ownerId: query.ownerId });
     const locationDetail = {
+      name: getLocation.name,
       long: getLocation.location.coordinates[0],
       lat: getLocation.location.coordinates[1],
       systemRating: getLocation.systemRating,
