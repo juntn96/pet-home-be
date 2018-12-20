@@ -160,7 +160,7 @@ const searchDist = async function (req, res) {
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
-            name, typeId, systemRating, description, images, dist } = item;
+            name, typeId, systemRating, description, images, dist, ownerId } = item;
           const { calculated } = dist;
           const { coordinates } = location;
           const coordinate = {
@@ -184,7 +184,8 @@ const searchDist = async function (req, res) {
             description, 
             images, 
             distance: distanceField,
-            coordinate
+            coordinate,
+            ownerId
           }
         }).filter(item => item.deletionFlag !== true);
         return ReS(res, { listLocation }, 200);
