@@ -19,8 +19,7 @@ const onConnection = socket => {
     joinConversation(socket, conversation)
   );
   socket.on("sendMessage", mes => {
-    console.log(">>>>>>>>>>   ", mes)
-    sendMessage(socket, mes);
+    sendMessage(mes);
   });
   socket.on("disconnect", reason => {
     socket.leaveAll();
@@ -35,7 +34,6 @@ const joinConversation = (socket, conversation) => {
 const sendMessage = async mes => {
   try {
     const io = socketService.io;
-    console.log('data: >>>>>>>>>>>>>>>>>>>>>>> ', mes)
     const messageData = {
       conversationId: mes.conversationId,
       message: {
