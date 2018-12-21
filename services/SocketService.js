@@ -18,8 +18,9 @@ const onConnection = socket => {
   socket.on("joinConversation", conversation =>
     joinConversation(socket, conversation)
   );
-  socket.on("sendMessage", data => {
-    sendMessage(socket, data);
+  socket.on("sendMessage", mes => {
+    console.log(">>>>>>>>>>   ", mes)
+    sendMessage(socket, mes);
   });
   socket.on("disconnect", reason => {
     socket.leaveAll();
@@ -31,19 +32,19 @@ const joinConversation = (socket, conversation) => {
   socket.join(conversation._id);
 };
 
-const sendMessage = async data => {
+const sendMessage = async mes => {
   try {
     const io = socketService.io;
-    console.log('data: >>>>>>>>>>>>>>>>>>>>>>> ', data)
+    console.log('data: >>>>>>>>>>>>>>>>>>>>>>> ', mes)
     const messageData = {
-      conversationId: data.conversationId,
+      conversationId: mes.conversationId,
       message: {
-        sender: data.user._id,
-        content: data.message.text,
+        sender: mes.user._id,
+        content: mes.message.text,
       },
     };
     await ConversationService.addMessage(messageData);
-    io.in(data.conversationId).emit("sendMessage", data);
+    io.in(mes.conversationId).emit("sendMessage", mes);
   } catch (error) {
     throw error;
   }
