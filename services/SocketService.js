@@ -34,6 +34,7 @@ const joinConversation = (socket, conversation) => {
 const sendMessage = async data => {
   try {
     const io = socketService.io;
+    console.log(data)
     const messageData = {
       conversationId: data.conversationId,
       message: {
