@@ -157,6 +157,7 @@ const searchDist = async function (req, res) {
       { "$skip": 0 },
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        console.log(populatedTransactions)
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
