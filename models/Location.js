@@ -30,7 +30,8 @@ const locationSchema = mongoose.Schema({
     }
   ],
   systemRating: {
-    type: Number
+    type: Number,
+    default: 0
   },
   description: {
     type: String
@@ -49,7 +50,7 @@ const locationSchema = mongoose.Schema({
 	},
 });
 
-locationSchema.index({ location: "2dsphere" });
+locationSchema.index({ location: "2dsphere" }); 
 
 let Location = module.exports = mongoose.model('Location', locationSchema);
 

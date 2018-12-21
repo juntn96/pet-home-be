@@ -4,6 +4,29 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validate = require("mongoose-validator");
 
+const notificationSchema = {
+  type: {
+    type: String,
+  },
+  content: {
+    type: Object,
+  },
+  from: {
+    type: Object,
+  },
+  message: {
+    type: String,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+};
+
 const UserSchema = mongoose.Schema({
   phoneNumber: {
     type: String,
@@ -32,6 +55,7 @@ const UserSchema = mongoose.Schema({
   expoToken: {
     type: String,
   },
+  notifications: [notificationSchema],
   firstName: {
     type: String,
   },
@@ -43,6 +67,9 @@ const UserSchema = mongoose.Schema({
   },
   avatar: {
     type: String,
+  },
+  background: {
+    type: String
   },
   role: {
     type: Number,

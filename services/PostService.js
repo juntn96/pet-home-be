@@ -1,7 +1,10 @@
 const Post = require("../models/Post");
 const ExpoService = require("./ExpoService");
+const AppUserService = require("./AppUserService");
+const mongoose = require("mongoose");
 const ReportService = require("../services/ReportService");
 const Report = require("../models/Report");
+const NotificationService = require("./NotificationService");
 
 //#region post controller
 const add = async data => {
@@ -96,7 +99,7 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).select({votes: 0, comments: 0});
     return post;
   } catch (error) {
     throw error;
@@ -251,32 +254,49 @@ const findVote = async (postId, voterId) => {
 
 const getVoteByType = async (postId, voteType) => {
   try {
-    const result = await Post.findById(postId, {
-      votes: {
-        $elemMatch: {
-          voteType: { $eq: voteType },
+    const result = await Post.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(postId),
         },
       },
-    });
-    return result.votes;
+      {
+        $project: {
+          votes: {
+            $filter: {
+              input: "$votes",
+              as: "vote",
+              cond: { $eq: ["$$vote.voteType", parseInt(voteType)] },
+            },
+          },
+        },
+      },
+    ]);
+    return result[0].votes;
   } catch (error) {
     throw error;
   }
 };
 
-const vote = async (postId, newVote) => {
+const vote = async (postId, newVote, notification) => {
   try {
     const oldVote = await findVote(postId, newVote.voterId);
     if (!oldVote) {
-      return await addVote(postId, newVote);
+      const result = await addVote(postId, newVote);
+      await NotificationService.addNotification(notification);
+      return result;
     } else {
       if (newVote.voteType === oldVote.voteType) {
         return await removeVote(postId, newVote.voterId);
       } else {
-        return await editVote(postId, newVote);
+        const result = await editVote(postId, newVote);
+        await NotificationService.addNotification(notification);
+        return result;
       }
     }
-  } catch (error) { }
+  } catch (error) {
+    throw error;
+  }
 };
 
 const addVote = async (postId, vote) => {
@@ -415,6 +435,7 @@ module.exports = {
   postTextSearch,
   getByOwnerId,
   getPublicByTypeId,
+  findPostById,
   /////////////////
   getImages,
   addImages,
@@ -432,4 +453,5 @@ module.exports = {
   getReports,
   //
   testNotification,
+  findPostById
 };

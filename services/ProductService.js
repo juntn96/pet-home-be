@@ -71,7 +71,7 @@ module.exports.deleteProduct = deleteProduct;
 
 const getProductById = async (id) => {
 	try {
-    let productDetail = await Product.findById(id);
+    let productDetail = await Product.findById(id)
 		return productDetail;
 	}
 	catch (e) {
@@ -79,4 +79,26 @@ const getProductById = async (id) => {
 	}
 };
 module.exports.getProductById = getProductById;
+
+const getProductByIdForApp = async id => {
+	try {
+    let productDetailForApp = await Product.findById(id).populate({path: 'typeId'});
+		return productDetailForApp;
+	}
+	catch (e) {
+		return TE(res, 'Get productByIds failed', 503);
+	}
+};
+module.exports.getProductByIdForApp = getProductByIdForApp;
+
+const getProductInOneCategories = async (typeId) => {
+	try {
+    let productInOneCategories = await Product.find({typeId: typeId}).populate({path: 'typeId'});
+		return productInOneCategories;
+	}
+	catch (e) {
+		return TE(res, 'Get getProductInOneCategories failed', 503);
+	}
+};
+module.exports.getProductInOneCategories = getProductInOneCategories;
 

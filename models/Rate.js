@@ -29,7 +29,7 @@ const rateSchema = mongoose.Schema({
 	},
 });
 
-let PostCategory = module.exports = mongoose.model('PostCategory', rateSchema);
+let Rate = module.exports = mongoose.model('Rate', rateSchema);
 
 rateSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();

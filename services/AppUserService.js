@@ -21,6 +21,15 @@ const findUserByFbId = async facebookId => {
   }
 };
 
+const findUser = async userId => {
+  try {
+    const result = await User.findById(userId);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const addExpoToken = async ({ userId, expoToken }) => {
   try {
     const result = await User.findByIdAndUpdate(userId, {
@@ -47,9 +56,46 @@ const removeExpoToken = async ({ userId }) => {
   }
 };
 
+const addNotification = async ({ userId, notification }) => {
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      $push: {
+        notifications: notification,
+      },
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const editAppInfo = async ({ userId, updateOption }) => {
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      $set: updateOption,
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getNotifications = async userId => {
+  try {
+    const result = await User.findById(userId);
+    return result.notifications;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
+  findUserByFbId,
   createUser,
+  findUser,
   addExpoToken,
   removeExpoToken,
-  findUserByFbId
+  addNotification,
+  getNotifications,
+  editAppInfo,
 };

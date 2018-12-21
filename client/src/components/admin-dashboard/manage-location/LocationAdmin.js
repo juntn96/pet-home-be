@@ -4,24 +4,37 @@ import { withRouter } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
-import UserItem from './UserItem'
+import LocationItem from './LocationItem'
+import axios from 'axios';
 
-class UserList extends Component {
+class LocationAdmin extends Component {
 
   constructor(props){
     super(props);
     this.state = {
       userId : '',
-      deletionFlag: false
+      deletionFlag: false,
+      locations : []
     }
   }
 
   componentDidMount(){
-    this.props.getAllUsers();
+    this._getAllLocations();
   }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  _getAllLocations = () => {
+    axios.get('/api/admin/getLocation').then(res => {
+      this.setState({
+        locations: res.data.locations,
+        isLoading: false
+      })
+    }).catch(err =>{
+      //todo
+    });
   }
 
   onSearch =(e) => {
@@ -40,11 +53,11 @@ class UserList extends Component {
   }
 
   render(){
-    const users = this.props.allusers;
+    const locations = this.state.locations;
     return (
     <div>
       <Row>
-        <Col xs="12" lg="8">
+        <Col xs="12" lg="12">
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
@@ -56,18 +69,21 @@ class UserList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { users.allusers.users === undefined  ? <Spinner /> :
+              { locations === null  ? <Spinner /> :
                 <Table hover responsive >
                   <thead>
                   <tr>
-                    <th>Ảnh</th>
-                    <th>Tên người dùng</th>
-                    <th>Trạng thái hoạt động</th>
-                    <th style={{width:'9%'}}>Xử lý</th>
+                    <th>Nội dung bài viết</th>
+                    <th>Người viết</th>
+                    <th>Ngày đăng</th>
+                    <th>Số lần bị reports</th>
+                    <th>Trạng thái</th>
+                    <th style={{width:'9%'}}>Xử lý người dùng này</th>
                   </tr>
                   </thead>
                   <tbody ref="tableSearch">
-                    {users.allusers.users !== undefined && users.allusers.users.map((item, index) => <UserItem userDetail={item} key={index} />)}
+                    { locations.map((item, index) =>
+                      <LocationItem location={item} key={index}/>)}
                   </tbody>
                 </Table>
                 }
@@ -85,5 +101,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(UserList));
+export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationAdmin));
 

@@ -53,7 +53,7 @@ class AddProduct extends Component {
 
   deleteProduct =(e) => {
     this.props.deleteProduct({id:e.currentTarget.getElementsByTagName('input')[0].value})
-    this.setState(this.props.getProductByIds(this.props.auth.user.user_id));
+    this.props.getProductByIds(this.props.auth.user.user_id);
   }
 
   renderProductItem = (item, index) => {

@@ -16,7 +16,6 @@ class ForgetPass extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
-      console.log(nextProps.errors)
       return { errors: nextProps.errors};
     }
     if (nextProps.sendPassStatus) {
