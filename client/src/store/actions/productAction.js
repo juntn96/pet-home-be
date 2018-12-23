@@ -89,7 +89,7 @@ export const getProductByIds = ownerId => dispatch => {
 
 export const getProductDetailById = id => dispatch => {
   axios
-    .get(`/api/product/${id}`)
+    .get(`/api/product/productDetailById/${id}`)
     .then(res =>
       dispatch({
         type: GET_PRODUCT_DETAIL,
@@ -154,20 +154,19 @@ export const updateProductCategory = productCategories => dispatch => {
       })
     );
 };
-export const updateProduct = product => dispatch => {
+export const updateProduct = (product, history) => dispatch => {
   axios
-    .put(`/api/product/update`,product)
+    .put(`/api/product/update`, product)
     .then(res =>
-      dispatch({
-        type: UPDATE_PRODUCT_BY_ID,
-        payload: res.data
-      })
+      history.push('/product')
     )
     .catch(err =>
-      dispatch({
-        type: GET_PRODUCT_BY_USER_ID,
-        payload: null
-      })
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data.error 
+        })
+      }
     );
 };
 // Set loading state

@@ -45,9 +45,9 @@ const updateProduct = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
   let error, product;
   [error, product] = await to(productService.updateProduct(req.body));
-  if (error) return ReE(res, 'Không thể tạo thêm sản phẩm', 422);
+  if (error) return ReE(res, 'Không thể update sản phẩm', 422);
   return ReS(res, {
-    message: 'Create new product successfully'
+    message: 'Update product successfully'
   }, 200);
 }
 module.exports.updateProduct = updateProduct;
@@ -56,13 +56,38 @@ const getProductDetailById = async (req, res)=> {
   res.setHeader('Content-Type', 'application/json');
   let error, productDetail;
   [error, productDetail] = await to(productService.getProductById(req.params.id));
-  if (error) return ReE(res, 'Không thể laasy thêm sản phẩm', 422);
+  if (error) return ReE(res, 'Không thể lấy thêm sản phẩm', 422);
   return ReS(res, {
     productDetail: productDetail,
     message: 'Lấy thành công'
   }, 200);
 }
 module.exports.getProductDetailById = getProductDetailById;
+
+const getProductDetailByIdForApp = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  console.log("Vao day")
+  let error, productDetailForApp;
+  [error, productDetailForApp] = await to(productService.getProductByIdForApp(req.query.id));
+  if (error) return ReE(res, 'Không thể lấy sản phẩm', 422);
+  return ReS(res, {
+    productDetailForApp: productDetailForApp,
+    message: 'Lấy thành công'
+  }, 200);
+}
+module.exports.getProductDetailByIdForApp = getProductDetailByIdForApp;
+
+const getProductInOneCategories = async (req, res)=> {
+  res.setHeader('Content-Type', 'application/json');
+  let error, productInOneCategories;
+  [error, productInOneCategories] = await to(productService.getProductInOneCategories(req.query.typeId));
+  if (error) return ReE(res, 'Không thể get thêm sản phẩm', 422);
+  return ReS(res, {
+    productInOneCategories: productInOneCategories,
+    message: 'Lấy thành công'
+  }, 200);
+}
+module.exports.getProductInOneCategories = getProductInOneCategories;
 
 const getProductParentCategories = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');

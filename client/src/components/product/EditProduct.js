@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProduct, getProductParentCategories } from '../../store/actions/productAction';
+import { getProductParentCategories , updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -16,10 +16,10 @@ import {
   InputGroup,
   Button
 } from 'reactstrap';
-import Spinner from '../common/Spinner';
+import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
 import SpinnerU from './../uploadImage/Spinner'
-import Images from './../uploadImage/Images'
+import ImageUpdate from './../uploadImage/ImageUpdate'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
@@ -29,22 +29,26 @@ const toastColor = {
   text: '#fff' 
 }
 
-class AddProduct extends Component {
+class EditProduct extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.location.state);
+    const { _id, name, images, price, description, typeId} = this.props.location.state
     this.state = {
-      name: '',
-      description: '',
-      price: 0,
-      typeProductCategory: '',
+      id: _id,
+      name,
+      description,
+      price,
+      typeProductCategory: typeId,
+      images: images,
       loadingU: true,
       uploading: false,
-      images: []
+      isUpdate: true
     };
   }
 
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id); 
+    this.props.getProductParentCategories(this.props.auth.user.user_id);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -58,33 +62,39 @@ class AddProduct extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
       return { errors: nextProps.errors};
-    }
-    else return null;
+    }else return null
   }
 
   onChangeTypeProduct = e => {
-    this.setState({typeProductCategory: e.target.value});
+    this.setState({typeProductCategory: e.target.value,isUpdate: false});
   }
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value,isUpdate: false });
   }
 
   onSubmit = e => {
     e.preventDefault();
-
-    let imagesUrl = this.state.images.map( item => item.url);
-
+    if(this.state.name ===''
+    ||this.state.price ===''
+    ||this.state.images.length ===0){
+      if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
+      if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
+      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
+      return false;
+    }
+    
+    let imagesUrl = this.state.images.map( item => item.url!== undefined ?item.url: item);
     const newProduct = {
+      id: this.state.id,
       name: this.state.name,
-      ownerId: this.props.auth.user.user_id,
       typeId: this.state.typeProductCategory,
       description: this.state.description,
-      price: this.state.price,  
+      price: this.state.price,
       images: imagesUrl
     };
 
-    this.props.createProduct(newProduct, this.props.history);
+    this.props.updateProduct(newProduct, this.props.history);
   }
 
   onCancel = (e) => {
@@ -93,7 +103,9 @@ class AddProduct extends Component {
 
   renderOptionItem = (item, index) => {
     return (
-      <option key={index} value={item._id}>{item.name}</option>
+      // <option key={index} value={item._id} selected={item._id === this.state.typeProductCategory}>{item.name}</option>
+      <option key={index} value={item._id} >{item.name}</option>
+
     );
   }
 
@@ -155,7 +167,10 @@ class AddProduct extends Component {
   }
 
   filter = id => {
-    return this.state.images.filter(image => image.public_id !== id)
+    if( this.state.images[0].secure_url !== undefined )
+      return this.state.images.filter(image => image.secure_url!== id )
+    else
+      return this.state.images.filter(image => image!== id )
   }
 
   removeImage = id => {
@@ -169,96 +184,33 @@ class AddProduct extends Component {
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { productParentCategories , loading } = this.props.product;  
+    const { productParentCategories , loading } = this.props.product;
     const content = () => {
       switch(true) {
         case loadingU:
-          return <WakeUp />
+          return  <WakeUp />
         case uploading:
-          return <SpinnerU />
+          return  <SpinnerU />
         case images.length > 0:
-          return <Images 
-                  images={images} 
-                  removeImage={this.removeImage} 
-                  onError={this.onError}
-                 />
+          return  <ImageUpdate
+                    images={images}
+                    removeImage={this.removeImage} 
+                    onError={this.onError}
+                  />
         default:
           return <Buttons onChange={this.onChangeU} />
       }
     }
-    console.log(this.state);
     return (
       <div className="addProduct">
-          <div className="row">
-            <div className="col-md-8">           
-              <Col xs="12" sm="12">
-            <Card>
-              <CardHeader>
-                <strong>Add Product</strong>
-              </CardHeader>
-              <CardBody>
-                <FormGroup>                  
-                  <Label htmlFor="company">Tên sản phẩm</Label>
-                  <input
-                    type="text"
-                    className={classnames('form-control form-control-lg')}
-                    placeholder="Tên sản phẩm"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                  />         
-                </FormGroup>
-                <FormGroup row className="my-0">
-                  <Col xs="6">
-                  <Label htmlFor="vat">Giá</Label>
-                  <div className="controls">
-                    <InputGroup className="input-prepend">
-                      <input
-                        type="text"
-                        className={classnames('form-control form-control-lg')}
-                        placeholder="Giá"
-                        name="price"
-                        value={this.state.price}
-                        onChange={this.onChange}
-                      />
-                      <InputGroupAddon addonType="append">
-                        <InputGroupText>.00</InputGroupText>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </div>
-                  </Col>
-                </FormGroup>
-                <FormGroup row className="my-0 mt-3">
-                  <Col xs="6">
-                    <Label htmlFor="ccyear">Loại</Label>
-                    { productParentCategories === null || loading ? <Spinner /> :   
-                    <Input 
-                      type="select" 
-                      name="ccyear" 
-                      id="ccyear"
-                      value={this.state.typeProductCategory}
-                      onChange={this.onChangeTypeProduct}
-                      >
-                      <option>--Loại--</option>
-                      {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
-                    </Input>
-                    }
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row className="my-0 mt-3">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Mô tả</Label>
-                        <textarea 
-                          className="form-control form-control-lg" 
-                          name="description" 
-                          id="textarea-input" 
-                          rows="7"
-                          placeholder="Nội dung mô tả..." 
-                          value={this.state.description}
-                          onChange={this.onChange}>
-                        </textarea>
-                    </Col>
-                  </FormGroup>
+        <div className="row">
+          <div className="col-md-8">           
+            <Col xs="12" sm="12">
+              <Card>
+                <CardHeader>
+                  <strong>Sửa sản phẩm</strong>
+                </CardHeader>
+                <CardBody>
                   <FormGroup row className="my-0 mt-2">
                     <Col xs="7">
                       <Label htmlFor="textarea-input">Ảnh</Label>
@@ -268,23 +220,87 @@ class AddProduct extends Component {
                           {content()}
                         </div>                        
                       </div>
+                      <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
-                  <div style={{marginTop:20}}>
+                  <FormGroup>
+                    <Label htmlFor="company">Tên sản phẩm</Label>
+                    <input
+                      type="text" ref='nameValidate1'
+                      className={classnames('form-control form-control-lg')}
+                      placeholder="Tên sản phẩm"
+                      name="name"
+                      value={this.state.name}
+                      onChange={this.onChange}
+                    />
+                    <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
+                  </FormGroup>
                   <FormGroup row className="my-0">
-                    <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
-                    </Col>
-                    <Col col="5" sm="4" md="2" className="mb-xl-0">
-                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
+                    <Col xs="6">
+                    <Label htmlFor="vat">Giá</Label>
+                    <div className="controls">
+                      <InputGroup className="input-prepend">
+                        <input ref='priceValidate1'
+                          type="text"
+                          className={classnames('form-control form-control-lg')}
+                          placeholder="Giá"
+                          name="price"
+                          value={this.state.price}
+                          onChange={this.onChange}
+                        />
+                        <InputGroupAddon addonType="append">
+                          <InputGroupText>vnđ</InputGroupText>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      <div style={{display:'block'}} ref='priceValidate' className="invalid-feedback"></div>
+                    </div>
                     </Col>
                   </FormGroup>
+                  <FormGroup row className="my-0 mt-3">
+                    <Col xs="6">
+                      <Label htmlFor="ccyear">Loại</Label>
+                      { productParentCategories === null || loading ? <Spinner /> :   
+                        <Input 
+                          type="select" 
+                          name="ccyear" 
+                          id="ccyear"
+                          value={this.state.typeProductCategory}
+                          onChange={this.onChangeTypeProduct}
+                          >
+                          {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
+                        </Input>
+                      }
+                    </Col>
+                  </FormGroup>
+                  <FormGroup row className="my-0 mt-3">
+                    <Col xs="7">
+                      <Label htmlFor="textarea-input">Mô tả</Label>
+                        <textarea 
+                          className="form-control form-control-lg"
+                          name="description" 
+                          id="textarea-input" 
+                          rows="7"
+                          placeholder="Nội dung mô tả..." 
+                          value={this.state.description}
+                          onChange={this.onChange}>
+                        </textarea>
+                    </Col>
+                  </FormGroup>                   
+                  <div style={{marginTop:20}}>
+                    <FormGroup row className="my-0">
+                      <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
+                        <Button block color="primary" onClick={this.onSubmit}>Lưu sản phẩm</Button>
+                      </Col>
+                      <Col col="5" sm="4" md="2" className="mb-xl-0">
+                        <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
+                      </Col>
+                    </FormGroup>
                   </div>
-              </CardBody>
-            </Card>
-          </Col>
-            </div>
+                </CardBody>
+              </Card>
+            </Col>
           </div>
+        </div>
       </div>
     );
   }
@@ -293,10 +309,10 @@ class AddProduct extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  product: state.product,
+  product: state.product
 });
 
-export default connect(mapStateToProps, { createProduct, getProductParentCategories })(withRouter(x));
+export default connect(mapStateToProps, { getProductParentCategories, updateProduct })(withRouter(EditProduct));
 
 
 

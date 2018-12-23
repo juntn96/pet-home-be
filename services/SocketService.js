@@ -15,15 +15,13 @@ class SocketService {
 }
 
 const onConnection = socket => {
-  console.log("socket connected: ", socket.id);
   socket.on("joinConversation", conversation =>
     joinConversation(socket, conversation)
   );
-  socket.on("sendMessage", data => {
-    sendMessage(socket, data);
+  socket.on("sendMessage", mes => {
+    sendMessage(mes);
   });
   socket.on("disconnect", reason => {
-    console.log(`socket ${socket.id} disconnected: `, reason);
     socket.leaveAll();
   });
 };
@@ -33,18 +31,18 @@ const joinConversation = (socket, conversation) => {
   socket.join(conversation._id);
 };
 
-const sendMessage = async (socket, data) => {
+const sendMessage = async mes => {
   try {
     const io = socketService.io;
     const messageData = {
-      conversationId: data.conversationId,
+      conversationId: mes.conversationId,
       message: {
-        sender: data.user._id,
-        content: data.message.text,
+        sender: mes.user._id,
+        content: mes.message.text,
       },
     };
     await ConversationService.addMessage(messageData);
-    io.in(data.conversationId).emit("sendMessage", data);
+    io.in(mes.conversationId).emit("sendMessage", mes);
   } catch (error) {
     throw error;
   }

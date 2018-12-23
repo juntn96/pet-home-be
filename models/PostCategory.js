@@ -22,6 +22,7 @@ let PostCategory = module.exports = mongoose.model('PostCategory', postCategoryS
 
 postCategorySchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();
+	console.log(this.isNew)
 	this.updatedAt = currTime;
 	if (this.isNew) {
 		this.createdAt = currTime;

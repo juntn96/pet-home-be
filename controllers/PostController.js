@@ -1,4 +1,7 @@
 const PostService = require("../services/PostService");
+const Report = require("../models/Report");
+const Post = require("../models/Post");
+const User = require("../models/User");
 
 //#region post controller
 const add = async (req, res) => {
@@ -45,6 +48,17 @@ const getPublicByTypeId = async (req, res) => {
   try {
     const typeId = req.params.typeId;
     const result = await PostService.getPublicByTypeId(typeId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
+const getById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const postId = req.params.postId;
+    const result = await PostService.findPostById(postId);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -183,8 +197,9 @@ const vote = async (req, res) => {
     const postId = req.body.postId;
     const voterId = req.body.voterId;
     const voteType = req.body.voteType;
+    const notification = req.body.notification;
     const data = { voterId, voteType };
-    const result = await PostService.vote(postId, data);
+    const result = await PostService.vote(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -232,6 +247,16 @@ const getReports = async (req, res) => {
 };
 //#endregion
 
+const testNotification = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await PostService.testNotification();
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const temp = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -241,14 +266,34 @@ const temp = async (req, res) => {
   }
 };
 
+const getPosterById = async (id) => {
+  try {
+    let user = await User.findById(id).select('appName _id');
+    return user;
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+}
+const getPostById = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    let result = await PostService.findPostById(req.params.postId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   add,
   get,
+  getById,
   editPost,
   postTextSearch,
   getByOwnerId,
   getPublicByTypeId,
   deleteById,
+  
   ////////////
   getImages,
   addImages,
@@ -264,4 +309,8 @@ module.exports = {
   /////////////
   addReport,
   getReports,
+  //
+  testNotification,
+  //
+  getPostById
 };

@@ -10,6 +10,7 @@ import { compose, withProps } from "recompose"
 import SelectListGroup from './../common/SelectListGroup';
 import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
 import * as Constants from './../../utils/constants';
+import Geosuggest from 'react-geosuggest';
 
 import {
   Row,
@@ -60,6 +61,7 @@ class Register extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
+      console.log(nextProps.errors)
       return { errors: nextProps.errors};
     }
     else return null;
@@ -72,25 +74,47 @@ class Register extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
-
+  clearMsg=()=>{
+    this.refs.locaitonValidate.innerHTML = '';
+    this.refs.nameValidate.innerHTML = '';
+    this.refs.passwordValidate.innerHTML = '';
+    this.refs.password2Validate.innerHTML = '';
+    this.refs.addressValidate.innerHTML = '';
+  }
   onSubmit = (e) => {
     e.preventDefault();
-    const { phone } = this.props.location.state;
+    this.clearMsg();
+    if(this.state.latlong === undefined ||
+      this.state.name === ''||
+      this.state.address === '3'||
+      this.state.password === ''||
+      this.state.password2 === ''){
+        if(this.state.latlong === undefined)this.refs.locaitonValidate.innerHTML = 'Vui lòng chọn một địa điểm trên bản đồ';
+        if(this.state.name === '')this.refs.nameValidate.innerHTML = 'Vui lòng tên địa điểm';
+        if(this.state.password === '')this.refs.passwordValidate.innerHTML = 'Vui lòng nhập mật khẩu';
+        if(this.state.password2 === '')this.refs.password2Validate.innerHTML = 'Vui lòng nhập mật khẩu';
+        // if(this.state.address === '')this.refs.addressValidate.innerHTML = 'Vui lòng nhập địa chỉ chi tiết';
+      return false;
+    }
+    if(this.state.password!==this.state.password2) this.refs.password2Validate.innerHTML = 'Mật khẩu không khớp';
+
+    // const { phone } = this.props.location.state;
     const location =  {
       type: 'Point',
-      coordinates: [this.state.latlong.lat,this.state.latlong.lng]
+      coordinates: [this.state.latlong.lng,this.state.latlong.lat]
     }
     const newUser = {
       name: this.state.name,
       password: this.state.password,
       password2: this.state.password2,
       typeId: this.state.typeLocation,
-      phoneNumber: phone,
+      phoneNumber: this.state.phone,
       address: this.state.address,
       location:location,
       role: 1
     };
     this.props.registerUser(newUser, this.props.history);
+    this.props.history.push('/register-success');
   }
 
   getLatLong = (event) =>{    
@@ -101,7 +125,13 @@ class Register extends Component {
       }
     });
   }
-  
+
+  getLocationCenter =(suggest) => {
+    if(suggest!== undefined){
+      this.setState({location:suggest.location,address:suggest.description})
+    }
+  }
+
   render() {
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;    
@@ -128,9 +158,7 @@ class Register extends Component {
                     value={this.state.name}
                     onChange={this.onChange}
                   />
-                  {errors.name && (
-                    <div className="invalid-feedback">{errors.name}</div>
-                  )}
+                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
                 </div>
                 <div className="form-group">
                   <input
@@ -143,9 +171,7 @@ class Register extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                   />
-                  {errors.password && (
-                    <div className="invalid-feedback">{errors.password}</div>
-                  )}
+                  <div style={{display:'block'}} ref='passwordValidate' className="invalid-feedback"></div>
                 </div>
                 <div className="form-group">
                   <input
@@ -158,9 +184,7 @@ class Register extends Component {
                     value={this.state.password2}
                     onChange={this.onChange}
                   />
-                  {errors.password2 && (
-                    <div className="invalid-feedback">{errors.password2}</div>
-                  )}
+                  <div style={{display:'block'}} ref='password2Validate' className="invalid-feedback"></div>
                 </div>
                 <div className="form-group">
                   <input
@@ -173,12 +197,11 @@ class Register extends Component {
                     value={this.state.address}
                     onChange={this.onChange}
                   />
-                  {errors.address && (
-                    <div className="invalid-feedback">{errors.address}</div>
-                  )}
+                  {/* <Geosuggest className='form-control form-control-lg' onSuggestSelect={this.getLocationCenter} placeholder='Địa chỉ'/> */}
+                  <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
                 </div>
-                <div className="form-group">
-                    { locationCategories === null || loading ? <Spinner /> :            
+                <div className="form-group" >
+                    { locationCategories === null || loading ? <Spinner /> :
                       <SelectListGroup
                         placeholder="Loại địa điểm"
                         name="typeLocation"
@@ -190,8 +213,10 @@ class Register extends Component {
                       />
                     }
                 </div>
+                <p ref='locaitonValidate' style={{fontSize:14, color:'#f86c6b'}}></p> 
                 <input type="submit" className="btn-lg btn-primary btn-block mt-4" value="Đăng kí"/>
               </form>
+              
               </div>
             </div>
             </Col>

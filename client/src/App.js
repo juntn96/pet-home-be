@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import './App.scss';
-import Landing from './components/layout/Landing';
 import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
 import PhoneVertification from './components/auth/PhoneVertification';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import ForgetPass from './components/auth/ForgetPass';
 import SendPassSuccess from './components/auth/SendPassSuccess';
+import RegisterSuccess from './components/auth/RegisterSuccess';
 
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
@@ -20,8 +20,10 @@ import PrivateRoute from './components/common/PrivateRoute';
 import NotFound from './components/not-found/NotFound';
 
 import DefaultLayout from './components/layout/DefaultLayout';
-import AdminDashboard from './components/admin-dashboard/AdminDashboard';
 import UploadImage from './components/uploadImage/UploadImage';
+import DefaultLayoutAdmin from './components/admin-dashboard/layout/DefaultLayoutAdmin';
+
+import LocationDetail from './components/location/LocationDetail';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -43,7 +45,6 @@ if (localStorage.jwtToken) {
     window.location.href = '/login';
   }
 }
-
 class App extends Component {
   render() {
     return (
@@ -55,16 +56,27 @@ class App extends Component {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
-            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />  
+            <Route exact path="/sendPassSuccess" component={SendPassSuccess} />
+            <Route exact path="/register-success" component={RegisterSuccess} />
             <Route exact path="/upload" component={UploadImage} />
             <Switch>
               {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
               <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/profile" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
+              <PrivateRoute path="/product/edit" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
-              <PrivateRoute path="/product/category" component={DefaultLayout} />
-              <PrivateRoute path="/admin" component={AdminDashboard}/>
+              <PrivateRoute path="/chgpwd" component={DefaultLayout} />
+              <PrivateRoute path="/category" component={DefaultLayout} />
+              <PrivateRoute path="/locationDetail" component={DefaultLayout} />
+              {/* admin */}
+              <PrivateRoute path="/admin/allusers" component={DefaultLayoutAdmin}/>
+              <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/category/location" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/category/post" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />
+              {/* <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} /> */}
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>

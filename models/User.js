@@ -4,6 +4,29 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validate = require("mongoose-validator");
 
+const notificationSchema = {
+  type: {
+    type: String,
+  },
+  content: {
+    type: Object,
+  },
+  from: {
+    type: Object,
+  },
+  message: {
+    type: String,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+};
+
 const UserSchema = mongoose.Schema({
   phoneNumber: {
     type: String,
@@ -29,6 +52,10 @@ const UserSchema = mongoose.Schema({
   appName: {
     type: String,
   },
+  expoToken: {
+    type: String,
+  },
+  notifications: [notificationSchema],
   firstName: {
     type: String,
   },
@@ -40,6 +67,9 @@ const UserSchema = mongoose.Schema({
   },
   avatar: {
     type: String,
+  },
+  background: {
+    type: String
   },
   role: {
     type: Number,
@@ -62,7 +92,7 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-UserSchema.pre("save", async function(next) {
+UserSchema.pre("save", async function (next) {
   if (this.role !== 2) {
     if (this.isModified("password") || this.isNew) {
       let err, salt, hash, error;
@@ -83,7 +113,7 @@ UserSchema.pre("save", async function(next) {
   next();
 });
 
-UserSchema.methods.comparePassword = async function(pw) {
+UserSchema.methods.comparePassword = async function (pw) {
   let err, pass;
   if (!this.password) TE("password not set");
 
@@ -97,20 +127,20 @@ UserSchema.methods.comparePassword = async function(pw) {
   return this;
 };
 
-UserSchema.virtual("fullName").set(function(name) {
+UserSchema.virtual("fullName").set(function (name) {
   var split = name.split(" ");
   this.first = split[0];
   this.last = split[1];
 });
 
-UserSchema.virtual("fullName").get(function() {
+UserSchema.virtual("fullName").get(function () {
   if (!this.firstName) return null;
   if (!this.lastName) return this.firstName;
 
   return this.first + " " + this.last;
 });
 
-UserSchema.methods.getJWT = function() {
+UserSchema.methods.getJWT = function () {
   let expiration_time = parseInt(CONFIG.jwt_expiration);
   return (
     "Bearer " +
@@ -132,7 +162,7 @@ UserSchema.methods.getJWT = function() {
   );
 };
 
-UserSchema.methods.toWeb = function() {
+UserSchema.methods.toWeb = function () {
   let json = {};
   json = this.toJSON();
   json.id = this._id;

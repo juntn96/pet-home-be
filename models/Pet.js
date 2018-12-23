@@ -1,42 +1,81 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const petSchema = mongoose.Schema({
-  address: [childRecords],
-	name: {
-		type: String,
+const imageSchema = mongoose.Schema({
+  url: { type: String },
+  width: {
+    type: Number,
+    default: 0,
   },
-  ownerId: {
-    type: String,
-    ref: 'User'
+  height: {
+    type: Number,
+    default: 0,
   },
-  typeId: { 
-    type: String, 
-    ref: 'LocationCategory'
-  },
-  favoritePet: [{
-    type: String
-  }],
-	deletionFlag: {
-		type: Boolean,
-		default: false,
-	},
-	createdAt: {
-		type: Number,
-		default: new Date().getTime(),
-	},
-	updatedAt: {
-		type: Number,
-		default: new Date().getTime(),
-	},
+  publicId: { type: String },
 });
 
-let Location = module.exports = mongoose.model('Pet', petSchema);
+const petSchema = mongoose.Schema({
+  ownerId: {
+    type: String,
+    ref: "User",
+  },
+  name: {
+    type: String,
+  },
+  age: {
+    type: Number,
+  },
+  breed: {
+    type: String,
+  },
+  branch: {
+    type: String,
+  },
+  gender: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  images: [imageSchema],
+  likes: [
+    {
+      user: {
+        type: String,
+        ref: "User",
+      },
+      _id: false
+    },
+  ],
+  ignores: [
+    {
+      user: {
+        type: String,
+        ref: "User",
+      },
+      _id: false
+    },
+  ],
+  deletionFlag: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+  updatedAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+});
 
-petSchema.pre('save', async function (next) {
-	const currTime = new Date().getTime();
-	this.updatedAt = currTime;
-	if (this.isNew) {
-		this.createdAt = currTime;
-	}
-	next();
+let Pet = (module.exports = mongoose.model("Pet", petSchema));
+
+petSchema.pre("save", async function(next) {
+  const currTime = new Date().getTime();
+  this.updatedAt = currTime;
+  if (this.isNew) {
+    this.createdAt = currTime;
+  }
+  next();
 });

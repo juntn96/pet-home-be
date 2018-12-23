@@ -52,7 +52,7 @@ const authUser = async (userInfo) => { //returns token
 		[err, user] = await to(User.findOne({
 			phoneNumber: userInfo.phone,
 		}));
-		if (err) TE(err.phone);
+		if (err) TE('Số điện thoại chưa được đăng ký');
 
 	} else {
 		TE('Vui lòng nhập 1 số điện thoại di động tại Việt Nam');

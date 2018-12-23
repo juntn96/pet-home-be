@@ -26,8 +26,7 @@ class ProductCategory extends Component {
     this.state = {
       name: '',
       description: '',
-      checkUpdate: false,
-      deletionFlag:false
+      checkUpdate: false
     }
   }
   componentDidMount() {
@@ -50,7 +49,11 @@ class ProductCategory extends Component {
       checkUpdate: true
     });
   }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
 
+    }
+  }
   // setDeletionFlagFalse = (e) =>{
   //   alert('aa');
   //   const newCategory = {
@@ -69,7 +72,7 @@ class ProductCategory extends Component {
       id: this.state._id,
       name: this.state.name,
       description: this.state.description,
-      deletionFlag: this.state.deletionFlag,
+      deletionFlag: false,
     };
     this.props.updateProductCategory(newCategory, this.props.history);
     this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
@@ -88,7 +91,7 @@ class ProductCategory extends Component {
         ownerId: this.props.auth.user.user_id,
         name: this.state.name,
         description: this.state.description,
-        deletionFlag: this.state.deletionFlag,
+        deletionFlag: false,
       };
       this.props.createProductParentCategories(newCategory, this.props.history);
       this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
@@ -131,7 +134,7 @@ class ProductCategory extends Component {
         } else {
           tr[i].style.display = "none";
         }
-      }     
+      }
     }
   }
 
