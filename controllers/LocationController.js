@@ -446,6 +446,7 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
+      console.log("VAO DAY")
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
