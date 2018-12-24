@@ -213,7 +213,6 @@ const getAllLocations = async function (req, res) {
 };
 module.exports.getAllLocations = getAllLocations;
 
-<<<<<<< HEAD
 const getLocationById = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -237,7 +236,6 @@ const hideShowLocation = async function (req, res) {
   }
 };
 module.exports.hideShowLocation = hideShowLocation;
-=======
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -495,7 +493,7 @@ const searchAllLocations = async function (req, res) {
           for (let index1 = 0; index1 < listLocationDist.length; index1++) {
             for (let index2 = 0; index2 < listLocations.length; index2++) {
               if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
-                result2.push(listLocationDist[index1]);                
+                result2.push(listLocationDist[index1]);
               }
             }
           }
@@ -503,7 +501,7 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.typeIdArray){
-      listLocations = await Location.find({      
+      listLocations = await Location.find({
         deletionFlag: false,
         $and: [
           { $or : typeIdArray }
@@ -557,4 +555,3 @@ const updateLocation = async (req, res) => {
   }, 200);
 }
 module.exports.updateLocation = updateLocation;
->>>>>>> 1f5476c4e8bec2d8d816c2f1636e8dc21efbb890
