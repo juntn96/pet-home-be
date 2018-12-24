@@ -20,7 +20,7 @@ const add = async data => {
 // get public post only
 const get = async () => {
   try {
-    const result = await Post.find({ status: { $eq: 1 } })
+    const result = await Post.find({ status: { $eq: 1 }, deletionFlag: false })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
@@ -99,7 +99,7 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId).select({votes: 0, comments: 0});
+    const post = await Post.findById(postId).select({ votes: 0, comments: 0 });
     return post;
   } catch (error) {
     throw error;
@@ -453,5 +453,5 @@ module.exports = {
   getReports,
   //
   testNotification,
-  findPostById
+  findPostById,
 };

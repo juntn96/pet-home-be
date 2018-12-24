@@ -51,7 +51,7 @@ let postSchema = mongoose.Schema({
     type: Number,
     default: new Date().getTime(),
   },
-  deletionFlag: { type: Number, default: 1 },
+  deletionFlag: { type: Boolean, default: false },
 });
 
 postSchema.index({ title: "text" });
