@@ -232,9 +232,10 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let search_keyword;
+  let search_keyword = '';
+  console.log(req.query.search_keyword);
   if(req.query.search_keyword){
-    search_keyword = req.query.search_keyword.toString();
+    search_keyword = req.query.search_keyword.toString().trim();
   }
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
@@ -304,21 +305,21 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword) {
+    } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt) {
+    } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt) {
+    } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -384,6 +385,7 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+      console.log("Vao day")
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -437,10 +439,11 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
+          console.log(result2);
           return ReS(res, { result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat) {
+    } else if (req.query.radius && req.query.lat && !req.query.ratingGt) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -496,7 +499,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { result2 }, 200);
         });
       });
-    } else if (req.query.typeIdArray){
+    } else if (req.query.typeIdArray && !req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
       listLocations = await Location.find({      
         deletionFlag: false,
         $and: [
@@ -513,7 +516,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.ratingGt && req.query.typeIdArray && !req.query.lat && !req.query.ratingGt) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt},
@@ -523,7 +526,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.search_keyword) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
