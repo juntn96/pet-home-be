@@ -397,6 +397,8 @@ const searchAllLocations = async function (req, res) {
           },
         }
       );
+      console.log('listLocations')
+      console.log(listLocations)
       let result = await Location.aggregate([
         {
           $geoNear: {
@@ -412,6 +414,8 @@ const searchAllLocations = async function (req, res) {
         { "$skip": 0 },
       ]).exec(function (err, docs) {
         LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+          console.log('populatedTransactions')
+          console.log(populatedTransactions)
           if (err) return err;
           listLocationDist = populatedTransactions.map(item  => {
             const { _id, location, deletionFlag, address,
