@@ -234,7 +234,7 @@ const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let search_keyword = '';
   console.log("-----------------------")
-  console.log(req.query.search_keyword);
+  console.log(req.query.search_keyword === '');
   if(req.query.search_keyword){
     search_keyword = req.query.search_keyword.toString().trim();
   }
