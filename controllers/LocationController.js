@@ -232,7 +232,10 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  const search_keyword = req.query.search_keyword.toString();
+  let search_keyword;
+  if(req.query.search_keyword){
+    search_keyword = req.query.search_keyword.toString();
+  }
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
