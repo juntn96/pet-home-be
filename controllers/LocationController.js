@@ -388,7 +388,6 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
-      console.log("Vao day")
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -446,7 +445,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat && !req.query.ratingGt) {
+    } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
