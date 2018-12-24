@@ -157,7 +157,6 @@ const searchDist = async function (req, res) {
       { "$skip": 0 },
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
-        // console.log(populatedTransactions)
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
@@ -380,7 +379,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+    } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -510,7 +509,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.typeIdArray && !req.query.lat && !req.query.ratingGt) {
+    } else if (req.query.ratingGt && req.query.typeIdArray && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt},
@@ -520,7 +519,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.search_keyword) {
+    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
