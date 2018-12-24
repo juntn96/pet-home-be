@@ -44,7 +44,7 @@ const get = async () => {
 const getPublicByTypeId = async typeId => {
   try {
     const result = await Post.find({
-      $and: [{ typeId }, { status: 1 }],
+      $and: [{ typeId }, { status: 1 }, { deletionFlag: false }],
     })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
@@ -57,7 +57,7 @@ const getPublicByTypeId = async typeId => {
 
 const getByOwnerId = async ownerId => {
   try {
-    const result = await Post.find({ ownerId })
+    const result = await Post.find({ ownerId, deletionFlag: false })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
@@ -112,6 +112,7 @@ const postTextSearch = async searchString => {
       $text: {
         $search: searchString,
       },
+      deletionFlag: false,
     })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
