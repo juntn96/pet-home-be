@@ -232,14 +232,7 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  // console.log("-----------------------BEGIN");
-  // console.log(req.query.search_keyword === '');
-  // console.log("-----------------------BEGIN");
-  // if(req.query.search_keyword){
-  //   console.log('co search_keyword')
-  // } else {
-  //   console.log('KHONG CO');
-  // }
+  const search_keyword = req.query.search_keyword;
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
