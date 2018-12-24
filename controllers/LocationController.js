@@ -109,5 +109,30 @@ const getAllLocations = async function (req, res) {
   else {
     return ReE(res, 'Get location failed', 503);
   }
+
 };
 module.exports.getAllLocations = getAllLocations;
+
+const getLocationById = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const result= await locationService.getLocationById(req.params.locationId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+module.exports.getLocationById = getLocationById;
+
+const hideShowLocation = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const locationId = req.body.id;
+    const deletionFlag = req.body.deletionFlag;
+    const result = await locationService.hideLocationById(locationId, deletionFlag);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+      return ReE(res, error, 422);
+  }
+};
+module.exports.hideShowLocation = hideShowLocation;

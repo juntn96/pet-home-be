@@ -1,8 +1,5 @@
 import React,{Component} from 'react'
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
-import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
@@ -60,7 +57,7 @@ class LocationAdmin extends Component {
         <Col xs="12" lg="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Địa điểm
                 <input type="text" 
                   className="form-control" 
                   style={{float:"right", width:"20%"}} 
@@ -73,12 +70,14 @@ class LocationAdmin extends Component {
                 <Table hover responsive >
                   <thead>
                   <tr>
-                    <th>Nội dung bài viết</th>
-                    <th>Người viết</th>
-                    <th>Ngày đăng</th>
-                    <th>Số lần bị reports</th>
+                    <th>Tên</th>
+                    <th>Địa chỉ</th>
+                    <th>Mô tả</th>
+                    <th>Loại</th>
+                    <th>Đánh giá</th>
                     <th>Trạng thái</th>
-                    <th style={{width:'9%'}}>Xử lý người dùng này</th>
+                    <th>Xử lý</th>
+                    <th></th>
                   </tr>
                   </thead>
                   <tbody ref="tableSearch">
@@ -95,11 +94,6 @@ class LocationAdmin extends Component {
   }
 
 }
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors,
-  allusers: state.allusers
-});
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationAdmin));
+export default LocationAdmin;
 
