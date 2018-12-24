@@ -2,7 +2,9 @@ const LocationReview = require("../models/LocationReview");
 
 const getRate = async locationId => {
   try {
-    const result = await LocationReview.find({ locationId });
+    const result = await LocationReview.find({ locationId }).populate(
+      "reviewerId"
+    );
     return result;
   } catch (error) {
     throw error;
