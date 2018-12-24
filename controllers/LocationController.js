@@ -53,7 +53,7 @@ const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const result = await locationService.addLocationCategory(req.body.name);
-    console.log('>> ', result)
+    // console.log('>> ', result)
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -157,7 +157,6 @@ const searchDist = async function (req, res) {
       { "$skip": 0 },
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
-        console.log(populatedTransactions)
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
@@ -232,10 +231,7 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let search_keyword;
-  if(req.query.search_keyword){
-    search_keyword = req.query.search_keyword.toString();
-  }
+  const search_keyword = req.query.search_keyword;
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
@@ -301,24 +297,24 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword) {
+    } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt) {
+    } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt) {
+    } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -380,10 +376,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+    } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -437,10 +433,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat) {
+    } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -493,10 +489,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.typeIdArray){
+    } else if (req.query.typeIdArray && !req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
       listLocations = await Location.find({      
         deletionFlag: false,
         $and: [
@@ -513,7 +509,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.ratingGt && req.query.typeIdArray && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt},
@@ -523,7 +519,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -536,7 +532,7 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     }
 	} catch (e) {
-		return ReE(res, error, 422);
+		return ReE(res, e, 422);
 	}					
 };
 module.exports.searchAllLocations = searchAllLocations;
