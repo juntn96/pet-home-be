@@ -248,7 +248,7 @@ const searchAllLocations = async function (req, res) {
   const typeIdArray = req.query.typeIdArray;
   let listLocations = [];
   let listLocationDist = [];
-  
+
 	try {
     if (req.query.search_keyword && req.query.ratingGt && req.query.radius && req.query.lat) {
       listLocations = await Location.find({      
@@ -388,6 +388,7 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+      console.log('hahahahahah')
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -441,12 +442,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          // console.log(result2);
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
     } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
-      console.log("VAO DAY")
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -542,7 +541,7 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     }
 	} catch (e) {
-		return ReE(res, error, 422);
+		return ReE(res, e, 422);
 	}					
 };
 module.exports.searchAllLocations = searchAllLocations;
