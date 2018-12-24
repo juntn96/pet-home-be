@@ -381,7 +381,6 @@ const searchAllLocations = async function (req, res) {
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
-      console.log('hahahahahah')
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -390,8 +389,6 @@ const searchAllLocations = async function (req, res) {
           },
         }
       );
-      console.log('listLocations')
-      console.log(listLocations)
       let result = await Location.aggregate([
         {
           $geoNear: {
@@ -407,8 +404,6 @@ const searchAllLocations = async function (req, res) {
         { "$skip": 0 },
       ]).exec(function (err, docs) {
         LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
-          console.log('populatedTransactions')
-          console.log(populatedTransactions)
           if (err) return err;
           listLocationDist = populatedTransactions.map(item  => {
             const { _id, location, deletionFlag, address,
