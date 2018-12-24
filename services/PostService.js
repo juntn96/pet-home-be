@@ -20,14 +20,27 @@ const add = async data => {
 // get public post only
 const get = async () => {
   try {
-    const result = await Post.find({ status: { $eq: 1 }, deletionFlag: false })
+    const result = await Post.find({
+      status: { $eq: 1 },
+      deletionFlag: false,
+    })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
+      .populate("ownerId", {
+        _id: 1,
+        appName: 1,
+        avatar: 1,
+        expoToken: 1,
+        deletionFlag: 1,
+      })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
+};
+
+const filterUserBanned = (posts = []) => {
+  return posts.filter(p => p.ownerId.deletionFlag === false);
 };
 
 // const get = async () => {
@@ -49,7 +62,7 @@ const getPublicByTypeId = async typeId => {
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
@@ -61,7 +74,7 @@ const getByOwnerId = async ownerId => {
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
@@ -117,7 +130,7 @@ const postTextSearch = async searchString => {
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
