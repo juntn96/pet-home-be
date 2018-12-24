@@ -1,14 +1,18 @@
 import {
   GET_LOCATIONCATEGORIES,
   CATEGORY_LOADING,
-  GET_LOCATION_DETAIL
+  GET_LOCATION_DETAIL,
+  GET_ERRORS,
+  UPDATE_LOCATION_SUCCESS
 } from '../actions/types';
 
 const initialState = {
   locationCategories: [],
   locationCategory: {},
   locationDetail: {},
-  loading: false
+  loading: false,
+  locationUpdateSuccess: false,
+  error: ''
 };
 
 export default function(state = initialState, action) {
@@ -29,6 +33,17 @@ export default function(state = initialState, action) {
         ...state,
         locationDetail: action.payload,
         loading: false
+      }
+    case UPDATE_LOCATION_SUCCESS:
+      return {
+        ...state,
+        locationUpdateSuccess: true
+      }
+    case GET_ERRORS: 
+      return {
+        ...state,
+        locationUpdateSuccess: false,
+        error: action.payload
       }
     default:
       return state;

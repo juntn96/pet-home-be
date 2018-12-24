@@ -1,6 +1,18 @@
 const LocationCategory = require('../models/LocationCategory');
 const Location = require('../models/Location');
+const Product =require('../models/Product');
 const constants = require('../utils/constants');
+
+const getLocationCategoriesByType = async () => {
+	try {
+    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: constants.PRIVATE_LOCATION });
+		return listLocationCategory;
+	}
+	catch (e) {
+		return TE(res, 'Get locationCategories failed', 503);
+	}		
+};
+module.exports.getLocationCategoriesByType = getLocationCategoriesByType;
 
 const getLocationCategories = async () => {
   try {
@@ -95,6 +107,31 @@ const getLocationProfile = async (ownerId) => {
 };
 module.exports.getLocationProfile = getLocationProfile;
 
+const getLocationWithAllProduct = async (ownerId) => {
+  try {
+    let getLocation = await Location.find({ ownerId: ownerId }).populate({path: 'typeId'});
+    let locationProduct = getLocation[0];
+    
+    let product = await Product.find({ ownerId: ownerId });
+    locationProduct.products = product;
+    return {
+      long: locationProduct.location.coordinates[0],
+      lat: locationProduct.location.coordinates[1],
+      systemRating: locationProduct.systemRating,
+      ownerId: locationProduct.ownerId,
+      typeId: locationProduct.typeId,
+      address: locationProduct.address,
+      description: locationProduct.description,
+      images: locationProduct.images,
+      products: product
+    }
+  }
+  catch (e) {
+    return TE(res, 'Get getLocationProfile failed', 503);
+  }
+};
+module.exports.getLocationWithAllProduct = getLocationWithAllProduct;
+
 const searchNearByLatLong = async (locationDetail) => {
   try {
     let listLocations = await Location.find({
@@ -108,12 +145,11 @@ const searchNearByLatLong = async (locationDetail) => {
           $minDistance: 0
         }
       }
-    });
-    return listLocations;
-  } catch (e) {
-    console.log(e);
-    return TE(res, 'Get locations failed', 503);
-  }
+     });
+		return listLocations;
+	} catch (e) {
+		return TE(res, 'Get locations failed', 503);
+	}		
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
@@ -122,8 +158,7 @@ const searchDist = async (locationDetail) => {
   let long = parseFloat(locationDetail.long);
   let lat = parseFloat(locationDetail.lat);
   let radius = parseInt(locationDetail.radius);
-
-  try {
+	try {
     let listLocations = await Location.aggregate([
       {
         $geoNear: {
@@ -137,21 +172,26 @@ const searchDist = async (locationDetail) => {
         }
       },
       { "$skip": 0 },
-      // { "$limit": 5 }
-    ]);
-    let newArrays = listLocations.map(item => {
-      const { _id, address, name, deletionFlag, dist } = item;
-      return {
-        _id, address, name, deletionFlag, dist
-      }
-    })
-    return newArrays;
-  } catch (e) {
-    console.log(e);
-    return TE(res, 'Get locations failed', 503);
-  }
+    ]).exec(function (err, docs) {
+      if(err) return err;
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        return populatedTransactions;
+      });
+    });
+	} catch (e) {
+		return e;
+	}		
 };
 module.exports.searchDist = searchDist;
+
+const updateLocation = async (locationDetail) => {
+  console.log(locationDetail);
+  [error, locaion] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
+  if (error) TE(error);
+}
+module.exports.updateLocation= updateLocation;
+
 
 const getAllLocations = async () => {
   try {

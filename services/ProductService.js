@@ -71,7 +71,7 @@ module.exports.deleteProduct = deleteProduct;
 
 const getProductById = async (id) => {
 	try {
-    let productDetail = await Product.findById(id);
+    let productDetail = await Product.findById(id)
 		return productDetail;
 	}
 	catch (e) {

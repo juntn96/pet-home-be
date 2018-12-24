@@ -5,10 +5,6 @@ let ReportSchema = mongoose.Schema({
 		type: String,
 		ref: 'User'
 	},
-	reportedId: {
-		type: String,
-		ref: 'User'
-	},
 	postId: {
 		type: String,
 		ref: 'Post'

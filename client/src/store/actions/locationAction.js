@@ -4,14 +4,16 @@ import {
   CLEAR_ERRORS,
   GET_LOCATIONCATEGORIES,
   CATEGORY_LOADING,
-  GET_LOCATION_DETAIL
+  GET_LOCATION_DETAIL,
+  GET_ERRORS,
+  UPDATE_LOCATION_SUCCESS
 } from './types';
 
 // Get Posts
 export const getLocationCategories = type => dispatch => {
   dispatch(setCategoryLoading());
   axios
-    .get(`/api/location/locationCategories/${type}`)
+    .get(`/api/location/locationCategoriesByType/${type}`)
     .then(res =>
       dispatch({
         type: GET_LOCATIONCATEGORIES,
@@ -41,6 +43,27 @@ export const getLocations = ownerId => dispatch => {
         type: GET_LOCATION_DETAIL,
         payload: null
       })
+    );
+};
+
+export const updateLocation = (location, history) => dispatch => {
+  axios
+    .put(`/api/location/update`, location)
+    .then(res =>
+      {
+        dispatch({
+          type: UPDATE_LOCATION_SUCCESS,
+          payload: 'success'
+        })
+      }
+    )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      }
     );
 };
 
