@@ -232,11 +232,13 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let search_keyword = '';
-  console.log("-----------------------")
+  console.log("-----------------------BEGIN");
   console.log(req.query.search_keyword === '');
+  console.log("-----------------------BEGIN");
   if(req.query.search_keyword){
-    search_keyword = req.query.search_keyword.toString().trim();
+    console.log('co search_keyword')
+  } else {
+    console.log('KHONG CO');
   }
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
