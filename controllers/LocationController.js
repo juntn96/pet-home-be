@@ -53,7 +53,7 @@ const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const result = await locationService.addLocationCategory(req.body.name);
-    console.log('>> ', result)
+    // console.log('>> ', result)
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -157,7 +157,7 @@ const searchDist = async function (req, res) {
       { "$skip": 0 },
     ]).exec(function (err, docs) {
       LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
-        console.log(populatedTransactions)
+        // console.log(populatedTransactions)
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
@@ -232,14 +232,14 @@ module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  console.log("-----------------------BEGIN");
-  console.log(req.query.search_keyword === '');
-  console.log("-----------------------BEGIN");
-  if(req.query.search_keyword){
-    console.log('co search_keyword')
-  } else {
-    console.log('KHONG CO');
-  }
+  // console.log("-----------------------BEGIN");
+  // console.log(req.query.search_keyword === '');
+  // console.log("-----------------------BEGIN");
+  // if(req.query.search_keyword){
+  //   console.log('co search_keyword')
+  // } else {
+  //   console.log('KHONG CO');
+  // }
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
@@ -248,7 +248,7 @@ const searchAllLocations = async function (req, res) {
   const typeIdArray = req.query.typeIdArray;
   let listLocations = [];
   let listLocationDist = [];
-
+  
 	try {
     if (req.query.search_keyword && req.query.ratingGt && req.query.radius && req.query.lat) {
       listLocations = await Location.find({      
@@ -305,7 +305,7 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
     } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt) {
@@ -384,7 +384,7 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
     } else if (req.query.search_keyword && req.query.radius && req.query.lat){
@@ -441,8 +441,8 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          console.log(result2);
-          return ReS(res, { result2 }, 200);
+          // console.log(result2);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
     } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
@@ -499,7 +499,7 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
     } else if (req.query.typeIdArray && !req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
