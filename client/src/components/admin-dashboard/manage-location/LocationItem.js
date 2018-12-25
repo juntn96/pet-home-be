@@ -68,7 +68,7 @@ class LocationItem extends Component {
         <td style={{verticalAlign:"middle"}}>{location.address}</td>
         <td style={{verticalAlign:"middle"}}>{location.description}</td>
         <td style={{verticalAlign:"middle"}}>{location.typeId.name}</td>
-        <td style={{color:"yellow"}}>{maxRate.map(item => item === 1? <i class="fas fa-star"></i>: (item === 0.5 ? <i class="fas fa-star-half-alt"></i>:<span style={{color:'#c8ced3'}}><i class="fas fa-star"></i></span>))}</td>
+        <td style={{color:"orange"}}>{maxRate.map(item => item === 1? <i class="fas fa-star"></i>: (item === 0.5 ? <i class="fas fa-star-half-alt"></i>:<span style={{color:'#c8ced3'}}><i class="fas fa-star"></i></span>))}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {/* <td style={{verticalAlign:"middle"}}>
         <div>{userDetail.appName}</div>

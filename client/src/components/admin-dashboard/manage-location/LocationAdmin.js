@@ -1,21 +1,21 @@
-import React,{Component} from 'react'
-import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
+import React, { Component } from 'react'
+import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
 import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
 
 class LocationAdmin extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      userId : '',
+      userId: '',
       deletionFlag: false,
-      locations : []
+      locations: []
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._getAllLocations();
   }
 
@@ -29,14 +29,13 @@ class LocationAdmin extends Component {
         locations: res.data.locations,
         isLoading: false
       })
-    }).catch(err =>{
+    }).catch(err => {
       //todo
     });
   }
 
-  onSearch =(e) => {
+  onSearch = (e) => {
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
-
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[1];
       if (td) {
@@ -49,50 +48,54 @@ class LocationAdmin extends Component {
     }
   }
 
-  render(){
+  _onClickAddLocation = () => {
+
+  }
+
+  render() {
     const locations = this.state.locations;
     return (
-    <div>
-      <Row>
-        <Col xs="12" lg="12">
+      <div>
+        <Row>
+          <Col xs="12" lg="12">
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Địa điểm
-                <input type="text" 
-                  className="form-control" 
-                  style={{float:"right", width:"20%"}} 
+                <input type="text"
+                  className="form-control"
+                  style={{ float: "right", width: "20%" }}
                   placeholder="Tìm kiếm"
                   onChange={this.onSearch}
-                  value={this.state.search}/>
+                  value={this.state.search} />
+                <Button color="primary" style={{ float: "right", marginRight: 20 }} size="lg" onClick={this._onClickAddLocation}>Thêm địa điểm</Button>
               </CardHeader>
               <CardBody>
-              { locations === null  ? <Spinner /> :
-                <Table hover responsive >
-                  <thead>
-                  <tr>
-                    <th>Tên</th>
-                    <th>Địa chỉ</th>
-                    <th>Mô tả</th>
-                    <th>Loại</th>
-                    <th>Đánh giá</th>
-                    <th>Trạng thái</th>
-                    <th>Xử lý</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody ref="tableSearch">
-                    { locations.map((item, index) =>
-                      <LocationItem location={item} key={index}/>)}
-                  </tbody>
-                </Table>
+                {locations === null ? <Spinner /> :
+                  <Table hover responsive >
+                    <thead>
+                      <tr>
+                        <th>Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Mô tả</th>
+                        <th>Loại</th>
+                        <th>Đánh giá</th>
+                        <th>Trạng thái</th>
+                        <th>Xử lý</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody ref="tableSearch">
+                      {locations.map((item, index) =>
+                        <LocationItem location={item} key={index} />)}
+                    </tbody>
+                  </Table>
                 }
               </CardBody>
             </Card>
           </Col>
         </Row>
-    </div>)
+      </div>)
   }
-
 }
 
 export default LocationAdmin;
