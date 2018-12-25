@@ -210,9 +210,20 @@ const getAllLocations = async function (req, res) {
   else {
     return ReE(res, 'Get location failed', 503);
   }
+
 };
 module.exports.getAllLocations = getAllLocations;
 
+const getLocationById = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const result= await locationService.getLocationById(req.params.locationId);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+module.exports.getLocationById = getLocationById;
 const getAllActiveLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, location;
@@ -228,6 +239,19 @@ const getAllActiveLocation = async function (req, res) {
   }
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
+
+const hideShowLocation = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const locationId = req.body.id;
+    const deletionFlag = req.body.deletionFlag;
+    const result = await locationService.hideLocationById(locationId, deletionFlag);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+      return ReE(res, error, 422);
+  }
+};
+module.exports.hideShowLocation = hideShowLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -485,7 +509,7 @@ const searchAllLocations = async function (req, res) {
           for (let index1 = 0; index1 < listLocationDist.length; index1++) {
             for (let index2 = 0; index2 < listLocations.length; index2++) {
               if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
-                result2.push(listLocationDist[index1]);                
+                result2.push(listLocationDist[index1]);
               }
             }
           }

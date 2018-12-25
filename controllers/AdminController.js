@@ -13,7 +13,7 @@ const addLocationCategory = async function (req, res) {
   }
   return ReS(res, {
     message: 'Successfully created new LC.',
-  }, 200);				
+  }, 200);
 };
 
 module.exports.addLocationCategory = addLocationCategory;
@@ -30,7 +30,7 @@ const addLocation = async function (req, res) {
   }
   return ReS(res, {
     message: 'Successfully created new location.',
-  }, 200);				
+  }, 200);
 };
 
 module.exports.addLocation = addLocation;

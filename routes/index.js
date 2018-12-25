@@ -60,6 +60,9 @@ router.put("/admin/location/locationCategories",LocationController.updateLocatio
 
 // Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
+router.get("/admin/getLocationById/:locationId", LocationController.getLocationById);
+router.put("/admin/updateLocation", LocationController.hideShowLocation);
+router.post("/admin/addLocation", LocationController.hideShowLocation);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
