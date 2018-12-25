@@ -15,6 +15,7 @@ const PostController = require("../controllers/PostController");
 const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 const NotificationController = require("../controllers/NotificationController");
+const LocationReviewController = require("../controllers/LocationReviewController")
 //#endregion
 
 const LocationModel = require("./../models/Location");
@@ -59,6 +60,9 @@ router.put("/admin/location/locationCategories",LocationController.updateLocatio
 
 // Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
+router.get("/admin/getLocationById/:locationId", LocationController.getLocationById);
+router.put("/admin/updateLocation", LocationController.hideShowLocation);
+router.post("/admin/addLocation", LocationController.hideShowLocation);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
@@ -290,6 +294,11 @@ router.get(
   "/app/notification/getType/:userId/:type",
   NotificationController.getNotificationsByType
 );
+//#endregion
+
+//#region location review
+router.post("/location/review/add", LocationReviewController.addRate);
+router.get("/location/review/:locationId", LocationReviewController.getRate);
 //#endregion
 
 // Upload to Cloudinary
