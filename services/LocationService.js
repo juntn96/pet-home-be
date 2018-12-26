@@ -105,8 +105,8 @@ const getLocationWithAllProduct = async query => {
       _id: getLocation._id,
       name: getLocation.name,
       coordinate : {
-        longitude: coordinates[0],
-        latitude: coordinates[1]
+        longitude: getLocation.coordinates[0],
+        latitude: getLocation.coordinates[1]
       },
       systemRating: getLocation.systemRating,
       ownerId: getLocation.ownerId,
