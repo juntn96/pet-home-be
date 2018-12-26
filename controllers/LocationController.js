@@ -262,6 +262,8 @@ const searchAllLocations = async function (req, res) {
   const lat = parseFloat(req.query.lat);
   const long = parseFloat(req.query.long);
   const typeIdArray = req.query.typeIdArray;
+  console.log("typeIdArray");
+  console.log(typeIdArray);
   let listLocations = [];
   let listLocationDist = [];
 
@@ -346,7 +348,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.radius && req.query.lat) {
+    } else if (req.query.ratingGt && req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({ 
           deletionFlag: false,     
           location : {
@@ -460,7 +462,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
+    } else if (req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -524,7 +526,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' })
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.typeIdArray){
+    } else if (req.query.search_keyword && req.query.typeIdArray && !req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({  
         deletionFlag: false,    
         $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -554,6 +556,12 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
+    } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
+
+    } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && req.query.ratingGt){
+      
+    } else if (req.query.typeIdArray && req.query.lat && req.query.search_keyword && !req.query.ratingGt){
+      
     }
 	} catch (e) {
 		return ReE(res, e, 422);
