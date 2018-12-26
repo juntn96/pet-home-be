@@ -22,7 +22,20 @@ const addRate = async (req, res) => {
   }
 };
 
+const getAvgRating = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const result = await LocationReviewService.getAvgRating(
+      req.params.locationId
+    );
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   getRate,
   addRate,
+  getAvgRating,
 };
