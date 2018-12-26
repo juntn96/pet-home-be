@@ -307,15 +307,15 @@ class Location extends Component {
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
                     { locationCategories === null || loading ? <Spinner /> :   
-                    <Input 
-                      type="select" 
-                      name="ccyear" 
-                      id="ccyear"
-                      value={this.state.typeLocationCategory}
-                      onChange={this.onChangeTypeLocation}
-                      >
-                      { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
-                    </Input>
+                      <Input 
+                        type="select" 
+                        name="ccyear" 
+                        id="ccyear"
+                        value={this.state.typeLocationCategory}
+                        onChange={this.onChangeTypeLocation}
+                        >
+                        { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
+                      </Input>
                     }
                     </Col>
                   </FormGroup>
