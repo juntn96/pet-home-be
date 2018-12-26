@@ -1,6 +1,7 @@
 const locationService = require('../services/LocationService');
 const Location = require('../models/Location');
 const LocationCategory = require('../models/LocationCategory');
+const constants = require('../utils/constants');
 
 // @route   GET api/location/locationCategories
 // @desc    Get location category
@@ -59,7 +60,6 @@ const addLocationCategory = async function (req, res) {
     return ReE(res, error, 422);
   }
 };
-
 module.exports.addLocationCategory = addLocationCategory;
 
 // @route   GET api/location/profile/:id
@@ -571,3 +571,16 @@ const updateLocation = async (req, res) => {
   }, 200);
 }
 module.exports.updateLocation = updateLocation;
+
+const getLocationCategoriesWithType = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const list = await LocationCategory.find({ hiddenFlag: false});
+    const listPrivates = list.filter( item => item.typeLocation === constants.PRIVATE_LOCATION);
+    const listPublics = list.filter( item => item.typeLocation === constants.PUBLIC_LOCATION);
+    return ReS(res, { listPrivates : listPrivates, listPublics: listPublics }, 200);
+	} catch (e) {
+		return ReE(res, error, 422);
+	}
+}
+module.exports.getLocationCategoriesWithType = getLocationCategoriesWithType;

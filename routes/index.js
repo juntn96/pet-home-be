@@ -52,6 +52,10 @@ router.get(
   "/location/locationCategories",
   LocationController.getLocationCategories
 );
+router.get(
+  "/location/locationCategoriesWithType",
+  LocationController.getLocationCategoriesWithType
+);
 router.post(
   "/admin/location/locationCategories",
   LocationController.addLocationCategory
