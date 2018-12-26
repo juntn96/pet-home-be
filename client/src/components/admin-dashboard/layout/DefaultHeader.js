@@ -29,9 +29,7 @@ class DefaultHeader extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink href="/location">Thông tin địa điểm</NavLink>
-          </NavItem>
+
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
@@ -43,8 +41,6 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> <Link style={{textDecoration:'none', color:'#181b1e'}} to="/profile">Thay đổi thông tin</Link></DropdownItem>
-
               <DropdownItem><i className="fa fa-lock"></i> <Link style={{textDecoration:'none', color:'#181b1e'}} to="/chgpwd">Thay đổi mật khẩu</Link></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
