@@ -37,6 +37,7 @@ export default function(state = initialState, action) {
     case UPDATE_LOCATION_SUCCESS:
       return {
         ...state,
+        locationDetail: action.payload,
         locationUpdateSuccess: true
       }
     case GET_ERRORS: 

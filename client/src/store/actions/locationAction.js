@@ -53,7 +53,7 @@ export const updateLocation = (location, history) => dispatch => {
       {
         dispatch({
           type: UPDATE_LOCATION_SUCCESS,
-          payload: 'success'
+          payload: res.data.locationProfile
         })
       }
     )

@@ -57,9 +57,7 @@ const MyMapComponent = compose(
 class Location extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.location.state.linkState[0])
-
-    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState[0];
+    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState;
     this.state = {
       _id,
       address ,
@@ -365,7 +363,7 @@ class Location extends Component {
             </Col>
           </div>           
         </div>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        {/* <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Lỗi</ModalHeader>
           <ModalBody>
             Đã có lỗi xảy ra trong quá trình cập nhật
@@ -373,7 +371,7 @@ class Location extends Component {
           <ModalFooter>
             <Button color="secondary" onClick={this.toggle}>Đóng</Button>
           </ModalFooter>
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

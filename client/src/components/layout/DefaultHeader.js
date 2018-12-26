@@ -35,10 +35,12 @@ class DefaultHeader extends Component {
 
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <Link style={{textDecoration:'none'}} to={{
-                                                    pathname: '/locationDetail',
-                                                    state: { linkState: locationDetail }
-                                                  }}>Thông tin địa điểm</Link>
+            <Link 
+              style={{textDecoration:'none'}} 
+              to={{
+                pathname: '/locationDetail',
+                state: { linkState: locationDetail }
+              }}>Thông tin địa điểm</Link>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>

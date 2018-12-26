@@ -62,25 +62,6 @@ const addLocationCategory = async function (req, res) {
 };
 module.exports.addLocationCategory = addLocationCategory;
 
-// @route   GET api/location/profile/:id
-// @desc    Get location by user_id
-// @access  Public
-const getLocationProfile = async function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  let erro, locationProfile;
-  [erro, locationProfile] = await to(locationService.getLocationProfile(req.params.ownerId));
-  if (erro) {
-    return ReE(res, 'Get getLocationProfile failed', 422);
-  }	
-  if (locationProfile) {
-    return ReS(res, { message: 'Get getLocationProfile success', locationProfile: locationProfile }, 200);
-  }
-  else {
-    return ReE(res, 'Get getLocationProfile failed', 503);
-  } 				
-};
-module.exports.getLocationProfile = getLocationProfile;
-
 const getLocationWithAllProduct = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationDetail;
@@ -816,14 +797,37 @@ module.exports.searchAllLocations = searchAllLocations;
 
 const updateLocation = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  let error, location;
-  [error, location] = await to(locationService.updateLocation(req.body));
+  let error, locationProfile;
+  [error, locationProfile] = await to(locationService.updateLocation(req.body));
   if (error) return ReE(res, 'Không cập nhật địa điểm', 422);
   return ReS(res, {
-    message: 'Update location successfully'
+    message: 'Update location successfully',
+    locationProfile: locationProfile
   }, 200);
 }
 module.exports.updateLocation = updateLocation;
+
+// @route   GET api/location/profile/:id
+// @desc    Get location by user_id
+// @access  Public
+const getLocationProfile = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, locationProfile;
+  [erro, locationProfile] = await to(locationService.getLocationProfile(req.params.ownerId));
+  if (erro) {
+    return ReE(res, 'Get getLocationProfile failed', 422);
+  }	
+  if (locationProfile) {
+    return ReS(res, { 
+      message: 'Get getLocationProfile success', 
+      locationProfile: locationProfile 
+    }, 200);
+  }
+  else {
+    return ReE(res, 'Get getLocationProfile failed', 503);
+  } 				
+};
+module.exports.getLocationProfile = getLocationProfile;
 
 const getLocationCategoriesWithType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
