@@ -1,6 +1,7 @@
 const locationService = require('../services/LocationService');
 const Location = require('../models/Location');
 const LocationCategory = require('../models/LocationCategory');
+const constants = require('../utils/constants');
 
 // @route   GET api/location/locationCategories
 // @desc    Get location category
@@ -25,7 +26,7 @@ module.exports.getLocationCategories = getLocationCategories;
 const getLocationCategoriesByType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationCategories;
-  [erro, locationCategories] = await to(locationService.getLocationCategoriesByType());
+  [erro, locationCategories] = await to(locationService.getLocationCategoriesByType(req.params.type));
   if (erro) {
     return ReE(res, 'Get locationCategories failed', 422);
   }	
@@ -53,13 +54,12 @@ const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const result = await locationService.addLocationCategory(req.body.name);
-    console.log('>> ', result)
+    // console.log('>> ', result)
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
   }
 };
-
 module.exports.addLocationCategory = addLocationCategory;
 
 // @route   GET api/location/profile/:id
@@ -83,13 +83,13 @@ module.exports.getLocationProfile = getLocationProfile;
 
 const getLocationWithAllProduct = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let erro, locationProduct;
-  [erro, locationProduct] = await to(locationService.getLocationWithAllProduct(req.params.ownerId));
+  let erro, locationDetail;
+  [erro, locationDetail] = await to(locationService.getLocationWithAllProduct(req.query));
   if (erro) {
     return ReE(res, 'Get location and product failed', 422);
   }	
-  if (locationProduct) {
-    return ReS(res, { message: 'Get location and product success', locationProduct: locationProduct }, 200);
+  if (locationDetail) {
+    return ReS(res, { message: 'Get location and product success', locationDetail: locationDetail }, 200);
   }
   else {
     return ReE(res, 'Get location and product failed', 503);
@@ -160,7 +160,7 @@ const searchDist = async function (req, res) {
         if (err) return err;
         const listLocation = populatedTransactions.map(item  => {
           const { _id, location, deletionFlag, address,
-            name, typeId, systemRating, description, images, dist } = item;
+            name, typeId, systemRating, description, images, dist, ownerId } = item;
           const { calculated } = dist;
           const { coordinates } = location;
           const coordinate = {
@@ -184,7 +184,8 @@ const searchDist = async function (req, res) {
             description, 
             images, 
             distance: distanceField,
-            coordinate
+            coordinate,
+            ownerId
           }
         }).filter(item => item.deletionFlag !== true);
         return ReS(res, { listLocation }, 200);
@@ -223,6 +224,21 @@ const getLocationById = async function (req, res) {
   }
 };
 module.exports.getLocationById = getLocationById;
+const getAllActiveLocation = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let erro, location;
+  [erro, location] = await to(locationService.getAllActiveLocation());
+  if (erro) {
+    return ReE(res, 'Get location failed', 422);
+  }	
+  if (location) {
+    return ReS(res, { message: 'Get location success', locations: location }, 200);
+  }
+  else {
+    return ReE(res, 'Get location failed', 503);
+  }
+};
+module.exports.getAllActiveLocation = getAllActiveLocation;
 
 const hideShowLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -239,7 +255,7 @@ module.exports.hideShowLocation = hideShowLocation;
 
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  const search_keyword = req.query.search_keyword.toString();
+  const search_keyword = req.query.search_keyword;
   const ratingGt = req.query.ratingGt;
   const ratingLt = req.query.ratingLt;
   const radius = parseInt(req.query.radius);
@@ -305,24 +321,24 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword) {
+    } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt) {
+    } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt) {
+    } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -384,10 +400,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword && req.query.radius && req.query.lat){
+    } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -441,10 +457,10 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat) {
+    } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -497,11 +513,11 @@ const searchAllLocations = async function (req, res) {
               }
             }
           }
-          return ReS(res, { result2 }, 200);
+          return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.typeIdArray){
-      listLocations = await Location.find({
+    } else if (req.query.typeIdArray && !req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
+      listLocations = await Location.find({      
         deletionFlag: false,
         $and: [
           { $or : typeIdArray }
@@ -517,7 +533,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.ratingGt && req.query.typeIdArray && !req.query.lat && !req.query.search_keyword) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt},
@@ -527,7 +543,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray) {
+    } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -540,7 +556,7 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     }
 	} catch (e) {
-		return ReE(res, error, 422);
+		return ReE(res, e, 422);
 	}					
 };
 module.exports.searchAllLocations = searchAllLocations;
@@ -555,3 +571,16 @@ const updateLocation = async (req, res) => {
   }, 200);
 }
 module.exports.updateLocation = updateLocation;
+
+const getLocationCategoriesWithType = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const list = await LocationCategory.find({ hiddenFlag: false});
+    const listPrivates = list.filter( item => item.typeLocation === constants.PRIVATE_LOCATION);
+    const listPublics = list.filter( item => item.typeLocation === constants.PUBLIC_LOCATION);
+    return ReS(res, { listPrivates : listPrivates, listPublics: listPublics }, 200);
+	} catch (e) {
+		return ReE(res, error, 422);
+	}
+}
+module.exports.getLocationCategoriesWithType = getLocationCategoriesWithType;

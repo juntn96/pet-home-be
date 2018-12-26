@@ -3,7 +3,13 @@ const User = require("../models/User");
 const createUser = async data => {
   try {
     const userExisted = await findUserByFbId(data.facebookId);
-    if (userExisted) return userExisted;
+    if (userExisted) {
+      if (userExisted.deletionFlag === false) {
+        return userExisted;
+      } else {
+        return "Tài khoản này đã bị khóa";
+      }
+    }
     const user = new User(data);
     const result = await User.create(user);
     return result;
@@ -69,6 +75,17 @@ const addNotification = async ({ userId, notification }) => {
   }
 };
 
+const editAppInfo = async ({ userId, updateOption }) => {
+  try {
+    const result = await User.findByIdAndUpdate(userId, {
+      $set: updateOption,
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getNotifications = async userId => {
   try {
     const result = await User.findById(userId);
@@ -86,4 +103,5 @@ module.exports = {
   removeExpoToken,
   addNotification,
   getNotifications,
+  editAppInfo,
 };

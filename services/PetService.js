@@ -152,11 +152,17 @@ const getNotIgnoredPet = async userId => {
           ownerId: { $ne: userId },
         },
       ],
-    }).sort({ likes: -1 });
-    return result;
+    })
+      .populate("ownerId", { deletionFlag: 1, _id: 1 })
+      .sort({ likes: -1 });
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
+};
+
+const filterUserBanned = (pets = []) => {
+  return pets.filter(p => p.ownerId.deletionFlag === false);
 };
 
 const changeRequestStatus = async (notificationId, status, notification) => {

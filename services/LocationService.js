@@ -3,9 +3,9 @@ const Location = require('../models/Location');
 const Product =require('../models/Product');
 const constants = require('../utils/constants');
 
-const getLocationCategoriesByType = async () => {
+const getLocationCategoriesByType = async (type) => {
 	try {
-    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: constants.PRIVATE_LOCATION });
+    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: type });
 		return listLocationCategory;
 	}
 	catch (e) {
@@ -98,7 +98,6 @@ module.exports.getTotalCountLocationByTypeId = getTotalCountLocationByTypeId;
 const getLocationProfile = async (ownerId) => {
   try {
     let getProfile = await Location.find({ ownerId: ownerId });
-    console.log(getProfile);
     return getProfile;
   }
   catch (e) {
@@ -107,24 +106,23 @@ const getLocationProfile = async (ownerId) => {
 };
 module.exports.getLocationProfile = getLocationProfile;
 
-const getLocationWithAllProduct = async (ownerId) => {
+const getLocationWithAllProduct = async query => {
   try {
-    let getLocation = await Location.find({ ownerId: ownerId }).populate({path: 'typeId'});
-    let locationProduct = getLocation[0];
-    
-    let product = await Product.find({ ownerId: ownerId });
-    locationProduct.products = product;
-    return {
-      long: locationProduct.location.coordinates[0],
-      lat: locationProduct.location.coordinates[1],
-      systemRating: locationProduct.systemRating,
-      ownerId: locationProduct.ownerId,
-      typeId: locationProduct.typeId,
-      address: locationProduct.address,
-      description: locationProduct.description,
-      images: locationProduct.images,
+    const getLocation = await Location.findById(query._id).populate('ownerId').populate({path: 'typeId'});
+    const product = await Product.find({ ownerId: query.ownerId });
+    const locationDetail = {
+      name: getLocation.name,
+      long: getLocation.location.coordinates[0],
+      lat: getLocation.location.coordinates[1],
+      systemRating: getLocation.systemRating,
+      ownerId: getLocation.ownerId,
+      typeId: getLocation.typeId,
+      address: getLocation.address,
+      description: getLocation.description,
+      images: getLocation.images,
       products: product
-    }
+    };
+    return locationDetail
   }
   catch (e) {
     return TE(res, 'Get getLocationProfile failed', 503);
@@ -186,8 +184,7 @@ const searchDist = async (locationDetail) => {
 module.exports.searchDist = searchDist;
 
 const updateLocation = async (locationDetail) => {
-  console.log(locationDetail);
-  [error, locaion] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
+  [error, location] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
   if (error) TE(error);
 }
 module.exports.updateLocation= updateLocation;
@@ -225,3 +222,13 @@ const getLocationById = async (id) => {
   }
 };
 module.exports.getLocationById = getLocationById;
+const getAllActiveLocation = async () => {
+  try {
+    let listLocationCategory = await Location.find({ deletionFlag: false}).populate('ownerId').populate('typeId')
+    return listLocationCategory;
+  }
+  catch (e) {
+    return TE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.getAllActiveLocation = getAllActiveLocation;

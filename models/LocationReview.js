@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
-const rateSchema = mongoose.Schema({
+const reviewSchema = mongoose.Schema({
 	message: {
 		type: String,
   },
-  ratedLocationId: {
+  locationId: {
     type: String,
     ref: 'Location'
   },
-  raterId: {
+  reviewerId: {
     type: String,
     ref: 'User'
   },
-  rateStar: {
+  ratingStar: {
     type: Number
   },
 	deletionFlag: {
@@ -29,9 +29,9 @@ const rateSchema = mongoose.Schema({
 	},
 });
 
-let Rate = module.exports = mongoose.model('Rate', rateSchema);
+let Review = module.exports = mongoose.model('LocationReview', reviewSchema);
 
-rateSchema.pre('save', async function (next) {
+reviewSchema.pre('save', async function (next) {
 	const currTime = new Date().getTime();
 	this.updatedAt = currTime;
 	if (this.isNew) {

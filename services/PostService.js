@@ -20,14 +20,27 @@ const add = async data => {
 // get public post only
 const get = async () => {
   try {
-    const result = await Post.find({ status: { $eq: 1 } })
+    const result = await Post.find({
+      status: { $eq: 1 },
+      deletionFlag: false,
+    })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
+      .populate("ownerId", {
+        _id: 1,
+        appName: 1,
+        avatar: 1,
+        expoToken: 1,
+        deletionFlag: 1,
+      })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
+};
+
+const filterUserBanned = (posts = []) => {
+  return posts.filter(p => p.ownerId.deletionFlag === false);
 };
 
 // const get = async () => {
@@ -44,12 +57,12 @@ const get = async () => {
 const getPublicByTypeId = async typeId => {
   try {
     const result = await Post.find({
-      $and: [{ typeId }, { status: 1 }],
+      $and: [{ typeId }, { status: 1 }, { deletionFlag: false }],
     })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
@@ -57,11 +70,11 @@ const getPublicByTypeId = async typeId => {
 
 const getByOwnerId = async ownerId => {
   try {
-    const result = await Post.find({ ownerId })
+    const result = await Post.find({ ownerId, deletionFlag: false })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
@@ -99,7 +112,7 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId).select({votes: 0, comments: 0});
+    const post = await Post.findById(postId).select({ votes: 0, comments: 0 });
     return post;
   } catch (error) {
     throw error;
@@ -112,11 +125,12 @@ const postTextSearch = async searchString => {
       $text: {
         $search: searchString,
       },
+      deletionFlag: false,
     })
       .select({ votes: 0, comments: 0, reports: 0 })
       .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
       .sort({ _id: -1 });
-    return result;
+    return filterUserBanned(result);
   } catch (error) {
     throw error;
   }
@@ -453,5 +467,5 @@ module.exports = {
   getReports,
   //
   testNotification,
-  findPostById
+  findPostById,
 };

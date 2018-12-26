@@ -48,7 +48,7 @@ class AddLocation extends Component {
   }
 
   componentDidMount() {
-    this.props.getLocationCategories(Constants.PRIVATE_LOCATION);
+    this.props.getLocationCategories(Constants.PUBLIC_LOCATION);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

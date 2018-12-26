@@ -77,6 +77,15 @@ const getNotifications = async (req, res) => {
   }
 };
 
+const editAppInfo = async (req, res) => {
+  try {
+    const result = await AppUserService.editAppInfo(req.body);
+    return ReS(res, { result }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 module.exports = {
   createUser,
   addExpoToken,
@@ -85,4 +94,5 @@ module.exports = {
   findUserByFbId,
   addNotification,
   getNotifications,
+  editAppInfo
 };

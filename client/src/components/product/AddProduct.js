@@ -45,6 +45,10 @@ class AddProduct extends Component {
 
   componentDidMount() {
     this.props.getProductParentCategories(this.props.auth.user.user_id);
+    const { productParentCategories  } = this.props.product; 
+    if(productParentCategories.length > 0) {
+      this.setState({ typeProductCategory: productParentCategories[0]._id });
+    }
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -75,11 +79,13 @@ class AddProduct extends Component {
     if(this.state.name ===''
     ||this.state.price ===''
     ||this.state.images.length ===0){
-      console.log(this.state.images.length)
       if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
       if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
       if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
       return false;
+    }
+    if(this.state.typeProductCategory === '') {
+      this.refs.typeProductValidate.innerHTML ='Bạn chưa tạo loại sản phẩm/dịch vụ nào hãy tạo chúng';
     }
     let imagesUrl = this.state.images.map( item => item.url);
     const newProduct = {
@@ -176,7 +182,7 @@ class AddProduct extends Component {
   render() {
     const { loadingU, uploading, images } = this.state
     const { productParentCategories , loading } = this.props.product;  
-    console.log(images)
+    console.log(this.state);
     const content = () => {
       switch(true) {
         case loadingU:
@@ -264,6 +270,7 @@ class AddProduct extends Component {
                       {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
+                    <div style={{display:'block'}} ref='typeProductValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
                   <FormGroup row className="my-0 mt-3">

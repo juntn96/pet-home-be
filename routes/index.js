@@ -15,6 +15,7 @@ const PostController = require("../controllers/PostController");
 const AppUserController = require("../controllers/AppUserController");
 const ConversationController = require("../controllers/ConversationController");
 const NotificationController = require("../controllers/NotificationController");
+const LocationReviewController = require("../controllers/LocationReviewController")
 //#endregion
 
 const LocationModel = require("./../models/Location");
@@ -51,38 +52,21 @@ router.get(
   "/location/locationCategories",
   LocationController.getLocationCategories
 );
+router.get(
+  "/location/locationCategoriesWithType",
+  LocationController.getLocationCategoriesWithType
+);
 router.post(
   "/admin/location/locationCategories",
   LocationController.addLocationCategory
 );
 router.put("/admin/location/locationCategories",LocationController.updateLocationCategories);
 
-
 // Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
 router.get("/admin/getLocationById/:locationId", LocationController.getLocationById);
 router.put("/admin/updateLocation", LocationController.hideShowLocation);
 router.post("/admin/addLocation", LocationController.hideShowLocation);
-
-//Product
-router.post(
-  "/product/add",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.addProduct
-);
-router.get(
-  "/product/productByUserIds/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.getProductByIds
-);
-
-//User
-router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
-router.get("/users/detail/:userId", UserController.getUserById);
 
 //Create Admin
 router.post("/admin/create", AuthController.createAdminUser);
@@ -99,44 +83,6 @@ router.post(
     session: false,
   }),
   AdminController.addLocation
-);
-
-//User
-router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
-router.get("/users/detail/:userId", UserController.getUserById);
-
-//Create Admin
-router.post("/admin/create", AuthController.createAdminUser);
-router.get(
-  "/admin/wake-up",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  (req, res) => res.send("👌")
-);
-router.post(
-  "./admin/addLocation",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  AdminController.addLocation
-);
-
-//Product
-router.post(
-  "/product/add",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.addProduct
-);
-
-router.get(
-  "/product/productByUserIds/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
-  ProductController.getProductByIds
 );
 
 // get product category
@@ -184,13 +130,14 @@ router.get(
   LocationController.searchAllLocations
 );
 router.get(
-  "/location/locationProduct/:ownerId",
+  "/location/locationProduct",
   LocationController.getLocationWithAllProduct
 )
 router.get(
   "/location/locationByCategory",
   LocationController.searchLocationByCategory
 )
+router.get("/location/getAllActiveLocation", LocationController.getAllActiveLocation);
 
 //Product
 router.put(
@@ -207,16 +154,8 @@ router.put(
   }),
   ProductController.updateProduct
 );
-// router.get(
-//   "/product/:id",
-//   passport.authenticate("jwt", {
-//     session: false,
-//   }),
-//   ProductController.getProductDetailById
-// );
-
 router.get(
-  "/product/:id",
+  "/product/productDetailById/:id",
   ProductController.getProductDetailById
 );
 router.put(
@@ -225,6 +164,28 @@ router.put(
     session: false,
   }),
   ProductController.updateProductParentCategory
+);
+router.post(
+  "/product/add",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.addProduct
+);
+router.get(
+  "/product/productByUserIds/:ownerId",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.getProductByIds
+);
+router.get(
+  "/product/productByIdForApp",
+  ProductController.getProductDetailByIdForApp
+);
+router.get(
+  "/product/productInOneCategories",
+  ProductController.getProductInOneCategories
 );
 
 //Phone
@@ -277,6 +238,7 @@ router.post("/app/user/removeExpoToken", AppUserController.removeExpoToken);
 router.post("/app/user/findByFbId", AppUserController.findUserByFbId);
 router.get("/app/user/:userId", AppUserController.findUser);
 router.post("/app/user/notification/add", AppUserController.addNotification);
+router.post("/app/user/editInfo", AppUserController.editAppInfo);
 router.get(
   "/app/user/notification/:userId",
   AppUserController.getNotifications
@@ -324,7 +286,10 @@ router.get("/report/:postId", ReportController.getReportByPostId);
 
 //#region notification
 router.post("/app/notification/add", NotificationController.addNotification);
-router.post("/app/notification/hide", NotificationController.hiddenNotification);
+router.post(
+  "/app/notification/hide",
+  NotificationController.hiddenNotification
+);
 router.get(
   "/app/notification/:userId",
   NotificationController.getNotifications
@@ -333,6 +298,11 @@ router.get(
   "/app/notification/getType/:userId/:type",
   NotificationController.getNotificationsByType
 );
+//#endregion
+
+//#region location review
+router.post("/location/review/add", LocationReviewController.addRate);
+router.get("/location/review/:locationId", LocationReviewController.getRate);
 //#endregion
 
 // Upload to Cloudinary
