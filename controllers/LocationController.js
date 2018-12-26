@@ -26,7 +26,7 @@ module.exports.getLocationCategories = getLocationCategories;
 const getLocationCategoriesByType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationCategories;
-  [erro, locationCategories] = await to(locationService.getLocationCategoriesByType());
+  [erro, locationCategories] = await to(locationService.getLocationCategoriesByType(req.params.type));
   if (erro) {
     return ReE(res, 'Get locationCategories failed', 422);
   }	
