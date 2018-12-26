@@ -129,7 +129,8 @@ class AddProduct extends Component {
         errs.push(`'${file.type}' is not a supported format`)
       }
 
-      if (file.size > 150000) {
+      if (file.size > 10000000) {
+        console.log(file.size);
         errs.push(`'${file.name}' is too large, please pick a smaller file`)
       }
 
