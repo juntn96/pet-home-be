@@ -262,11 +262,13 @@ const searchAllLocations = async function (req, res) {
   const lat = parseFloat(req.query.lat);
   const long = parseFloat(req.query.long);
   const typeIdArray = req.query.typeIdArray;
+  console.log("typeIdArray");
+  console.log(typeIdArray);
   let listLocations = [];
   let listLocationDist = [];
 
 	try {
-    if (req.query.search_keyword && req.query.ratingGt && req.query.radius && req.query.lat) {
+    if (req.query.search_keyword && req.query.ratingGt && req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword }, 
@@ -324,21 +326,21 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt) {
+    } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt && !req.query.typeIdArray) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword) {
+    } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({  
           deletionFlag: false,    
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat) {
+    } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat && !req.query.typeIdArray) {
       listLocations = await Location.find({      
           deletionFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -346,7 +348,7 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.ratingGt && req.query.radius && req.query.lat) {
+    } else if (req.query.ratingGt && req.query.lat && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({ 
           deletionFlag: false,     
           location : {
@@ -403,7 +405,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt){
+    } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.typeIdArray){
       listLocations = await Location.find({   
           deletionFlag: false,   
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
@@ -460,7 +462,7 @@ const searchAllLocations = async function (req, res) {
           return ReS(res, { listLocations: result2 }, 200);
         });
       });
-    } else if (req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.search_keyword) {
+    } else if (req.query.lat && !req.query.ratingGt && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({   
           deletionFlag: false,   
           location : {
@@ -524,7 +526,7 @@ const searchAllLocations = async function (req, res) {
         ]
       }).populate({ path: 'typeId' })
       return ReS(res, { listLocations }, 200);
-    } else if (req.query.search_keyword && req.query.typeIdArray){
+    } else if (req.query.search_keyword && req.query.typeIdArray && !req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({  
         deletionFlag: false,    
         $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
@@ -554,6 +556,257 @@ const searchAllLocations = async function (req, res) {
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
+    } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
+      listLocations = await Location.find({ 
+        deletionFlag: false,     
+        location : {
+          $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+        },
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }
+    );
+    let result = await Location.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [ long , lat ] },
+          key: "location",
+          distanceField: "dist.calculated",
+          maxDistance: radius,
+          minDistance: 0,
+          includeLocs: "dist.location",
+          spherical: true
+        }
+      },
+      { "$skip": 0 },
+    ]).exec(function (err, docs) {
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        listLocationDist = populatedTransactions.map(item  => {
+          const { _id, location, deletionFlag, address,
+            name, typeId, systemRating, description, images, dist } = item;
+          const { calculated } = dist;
+          const { coordinates } = location;
+          const coordinate = {
+            longitude: coordinates[0],
+            latitude: coordinates[1]
+          }        
+          const distance = calculated.toFixed(0);
+          let distanceField;
+          if(distance < 1000) {
+            distanceField = distance + 'm';
+          } else {
+            distanceField = (distance / 1000).toFixed(1) + 'km';
+          }
+          return {
+            _id, deletionFlag, address,
+            name, typeId, systemRating, description, images, distance: distanceField ,coordinate
+          }
+        });
+        let result2 = [];
+        for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+          for (let index2 = 0; index2 < listLocations.length; index2++) {
+            if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+              result2.push(listLocationDist[index1]);                
+            }
+          }
+        }
+        return ReS(res, { listLocations: result2 }, 200);
+      });
+    });
+    } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && req.query.ratingGt){
+      listLocations = await Location.find({ 
+        deletionFlag: false,     
+        location : {
+          $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+        },
+        systemRating: { $gte: ratingGt , $lte: ratingLt},
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }
+    );
+    let result = await Location.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [ long , lat ] },
+          key: "location",
+          distanceField: "dist.calculated",
+          maxDistance: radius,
+          minDistance: 0,
+          includeLocs: "dist.location",
+          spherical: true
+        }
+      },
+      { "$skip": 0 },
+    ]).exec(function (err, docs) {
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        listLocationDist = populatedTransactions.map(item  => {
+          const { _id, location, deletionFlag, address,
+            name, typeId, systemRating, description, images, dist } = item;
+          const { calculated } = dist;
+          const { coordinates } = location;
+          const coordinate = {
+            longitude: coordinates[0],
+            latitude: coordinates[1]
+          }        
+          const distance = calculated.toFixed(0);
+          let distanceField;
+          if(distance < 1000) {
+            distanceField = distance + 'm';
+          } else {
+            distanceField = (distance / 1000).toFixed(1) + 'km';
+          }
+          return {
+            _id, deletionFlag, address,
+            name, typeId, systemRating, description, images, distance: distanceField ,coordinate
+          }
+        });
+        let result2 = [];
+        for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+          for (let index2 = 0; index2 < listLocations.length; index2++) {
+            if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+              result2.push(listLocationDist[index1]);                
+            }
+          }
+        }
+        return ReS(res, { listLocations: result2 }, 200);
+      });
+    });
+    } else if (req.query.typeIdArray && req.query.lat && req.query.search_keyword && !req.query.ratingGt){
+      listLocations = await Location.find({ 
+        deletionFlag: false,     
+        location : {
+          $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+        },
+        $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }
+    );
+    let result = await Location.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [ long , lat ] },
+          key: "location",
+          distanceField: "dist.calculated",
+          maxDistance: radius,
+          minDistance: 0,
+          includeLocs: "dist.location",
+          spherical: true
+        }
+      },
+      { "$skip": 0 },
+    ]).exec(function (err, docs) {
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        listLocationDist = populatedTransactions.map(item  => {
+          const { _id, location, deletionFlag, address,
+            name, typeId, systemRating, description, images, dist } = item;
+          const { calculated } = dist;
+          const { coordinates } = location;
+          const coordinate = {
+            longitude: coordinates[0],
+            latitude: coordinates[1]
+          }        
+          const distance = calculated.toFixed(0);
+          let distanceField;
+          if(distance < 1000) {
+            distanceField = distance + 'm';
+          } else {
+            distanceField = (distance / 1000).toFixed(1) + 'km';
+          }
+          return {
+            _id, deletionFlag, address,
+            name, typeId, systemRating, description, images, distance: distanceField ,coordinate
+          }
+        });
+        let result2 = [];
+        for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+          for (let index2 = 0; index2 < listLocations.length; index2++) {
+            if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+              result2.push(listLocationDist[index1]);                
+            }
+          }
+        }
+        return ReS(res, { listLocations: result2 }, 200);
+      });
+    });
+    } else if (req.query.typeIdArray && !req.query.lat && req.query.search_keyword && req.query.ratingGt){
+      listLocations = await Location.find({      
+        deletionFlag: false,
+        $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
+        systemRating: { $gte: ratingGt , $lte: ratingLt},
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }
+      ).populate({ path: 'typeId' });
+      return ReS(res, { listLocations }, 200);
+    } else if (req.query.typeIdArray && req.query.lat && req.query.search_keyword && req.query.ratingGt){
+      listLocations = await Location.find({ 
+        deletionFlag: false,     
+        location : {
+          $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
+        },
+        $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
+        systemRating: { $gte: ratingGt , $lte: ratingLt},
+        $and: [
+          { $or : typeIdArray }
+        ]
+      }
+    );
+    let result = await Location.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [ long , lat ] },
+          key: "location",
+          distanceField: "dist.calculated",
+          maxDistance: radius,
+          minDistance: 0,
+          includeLocs: "dist.location",
+          spherical: true
+        }
+      },
+      { "$skip": 0 },
+    ]).exec(function (err, docs) {
+      LocationCategory.populate(docs, { path: 'typeId' }, function (err, populatedTransactions) {
+        if (err) return err;
+        listLocationDist = populatedTransactions.map(item  => {
+          const { _id, location, deletionFlag, address,
+            name, typeId, systemRating, description, images, dist } = item;
+          const { calculated } = dist;
+          const { coordinates } = location;
+          const coordinate = {
+            longitude: coordinates[0],
+            latitude: coordinates[1]
+          }        
+          const distance = calculated.toFixed(0);
+          let distanceField;
+          if(distance < 1000) {
+            distanceField = distance + 'm';
+          } else {
+            distanceField = (distance / 1000).toFixed(1) + 'km';
+          }
+          return {
+            _id, deletionFlag, address,
+            name, typeId, systemRating, description, images, distance: distanceField ,coordinate
+          }
+        });
+        let result2 = [];
+        for (let index1 = 0; index1 < listLocationDist.length; index1++) {
+          for (let index2 = 0; index2 < listLocations.length; index2++) {
+            if(listLocationDist[index1]._id.toString() === listLocations[index2]._id.toString()) {
+              result2.push(listLocationDist[index1]);                
+            }
+          }
+        }
+        return ReS(res, { listLocations: result2 }, 200);
+      });
+    });
     }
 	} catch (e) {
 		return ReE(res, e, 422);
