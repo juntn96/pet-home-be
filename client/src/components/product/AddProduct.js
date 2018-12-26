@@ -182,7 +182,6 @@ class AddProduct extends Component {
   render() {
     const { loadingU, uploading, images } = this.state
     const { productParentCategories , loading } = this.props.product;  
-    console.log(this.state);
     const content = () => {
       switch(true) {
         case loadingU:
@@ -190,7 +189,6 @@ class AddProduct extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          console.log(images)
           return <Images 
                   images={images}
                   removeImage={this.removeImage} 

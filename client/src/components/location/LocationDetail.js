@@ -385,6 +385,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(Location));
-
-
-

@@ -180,9 +180,6 @@ router.post(
 );
 router.get(
   "/product/productByUserIds/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
   ProductController.getProductByIds
 );
 router.get(
