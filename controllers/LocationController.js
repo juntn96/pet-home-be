@@ -578,7 +578,7 @@ const getLocationCategoriesWithType = async function (req, res) {
     const list = await LocationCategory.find({ hiddenFlag: false});
     const listPrivates = list.filter( item => item.typeLocation === constants.PRIVATE_LOCATION);
     const listPublics = list.filter( item => item.typeLocation === constants.PUBLIC_LOCATION);
-    return ReS(res, { locations: {listPrivates : listPrivates, listPublics: listPublics }}, 200);
+    return ReS(res, { locationCategories: {listPrivates : listPrivates, listPublics: listPublics }}, 200);
 	} catch (e) {
 		return ReE(res, error, 422);
 	}
