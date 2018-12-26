@@ -3,9 +3,9 @@ const Location = require('../models/Location');
 const Product =require('../models/Product');
 const constants = require('../utils/constants');
 
-const getLocationCategoriesByType = async () => {
+const getLocationCategoriesByType = async (type) => {
 	try {
-    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: constants.PRIVATE_LOCATION });
+    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: type });
 		return listLocationCategory;
 	}
 	catch (e) {
@@ -201,6 +201,27 @@ const getAllLocations = async () => {
 };
 module.exports.getAllLocations = getAllLocations;
 
+const hideLocationById = async (id, deletionFlag) => {
+  try {
+    let listLocationCategory = await Location.findByIdAndUpdate(id, {deletionFlag: deletionFlag})
+    return listLocationCategory;
+  }
+  catch (e) {
+    return TE(res, 'Get locationCategories failed', 503);
+  }
+};
+module.exports.hideLocationById = hideLocationById;
+
+const getLocationById = async (id) => {
+  try {
+    let locaiton = await Location.findById(id);
+    return locaiton;
+  }
+  catch (e) {
+    return TE(res, 'Get location failed', 503);
+  }
+};
+module.exports.getLocationById = getLocationById;
 const getAllActiveLocation = async () => {
   try {
     let listLocationCategory = await Location.find({ deletionFlag: false}).populate('ownerId').populate('typeId')

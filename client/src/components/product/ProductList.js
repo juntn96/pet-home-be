@@ -113,6 +113,21 @@ class AddProduct extends Component {
             </Card>
           </Col>
         </Row>
+        <div ref="" className="modal fade" id="deleteDialog" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4> Bạn có chắc chắn muốn xóa sản phẩm này? </h4>
+              </div>
+              <div className="modal-body">
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" className="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

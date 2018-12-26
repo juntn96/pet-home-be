@@ -1,34 +1,28 @@
 import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
 import axios from 'axios';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import {getAllUsers} from '../../../store/actions/usersActions'
 class LocationItem extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      deletionFlag: props.reportDetail.deletionFlag
+      deletionFlag: props.location.deletionFlag
     }
   }
 
   componentDidMount(){
   }
 
-  _requestBanUser = () => {
+  _onClickUpdateLocation = () => {
     const location = this.props.location;
-    const user = {id: location.ownerId,deletionFlag : this.state.deletionFlag === 1? false:true}
-    axios.put('/api/admin/users', user).then(res => {
-      const update = {id: this.props.location._id,deletionFlag: this.state.deletionFlag?0:1 }
-      axios.put('/api/report/updateReportStatus', update).then(res =>{
-        this._requestGetDelectionFlag();
-      })
+    const locationUpdate = {id: location._id,deletionFlag : !this.state.deletionFlag}
+    axios.put('/api/admin/updateLocation', locationUpdate).then(res => {
+      this._requestGetDelectionFlag();
     });
   }
 
   _requestGetDelectionFlag = () => {
-    axios.get(`/api/post/getById/${this.props.location._id}`).then(res => {
+    axios.get(`/api/admin/getLocationById//${this.props.location._id}`).then(res => {
       this.setState({
         deletionFlag: res.data.result.deletionFlag,
         isLoading: false
@@ -38,11 +32,11 @@ class LocationItem extends Component {
     });
   }
 
-  _onClickBanUser = () => {
+  _onClickBanLocation = () => {
     this.setState({
       isLoading: true,
     })
-    this._requestBanUser();
+    this._onClickUpdateLocation();
   }
 
   _showModal =() => {
@@ -51,21 +45,30 @@ class LocationItem extends Component {
 
   render(){
     const key = this.props.key;
-    const users = this.props.allusers;
     const { deletionFlag } = this.state
-    const style = deletionFlag !==1 ? "secondary" : "danger";
-    const text = deletionFlag !==1? "Chưa xử lý" : "Đã xử lý";
-    let owerName= []
+    const style = deletionFlag ? "secondary" : "danger";
+    const text = deletionFlag ? "Không hoạt động" : "Đang hoạt động";
     const {location} = this.props;
-    if(users.allusers.users !== undefined){
-      owerName = users.allusers.users.filter(item => item._id === location.ownerId )
+    const maxRate = [];
+    for(let i = 1 ;i<=5;i++){
+      if(i <= location.systemRating){
+        maxRate.push(1);
+        
+      }else if ((i) === location.systemRating+0.5){
+        maxRate.push(0.5);
+      }else{
+        maxRate.push(0);
+      }
     }
-    const date = new Date(location.createdAt).toLocaleDateString() + ' ' + new Date(location.createdAt).toLocaleTimeString();
+    console.log(maxRate)
+    const date = new Date(location.updatedAt).toLocaleDateString() + ' ' + new Date(location.updatedAt).toLocaleTimeString();
     return (
       <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}} onClick={this._showModal}>
-        <td style={{verticalAlign:"middle"}}>{location.title}</td>
-        <td style={{verticalAlign:"middle"}}>{owerName.length !==0 ? owerName[0].appName:'unknown'}</td>
-        <td style={{verticalAlign:"middle"}}>{date}</td>
+        <td style={{verticalAlign:"middle"}}>{location.name}</td>
+        <td style={{verticalAlign:"middle"}}>{location.address}</td>
+        <td style={{verticalAlign:"middle"}}>{location.description}</td>
+        <td style={{verticalAlign:"middle"}}>{location.typeId.name}</td>
+        <td style={{color:"orange"}}>{maxRate.map(item => item === 1? <i class="fas fa-star"></i>: (item === 0.5 ? <i class="fas fa-star-half-alt"></i>:<span style={{color:'#c8ced3'}}><i class="fas fa-star"></i></span>))}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {/* <td style={{verticalAlign:"middle"}}>
         <div>{userDetail.appName}</div>
@@ -73,18 +76,15 @@ class LocationItem extends Component {
           </div>
         </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Cấm người dùng</Button></td>
-          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hủy</Button></td>}
+        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
+          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanLocation}>Hiện</Button></td>}
+          <td>Chi tiết</td>
       </tr>
     )
   }
 
 }
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors,
-  allusers: state.allusers
-});
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationItem));
+
+export default LocationItem;
 

@@ -58,9 +58,7 @@ class ProductItem extends Component {
         <td><Img src={item.images[0]} style={{height:55,width:55}}/></td>
         <td>{item.name}</td>
         <td>{item.price}</td>
-        
         <td><Badge color="danger">Đồ ăn</Badge></td>
-
         <td>
           <Button color="success" size="sm" onClick={this.editProduct}><i className="fa fa-pencil-square-o"></i><input type="hidden" value={item._id}/></Button>
           <Button color="danger" size="sm" onClick={this.deleteProduct}><i className="fa fa-trash"></i><input type="hidden" value={item._id}/></Button>
