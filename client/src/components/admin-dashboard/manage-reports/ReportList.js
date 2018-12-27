@@ -7,7 +7,7 @@ import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'
 import axios from 'axios';
-
+import Empty from '../../common/Empty';
 class ReportList extends Component {
 
   constructor(props){
@@ -17,7 +17,8 @@ class ReportList extends Component {
       deletionFlag: false,
       reports : [],
       detail: null,
-      rqDetail: []
+      rqDetail: [],
+      isLoading: true
     }
   }
 
@@ -93,24 +94,24 @@ class ReportList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { reports === null  ? <Spinner /> :
+              { this.state.isLoading ? <Spinner /> :(reports.length === 0? <Empty/> :
+
                 <Table hover responsive >
                   <thead>
                   <tr>
-                    <th>Nội dung bài viết</th>
+                    <th>Nội dung bài viết{reports.length}</th>
                     <th>Người viết</th>
                     <th>Ngày đăng</th>
                     <th>Số lần bị reports</th>
                     <th>Trạng thái</th>
                     <th style={{width:'9%'}}>Xử lý người dùng này</th>
-                    <th></th>
-                  </tr>
+                    <th></th></tr>
                   </thead>
                   <tbody ref="tableSearch">
                     { reports.map((item, index) =>
                       item.postDetail.length !==0 ? <ReportItem onShowDetail={this.detailHandle} reportDetail={item.postDetail[0]} index={index} totalReports={item.totalReport}/>:'')}
                   </tbody>
-                </Table>
+                </Table>)
                 }
               </CardBody>
             </Card>

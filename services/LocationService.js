@@ -42,12 +42,12 @@ const getLocationCategories = async () => {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
-const addLocationCategory = async val => {
+const addLocationCategory = async (val, type) => {
   try {
     const nameExisted = await findByName(val);
     if (nameExisted) throw ("Đã có loại địa điểm này");
     // const category = new LocationCategory();
-    const result = await LocationCategory.create({ name: val , typeLocation: constants.PRIVATE_LOCATION});
+    const result = await LocationCategory.create({ name: val , typeLocation: type});
     return result;
   } catch (error) {
     console.log(error)

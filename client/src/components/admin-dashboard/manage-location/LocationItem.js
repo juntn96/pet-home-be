@@ -60,7 +60,6 @@ class LocationItem extends Component {
         maxRate.push(0);
       }
     }
-    console.log(maxRate)
     const date = new Date(location.updatedAt).toLocaleDateString() + ' ' + new Date(location.updatedAt).toLocaleTimeString();
     return (
       <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}} onClick={this._showModal}>
@@ -68,7 +67,7 @@ class LocationItem extends Component {
         <td style={{verticalAlign:"middle"}}>{location.address}</td>
         <td style={{verticalAlign:"middle"}}>{location.description}</td>
         <td style={{verticalAlign:"middle"}}>{location.typeId.name}</td>
-        <td style={{color:"orange"}}>{maxRate.map(item => item === 1? <i class="fas fa-star"></i>: (item === 0.5 ? <i class="fas fa-star-half-alt"></i>:<span style={{color:'#c8ced3'}}><i class="fas fa-star"></i></span>))}</td>
+        <td style={{color:"orange"}}>{maxRate.map(item => item === 1? <i className="fas fa-star"></i>: (item === 0.5 ? <i className="fas fa-star-half-alt"></i>:<span style={{color:'#c8ced3'}}><i className="fas fa-star"></i></span>))}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {/* <td style={{verticalAlign:"middle"}}>
         <div>{userDetail.appName}</div>
