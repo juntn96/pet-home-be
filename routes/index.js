@@ -42,6 +42,14 @@ router.get("/users/forgotPassword/:phoneNumber", UserController.forgotPassword);
 // }), UserController.getUserById);
 router.get("/users/detail/:userId", UserController.getUserById);
 
+router.put(
+  "/auth/changePassword",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  AuthController.changePassword
+);
+
 //Location Category
 router.get(
   "/location/locationCategoriesByType/:type",
@@ -173,9 +181,6 @@ router.put(
 );
 router.post(
   "/product/add",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
   ProductController.addProduct
 );
 router.get(

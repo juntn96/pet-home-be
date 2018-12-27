@@ -13,7 +13,7 @@ import {
   Button
 } from 'reactstrap';
 import axios from 'axios';
-class ChangePassword extends Component {
+class ChangePasswordAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -143,4 +143,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, {  })(ChangePassword);
+export default connect(mapStateToProps, {  })(ChangePasswordAdmin);

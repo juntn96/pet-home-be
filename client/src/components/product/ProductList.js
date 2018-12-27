@@ -152,6 +152,8 @@ class AddProduct extends Component {
             </Card>
           </Col>
         </Row>
+        <div className="alert alert-success" id="messageTri2gger" style={{color:"green",zIndex:100,position:"absolute",opacity:0.5, border:"2px green solid",marginLeft:500}}
+        ><i className="fas fa-check-circle"></i> Xử lý thành công!</div>
         <div className="modal fade" id="deleteProduct" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">

@@ -61,7 +61,6 @@ class Register extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
-      console.log(nextProps.errors)
       return { errors: nextProps.errors};
     }
     else return null;
@@ -134,7 +133,7 @@ class Register extends Component {
 
   render() {
     const { errors } = this.state;
-    const { locationCategories, loading } = this.props.locationApp;    
+    const { locationCategories, loading } = this.props.locationApp;
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">

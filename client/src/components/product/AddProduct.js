@@ -202,7 +202,7 @@ class AddProduct extends Component {
     return (
       <div className="addProduct">
           <div className="row">
-            <div className="col-md-8">           
+            <div className="col-md-8">
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
@@ -216,7 +216,7 @@ class AddProduct extends Component {
                       <Notifications />
                       <div className='buttons'>
                         {content()}
-                      </div>                        
+                      </div>
                     </div>
                     <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                   </Col>
