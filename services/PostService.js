@@ -125,7 +125,9 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId).select({ votes: 0, comments: 0 });
+    const post = await Post.findById(postId)
+      .select({ votes: 0, comments: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 });
     return post;
   } catch (error) {
     throw error;
