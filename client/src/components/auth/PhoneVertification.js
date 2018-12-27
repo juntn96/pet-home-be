@@ -66,6 +66,7 @@ class PhoneVertification extends Component {
         <div className="container bounceInRight">
           <div className="row">
             <div className="col-md-4 m-auto bounceInRight">           
+            <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white', fontSize: 20}} to="/login">Quay lại</Link></div>
             <h1 className="display-4 text-center" style={{ marginBottom:30}}>Đăng ký</h1>             
               <div className="form-group">
                 <input

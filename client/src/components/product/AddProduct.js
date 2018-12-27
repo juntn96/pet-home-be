@@ -272,30 +272,30 @@ class AddProduct extends Component {
                     <div style={{display:'block'}} ref='typeProductValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="my-0 mt-3">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Mô tả</Label>
-                        <textarea
-                          className="form-control form-control-lg"
-                          name="description" 
-                          id="textarea-input" 
-                          rows="7"
-                          placeholder="Nội dung mô tả..." 
-                          value={this.state.description}
-                          onChange={this.onChange}>
-                        </textarea>
-                    </Col>
-                  </FormGroup>
-                  <div style={{marginTop:20}}>
-                  <FormGroup row className="my-0">
-                    <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
-                    </Col>
-                    <Col col="5" sm="4" md="2" className="mb-xl-0">
-                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
-                    </Col>
-                  </FormGroup>
-                  </div>
+                <FormGroup row className="my-0 mt-3">
+                  <Col xs="7">
+                    <Label htmlFor="textarea-input">Mô tả</Label>
+                      <textarea
+                        className="form-control form-control-lg"
+                        name="description" 
+                        id="textarea-input" 
+                        rows="7"
+                        placeholder="Nội dung mô tả..." 
+                        value={this.state.description}
+                        onChange={this.onChange}>
+                      </textarea>
+                  </Col>
+                </FormGroup>
+                <div style={{marginTop:20}}>
+                <FormGroup row className="my-0">
+                  <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
+                    <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
+                  </Col>
+                  <Col col="5" sm="4" md="2" className="mb-xl-0">
+                    <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
+                  </Col>
+                </FormGroup>
+                </div>
               </CardBody>
             </Card>
           </Col>

@@ -363,15 +363,6 @@ class Location extends Component {
             </Col>
           </div>           
         </div>
-        {/* <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Lỗi</ModalHeader>
-          <ModalBody>
-            Đã có lỗi xảy ra trong quá trình cập nhật
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Đóng</Button>
-          </ModalFooter>
-        </Modal> */}
       </div>
     );
   }

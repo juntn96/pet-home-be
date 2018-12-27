@@ -60,9 +60,8 @@ class AddProduct extends Component {
     }
   }
 
-  editProduct = id => {
-    const editedProduct = this.props.product.productByUserIds.productByIds.filter(propduct => propduct._id === id)
-    this.props.history.push('/product/edit', editedProduct[0]);
+  editProduct = item => {
+    this.props.history.push('/product/edit', item);
   }
 
   onAddProduct = (e) => {
@@ -93,7 +92,7 @@ class AddProduct extends Component {
         <td><Badge color="danger">{item.typeId.name}</Badge></td>
         <td>{item.description}</td>
         <td>
-          <Button color="success" style={{ marginRight: 10 }} onClick={() => this.editProduct(item._id)}><i className="fa fa-pencil-square-o"></i><input type="hidden" value={item._id} /></Button>
+          <Button color="success" style={{ marginRight: 10 }} onClick={() => this.editProduct(item)}><i className="fa fa-pencil-square-o"></i><input type="hidden" value={item._id} /></Button>
           <button className="btn btn-danger" onClick={this._onSetDelete} data-toggle="modal" data-target="#deleteProduct"><i className="fa fa-trash"></i><input type="hidden" value={item._id} /></button>
         </td>
       </tr>
