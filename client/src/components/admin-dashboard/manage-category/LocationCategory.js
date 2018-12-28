@@ -81,12 +81,7 @@ class LocationCategory extends Component {
   }
 
   _onSearch = (e) => {
-    if(this.refs.all.checked)
-      this._inputSearchAll(e);
-    else if(this.refs.on.checked)
-      this._inputSearch(e, 'on');
-    else if(this.refs.off.checked)
-      this._inputSearch(e, 'off');
+    this._inputSearchAll(e);
   }
   _inputSearch = (e, val) =>{
     const list = this.refs.search.getElementsByClassName('nameItemValue');
@@ -140,13 +135,7 @@ class LocationCategory extends Component {
     }
   }
   _filterByStatus = (e) => {
-    if(e.target.id ==='all')
-      this._showAll()
-    else if(e.target.id ==='on'){
-      this._filter('on')
-    }else if(e.target.id ==='off'){
-      this._filter('off')
-    }
+    this._showAll();
   }
   _showAll = () => {
     const itemm = this.refs.search.getElementsByClassName('itemSearchLocation');
