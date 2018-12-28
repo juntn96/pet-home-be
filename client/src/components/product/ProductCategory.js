@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory } from '../../store/actions/productAction';
 import {FormGroup, 
   InputGroup, 
-  InputGroupAddon, 
   Input, 
   Card, 
   CardBody, 
@@ -49,11 +48,11 @@ class ProductCategory extends Component {
       checkUpdate: true
     });
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
 
-    }
-  }
+  //   }
+  // }
   // setDeletionFlagFalse = (e) =>{
   //   alert('aa');
   //   const newCategory = {
@@ -67,7 +66,6 @@ class ProductCategory extends Component {
   setDeletionFlagFalse = (e) =>{
     if(e.currentTarget.value===true)this.setState({deletionFlag : false})
     if(e.currentTarget.value===false)this.setState({deletionFlag : true});
-    console.log(e.currentTarget.getElementsByTagName('input')[0].value,)
     const newCategory = {
       id: this.state._id,
       name: this.state.name,

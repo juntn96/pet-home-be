@@ -12,9 +12,9 @@ class UserItem extends Component {
     }
   }
 
-  componentDidMount(){
-    const userDetail = this.props.userDetail;
-  }
+  // componentDidMount(){
+  //   const userDetail = this.props.userDetail;
+  // }
 
   _requestBanUser = () => {
     const userDetail = this.props.userDetail;

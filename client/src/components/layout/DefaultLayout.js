@@ -46,15 +46,22 @@ class DefaultLayout extends Component {
           <main className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
-            <Switch>
-              {routes.map((route, idx) => {
-                  return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                      <route.component {...props} />
-                    )} />)
-                    : (null);
-                }
-              )}
-            </Switch>
+              <Switch>
+                {routes.map((route, idx) => {
+                  return route.component ? (
+                    <Route 
+                      key={idx} 
+                      path={route.path} 
+                      exact={route.exact} 
+                      name={route.name} 
+                      render={props => (
+                        <route.component {...props} />
+                      )} 
+                    />
+                  ) :
+                  (null);
+                })}
+              </Switch>
             </Container>
           </main>
           <AppAside fixed>

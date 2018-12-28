@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import Spinner from '../common/Spinner';
-import { Link } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -33,11 +31,13 @@ class ChangePassword extends Component {
   onSubmit = (e) => {
     e.preventDefault();
   }
-  clearMsg=()=>{
+
+  clearMsg = () => {
     this.refs.oldPassword.innerHTML = '';
     this.refs.newPassword.innerHTML = '';
     this.refs.newPassword1.innerHTML = '';
   }
+
   _changePassword = () => {
     this.clearMsg();
     if(this.state.oldPassword === ''||
@@ -66,6 +66,7 @@ class ChangePassword extends Component {
       this.setState({messageErr:err.response.data.message, messageSucc:""});
     });
   }
+  
   render() {
     return (
       <div className="addProduct">

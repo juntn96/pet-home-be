@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import { connect } from 'react-redux';
 import Img from 'react-image';
 import { withRouter } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row,Table, Badge } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'

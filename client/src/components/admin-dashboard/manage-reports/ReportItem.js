@@ -14,9 +14,9 @@ class ReportItem extends Component {
     }
   }
 
-  componentDidMount(){
-    const reportDetail = this.props.reportDetail;
-  }
+  // componentDidMount(){
+  //   const reportDetail = this.props.reportDetail;
+  // }
 
   _requestBanUser = () => {
     const reportDetail = this.props.reportDetail;
@@ -68,8 +68,8 @@ class ReportItem extends Component {
     const key = this.props.index;
     const users = this.props.allusers;
     const { deletionFlag } = this.state
-    const style = deletionFlag !==1 ? "secondary" : "danger";
-    const text = deletionFlag !==1? "Chưa xử lý" : "Đã xử lý";
+    const style = deletionFlag !== true ? "secondary" : "danger";
+    const text = deletionFlag !== true ? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
     const {reportDetail, totalReports} = this.props;
     console.log(reportDetail)
@@ -91,8 +91,8 @@ class ReportItem extends Component {
         </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
         {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Cấm người dùng</Button></td>
-          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hủy</Button></td>}
-          <td><a style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
+          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Bỏ cấm</Button></td>}
+          <td><a href style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
       </tr>
     )
   }

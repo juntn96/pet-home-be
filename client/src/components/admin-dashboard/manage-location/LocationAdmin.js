@@ -82,7 +82,7 @@ class LocationAdmin extends Component {
                         <th>Đánh giá</th>
                         <th>Trạng thái</th>
                         <th>Xử lý</th>
-                        <th></th>
+                        {/* <th></th> */}
                       </tr>
                     </thead>
                     <tbody ref="tableSearch">

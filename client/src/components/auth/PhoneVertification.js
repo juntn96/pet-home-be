@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CustomLink from '../common/CustomLink';
+// import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { 
@@ -31,7 +31,7 @@ class PhoneVertification extends Component {
     this.props.clearErrorsProps();
     const { phone, code } = this.state;
     this.props.getVertify({phone, code});
-    const { messageSendCode, messageCheckCode} = this.props;
+    // const { messageSendCode, messageCheckCode} = this.props;
     
   }
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -58,7 +58,7 @@ class PhoneVertification extends Component {
 
   render() {
     const { errors } = this.state;
-    const { messageSendCode, messageCheckCode, errorsProps } = this.props;
+    const { messageSendCode, errorsProps } = this.props;
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">
@@ -66,7 +66,15 @@ class PhoneVertification extends Component {
         <div className="container bounceInRight">
           <div className="row">
             <div className="col-md-4 m-auto bounceInRight">           
-            <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white', fontSize: 20}} to="/login">Quay lại</Link></div>
+            <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}>
+              <Link 
+                style={{
+                  color:'white', 
+                  fontSize: 20,
+                  borderColor: '#ffffff',
+                  borderRadius: 5
+                }} to="/login">Quay lại</Link>
+            </div>
             <h1 className="display-4 text-center" style={{ marginBottom:30}}>Đăng ký</h1>             
               <div className="form-group">
                 <input

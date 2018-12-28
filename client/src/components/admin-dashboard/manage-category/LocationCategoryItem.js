@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
-import Img from 'react-image';
-import axios from 'axios';
+import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 class LocationCategoryItem extends Component {
 
@@ -34,8 +32,8 @@ class LocationCategoryItem extends Component {
           <span ref="nameItemValue" className="nameItemValue">{locationCate.name}</span>
           <span className={classnametype} style={{ marginLeft: 3, verticalAlign: 'middle', paddingLeft: 5, paddingRight: 5, borderRadius: 5, fontSize: 7, marginBottom: 4 }}></span>
           <div className="card-header-actions">
-            <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#editModalLocation"><i className="icon-pencil"></i></a>
-            <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#deleteModalLocation">
+            <a href className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#editModalLocation"><i className="icon-pencil"></i></a>
+            <a href className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#deleteModalLocation">
               <i className="icon-close"></i>
             </a>
           </div>

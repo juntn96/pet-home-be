@@ -60,7 +60,7 @@ class LocationItem extends Component {
         maxRate.push(0);
       }
     }
-    const date = new Date(location.updatedAt).toLocaleDateString() + ' ' + new Date(location.updatedAt).toLocaleTimeString();
+    // const date = new Date(location.updatedAt).toLocaleDateString() + ' ' + new Date(location.updatedAt).toLocaleTimeString();
     return (
       <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}} onClick={this._showModal}>
         <td style={{verticalAlign:"middle"}}>{location.name}</td>
@@ -77,7 +77,7 @@ class LocationItem extends Component {
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
         {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanLocation}>Hiện</Button></td>}
-          <td>Chi tiết</td>
+          {/* <td>Chi tiết</td> */}
       </tr>
     )
   }

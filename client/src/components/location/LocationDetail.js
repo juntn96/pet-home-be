@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getLocations } from '../../store/actions/locationAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -11,11 +10,7 @@ import {
   FormGroup,
   Input,
   Label,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Button,
-  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
@@ -24,33 +19,23 @@ import Images from './../uploadImage/Images'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
-import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
+import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
 import { updateLocation, getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
-import { compose, withProps } from "recompose"
 
 const toastColor = { 
   background: '#505050', 
   text: '#fff' 
 }
 
-const MyMapComponent = compose(
-  withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDZM7hoDN16cKoeHixvIrEyzEU-zlLzA10&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  withScriptjs,
-  withGoogleMap
-)((props) =>
+const MapComponent = withGoogleMap(props =>
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: props.lat, lng: props.long }}
+    defaultCenter = {props.getLatLong }
+    defaultZoom = { 13 }
     onClick={props.onMapClick}
   >
-  {<Marker position={props.getLatLong} />}
+    <Marker position={props.getLatLong} />
   </GoogleMap>
 )
 
@@ -69,9 +54,22 @@ class Location extends Component {
       description,
       loadingU: true,
       uploading: false,
-      images: images,
-      modal: false
+      modal: false,
+      latlong: {
+        lat: location.coordinates[1],
+        lng: location.coordinates[0],        
+      }
     };
+  }
+
+  getLatLong = (event) =>{    
+    var lat = event.latLng.lat(), long = event.latLng.lng();
+    this.setState({
+      latlong:{
+        lat:lat, 
+        lng:long
+      }
+    });
   }
 
   componentDidMount() {
@@ -240,7 +238,7 @@ class Location extends Component {
 
   render() {
     const { loadingU, uploading, images } = this.state
-    const { locationCategories, loading, error } = this.props.locationApp;  
+    const { locationCategories, loading } = this.props.locationApp;  
     const content = () => {
       switch(true) {
         case loadingU:
@@ -349,17 +347,22 @@ class Location extends Component {
               </Card>
             </Col>
           </div> 
-          <div className="col-md-7">
-            <Col xs="6" sm="6">
-                <div className="google-map">
-                  <MyMapComponent
-                    onMarkerClick={this.handleMarkerClick}
+          <div className="col-md-5"> 
+            <Col xs="12" sm="12">
+              <Card>
+                <CardHeader>
+                  <strong>Địa điểm</strong>
+                </CardHeader>
+                <CardBody>
+                  <MapComponent
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: '500px' , width: `100%`}} />}
+                    mapElement={<div style={{ height: `100%` }} />}
                     onMapClick={this.getLatLong}
                     getLatLong={this.state.latlong}
-                    long={this.state.location[0]}
-                    lat={this.state.location[1]}
                   />
-                </div>
+                </CardBody>
+              </Card>
             </Col>
           </div>           
         </div>

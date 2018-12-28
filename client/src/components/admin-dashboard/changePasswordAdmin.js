@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import Spinner from '../common/Spinner';
-import { Link } from 'react-router-dom';
 import {
   Card,
   CardBody,

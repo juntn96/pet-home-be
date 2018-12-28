@@ -71,6 +71,7 @@ class Login extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
+  
   onShowPassword =(e) => {
     if (!this.state.showpass){
       this.refs.passwordInput.setAttribute('type','text');
@@ -82,8 +83,6 @@ class Login extends Component {
     }
   }
   render() {
-    const { errors } = this.state;
-
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
+import { Card, CardHeader, Col, Row } from 'reactstrap';
 import Spinner from '../../common/Spinner';
 import axios from 'axios';
 import LocationCategoryItem from './LocationCategoryItem';

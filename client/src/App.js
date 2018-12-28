@@ -23,8 +23,6 @@ import DefaultLayout from './components/layout/DefaultLayout';
 import UploadImage from './components/uploadImage/UploadImage';
 import DefaultLayoutAdmin from './components/admin-dashboard/layout/DefaultLayoutAdmin';
 
-import LocationDetail from './components/location/LocationDetail';
-
 // Check for token
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -60,7 +58,6 @@ class App extends Component {
             <Route exact path="/register-success" component={RegisterSuccess} />
             <Route exact path="/upload" component={UploadImage} />
             <Switch>
-              {/* <PrivateRoute path="/" component={DefaultLayout} /> */}
               <PrivateRoute path="/pro" component={DefaultLayout} />
               <PrivateRoute path="/profile" component={DefaultLayout} />
               <PrivateRoute path="/product/add" component={DefaultLayout} />
@@ -77,8 +74,6 @@ class App extends Component {
               <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/location/add" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/chgpwd" component={DefaultLayoutAdmin} />
-              {/* <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
-              <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} /> */}
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>
