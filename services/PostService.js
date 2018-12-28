@@ -211,8 +211,7 @@ const getComments = async postId => {
 
 const addComment = async (postId, comment) => {
   try {
-    ExpoService.sendNotifications(comment.notification);
-    NotificationService.addNotification(comment.notification.data);
+    NotificationService.addNotification(comment.notification);
     const result = await Post.findByIdAndUpdate(postId, {
       $push: { comments: { ...comment } },
     });
