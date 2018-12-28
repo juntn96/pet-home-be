@@ -156,7 +156,7 @@ const addComment = async (req, res) => {
     const userCommentId = req.body.userCommentId;
     const content = req.body.content;
     const notification = req.body.notification;
-    const data = { userCommentId, content, notification };
+    const data = { userCommentId, content };
     const result = await PostService.addComment(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
