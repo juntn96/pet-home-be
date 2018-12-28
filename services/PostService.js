@@ -211,6 +211,7 @@ const getComments = async postId => {
 
 const addComment = async (postId, comment) => {
   try {
+    console.log(comment);
     NotificationService.addNotification(comment.notification);
     const result = await Post.findByIdAndUpdate(postId, {
       $push: { comments: { ...comment } },
