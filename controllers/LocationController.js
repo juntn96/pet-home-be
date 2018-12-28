@@ -53,7 +53,7 @@ module.exports.updateLocationCategories = updateLocationCategories;
 const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
-    const result = await locationService.addLocationCategory(req.body.name);
+    const result = await locationService.addLocationCategory(req.body.name,req.body.typeLocation);
     // console.log('>> ', result)
     return ReS(res, { result }, 200);
   } catch (error) {

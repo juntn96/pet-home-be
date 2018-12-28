@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap'
 import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
-
+import Empty from '../../common/Empty';
 class LocationAdmin extends Component {
 
   constructor(props) {
@@ -11,7 +11,8 @@ class LocationAdmin extends Component {
     this.state = {
       userId: '',
       deletionFlag: false,
-      locations: []
+      locations: [],
+      isLoading: true
     }
   }
 
@@ -70,7 +71,7 @@ class LocationAdmin extends Component {
                 <Button color="primary" style={{ float: "right", marginRight: 20 }} size="lg" onClick={this._onClickAddLocation}>Thêm địa điểm</Button>
               </CardHeader>
               <CardBody>
-                {locations === null ? <Spinner /> :
+                {this.state.isLoading ? <Spinner /> :(locations.length === 0? <Empty/> :
                   <Table hover responsive >
                     <thead>
                       <tr>
@@ -88,7 +89,7 @@ class LocationAdmin extends Component {
                       {locations.map((item, index) =>
                         <LocationItem location={item} key={index} />)}
                     </tbody>
-                  </Table>
+                  </Table>)
                 }
               </CardBody>
             </Card>

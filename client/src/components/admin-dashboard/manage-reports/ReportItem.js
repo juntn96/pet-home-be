@@ -71,7 +71,8 @@ class ReportItem extends Component {
     const style = deletionFlag !==1 ? "secondary" : "danger";
     const text = deletionFlag !==1? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
-    const {reportDetail, totalReports,owner} = this.props;
+    const {reportDetail, totalReports} = this.props;
+    console.log(reportDetail)
     if(users.allusers.users !== undefined){
       owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
     }
