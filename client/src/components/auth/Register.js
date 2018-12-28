@@ -18,11 +18,12 @@ import {
 
 const MapComponent = withGoogleMap(props =>
   <GoogleMap
-    defaultCenter = { { lat: 21.029210, lng: 105.852470 } }
+    defaultCenter = { props.getDefaultCenter }
     defaultZoom = { 13 }
-    onClick={props.onMapClick}
+    onClick={ props.onMapClick }
+    center={ props.getDefaultCenter }
   >
-    <Marker position={props.getLatLong} />
+    <Marker position={ props.getLatLong } />
   </GoogleMap>
 )
 
@@ -38,7 +39,8 @@ class Register extends Component {
       errors: {},
       address: '',
       locationCategories: [],
-      location:[]
+      location:[],
+      latlong: { lat: 21.029210, lng: 105.852470 }
     };
   }
 
@@ -125,7 +127,8 @@ class Register extends Component {
         latlong: {
           lat, lng
         },
-        address: suggest.description})
+        address: suggest.description
+      })
     }
   }
 
@@ -230,6 +233,7 @@ class Register extends Component {
                     mapElement={<div style={{ height: `100%` }} />}
                     onMapClick={this.getLatLong}
                     getLatLong={this.state.latlong}
+                    getDefaultCenter={this.state.latlong}
                   />
                 </Col>
               </Row>
