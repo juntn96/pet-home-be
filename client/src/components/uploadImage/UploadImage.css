@@ -54,7 +54,7 @@ input[type=file] {
   position: absolute
 }
 
-img {
+.uploadImg {
   max-height: 180px;
   max-width: 165px;
   padding: 3px;
