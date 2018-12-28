@@ -142,7 +142,7 @@ class Register extends Component {
                 <Col xs="6">
                   <div className="card-form">           
                     <div className="register-form" style={{padding: "10%"}}>
-                    <h3 style={{color:"black"}}>Đăng ký cửa hàng</h3>
+                    <h3 style={{color:"black"}}>Đăng ký cửa hàng / dịch vụ</h3>
                     <br/>
                     <form noValidate onSubmit={this.onSubmit}>
                       <div className="form-group">

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { 
@@ -31,9 +30,9 @@ class PhoneVertification extends Component {
     this.props.clearErrorsProps();
     const { phone, code } = this.state;
     this.props.getVertify({phone, code});
-    // const { messageSendCode, messageCheckCode} = this.props;
-    
+    // const { messageSendCode, messageCheckCode} = this.props;   
   }
+  
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.messageSendCode && nextProps.messageCheckCode.message !== undefined) {
       nextProps.history.push('/register',{phone: prevState.phone})
@@ -43,11 +42,13 @@ class PhoneVertification extends Component {
     }
     else return null;
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.isAuthenticated) {
       prevProps.history.push('/product');
     }
   }
+
   onChangePhoneNumber = (e) => {
     this.setState({phone: e.target.value});
   }

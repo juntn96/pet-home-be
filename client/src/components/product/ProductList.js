@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Button, Row, Table, FormGroup, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import Img from 'react-image';
-import Spinner from '../common/Spinner';
+import Spinner from '../uploadImage/Spinner';
 import Empty from '../common/Empty';
 import axios from 'axios';
 class AddProduct extends Component {
@@ -131,7 +131,13 @@ class AddProduct extends Component {
                 <i className="fa fa-align-justify"></i> Danh sách sản phẩm
             </CardHeader>
               <CardBody>
-                {this.state.isLoading ? <Spinner /> : (this.state.products.length === 0? <Empty/> :
+                {this.state.isLoading ? 
+                  <div className={{
+                    marginLeft: "auto",
+                    marginRight: "auto"
+                  }}>
+                    <Spinner />
+                  </div> : (this.state.products.length === 0 ? <Empty/> :
                   <Table responsive>
                     <thead>
                       <tr>
@@ -152,8 +158,9 @@ class AddProduct extends Component {
             </Card>
           </Col>
         </Row>
-        <div className="alert alert-success" id="messageTri2gger" style={{color:"green",zIndex:100,position:"absolute",opacity:0.5, border:"2px green solid",marginLeft:500}}
-        ><i className="fas fa-check-circle"></i> Xử lý thành công!</div>
+        <div className="alert alert-success" id="messageTri2gger" style={{color:"green",zIndex:100,position:"absolute",opacity:0.5, border:"2px green solid",marginLeft:500}}>
+          <i className="fas fa-check-circle"></i> Xử lý thành công!
+        </div>
         <div className="modal fade" id="deleteProduct" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">
