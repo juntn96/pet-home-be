@@ -78,22 +78,6 @@ const getLocationWithAllProduct = async function (req, res) {
 };
 module.exports.getLocationWithAllProduct = getLocationWithAllProduct;
 
-const getLocationWithAllProduct = async function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  let erro, locationDetail;
-  [erro, locationDetail] = await to(locationService.getLocationWithAllProduct(req.query));
-  if (erro) {
-    return ReE(res, 'Get location and product failed', 422);
-  }	
-  if (locationDetail) {
-    return ReS(res, { message: 'Get location and product success', locationDetail: locationDetail }, 200);
-  }
-  else {
-    return ReE(res, 'Get location and product failed', 503);
-  } 				
-};
-module.exports.getLocationWithAllProduct = getLocationWithAllProduct;
-
 const searchNearByLatLong = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locations;
