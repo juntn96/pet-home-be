@@ -129,7 +129,8 @@ class AddProduct extends Component {
         errs.push(`'${file.type}' is not a supported format`)
       }
 
-      if (file.size > 150000) {
+      if (file.size > 10000000) {
+        console.log(file.size);
         errs.push(`'${file.name}' is too large, please pick a smaller file`)
       }
 
@@ -182,7 +183,6 @@ class AddProduct extends Component {
   render() {
     const { loadingU, uploading, images } = this.state
     const { productParentCategories , loading } = this.props.product;  
-    console.log(this.state);
     const content = () => {
       switch(true) {
         case loadingU:
@@ -190,7 +190,6 @@ class AddProduct extends Component {
         case uploading:
           return <SpinnerU />
         case images.length > 0:
-          console.log(images)
           return <Images 
                   images={images}
                   removeImage={this.removeImage} 
@@ -203,7 +202,7 @@ class AddProduct extends Component {
     return (
       <div className="addProduct">
           <div className="row">
-            <div className="col-md-8">           
+            <div className="col-md-8">
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
@@ -217,7 +216,7 @@ class AddProduct extends Component {
                       <Notifications />
                       <div className='buttons'>
                         {content()}
-                      </div>                        
+                      </div>
                     </div>
                     <div style={{display:'block'}} ref='imageValidate' className="invalid-feedback"></div>
                   </Col>
@@ -273,30 +272,30 @@ class AddProduct extends Component {
                     <div style={{display:'block'}} ref='typeProductValidate' className="invalid-feedback"></div>
                     </Col>
                   </FormGroup>
-                  <FormGroup row className="my-0 mt-3">
-                    <Col xs="7">
-                      <Label htmlFor="textarea-input">Mô tả</Label>
-                        <textarea
-                          className="form-control form-control-lg"
-                          name="description" 
-                          id="textarea-input" 
-                          rows="7"
-                          placeholder="Nội dung mô tả..." 
-                          value={this.state.description}
-                          onChange={this.onChange}>
-                        </textarea>
-                    </Col>
-                  </FormGroup>
-                  <div style={{marginTop:20}}>
-                  <FormGroup row className="my-0">
-                    <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
-                      <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
-                    </Col>
-                    <Col col="5" sm="4" md="2" className="mb-xl-0">
-                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
-                    </Col>
-                  </FormGroup>
-                  </div>
+                <FormGroup row className="my-0 mt-3">
+                  <Col xs="7">
+                    <Label htmlFor="textarea-input">Mô tả</Label>
+                      <textarea
+                        className="form-control form-control-lg"
+                        name="description" 
+                        id="textarea-input" 
+                        rows="7"
+                        placeholder="Nội dung mô tả..." 
+                        value={this.state.description}
+                        onChange={this.onChange}>
+                      </textarea>
+                  </Col>
+                </FormGroup>
+                <div style={{marginTop:20}}>
+                <FormGroup row className="my-0">
+                  <Col col="6" sm="4" md="3" className="mb-3 mb-xl-0">
+                    <Button block color="primary" onClick={this.onSubmit}>Thêm sản phẩm</Button>
+                  </Col>
+                  <Col col="5" sm="4" md="2" className="mb-xl-0">
+                    <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
+                  </Col>
+                </FormGroup>
+                </div>
               </CardBody>
             </Card>
           </Col>

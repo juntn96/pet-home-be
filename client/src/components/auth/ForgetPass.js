@@ -72,7 +72,7 @@ class ForgetPass extends Component {
                 </div>   
                 { loading ? <Spinner /> : 
                 <input type="submit" style={{width:"100%", borderRadius:25}} className="btn-lg btn-warning btn-block mt-4" value="Gửi mật khẩu về điện thoại"/>}
-                <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white'}} to="/login">Quay lại</Link></div>
+                <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white', fontSize: 20}} to="/login">Quay lại</Link></div>
               </form>
             </div>
           </div>

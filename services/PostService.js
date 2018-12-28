@@ -60,7 +60,13 @@ const getPublicByTypeId = async typeId => {
       $and: [{ typeId }, { status: 1 }, { deletionFlag: false }],
     })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
+      .populate("ownerId", {
+        _id: 1,
+        appName: 1,
+        avatar: 1,
+        expoToken: 1,
+        deletionFlag: 1,
+      })
       .sort({ _id: -1 });
     return filterUserBanned(result);
   } catch (error) {
@@ -72,8 +78,15 @@ const getByOwnerId = async ownerId => {
   try {
     const result = await Post.find({ ownerId, deletionFlag: false })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 })
+      .populate("ownerId", {
+        _id: 1,
+        appName: 1,
+        avatar: 1,
+        expoToken: 1,
+        deletionFlag: 1,
+      })
       .sort({ _id: -1 });
+    console.log(result);
     return filterUserBanned(result);
   } catch (error) {
     throw error;
@@ -112,7 +125,9 @@ const deleteById = async _id => {
 
 const findPostById = async postId => {
   try {
-    const post = await Post.findById(postId).select({ votes: 0, comments: 0 });
+    const post = await Post.findById(postId)
+      .select({ votes: 0, comments: 0 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 });
     return post;
   } catch (error) {
     throw error;
@@ -128,7 +143,7 @@ const postTextSearch = async searchString => {
       deletionFlag: false,
     })
       .select({ votes: 0, comments: 0, reports: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 })
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, deletionFlag: 1 })
       .sort({ _id: -1 });
     return filterUserBanned(result);
   } catch (error) {

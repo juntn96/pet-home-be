@@ -3,9 +3,9 @@ const Location = require('../models/Location');
 const Product =require('../models/Product');
 const constants = require('../utils/constants');
 
-const getLocationCategoriesByType = async () => {
+const getLocationCategoriesByType = async (type) => {
 	try {
-    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: constants.PRIVATE_LOCATION });
+    let listLocationCategory = await LocationCategory.find({ hiddenFlag: false, typeLocation: type });
 		return listLocationCategory;
 	}
 	catch (e) {
@@ -42,12 +42,12 @@ const getLocationCategories = async () => {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
-const addLocationCategory = async val => {
+const addLocationCategory = async (val, type) => {
   try {
     const nameExisted = await findByName(val);
     if (nameExisted) throw ("Đã có loại địa điểm này");
     // const category = new LocationCategory();
-    const result = await LocationCategory.create({ name: val , typeLocation: constants.PRIVATE_LOCATION});
+    const result = await LocationCategory.create({ name: val , typeLocation: type});
     return result;
   } catch (error) {
     console.log(error)
@@ -95,25 +95,19 @@ const getTotalCountLocationByTypeId = async (id) => {
 };
 module.exports.getTotalCountLocationByTypeId = getTotalCountLocationByTypeId;
 
-const getLocationProfile = async (ownerId) => {
-  try {
-    let getProfile = await Location.find({ ownerId: ownerId });
-    return getProfile;
-  }
-  catch (e) {
-    return TE(res, 'Get getLocationProfile failed', 503);
-  }
-};
-module.exports.getLocationProfile = getLocationProfile;
+
 
 const getLocationWithAllProduct = async query => {
   try {
     const getLocation = await Location.findById(query._id).populate('ownerId').populate({path: 'typeId'});
     const product = await Product.find({ ownerId: query.ownerId });
     const locationDetail = {
+      _id: getLocation._id,
       name: getLocation.name,
-      long: getLocation.location.coordinates[0],
-      lat: getLocation.location.coordinates[1],
+      coordinate : {
+        longitude: getLocation.location.coordinates[0],
+        latitude: getLocation.location.coordinates[1],
+      },        
       systemRating: getLocation.systemRating,
       ownerId: getLocation.ownerId,
       typeId: getLocation.typeId,
@@ -184,11 +178,27 @@ const searchDist = async (locationDetail) => {
 module.exports.searchDist = searchDist;
 
 const updateLocation = async (locationDetail) => {
-  [error, location] = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
-  if (error) TE(error);
+  try {
+    const update = await to(Location.findByIdAndUpdate(locationDetail._id,locationDetail));
+    const locationProfile = await to(Location.findById(locationDetail._id));
+    return locationProfile[1];
+  }
+  catch (e) {
+    return TE(res, 'Update location failed', 503);
+  }
 }
 module.exports.updateLocation= updateLocation;
 
+const getLocationProfile = async (ownerId) => {
+  try {
+    let getProfile = await Location.find({ ownerId: ownerId });
+    return getProfile[0];
+  }
+  catch (e) {
+    return TE(res, 'Get getLocationProfile failed', 503);
+  }
+};
+module.exports.getLocationProfile = getLocationProfile;
 
 const getAllLocations = async () => {
   try {

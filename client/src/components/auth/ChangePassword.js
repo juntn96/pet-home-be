@@ -12,30 +12,18 @@ import {
   Label,
   Button
 } from 'reactstrap';
+import axios from 'axios';
 class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       oldPassword: '',
       newPassword: '',
+      newPassword1: '',
+      messageSucc:'',
+      messageErr:''
     };
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      console.log(nextProps.errors)
-      return { errors: nextProps.errors};
-    }
-    if (nextProps.sendPassStatus) {
-      nextProps.history.push('/sendPassSuccess');
-    }
-    return null;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sendPassStatus) {
-      prevProps.history.push('/sendPassSuccess');
-    }
   }
 
   onChange = (e) => {
@@ -44,15 +32,45 @@ class ChangePassword extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
-    this.props.forgetPass(this.state.phone);
   }
-
+  clearMsg=()=>{
+    this.refs.oldPassword.innerHTML = '';
+    this.refs.newPassword.innerHTML = '';
+    this.refs.newPassword1.innerHTML = '';
+  }
+  _changePassword = () => {
+    this.clearMsg();
+    if(this.state.oldPassword === ''||
+      this.state.newPassword === ''){
+        if(this.state.oldPassword === "")this.refs.oldPassword.innerHTML = 'Vui lòng không bỏ trống';
+        if(this.state.newPassword === '')this.refs.newPassword.innerHTML = 'Vui lòng không bỏ trống';
+        return false;
+    }if(this.state.newPassword!==this.state.newPassword1){
+      this.refs.newPassword1.innerHTML = 'Mật khẩu không khớp';
+      return false;
+    }
+    this.setState({
+      isLoading: false
+    })
+    const user = {uid: this.props.auth.user.user_id, password: this.state.oldPassword, newPassword: this.state.newPassword1}
+    axios.put(`/api/auth/changePassword`,user).then(res => {
+      this.setState({
+        isLoading: false,
+        messageSucc: res.data.message,
+        messageErr:"",
+        oldPassword: '',
+        newPassword: '',
+        newPassword1: '',
+      })
+    }).catch(err => {
+      this.setState({messageErr:err.response.data.message, messageSucc:""});
+    });
+  }
   render() {
     return (
       <div className="addProduct">
           <div className="row">
-            <div className="col-md-8">           
+            <div className="col-md-8">
               <Col xs="12" sm="12">
             <Card>
               <CardHeader>
@@ -60,52 +78,50 @@ class ChangePassword extends Component {
               </CardHeader>
               <CardBody>
                 <FormGroup>
-                <div style={{width:'100%'}} className="alert alert-success" role="alert">Thay đổi thành công</div>
+                {this.state.messageSucc===""?"":<div style={{width:'100%'}} className="alert alert-success" role="alert">{this.state.messageSucc}</div>}
+                {this.state.messageErr===""?"":<div style={{width:'100%'}} className="alert alert-danger" role="alert">{this.state.messageErr}</div>}
                 <Col xs="6">
                   <Label htmlFor="company">Mật khẩu cũ</Label>
-                  <input ref='oldValidate1'
-                    type="text"
+                  <input ref=''
+                    type="password"
                     className={classnames('form-control form-control-lg')}
-                    placeholder="Nhập mật khẩu cũ"
                     name="oldPassword"
                     value={this.state.oldPassword}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='oldValidate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='oldPassword' className="invalid-feedback"></div>
                   </Col>
                 </FormGroup>
                 <FormGroup>
                 <Col xs="6">
                   <Label htmlFor="company">Mật khẩu mới</Label>
-                  <input ref='new1Validate1'
-                    type="text"
+                  <input ref=''
+                    type="password"
                     className={classnames('form-control form-control-lg')}
-                    placeholder="Nhập mật khẩu mới"
-                    name="newPassword1"
-                    value={this.state.newPassword1}
+                    name="newPassword"
+                    value={this.state.newPassword}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='new1Validate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='newPassword' className="invalid-feedback"></div>
                   </Col>
                 </FormGroup>
                 <FormGroup>
                 <Col xs="6">
                   <Label htmlFor="company">Nhập lại mật khẩu mới</Label>
-                  <input ref='newValidate1'
-                    type="text"
+                  <input ref=''
+                    type="password"
                     className={classnames('form-control form-control-lg')}
-                    placeholder="Nhập lại mật khẩu mới"
-                    name="newPassword"
-                    value={this.state.newPassword}
+                    name="newPassword1"
+                    value={this.state.newPassword1}
                     onChange={this.onChange}
                   />
-                  <div style={{display:'block'}} ref='newValidate' class="invalid-feedback"></div>
+                  <div style={{display:'block'}} ref='newPassword1' className="invalid-feedback"></div>
                   </Col>
                 </FormGroup>
                   <div style={{marginTop:20}}>
                   <FormGroup row className="my-0">
                     <Col col="3" sm="2" md="2" className="mb-3 mb-xl-0">
-                      <Button style={{marginLeft:15}} block color="primary" onClick={this.onSubmit}>Lưu</Button>
+                      <Button style={{marginLeft:15}} block color="primary" onClick={this._changePassword}>Lưu</Button>
                     </Col>
                     <Col col="3" sm="2" md="2" className="mb-xl-0">
                       <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
