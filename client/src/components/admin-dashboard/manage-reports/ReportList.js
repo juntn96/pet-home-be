@@ -45,7 +45,7 @@ class ReportList extends Component {
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
 
     for (let i = 0; i < tr.length; i++) {
-      let td = tr[i].getElementsByTagName("td")[1];
+      let td = tr[i].getElementsByTagName("td")[0];
       if (td) {
         if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
           tr[i].style.display = "";
