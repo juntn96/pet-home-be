@@ -1,24 +1,22 @@
-import React,{Component} from 'react'
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
-import {getAllUsers} from '../../../store/actions/usersActions'
+import React, { Component } from 'react'
+import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
 import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
-
+import Empty from '../../common/Empty';
 class LocationAdmin extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      userId : '',
+      userId: '',
       deletionFlag: false,
-      locations : []
+      locations: [],
+      isLoading: true
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._getAllLocations();
   }
 
@@ -32,14 +30,13 @@ class LocationAdmin extends Component {
         locations: res.data.locations,
         isLoading: false
       })
-    }).catch(err =>{
+    }).catch(err => {
       //todo
     });
   }
 
-  onSearch =(e) => {
+  onSearch = (e) => {
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
-
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[1];
       if (td) {
@@ -52,54 +49,55 @@ class LocationAdmin extends Component {
     }
   }
 
-  render(){
+  _onClickAddLocation = () => {
+
+  }
+
+  render() {
     const locations = this.state.locations;
     return (
-    <div>
-      <Row>
-        <Col xs="12" lg="12">
+      <div>
+        <Row>
+          <Col xs="12" lg="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
-                <input type="text" 
-                  className="form-control" 
-                  style={{float:"right", width:"20%"}} 
+                <i className="fa fa-align-justify"></i> Địa điểm
+                <input type="text"
+                  className="form-control"
+                  style={{ float: "right", width: "20%" }}
                   placeholder="Tìm kiếm"
                   onChange={this.onSearch}
-                  value={this.state.search}/>
+                  value={this.state.search} />
+                <Button color="primary" style={{ float: "right", marginRight: 20 }} size="lg" onClick={this._onClickAddLocation}>Thêm địa điểm</Button>
               </CardHeader>
               <CardBody>
-              { locations === null  ? <Spinner /> :
-                <Table hover responsive >
-                  <thead>
-                  <tr>
-                    <th>Nội dung bài viết</th>
-                    <th>Người viết</th>
-                    <th>Ngày đăng</th>
-                    <th>Số lần bị reports</th>
-                    <th>Trạng thái</th>
-                    <th style={{width:'9%'}}>Xử lý người dùng này</th>
-                  </tr>
-                  </thead>
-                  <tbody ref="tableSearch">
-                    { locations.map((item, index) =>
-                      <LocationItem location={item} key={index}/>)}
-                  </tbody>
-                </Table>
+                {this.state.isLoading ? <Spinner /> :(locations.length === 0? <Empty/> :
+                  <Table hover responsive >
+                    <thead>
+                      <tr>
+                        <th>Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Mô tả</th>
+                        <th>Loại</th>
+                        <th>Đánh giá</th>
+                        <th>Trạng thái</th>
+                        <th>Xử lý</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody ref="tableSearch">
+                      {locations.map((item, index) =>
+                        <LocationItem location={item} key={index} />)}
+                    </tbody>
+                  </Table>)
                 }
               </CardBody>
             </Card>
           </Col>
         </Row>
-    </div>)
+      </div>)
   }
-
 }
-const mapStateToProps = state => ({
-  auth: state.auth,
-  errors: state.errors,
-  allusers: state.allusers
-});
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(LocationAdmin));
+export default LocationAdmin;
 

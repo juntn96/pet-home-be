@@ -31,6 +31,11 @@ export default {
         name: 'Quản lý báo cáo',
         url: '/admin/report',
         icon: 'icon-list'
+      },
+      {
+        name: 'Thêm địa điểm mới',
+        url: '/admin/location/add',
+        icon: 'icon-list'
       }
     ]
 }

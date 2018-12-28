@@ -69,7 +69,7 @@ const UserSchema = mongoose.Schema({
     type: String,
   },
   background: {
-    type: String
+    type: String,
   },
   role: {
     type: Number,
@@ -168,5 +168,7 @@ UserSchema.methods.toWeb = function () {
   json.id = this._id;
   return json;
 };
+
+UserSchema.index({ appName: "text" });
 
 let User = (module.exports = mongoose.model("User", UserSchema));

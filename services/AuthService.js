@@ -64,5 +64,13 @@ const authUser = async (userInfo) => { //returns token
 };
 module.exports.authUser = authUser;
 
-
-
+const changePassword = async (userInfo) => { //returns token
+	let user;
+	[err, user] = await to(User.findById(userInfo.uid));
+	[err, user] = await to(user.comparePassword(userInfo.password));
+	if (err) TE('Mật khẩu cũ không chính xác');
+	else
+		[err, user] = await to(User.findByIdAndUpdate(userInfo.uid, {password: userInfo.newPassword}));
+	return user;
+};
+module.exports.changePassword = changePassword;

@@ -143,8 +143,8 @@ class Login extends Component {
                       Đăng nhập
                     </button>
                   </div>
-                  <div className="register-link">
-                    <span className="txt3 p-b-11" style={{color:"#23282c"}}>Bạn chưa có tài khoản?</span>
+                  <div className="register-link" style={{ marginTop: 10}}>
+                    <span className="txt3 p-b-11" style={{color:"#23282c", marginRight: 10}}>Bạn chưa có tài khoản?</span>
                     <Link to="/phoneVertification">Đăng ký</Link>
                   </div>
                 </form>

@@ -51,10 +51,10 @@ let postSchema = mongoose.Schema({
     type: Number,
     default: new Date().getTime(),
   },
-  deletionFlag: { type: Number, default: 1 },
+  deletionFlag: { type: Boolean, default: false },
 });
 
-postSchema.index({ title: "text" });
+postSchema.index({ title: "text", "ownerId.appName": "text" });
 
 let Post = (module.exports = mongoose.model("Post", postSchema));
 

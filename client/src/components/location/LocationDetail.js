@@ -57,9 +57,7 @@ const MyMapComponent = compose(
 class Location extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.location.state.linkState[0])
-
-    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState[0];
+    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState;
     this.state = {
       _id,
       address ,
@@ -309,15 +307,15 @@ class Location extends Component {
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
                     { locationCategories === null || loading ? <Spinner /> :   
-                    <Input 
-                      type="select" 
-                      name="ccyear" 
-                      id="ccyear"
-                      value={this.state.typeLocationCategory}
-                      onChange={this.onChangeTypeLocation}
-                      >
-                      { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
-                    </Input>
+                      <Input 
+                        type="select" 
+                        name="ccyear" 
+                        id="ccyear"
+                        value={this.state.typeLocationCategory}
+                        onChange={this.onChangeTypeLocation}
+                        >
+                        { locationCategories.map((item, index) => this.renderOptionItem(item,index))}
+                      </Input>
                     }
                     </Col>
                   </FormGroup>
@@ -365,15 +363,6 @@ class Location extends Component {
             </Col>
           </div>           
         </div>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Lỗi</ModalHeader>
-          <ModalBody>
-            Đã có lỗi xảy ra trong quá trình cập nhật
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Đóng</Button>
-          </ModalFooter>
-        </Modal>
       </div>
     );
   }
@@ -387,6 +376,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(Location));
-
-
-

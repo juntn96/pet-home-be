@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
-import Spinner from '../../common/Spinner'
+import Spinner from '../../common/Spinner';
 import axios from 'axios';
-import PostCategoryItem from './PostCategoryIttem'
+import PostCategoryItem from './PostCategoryIttem';
+import Empty from '../../common/Empty';
 class PostCategory extends Component {
 
   constructor(props) {
@@ -126,23 +127,23 @@ class PostCategory extends Component {
             <Card >
               <CardHeader>
                 <div className="form-group row" >
-                  <input className="form-control col-sm-2 " placeholder="Tìm theo tên" onChange={this._onSearch} name="name" />
+                  <input className="form-control col-sm-2 " placeholder="Tìm theo tên" onChange={this._onSearch} name="name" style={{marginLeft:30,marginRight:20,marginTop:-5}}/>
                   <div style={{display:"none"}}>
                   <div className="form-check">
-                    <input className="form-check-input" ref='all' onClick={this._filterByStatus} type="radio" name="exampleRadios" id="all" value="option1" checked/>
-                    <label className="form-check-label" for="all">
+                    <input className="form-check-input" ref='all' onClick={this._filterByStatus} type="radio" name="exampleRadios" id="all" value="option1"/>
+                    <label className="form-check-label" htmlFor="all">
                     Tất cả
                     </label>
                   </div>
                   <div className="form-check">
                     <input className="form-check-input"  ref='on' onClick={this._filterByStatus} type="radio" name="exampleRadios" id="on" value="option2"/>
-                    <label className="form-check-label" for="on">
+                    <label className="form-check-label" htmlFor="on">
                     Hoạt động
                     </label>
                   </div>
                   <div className="form-check disabled">
                     <input className="form-check-input" ref='off' onClick={this._filterByStatus} type="radio" name="exampleRadios" id="off" value="option3"/>
-                    <label className="form-check-label" for="off">
+                    <label className="form-check-label" htmlFor="off">
                     Không hoạt động
                     </label>
                   </div></div>
@@ -155,8 +156,8 @@ class PostCategory extends Component {
           </Col></Row>
         <div ref="tesst">
           <Row >
-            {categories === null || isLoading ? <Spinner /> :
-              categories.map((item, index) => (<PostCategoryItem onDeleteHandle={this.deleteHandle} postCate={item} key={index} />))}
+            {categories === null || isLoading ? <Spinner /> :(categories.length === 0? <Empty/> :
+              categories.map((item, index) => (<PostCategoryItem onDeleteHandle={this.deleteHandle} postCate={item} key={index} />)))}
           </Row>
         </div>
         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

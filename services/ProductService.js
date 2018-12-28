@@ -41,7 +41,7 @@ module.exports.getProductParentCategories = getProductParentCategories;
 
 const getProductByIds = async (ownerId,name) => {
 	try {
-    let getProductByIdList = await Product.find({ deletionFlag: false, ownerId: ownerId});
+    let getProductByIdList = await Product.find({ deletionFlag: false, ownerId: ownerId}).populate("typeId");
 		return getProductByIdList;
 	}
 	catch (e) {

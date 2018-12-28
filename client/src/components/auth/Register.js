@@ -134,7 +134,7 @@ class Register extends Component {
 
   render() {
     const { errors } = this.state;
-    const { locationCategories, loading } = this.props.locationApp;    
+    const { locationCategories, loading } = this.props.locationApp;
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">
