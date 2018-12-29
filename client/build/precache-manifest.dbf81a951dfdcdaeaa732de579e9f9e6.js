@@ -32,16 +32,16 @@ self.__precacheManifest = [
     "url": "/static/media/petB.e5637b4c.jpg"
   },
   {
+    "revision": "089ab3c11c572362d088083c561cfa55",
+    "url": "/static/media/CoreUI-Icons-Linear-Free.089ab3c1.eot"
+  },
+  {
     "revision": "0087dce419a7376eb06c837f740d31eb",
     "url": "/static/media/CoreUI-Icons-Linear-Free.0087dce4.woff"
   },
   {
     "revision": "1bc3764815bb391a16771c42c6e460ec",
     "url": "/static/media/CoreUI-Icons-Linear-Free.1bc37648.ttf"
-  },
-  {
-    "revision": "089ab3c11c572362d088083c561cfa55",
-    "url": "/static/media/CoreUI-Icons-Linear-Free.089ab3c1.eot"
   },
   {
     "revision": "84c96da2871e8d02b221",
