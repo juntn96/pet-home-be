@@ -50,7 +50,7 @@ class LocationAdmin extends Component {
   }
 
   _onClickAddLocation = () => {
-
+    this.props.history.push('/admin/location/add');
   }
 
   render() {
@@ -87,7 +87,7 @@ class LocationAdmin extends Component {
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem location={item} key={index} />)}
+                        <LocationItem location={item} key={item._id} />)}
                     </tbody>
                   </Table>)
                 }

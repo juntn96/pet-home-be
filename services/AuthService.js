@@ -22,7 +22,6 @@ const createUser = async (userDetail, avatar) => {
 				ownerId: user._id,
 				typeId: userDetail.typeId,
 				systemRating: constants.FIRST_RATTING,
-				deletionFlag: constants.NOT_DELETED_ENTITY,
 				location: userDetail.location,
 				address: userDetail.address
 			});

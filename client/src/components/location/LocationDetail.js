@@ -114,7 +114,7 @@ class Location extends Component {
       return false;
     }
 
-    const { name, _id, typeId, description, address, images } = this.state
+    const { name, _id, typeLocationCategory, description, address, images } = this.state
 
     const updatedImages = images.map(item => { 
       return {
@@ -125,15 +125,18 @@ class Location extends Component {
         bytes: item.bytes,
         secure_url: item.secure_url
     }})
-
+    const location =  {
+      type: 'Point',
+      coordinates: [this.state.latlong.lng,this.state.latlong.lat]
+    }
     const updatedLocation = {
       name,
       _id,
-      typeId,
+      typeId: typeLocationCategory,
       description,
       address,
       images: updatedImages,
-      location: this.state.location
+      location: location
     };
     this.props.updateLocation(updatedLocation, this.props.history);
   }
@@ -162,7 +165,7 @@ class Location extends Component {
         errs.push(`'${file.type}' không phải dịnh dạng phù hợp`)
       }
 
-      if (file.size > 150000) {
+      if (file.size > 10000000) {
         errs.push(`'${file.name}' quá lớn, bạn hãy chọn file kích cỡ nhỏ hơn`)
       }
 
@@ -309,7 +312,7 @@ class Location extends Component {
                     type="text"
                     className={classnames('form-control form-control-lg')}
                     placeholder="Địa chỉ"
-                    name="name"
+                    name="address"
                     value={this.state.address}
                     onChange={this.onChange}
                   />

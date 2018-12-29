@@ -91,6 +91,7 @@ class Register extends Component {
       type: 'Point',
       coordinates: [this.state.latlong.lng,this.state.latlong.lat]
     }
+    
     const newUser = {
       name: this.state.name,
       password: this.state.password,

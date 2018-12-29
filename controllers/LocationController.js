@@ -22,6 +22,26 @@ const getLocationCategories = async function (req, res) {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
+const addLocaionByAdmin = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const location = new Location({
+      name: req.body.name,
+      ownerId: req.body.ownerId,
+      typeId: req.body.typeId,
+      location: req.body.location,
+      address: req.body.address, 
+      description: req.body.description,
+      images: req.body.images
+    });
+    let error, loca;
+    [error, loca] = await to(Location.create(location));
+    return ReS(res, { success: 'success' }, 200);
+	} catch (e) {
+		return ReE(res, error, 422);
+	}
+}
+module.exports.addLocaionByAdmin = addLocaionByAdmin;
 
 const getLocationCategoriesByType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
