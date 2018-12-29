@@ -10,11 +10,7 @@ import SelectListGroup from './../common/SelectListGroup';
 import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
-
-import {
-  Row,
-  Col
-} from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 
 const MapComponent = withGoogleMap(props =>
   <GoogleMap
@@ -118,7 +114,7 @@ class Register extends Component {
     });
   }
 
-  getLocationCenter =(suggest) => {
+  getLocationCenter = (suggest) => {
     if(suggest){
       const { location } = suggest;
       const { lat, lng} = location;
