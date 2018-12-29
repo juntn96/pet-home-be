@@ -86,12 +86,11 @@ class Register extends Component {
         if(this.state.name === '')this.refs.nameValidate.innerHTML = 'Vui lòng tên địa điểm';
         if(this.state.password === '')this.refs.passwordValidate.innerHTML = 'Vui lòng nhập mật khẩu';
         if(this.state.password2 === '')this.refs.password2Validate.innerHTML = 'Vui lòng nhập mật khẩu';
-        // if(this.state.address === '')this.refs.addressValidate.innerHTML = 'Vui lòng nhập địa chỉ chi tiết';
+        if(this.state.address === '')this.refs.addressValidate.innerHTML = 'Vui lòng nhập địa chỉ chi tiết';
       return false;
     }
     if(this.state.password!==this.state.password2) this.refs.password2Validate.innerHTML = 'Mật khẩu không khớp';
 
-    // const { phone } = this.props.location.state;
     const location =  {
       type: 'Point',
       coordinates: [this.state.latlong.lng,this.state.latlong.lat]
