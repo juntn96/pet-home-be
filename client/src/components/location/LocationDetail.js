@@ -31,8 +31,9 @@ const toastColor = {
 
 const MapComponent = withGoogleMap(props =>
   <GoogleMap
-    defaultCenter = {props.getLatLong }
+    defaultCenter = { props.getDefaultCenter }
     defaultZoom = { 13 }
+    center={ props.getDefaultCenter }
     onClick={props.onMapClick}
   >
     <Marker position={props.getLatLong} />
@@ -113,7 +114,7 @@ class Location extends Component {
       return false;
     }
 
-    const { name, _id, typeId, description, address, location, images} = this.state
+    const { name, _id, typeId, description, address, images } = this.state
 
     const updatedImages = images.map(item => { 
       return {
@@ -236,6 +237,19 @@ class Location extends Component {
     });
   }
 
+  getLocationCenter =(suggest) => {
+    if(suggest){
+      const { location } = suggest;
+      const { lat, lng} = location;
+      this.setState({
+        latlong: {
+          lat, lng
+        },
+        address: suggest.description
+      })
+    }
+  }
+
   render() {
     const { loadingU, uploading, images } = this.state
     const { locationCategories, loading } = this.props.locationApp;  
@@ -301,6 +315,16 @@ class Location extends Component {
                   />
                   <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
                 </FormGroup>
+                <FormGroup>
+                  <Label htmlFor="company">Tìm địa chỉ</Label>
+                  <Geosuggest 
+                    style={{ width: '100%'}}
+                    className='form-control form-control-lg' 
+                    onSuggestSelect={this.getLocationCenter} 
+                    placeholder='Tìm địa chỉ'
+                    width={`100%`}/>
+                  <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
+                </FormGroup>
                 <FormGroup row className="my-0 mt-3">
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
@@ -360,6 +384,7 @@ class Location extends Component {
                     mapElement={<div style={{ height: `100%` }} />}
                     onMapClick={this.getLatLong}
                     getLatLong={this.state.latlong}
+                    getDefaultCenter={this.state.latlong}
                   />
                 </CardBody>
               </Card>

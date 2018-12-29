@@ -10,7 +10,7 @@ import { compose, withProps } from "recompose"
 import SelectListGroup from './../../common/SelectListGroup';
 import { GoogleMap, withGoogleMap, Marker, withScriptjs } from "react-google-maps"
 import * as Constants from './../../../utils/constants';
-import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 const MyMapComponent = compose(
   withProps({

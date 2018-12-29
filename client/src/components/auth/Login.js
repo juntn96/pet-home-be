@@ -30,15 +30,14 @@ class Login extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-        if(nextProps.auth.user.role === 1){
-          nextProps.history.push('/product');
-        } else {
-          nextProps.history.push('/admin/allusers');
-        }
+      if(nextProps.auth.user.role === 1){
+        nextProps.history.push('/product');
+      } else {
+        nextProps.history.push('/admin/allusers');
+      }
     }
     if (nextProps.errors) {
-      return { errors: nextProps.errors};
-      
+      return { errors: nextProps.errors};     
     }
     else return null;
   }
@@ -51,12 +50,12 @@ class Login extends Component {
   
   onSubmit = (e) => {
     e.preventDefault();
-    if(this.state.phone!==''){
-    const userData = {
-      phone: this.state.phone,
-      password: this.state.password
-    };
-    this.props.loginUser(userData);
+    if(this.state.phone !== ''){
+      const userData = {
+        phone: this.state.phone,
+        password: this.state.password
+      };
+      this.props.loginUser(userData);
     }
   }
 
@@ -93,8 +92,8 @@ class Login extends Component {
                   <span className="login100-form-title p-b-32">
                     Đăng nhập
                   </span>
-                  {this.state.errors.message === undefined?
-                    '':
+                  {this.state.errors.message === undefined ? ''
+                    :
                     <div style={{width:'100%'}} className="alert alert-danger" role="alert">
                     {this.state.errors.message !== undefined && (this.state.errors.message.phone ===undefined && this.state.errors.message.password ===undefined)?this.state.errors.message:''}
                     {this.state.errors.message.phone ===undefined? '':this.state.errors.message.phone }
@@ -151,8 +150,7 @@ class Login extends Component {
             </div>
           </div>
         </div>
-      </div>
-      
+      </div>     
     );
   }
 }

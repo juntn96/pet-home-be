@@ -201,11 +201,11 @@ class Register extends Component {
                       </div>
                       <div className="form-group" >
                         <Geosuggest 
-                            style={{ width: '100%'}}
-                            className='form-control form-control-lg' 
-                            onSuggestSelect={this.getLocationCenter} 
-                            placeholder='Tìm địa chỉ'
-                            width={`100%`}/>
+                          style={{ width: '100%'}}
+                          className='form-control form-control-lg' 
+                          onSuggestSelect={this.getLocationCenter} 
+                          placeholder='Tìm địa chỉ'
+                          width={`100%`}/>
                       </div>
                       <div className="form-group" >
                         { locationCategories === null || loading ? <Spinner /> :
