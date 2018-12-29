@@ -12,12 +12,14 @@ const http = require("http");
 const formData = require("express-form-data");
 const debug = require("debug")("pet-home:server");
 const indexRouter = require("./routes");
+const cors = require('cors');
 
 // const socketIO = require("socket.io");
 const SocketService = require("./services/SocketService");
 
 const app = express();
-
+app.use(cors());
+app.options('*', cors());
 // Database config
 const mongoLocation = require("./config/keys").mongoURI;
 let mongooseUri = mongodbUri.formatMongoose(mongoLocation);
