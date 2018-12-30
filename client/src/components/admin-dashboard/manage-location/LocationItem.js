@@ -49,25 +49,25 @@ class LocationItem extends Component {
   }
 
   render(){
-    const key = this.props.location._id;
     const { hiddentFlag } = this.state
     const style = hiddentFlag ? "secondary" : "danger";
     const text = hiddentFlag ? "Không hoạt động" : "Đang hoạt động";
     const { location } = this.props;
+    const key = location._id;
     const maxRate = [];
-    for(let i = 1 ;i<=5;i++){
-      if(i <= location.systemRating){
+    for (let i = 1 ; i<= 5 ; i++){
+      if (i <= location.systemRating){
         maxRate.push(1);
         
-      }else if ((i) === location.systemRating+0.5){
+      } else if ((i) === location.systemRating + 0.5){
         maxRate.push(0.5);
-      }else{
+      } else{
         maxRate.push(0);
       }
     }
     // const date = new Date(location.updatedAt).toLocaleDateString() + ' ' + new Date(location.updatedAt).toLocaleTimeString();
     return (
-      <tr key={key} style= {this.state.isLoading ?{opacity:0.4}:{opacity:1}} onClick={this._showModal}>
+      <tr key={key} style= {this.state.isLoading ? {opacity:0.4} : {opacity:1}} onClick={this._showModal}>
         <td style={{verticalAlign:"middle"}}>{location.name}</td>
         <td style={{verticalAlign:"middle"}}>{location.address}</td>
         <td style={{verticalAlign:"middle"}}>{location.description}</td>
@@ -80,8 +80,17 @@ class LocationItem extends Component {
           </div>
         </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.hiddentFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
-          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanLocation}>Hiện</Button></td>}
+        {!this.state.hiddentFlag ? 
+          <td style={{verticalAlign:"middle"}}>
+            <Button color="success" size="sm" onClick={this._onClickBanLocation}>
+                                  Ẩn
+            </Button>
+          </td>
+          : <td style={{verticalAlign:"middle"}}>
+              <Button color="warning" size="sm" onClick={this._onClickBanLocation}>
+                                  Hiện
+              </Button>
+            </td>}
           <td>    
             { location.ownerId._id === this.props.user.user_id && this.props.user.role === 3 ? 
               <Button 
@@ -99,7 +108,7 @@ class LocationItem extends Component {
                 data-target="#deleteProduct">
                   <i className="fa fa-trash"></i>
                   <input type="hidden" value={location._id} />
-              </button> : null}     
+              </button> : null }     
           </td>
       </tr>
     )
