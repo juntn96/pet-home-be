@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
-
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -20,9 +19,9 @@ class ReportItem extends Component {
 
   _requestBanUser = () => {
     const reportDetail = this.props.reportDetail;
-    const user = {id: reportDetail.ownerId,deletionFlag : this.state.deletionFlag === 1? false:true}
+    const user = {id: reportDetail.ownerId,deletionFlag : !this.state.deletionFlag}
     axios.put('/api/admin/users', user).then(res => {
-      const update = {id: this.props.reportDetail._id,deletionFlag: this.state.deletionFlag?0:1 }
+      const update = {id: this.props.reportDetail._id,deletionFlag: !this.state.deletionFlag }
       axios.put('/api/report/updateReportStatus', update).then(res =>{
         this._requestGetDelectionFlag();
       })
@@ -72,7 +71,6 @@ class ReportItem extends Component {
     const text = deletionFlag !== true ? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
     const {reportDetail, totalReports} = this.props;
-    console.log(reportDetail)
     if(users.allusers.users !== undefined){
       owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
     }
