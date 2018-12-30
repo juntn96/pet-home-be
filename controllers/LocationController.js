@@ -22,6 +22,9 @@ const getLocationCategories = async function (req, res) {
 };
 module.exports.getLocationCategories = getLocationCategories;
 
+// @route   GET api/location/locationCategoriesByType/:type
+// @desc    
+// @access  Public
 const addLocaionByAdmin = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -43,6 +46,9 @@ const addLocaionByAdmin = async function (req, res) {
 }
 module.exports.addLocaionByAdmin = addLocaionByAdmin;
 
+// @route   GET api/location/locationCategoriesByType/:type
+// @desc    
+// @access  Public
 const getLocationCategoriesByType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationCategories;
@@ -59,6 +65,9 @@ const getLocationCategoriesByType = async function (req, res) {
 };
 module.exports.getLocationCategoriesByType = getLocationCategoriesByType;
 
+// @route   PUT api/admin/location/locationCategories
+// @desc    
+// @access  Public
 const updateLocationCategories = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -70,6 +79,9 @@ const updateLocationCategories = async function (req, res) {
 };
 module.exports.updateLocationCategories = updateLocationCategories;
 
+// @route   GET api/admin/addLocationCategory
+// @desc    
+// @access  Public
 const addLocationCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -82,6 +94,9 @@ const addLocationCategory = async function (req, res) {
 };
 module.exports.addLocationCategory = addLocationCategory;
 
+// @route   GET api/location/locationProduct
+// @desc    
+// @access  Public
 const getLocationWithAllProduct = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locationDetail;
@@ -98,6 +113,9 @@ const getLocationWithAllProduct = async function (req, res) {
 };
 module.exports.getLocationWithAllProduct = getLocationWithAllProduct;
 
+// @route   GET api/location/searchNear/:long/:lat/:radius
+// @desc    
+// @access  Public
 const searchNearByLatLong = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, locations;
@@ -114,6 +132,9 @@ const searchNearByLatLong = async function (req, res) {
 };
 module.exports.searchNearByLatLong = searchNearByLatLong;
 
+// @route   GET api/location/locationByCategory
+// @desc    
+// @access  Public
 const searchLocationByCategory = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let listLocations = [];
@@ -124,6 +145,7 @@ const searchLocationByCategory = async function (req, res) {
     if(req.query.typeIdArray){
       listLocations = await Location.find({      
         deletionFlag: false,
+        hiddenFlag: false,
         // $text: { $search: search_keyword }, 
         $and: [
           { $or : typeIdArray }
@@ -137,6 +159,9 @@ const searchLocationByCategory = async function (req, res) {
 }
 module.exports.searchLocationByCategory = searchLocationByCategory;
 
+// @route   GET api/location/searchDist/:long/:lat/:radius
+// @desc    
+// @access  Public
 const searchDist = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let long = parseFloat(req.params.long);
@@ -198,6 +223,9 @@ const searchDist = async function (req, res) {
 };
 module.exports.searchDist = searchDist;
 
+// @route   GET api/admin/getAllLocations
+// @desc    
+// @access  Public
 const getAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let erro, location;
@@ -215,6 +243,9 @@ const getAllLocations = async function (req, res) {
 };
 module.exports.getAllLocations = getAllLocations;
 
+// @route   GET api/admin/getLocationById/:locationId
+// @desc    
+// @access  Public
 const getLocationById = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
@@ -225,15 +256,19 @@ const getLocationById = async function (req, res) {
   }
 };
 module.exports.getLocationById = getLocationById;
+
+// @route   GET api/location/getAllActiveLocation
+// @desc    
+// @access  Public
 const getAllActiveLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let erro, location;
-  [erro, location] = await to(locationService.getAllActiveLocation());
+  let erro, locations;
+  [erro, locations] = await to(locationService.getAllActiveLocation());
   if (erro) {
     return ReE(res, 'Get location failed', 422);
   }	
   if (location) {
-    return ReS(res, { message: 'Get location success', locations: location }, 200);
+    return ReS(res, { message: 'Get location success', locations: locations }, 200);
   }
   else {
     return ReE(res, 'Get location failed', 503);
@@ -241,12 +276,15 @@ const getAllActiveLocation = async function (req, res) {
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
 
+// @route   PUT api/admin/updateLocation
+// @desc    
+// @access  Public
 const hideShowLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const locationId = req.body.id;
-    const deletionFlag = req.body.deletionFlag;
-    const result = await locationService.hideLocationById(locationId, deletionFlag);
+    const hiddentFlag = req.body.hiddentFlag;
+    const result = await locationService.hideLocationById(locationId, hiddentFlag);
     return ReS(res, { result }, 200);
   } catch (error) {
       return ReE(res, error, 422);
@@ -254,6 +292,9 @@ const hideShowLocation = async function (req, res) {
 };
 module.exports.hideShowLocation = hideShowLocation;
 
+// @route   GET api/location/searchAllLocations
+// @desc    
+// @access  Public
 const searchAllLocations = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const search_keyword = req.query.search_keyword;
@@ -272,6 +313,7 @@ const searchAllLocations = async function (req, res) {
     if (req.query.search_keyword && req.query.ratingGt && req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
+          hiddenFlag: false,
           $text: { $search: search_keyword }, 
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
@@ -329,14 +371,16 @@ const searchAllLocations = async function (req, res) {
       });
     } else if (req.query.search_keyword && !req.query.lat && !req.query.ratingGt && !req.query.typeIdArray) {
       listLocations = await Location.find({  
-          deletionFlag: false,    
+          deletionFlag: false,  
+          hiddenFlag: false,  
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
         }
       ).populate({ path: 'typeId' });
       return ReS(res, { listLocations }, 200);
     } else if (req.query.ratingGt && !req.query.lat && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({  
-          deletionFlag: false,    
+          deletionFlag: false,   
+          hiddenFlag: false, 
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
       ).populate({ path: 'typeId' });
@@ -344,6 +388,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.ratingGt && !req.query.lat && !req.query.typeIdArray) {
       listLocations = await Location.find({      
           deletionFlag: false,
+          hiddenFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
           systemRating: { $gte: ratingGt , $lte: ratingLt}
         }
@@ -351,7 +396,8 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     } else if (req.query.ratingGt && req.query.lat && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({ 
-          deletionFlag: false,     
+          deletionFlag: false,  
+          hiddenFlag: false,   
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
           },
@@ -409,6 +455,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.radius && req.query.lat && !req.query.ratingGt && !req.query.typeIdArray){
       listLocations = await Location.find({   
           deletionFlag: false,   
+          hiddenFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
@@ -465,7 +512,8 @@ const searchAllLocations = async function (req, res) {
       });
     } else if (req.query.lat && !req.query.ratingGt && !req.query.search_keyword && !req.query.typeIdArray) {
       listLocations = await Location.find({   
-          deletionFlag: false,   
+          deletionFlag: false, 
+          hiddenFlag: false,  
           location : {
             $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
           },
@@ -522,6 +570,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.typeIdArray && !req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
       listLocations = await Location.find({      
         deletionFlag: false,
+        hiddenFlag: false,
         $and: [
           { $or : typeIdArray }
         ]
@@ -530,6 +579,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.typeIdArray && !req.query.lat && !req.query.ratingGt){
       listLocations = await Location.find({  
         deletionFlag: false,    
+        hiddenFlag: false,
         $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
         $and: [
           { $or : typeIdArray }
@@ -549,6 +599,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.search_keyword && req.query.ratingGt && req.query.typeIdArray && !req.query.lat) {
       listLocations = await Location.find({      
           deletionFlag: false,
+          hiddenFlag: false,
           $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false}, 
           systemRating: { $gte: ratingGt , $lte: ratingLt},
           $and: [
@@ -559,7 +610,8 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && !req.query.ratingGt){
       listLocations = await Location.find({ 
-        deletionFlag: false,     
+        deletionFlag: false,
+        hiddenFlag: false,     
         location : {
           $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
         },
@@ -619,6 +671,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.typeIdArray && req.query.lat && !req.query.search_keyword && req.query.ratingGt){
       listLocations = await Location.find({ 
         deletionFlag: false,     
+        hiddenFlag: false,
         location : {
           $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
         },
@@ -678,7 +731,8 @@ const searchAllLocations = async function (req, res) {
     });
     } else if (req.query.typeIdArray && req.query.lat && req.query.search_keyword && !req.query.ratingGt){
       listLocations = await Location.find({ 
-        deletionFlag: false,     
+        deletionFlag: false,    
+        hiddenFlag: false, 
         location : {
           $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
         },
@@ -739,6 +793,7 @@ const searchAllLocations = async function (req, res) {
     } else if (req.query.typeIdArray && !req.query.lat && req.query.search_keyword && req.query.ratingGt){
       listLocations = await Location.find({      
         deletionFlag: false,
+        hiddenFlag: false,
         $text: { $search: search_keyword , $language: 'none', $diacriticSensitive: false, $caseSensitive: false},
         systemRating: { $gte: ratingGt , $lte: ratingLt},
         $and: [
@@ -749,7 +804,8 @@ const searchAllLocations = async function (req, res) {
       return ReS(res, { listLocations }, 200);
     } else if (req.query.typeIdArray && req.query.lat && req.query.search_keyword && req.query.ratingGt){
       listLocations = await Location.find({ 
-        deletionFlag: false,     
+        deletionFlag: false,   
+        hiddenFlag: false,  
         location : {
           $geoWithin: { $centerSphere: [ [ long, lat ], radius * 0.000621371 / 3963.2] }
         },
@@ -815,6 +871,9 @@ const searchAllLocations = async function (req, res) {
 };
 module.exports.searchAllLocations = searchAllLocations;
 
+// @route   PUT api/admin/location/locationCategories
+// @desc    
+// @access  Public
 const updateLocation = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   let error, locationProfile;
@@ -849,6 +908,9 @@ const getLocationProfile = async function (req, res) {
 };
 module.exports.getLocationProfile = getLocationProfile;
 
+// @route   GET api/location/locationCategoriesWithType
+// @desc    
+// @access  Public
 const getLocationCategoriesWithType = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {

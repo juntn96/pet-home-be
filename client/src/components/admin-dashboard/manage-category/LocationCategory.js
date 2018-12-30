@@ -35,7 +35,7 @@ class LocationCategory extends Component {
 
   _onDeleteItem = () => {
     const abc = { id: this.state.itemId, field: 'hiddenFlag', value: !this.state.deletionFlg }
-    axios.put('/api/admin/location/locationCategories', abc).then(res => {
+    axios.put('/api/admin/location/updateLocationCategories', abc).then(res => {
       this._requestGetAllLocationCategories();
     }).catch(err => {
       //todo
@@ -52,7 +52,7 @@ class LocationCategory extends Component {
       return;
     }
     const abc = { id: this.state.itemId, field: 'name', value: this.state.name }
-    axios.put('/api/admin/location/locationCategories', abc).then(res => {
+    axios.put('/api/admin/location/updateLocationCategories', abc).then(res => {
       this.refs.editErrMsg.innerHTML = "";
       this._requestGetAllLocationCategories();
       window.hideEditModalLocation();
@@ -67,7 +67,7 @@ class LocationCategory extends Component {
       return;
     }
     const data = { name: this.state.newName, typeLocation: Number(this.state.typeLocation )}
-    axios.post('/api/admin/location/locationCategories', data).then(res => {
+    axios.post('/api/admin/location/addLocationCategory', data).then(res => {
       this._requestGetAllLocationCategories();
       this.refs.addErrMsg.innerHTML = "";
       window.hideAddModalLocation();

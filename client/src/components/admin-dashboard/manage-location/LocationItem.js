@@ -6,25 +6,22 @@ class LocationItem extends Component {
   constructor(props){
     super(props);
     this.state = {
-      deletionFlag: props.location.deletionFlag
+      hiddentFlag: props.location.hiddentFlag
     }
-  }
-
-  componentDidMount(){
   }
 
   _onClickUpdateLocation = () => {
     const location = this.props.location;
-    const locationUpdate = {id: location._id,deletionFlag : !this.state.deletionFlag}
+    const locationUpdate = {id: location._id, hiddentFlag : !this.state.hiddentFlag}
     axios.put('/api/admin/updateLocation', locationUpdate).then(res => {
       this._requestGetDelectionFlag();
     });
   }
 
   _requestGetDelectionFlag = () => {
-    axios.get(`/api/admin/getLocationById//${this.props.location._id}`).then(res => {
+    axios.get(`/api/admin/getLocationById/${this.props.location._id}`).then(res => {
       this.setState({
-        deletionFlag: res.data.result.deletionFlag,
+        hiddentFlag: res.data.result.hiddentFlag,
         isLoading: false
       })
     }).catch(err =>{
@@ -44,10 +41,10 @@ class LocationItem extends Component {
   }
 
   render(){
-    const key = this.props.key;
-    const { deletionFlag } = this.state
-    const style = deletionFlag ? "secondary" : "danger";
-    const text = deletionFlag ? "Không hoạt động" : "Đang hoạt động";
+    const key = this.props.location._id;
+    const { hiddentFlag } = this.state
+    const style = hiddentFlag ? "secondary" : "danger";
+    const text = hiddentFlag ? "Không hoạt động" : "Đang hoạt động";
     const {location} = this.props;
     const maxRate = [];
     for(let i = 1 ;i<=5;i++){
@@ -75,7 +72,7 @@ class LocationItem extends Component {
           </div>
         </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
+        {!this.state.hiddentFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanLocation}>Hiện</Button></td>}
           {/* <td>Chi tiết</td> */}
       </tr>

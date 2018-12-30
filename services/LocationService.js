@@ -46,7 +46,6 @@ const addLocationCategory = async (val, type) => {
   try {
     const nameExisted = await findByName(val);
     if (nameExisted) throw ("Đã có loại địa điểm này");
-    // const category = new LocationCategory();
     const result = await LocationCategory.create({ name: val , typeLocation: type});
     return result;
   } catch (error) {
@@ -94,8 +93,6 @@ const getTotalCountLocationByTypeId = async (id) => {
   }
 };
 module.exports.getTotalCountLocationByTypeId = getTotalCountLocationByTypeId;
-
-
 
 const getLocationWithAllProduct = async query => {
   try {
@@ -202,7 +199,7 @@ module.exports.getLocationProfile = getLocationProfile;
 
 const getAllLocations = async () => {
   try {
-    let listLocationCategory = await Location.find().populate('ownerId').populate('typeId')
+    let listLocationCategory = await Location.find({deletionFlag: false}).populate('ownerId').populate('typeId')
     return listLocationCategory;
   }
   catch (e) {
@@ -211,9 +208,9 @@ const getAllLocations = async () => {
 };
 module.exports.getAllLocations = getAllLocations;
 
-const hideLocationById = async (id, deletionFlag) => {
+const hideLocationById = async (id, hiddentFlag ) => {
   try {
-    let listLocationCategory = await Location.findByIdAndUpdate(id, {deletionFlag: deletionFlag})
+    let listLocationCategory = await Location.findByIdAndUpdate(id, {hiddentFlag: hiddentFlag})
     return listLocationCategory;
   }
   catch (e) {
@@ -232,10 +229,11 @@ const getLocationById = async (id) => {
   }
 };
 module.exports.getLocationById = getLocationById;
+
 const getAllActiveLocation = async () => {
   try {
-    let listLocationCategory = await Location.find({ deletionFlag: false}).populate('ownerId').populate('typeId')
-    return listLocationCategory;
+    let locations = await Location.find({ deletionFlag: false, hiddenFlag: false }).populate('ownerId').populate('typeId')
+    return locations;
   }
   catch (e) {
     return TE(res, 'Get locationCategories failed', 503);

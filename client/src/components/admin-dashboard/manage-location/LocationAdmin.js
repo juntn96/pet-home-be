@@ -10,7 +10,6 @@ class LocationAdmin extends Component {
     super(props);
     this.state = {
       userId: '',
-      deletionFlag: false,
       locations: [],
       isLoading: true
     }
@@ -87,7 +86,7 @@ class LocationAdmin extends Component {
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem location={item} key={item._id} />)}
+                        <LocationItem location={item} key={item._id + index}/>)}
                     </tbody>
                   </Table>)
                 }
