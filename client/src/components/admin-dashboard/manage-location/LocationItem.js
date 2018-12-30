@@ -40,12 +40,20 @@ class LocationItem extends Component {
     window.showReportDetail();
   }
 
+  _editProduct = () => {
+
+  }
+
+  _onSetDelete = () => {
+
+  }
+
   render(){
     const key = this.props.location._id;
     const { hiddentFlag } = this.state
     const style = hiddentFlag ? "secondary" : "danger";
     const text = hiddentFlag ? "Không hoạt động" : "Đang hoạt động";
-    const {location} = this.props;
+    const { location } = this.props;
     const maxRate = [];
     for(let i = 1 ;i<=5;i++){
       if(i <= location.systemRating){
@@ -74,13 +82,30 @@ class LocationItem extends Component {
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
         {!this.state.hiddentFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanLocation}>Ẩn</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanLocation}>Hiện</Button></td>}
-          {/* <td>Chi tiết</td> */}
+          <td>    
+            { location.ownerId._id === this.props.user.user_id && this.props.user.role === 3 ? 
+              <Button 
+                color="success" 
+                style={{ marginRight: 10 }} 
+                onClick={() => this._editProduct(location)}>
+                  <i className="fa fa-pencil-square-o"></i>
+                  <input type="hidden" value={location._id} />
+              </Button> : null}     
+            { location.ownerId._id === this.props.user.user_id && this.props.user.role === 3 ? 
+               <button 
+                className="btn btn-danger" 
+                onClick={this._onSetDelete} 
+                data-toggle="modal" 
+                data-target="#deleteProduct">
+                  <i className="fa fa-trash"></i>
+                  <input type="hidden" value={location._id} />
+              </button> : null}     
+          </td>
       </tr>
     )
   }
 
 }
-
 
 export default LocationItem;
 

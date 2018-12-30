@@ -20,7 +20,7 @@ import Buttons from './../../uploadImage/Buttons'
 import WakeUp from './../../uploadImage/WakeUp'
 import './../../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
-import { updateLocation, getLocationCategories } from '../../../store/actions/locationAction'
+import { addlocationByAdmin, getLocationCategories } from '../../../store/actions/locationAction'
 import * as Constants from './../../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 
@@ -133,8 +133,8 @@ class AddLocation extends Component {
       location: location,
       ownerId: this.props.auth.user.user_id
     };
-    // this.props.updateLocation(updatedLocation, this.props.history);
-    console.log(addedLocation)
+    this.props.addlocationByAdmin(addedLocation, this.props.history);
+    // console.log(addedLocation)
   }
 
   onCancel = (e) => {
@@ -402,4 +402,4 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(AddLocation));
+export default connect(mapStateToProps, { addlocationByAdmin, getLocationCategories })(withRouter(AddLocation));

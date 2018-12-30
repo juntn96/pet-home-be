@@ -4,6 +4,8 @@ import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
 import Empty from '../../common/Empty';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 class LocationAdmin extends Component {
 
   constructor(props) {
@@ -81,12 +83,12 @@ class LocationAdmin extends Component {
                         <th>Đánh giá</th>
                         <th>Trạng thái</th>
                         <th>Xử lý</th>
-                        {/* <th></th> */}
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem location={item} key={item._id + index}/>)}
+                        <LocationItem location={item} key={item._id} user={this.props.auth.user}/>)}
                     </tbody>
                   </Table>)
                 }
@@ -98,5 +100,9 @@ class LocationAdmin extends Component {
   }
 }
 
-export default LocationAdmin;
+// export default LocationAdmin;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
+export default connect(mapStateToProps)(withRouter(LocationAdmin));

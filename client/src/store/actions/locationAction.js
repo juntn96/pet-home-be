@@ -9,6 +9,18 @@ import {
   UPDATE_LOCATION_SUCCESS
 } from './types';
 
+export const addlocationByAdmin = (locationData, history) => dispatch => {
+  axios
+    .post('/api/admin/addLocaionByAdmin', locationData)
+    .then(res => history.push('/admin/location'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data.error
+      })
+    );
+};
+
 // Get Posts
 export const getLocationCategories = type => dispatch => {
   dispatch(setCategoryLoading());

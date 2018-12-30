@@ -223,8 +223,7 @@ const getLocationById = async (id) => {
   try {
     let locaiton = await Location.findById(id);
     return locaiton;
-  }
-  catch (e) {
+  } catch (e) {
     return TE(res, 'Get location failed', 503);
   }
 };
@@ -234,9 +233,9 @@ const getAllActiveLocation = async () => {
   try {
     let locations = await Location.find({ deletionFlag: false, hiddenFlag: false }).populate('ownerId').populate('typeId')
     return locations;
-  }
-  catch (e) {
-    return TE(res, 'Get locationCategories failed', 503);
+  } catch (e) {
+    return TE(res, 'Get location active location failed', 503);
   }
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
+
