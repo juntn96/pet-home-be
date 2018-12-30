@@ -36,7 +36,7 @@ const locationSchema = mongoose.Schema({
   description: {
     type: String
   },
-  hiddentFlag: {
+  hiddenFlag: {
     type: Boolean,
 		default: false,
   },
