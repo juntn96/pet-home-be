@@ -259,13 +259,13 @@ module.exports.getLocationById = getLocationById;
 // @access  Public
 const getAllActiveLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  let erro, locations;
-  [erro, locations] = await to(locationService.getAllActiveLocation());
+  let erro, activeLocations;
+  [erro, activeLocations] = await to(locationService.getAllActiveLocation());
   if (erro) {
     return ReE(res, 'Get location failed', 422);
   }	
-  if (location) {
-    return ReS(res, { message: 'Get location success', locations: locations }, 200);
+  if (activeLocations) {
+    return ReS(res, { message: 'Get location success', activeLocations: activeLocations }, 200);
   }
   else {
     return ReE(res, 'Get location failed', 503);
