@@ -14,6 +14,7 @@ class LocationCategoryItem extends Component {
 
   componentDidMount() {
   }
+  
   _deleteItem = () => {
     this.props.onDeleteHandle({ id: this.props.locationCate._id, deletionFlag: this.props.locationCate.hiddenFlag, name: this.props.locationCate.name,typeLocation: this.props.locationCate.typeLocation });
   }

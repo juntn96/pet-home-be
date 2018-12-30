@@ -63,14 +63,16 @@ class ProductCategory extends Component {
   //   this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
   // }
 
-  setDeletionFlagFalse = (e) =>{
-    if(e.currentTarget.value===true)this.setState({deletionFlag : false})
-    if(e.currentTarget.value===false)this.setState({deletionFlag : true});
+  setDeletionFlagFalse = (e) => {
+    let deletionFlag = false;
+    if(e.currentTarget.value === 'true') deletionFlag = false;
+    if(e.currentTarget.value === 'false') deletionFlag = true;
+
     const newCategory = {
       id: this.state._id,
       name: this.state.name,
       description: this.state.description,
-      deletionFlag: false,
+      deletionFlag: deletionFlag,
     };
     this.props.updateProductCategory(newCategory, this.props.history);
     this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));

@@ -40,8 +40,8 @@ class LocationItem extends Component {
     window.showReportDetail();
   }
 
-  _editProduct = () => {
-
+  _editProduct = (location) => {
+    console.log(location);
   }
 
   _onSetDelete = () => {

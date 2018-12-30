@@ -34,8 +34,8 @@ class LocationCategory extends Component {
   }
 
   _onDeleteItem = () => {
-    const abc = { id: this.state.itemId, field: 'hiddenFlag', value: !this.state.deletionFlg }
-    axios.put('/api/admin/location/updateLocationCategories', abc).then(res => {
+    const data = { id: this.state.itemId, field: 'hiddenFlag', value: !this.state.deletionFlg }
+    axios.put('/api/admin/location/updateLocationCategories', data).then(res => {
       this._requestGetAllLocationCategories();
     }).catch(err => {
       //todo

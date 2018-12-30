@@ -18,6 +18,10 @@ const locationCategorySchema = mongoose.Schema({
 	updatedAt: {
 		type: Number,
 		default: new Date().getTime(),
+  },
+  deletionFlag: {
+		type: Boolean,
+		default: false,
 	},
 });
 
