@@ -4,24 +4,24 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.0cb0b9c5.woff2"
   },
   {
-    "revision": "84c96da2871e8d02b221",
+    "revision": "8af28f1c7ded5ee9b496",
     "url": "/static/css/main.20971c74.chunk.css"
   },
   {
-    "revision": "aca6a1e429801f4611c9",
-    "url": "/static/js/1.aca6a1e4.chunk.js"
+    "revision": "e3a1804a32ed995a39db",
+    "url": "/static/js/1.e3a1804a.chunk.js"
   },
   {
     "revision": "912ec66d7572ff821749319396470bde",
     "url": "/static/media/fontawesome-webfont.912ec66d.svg"
   },
   {
-    "revision": "3c595f3f854b33dd2154",
-    "url": "/static/js/2.3c595f3f.chunk.js"
+    "revision": "0b8f06d1c6448d26718a",
+    "url": "/static/js/2.0b8f06d1.chunk.js"
   },
   {
-    "revision": "ab77907548f692526c56",
-    "url": "/static/js/runtime~main.ab779075.js"
+    "revision": "af7212dda5d6380a87b5",
+    "url": "/static/js/runtime~main.af7212dd.js"
   },
   {
     "revision": "0389b14f3ccadf8f2871c53826bce318",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/static/media/CoreUI-Icons-Linear-Free.0087dce4.woff"
   },
   {
-    "revision": "84c96da2871e8d02b221",
-    "url": "/static/js/main.84c96da2.chunk.js"
+    "revision": "8af28f1c7ded5ee9b496",
+    "url": "/static/js/main.8af28f1c.chunk.js"
   },
   {
     "revision": "f33df365d6d0255b586f2920355e94d7",
@@ -84,11 +84,11 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.2fe2efe6.svg"
   },
   {
-    "revision": "3c595f3f854b33dd2154",
+    "revision": "0b8f06d1c6448d26718a",
     "url": "/static/css/2.04112050.chunk.css"
   },
   {
-    "revision": "165da63b717298b36f2f50e40d2b65c6",
+    "revision": "334e18548d6db5e50bc790ef72623134",
     "url": "/index.html"
   }
 ];
