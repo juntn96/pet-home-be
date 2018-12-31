@@ -4,24 +4,24 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.0cb0b9c5.woff2"
   },
   {
-    "revision": "fa8a6bbae1dcbbf71b20",
-    "url": "/static/css/main.20971c74.chunk.css"
+    "revision": "2d2b3fc7531e7ab86051",
+    "url": "/static/css/main.ab9f9646.chunk.css"
   },
   {
-    "revision": "6b22cf94d92baa277ffb",
-    "url": "/static/js/1.6b22cf94.chunk.js"
+    "revision": "12e4e31829c9f0d9a932",
+    "url": "/static/js/1.12e4e318.chunk.js"
   },
   {
     "revision": "912ec66d7572ff821749319396470bde",
     "url": "/static/media/fontawesome-webfont.912ec66d.svg"
   },
   {
-    "revision": "c64f545d6cb915a7f28e",
-    "url": "/static/js/2.c64f545d.chunk.js"
+    "revision": "62eeaaf2b9a2b99eff6d",
+    "url": "/static/js/2.62eeaaf2.chunk.js"
   },
   {
-    "revision": "0594ac43fa6f5b9d160a",
-    "url": "/static/js/runtime~main.0594ac43.js"
+    "revision": "0149fe8e392447c2428d",
+    "url": "/static/js/runtime~main.0149fe8e.js"
   },
   {
     "revision": "0389b14f3ccadf8f2871c53826bce318",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/static/media/CoreUI-Icons-Linear-Free.0087dce4.woff"
   },
   {
-    "revision": "fa8a6bbae1dcbbf71b20",
-    "url": "/static/js/main.fa8a6bba.chunk.js"
+    "revision": "2d2b3fc7531e7ab86051",
+    "url": "/static/js/main.2d2b3fc7.chunk.js"
   },
   {
     "revision": "f33df365d6d0255b586f2920355e94d7",
@@ -84,11 +84,11 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.2fe2efe6.svg"
   },
   {
-    "revision": "c64f545d6cb915a7f28e",
-    "url": "/static/css/2.04112050.chunk.css"
+    "revision": "62eeaaf2b9a2b99eff6d",
+    "url": "/static/css/2.afdaf640.chunk.css"
   },
   {
-    "revision": "44ae64c0d01d270dc3ec45df485c039b",
+    "revision": "5e13f2cfe9531c95318fc6f488edbf04",
     "url": "/index.html"
   }
 ];
