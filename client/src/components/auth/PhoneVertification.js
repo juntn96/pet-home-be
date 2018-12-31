@@ -35,7 +35,7 @@ class PhoneVertification extends Component {
   
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.messageSendCode && nextProps.messageCheckCode.message !== undefined) {
-      nextProps.history.push('/register',{phone: prevState.phone})
+      nextProps.history.push('/register', {phone: prevState.phone})
     }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
