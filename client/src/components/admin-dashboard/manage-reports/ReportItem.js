@@ -13,19 +13,11 @@ class ReportItem extends Component {
     }
   }
 
-  // componentDidMount(){
-  //   const reportDetail = this.props.reportDetail;
-  // }
-
   _requestBanUser = () => {
-    const reportDetail = this.props.reportDetail;
-    const user = {id: reportDetail.ownerId,deletionFlag : !this.state.deletionFlag}
-    axios.put('/api/admin/users', user).then(res => {
-      const update = {id: this.props.reportDetail._id,deletionFlag: !this.state.deletionFlag }
-      axios.put('/api/report/updateReportStatus', update).then(res =>{
-        this._requestGetDelectionFlag();
-      })
-    });
+    const update = {id: this.props.reportDetail._id,deletionFlag: !this.state.deletionFlag }
+    axios.put('/api/report/updateReportStatus', update).then(res =>{
+      this._requestGetDelectionFlag();
+    })
   }
 
   _requestGetDelectionFlag = () => {
@@ -40,7 +32,6 @@ class ReportItem extends Component {
   }
 
   _getReportById = () => {
-    
   }
 
   _onClickBanUser = (e) => {
@@ -82,20 +73,14 @@ class ReportItem extends Component {
         <td style={{verticalAlign:"middle"}}>{date}</td>
         <td style={{verticalAlign:"middle"}}>{totalReports}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
-        {/* <td style={{verticalAlign:"middle"}}>
-        <div>{userDetail.appName}</div>
-          <div className="small text-muted">Đăng ký lúc: {date}
-          </div>
-        </td>
-        <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Cấm người dùng</Button></td>
-          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Bỏ cấm</Button></td>}
+        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Ẩn bài viết</Button></td>
+          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hiện bài viết</Button></td>}
           <td><a href style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
       </tr>
-    )
+      )
+    }
   }
 
-}
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,

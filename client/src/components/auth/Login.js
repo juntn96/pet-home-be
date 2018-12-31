@@ -124,12 +124,6 @@ class Login extends Component {
                     <span className="focus-input100"></span>
                   </div>
                   <div className="flex-sb-m w-full p-b-48">
-                    <div className="contact100-form-checkbox">
-                      <input className="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"/>
-                      <label className="label-checkbox100" htmlFor="ckb1">
-                        Nhớ mật khẩu
-                      </label>
-                    </div>
                     <div>
                       <a href="/forgetPass" className="txt3">
                         Quên mật khẩu?
@@ -150,7 +144,7 @@ class Login extends Component {
             </div>
           </div>
         </div>
-      </div>     
+      </div>
     );
   }
 }
