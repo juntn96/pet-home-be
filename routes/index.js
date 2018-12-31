@@ -68,7 +68,10 @@ router.put(
 
 //#region Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
-router.get("/admin/getLocationById/:locationId", LocationController.getLocationById);
+router.get(
+  "/admin/getLocationById/:locationId",
+  LocationController.getLocationById
+);
 router.put("/admin/updateLocation", LocationController.hideShowLocation);
 router.post("/admin/addLocation", LocationController.hideShowLocation);
 router.post("/admin/addLocaionByAdmin", LocationController.addLocaionByAdmin);
@@ -187,10 +190,7 @@ router.put(
   ProductController.updateProductParentCategory
 );
 
-router.post(
-  "/product/add",
-  ProductController.addProduct
-);
+router.post("/product/add", ProductController.addProduct);
 
 router.get(
   "/product/productByUserIds/:ownerId",
@@ -215,6 +215,7 @@ router.post("/phone/verify", PhoneController.verifyPhoneVerifyCode);
 
 //#region post category route
 router.get("/post/category/get", PostCategoryController.get);
+router.get("/post/category/getVisible", PostCategoryController.getVisible);
 router.post("/post/category/add", PostCategoryController.add);
 router.delete("/post/category/deleteById", PostCategoryController.deleteById);
 router.get("/post/category/:typeId", PostCategoryController.getByID);
