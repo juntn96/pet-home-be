@@ -208,9 +208,9 @@ const getAllLocations = async () => {
 };
 module.exports.getAllLocations = getAllLocations;
 
-const hideLocationById = async (id, hiddentFlag ) => {
+const hideLocationById = async (id, hiddenFlag ) => {
   try {
-    let listLocationCategory = await Location.findByIdAndUpdate(id, {hiddentFlag: hiddentFlag})
+    let listLocationCategory = await Location.findByIdAndUpdate(id, {hiddenFlag: hiddenFlag})
     return listLocationCategory;
   }
   catch (e) {

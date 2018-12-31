@@ -26,34 +26,18 @@ const MapComponent = withGoogleMap(props =>
 class Register extends Component {
   constructor(props) {
     super(props);
-    if(this.props.history.state !== undefined) {
-      this.state = {
-        name: '',
-        password: '',
-        password2: '',
-        typeLocation: '',
-        phone: this.props.history.state.phone,
-        errors: {},
-        address: '',
-        locationCategories: [],
-        location:[],
-        latlong: { lat: 21.029210, lng: 105.852470 }
-      };
-    } else {
-      this.props.history.push('/phoneVertification');
-      this.state = {
-        name: '',
-        password: '',
-        password2: '',
-        typeLocation: '',
-        phone: '',
-        errors: {},
-        address: '',
-        locationCategories: [],
-        location:[],
-        latlong: { lat: 21.029210, lng: 105.852470 }
-      };
-    }
+    this.state = {
+      name: '',
+      password: '',
+      password2: '',
+      typeLocation: '',
+      phone: this.props.history.location.state.phone,
+      errors: {},
+      address: '',
+      locationCategories: [],
+      location:[],
+      latlong: { lat: 21.029210, lng: 105.852470 }
+    };
   }
 
   componentDidMount() {

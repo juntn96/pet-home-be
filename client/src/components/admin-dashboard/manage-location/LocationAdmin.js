@@ -54,6 +54,10 @@ class LocationAdmin extends Component {
     this.props.history.push('/admin/location/add');
   }
 
+  _onEdit = (item) => {
+    this.props.history.push('/admin/location/edit', {data: item});
+  }
+
   render() {
     const locations = this.state.locations;
     return (
@@ -76,19 +80,24 @@ class LocationAdmin extends Component {
                   <Table hover responsive >
                     <thead>
                       <tr>
-                        <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th>Mô tả</th>
-                        <th>Loại</th>
-                        <th>Đánh giá</th>
-                        <th>Trạng thái</th>
-                        <th>Xử lý</th>
-                        <th></th>
+                        <th style={{width: '10%'}}>Tên</th>
+                        <th style={{width: '30%'}}>Địa chỉ</th>
+                        <th style={{width: '16%'}}>Mô tả</th>
+                        <th style={{width: '10%'}}>Loại</th>
+                        <th style={{width: '7%'}}>Đánh giá</th>
+                        <th style={{width: '9%'}}>Trạng thái</th>
+                        <th style={{width: '7%'}}>Xử lý</th>
+                        <th style={{width: '11%'}}></th>
                       </tr>
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem location={item} key={item._id} user={this.props.auth.user}/>)}
+                        <LocationItem 
+                          location={item} 
+                          key={item._id} 
+                          user={this.props.auth.user}
+                          onEdit={() => this._onEdit(item)}
+                          />)}
                     </tbody>
                   </Table>)
                 }

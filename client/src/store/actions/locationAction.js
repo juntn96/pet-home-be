@@ -63,6 +63,7 @@ export const updateLocation = (location, history) => dispatch => {
     .put(`/api/location/update`, location)
     .then(res =>
       {
+        history.push('/admin/location');
         dispatch({
           type: UPDATE_LOCATION_SUCCESS,
           payload: res.data.locationProfile

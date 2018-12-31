@@ -6,14 +6,14 @@ class LocationItem extends Component {
   constructor(props){
     super(props);
     this.state = {
-      hiddentFlag: props.location.hiddentFlag
+      hiddenFlag: props.location.hiddenFlag
     }
   }
 
   _onClickUpdateLocation = () => {
     const location = this.props.location;
-    const locationUpdate = {id: location._id, hiddentFlag : !this.state.hiddentFlag}
-    axios.put('/api/admin/updateLocation', locationUpdate).then(res => {
+    const locationUpdate = {id: location._id, hiddenFlag : !this.state.hiddenFlag}
+    axios.put('/api/admin/hideOrShowLocation', locationUpdate).then(res => {
       this._requestGetDelectionFlag();
     });
   }
@@ -21,7 +21,7 @@ class LocationItem extends Component {
   _requestGetDelectionFlag = () => {
     axios.get(`/api/admin/getLocationById/${this.props.location._id}`).then(res => {
       this.setState({
-        hiddentFlag: res.data.result.hiddentFlag,
+        hiddenFlag: res.data.result.hiddenFlag,
         isLoading: false
       })
     }).catch(err =>{
@@ -41,7 +41,7 @@ class LocationItem extends Component {
   }
 
   _editProduct = (location) => {
-    console.log(location);
+    this.props.onEdit(location);
   }
 
   _onSetDelete = () => {
@@ -49,9 +49,9 @@ class LocationItem extends Component {
   }
 
   render(){
-    const { hiddentFlag } = this.state
-    const style = hiddentFlag ? "secondary" : "danger";
-    const text = hiddentFlag ? "Không hoạt động" : "Đang hoạt động";
+    const { hiddenFlag: hiddenFlag } = this.state
+    const style = hiddenFlag ? "secondary" : "danger";
+    const text = hiddenFlag ? "Không hoạt động" : "Đang hoạt động";
     const { location } = this.props;
     const key = location._id;
     const maxRate = [];
@@ -80,7 +80,7 @@ class LocationItem extends Component {
           </div>
         </td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.hiddentFlag ? 
+        {!this.state.hiddenFlag ? 
           <td style={{verticalAlign:"middle"}}>
             <Button color="success" size="sm" onClick={this._onClickBanLocation}>
                                   Ẩn
