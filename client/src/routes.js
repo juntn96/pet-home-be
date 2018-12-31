@@ -12,6 +12,7 @@ import PostCategory from './components/admin-dashboard/manage-category/PostCateg
 import LocationCategory from './components/admin-dashboard/manage-category/LocationCategory';
 import LocationAdmin from './components/admin-dashboard/manage-location/LocationAdmin';
 import AddLocation from './components/admin-dashboard/manage-location/AddLocation';
+import EditLocation from './components/admin-dashboard/manage-location/EditLocation';
 import ChangePasswordAdmin from './components/admin-dashboard/ChangePasswordAdmin';
 
 function Loading() {
@@ -37,6 +38,7 @@ const routes = [
     { path: '/admin/category/post', exact: true, name: 'Thể loại bài viết', component: PostCategory },
     { path: '/admin/location', exact: true, name: 'Quản lý địa điểm', component: LocationAdmin },
     { path: '/admin/location/add', exact: true, name: 'Thêm địa điểm mới', component: AddLocation },
+    { path: '/admin/location/edit', exact: true, name: 'Sửa thông tin địa điểm', component: EditLocation },
     { path: '/admin/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePasswordAdmin },
 ]
 export default routes;

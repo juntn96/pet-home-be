@@ -31,7 +31,7 @@ class Register extends Component {
       password: '',
       password2: '',
       typeLocation: '',
-      phone: '',
+      phone: this.props.history.location.state.phone,
       errors: {},
       address: '',
       locationCategories: [],

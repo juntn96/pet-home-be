@@ -273,15 +273,15 @@ const getAllActiveLocation = async function (req, res) {
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
 
-// @route   PUT api/admin/updateLocation
+// @route   PUT api/admin/hideOrShowLocation
 // @desc    
 // @access  Public
 const hideShowLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const locationId = req.body.id;
-    const hiddentFlag = req.body.hiddentFlag;
-    const result = await locationService.hideLocationById(locationId, hiddentFlag);
+    const hiddenFlag = req.body.hiddenFlag;
+    const result = await locationService.hideLocationById(locationId, hiddenFlag);
     return ReS(res, { result }, 200);
   } catch (error) {
       return ReE(res, error, 422);

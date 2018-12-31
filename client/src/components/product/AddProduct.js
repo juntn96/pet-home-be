@@ -86,6 +86,7 @@ class AddProduct extends Component {
     }
     if(this.state.typeProductCategory === '') {
       this.refs.typeProductValidate.innerHTML ='Bạn chưa tạo loại sản phẩm/dịch vụ nào hãy tạo chúng';
+      return false;
     }
     let imagesUrl = this.state.images.map( item => item.url);
     const newProduct = {

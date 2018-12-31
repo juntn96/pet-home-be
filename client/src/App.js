@@ -73,6 +73,7 @@ class App extends Component {
               <PrivateRoute path="/admin/category/post" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/location/add" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/location/edit" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/chgpwd" component={DefaultLayoutAdmin} />
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
