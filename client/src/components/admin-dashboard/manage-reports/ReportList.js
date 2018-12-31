@@ -87,7 +87,7 @@ class ReportList extends Component {
           <Col xs="12" lg="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Danh sách báo cáo
                 <input type="text"
                   className="form-control"
                   style={{ float: "right", width: "20%" }}
@@ -97,7 +97,6 @@ class ReportList extends Component {
               </CardHeader>
               <CardBody>
                 {this.state.isLoading ? <Spinner /> : (reports.length === 0 ? <Empty /> :
-
                   <Table hover responsive >
                     <thead>
                       <tr>
