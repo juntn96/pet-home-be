@@ -99,7 +99,7 @@ class ReportList extends Component {
                 <Table hover responsive >
                   <thead>
                   <tr>
-                    <th>Nội dung bài viết{reports.length}</th>
+                    <th>Nội dung bài viết</th>
                     <th>Người viết</th>
                     <th>Ngày đăng</th>
                     <th>Số lần bị reports</th>
