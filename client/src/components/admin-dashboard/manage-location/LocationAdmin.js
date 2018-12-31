@@ -30,7 +30,7 @@ class LocationAdmin extends Component {
       this.setState({
         locations: res.data.locations,
         isLoading: false
-      })
+      });
     }).catch(err => {
       //todo
     });
@@ -55,7 +55,7 @@ class LocationAdmin extends Component {
   }
 
   _onEdit = (item) => {
-    this.props.history.push('/admin/location/edit', {data: item});
+    this.props.history.push('/admin/location/edit', { data: item });
   }
 
   render() {
@@ -76,28 +76,28 @@ class LocationAdmin extends Component {
                 <Button color="primary" style={{ float: "right", marginRight: 20 }} size="lg" onClick={this._onClickAddLocation}>Thêm địa điểm</Button>
               </CardHeader>
               <CardBody>
-                {this.state.isLoading ? <Spinner /> :(locations.length === 0? <Empty/> :
+                {this.state.isLoading ? <Spinner /> : (locations.length === 0 ? <Empty /> :
                   <Table hover responsive >
                     <thead>
                       <tr>
-                        <th style={{width: '10%'}}>Tên</th>
-                        <th style={{width: '30%'}}>Địa chỉ</th>
-                        <th style={{width: '16%'}}>Mô tả</th>
-                        <th style={{width: '10%'}}>Loại</th>
-                        <th style={{width: '7%'}}>Đánh giá</th>
-                        <th style={{width: '9%'}}>Trạng thái</th>
-                        <th style={{width: '7%'}}>Xử lý</th>
-                        <th style={{width: '11%'}}></th>
+                        <th style={{ width: '10%' }}>Tên</th>
+                        <th style={{ width: '30%' }}>Địa chỉ</th>
+                        <th style={{ width: '16%' }}>Mô tả</th>
+                        <th style={{ width: '10%' }}>Loại</th>
+                        <th style={{ width: '11%' }}>Đánh giá</th>
+                        <th style={{ width: '9%' }}>Trạng thái</th>
+                        <th style={{ width: '7%' }}>Xử lý</th>
+                        <th style={{ width: '7%' }}></th>
                       </tr>
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem 
-                          location={item} 
-                          key={item._id} 
+                        <LocationItem
+                          location={item}
+                          key={item._id}
                           user={this.props.auth.user}
                           onEdit={() => this._onEdit(item)}
-                          />)}
+                        />)}
                     </tbody>
                   </Table>)
                 }
