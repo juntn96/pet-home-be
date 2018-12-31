@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
+import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler,AppNavbarBrand } from '@coreui/react';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../../store/actions/authActions';
 import Img from 'react-image';
+import logo from '../../../assets/img/logo-ad.png'
 
 const propTypes = {
   children: PropTypes.node,
@@ -25,6 +26,9 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
+        <AppNavbarBrand
+          full={{ src: logo, width: 89, height: 25, alt: 'Pethome Logo' }}
+        />
         <Nav className="d-md-down-none" navbar>
         </Nav>
         <Nav className="ml-auto" navbar>
