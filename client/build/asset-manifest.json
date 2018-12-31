@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.ab9f9646.chunk.css",
-  "main.js": "/static/js/main.2d2b3fc7.chunk.js",
-  "main.js.map": "/static/js/main.2d2b3fc7.chunk.js.map",
+  "main.js": "/static/js/main.828a941a.chunk.js",
+  "main.js.map": "/static/js/main.828a941a.chunk.js.map",
   "static/js/1.12e4e318.chunk.js": "/static/js/1.12e4e318.chunk.js",
   "static/js/1.12e4e318.chunk.js.map": "/static/js/1.12e4e318.chunk.js.map",
   "static/css/2.afdaf640.chunk.css": "/static/css/2.afdaf640.chunk.css",
@@ -12,9 +12,9 @@
   "static/media/App.scss": "/static/media/Simple-Line-Icons.2fe2efe6.svg",
   "static/media/empty.png": "/static/media/empty.0389b14f.png",
   "static/media/App.css": "/static/media/petB.e5637b4c.jpg",
-  "static/css/2.afdaf640.chunk.css.map": "/static/css/2.afdaf640.chunk.css.map",
   "static/css/main.ab9f9646.chunk.css.map": "/static/css/main.ab9f9646.chunk.css.map",
+  "static/css/2.afdaf640.chunk.css.map": "/static/css/2.afdaf640.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.c3e638b5f4487599c9affb67c13ae53a.js": "/precache-manifest.c3e638b5f4487599c9affb67c13ae53a.js",
+  "precache-manifest.fbea1d0c3815dbba529fbd9cd7713680.js": "/precache-manifest.fbea1d0c3815dbba529fbd9cd7713680.js",
   "service-worker.js": "/service-worker.js"
 }
