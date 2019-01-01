@@ -80,6 +80,27 @@ export const updateLocation = (location, history) => dispatch => {
     );
 };
 
+export const updatePrivateLocation = (location, history) => dispatch => {
+  axios
+    .put(`/api/location/update`, location)
+    .then(res =>
+      {
+        dispatch({
+          type: UPDATE_LOCATION_SUCCESS,
+          payload: res.data.locationProfile
+        })
+      }
+    )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      }
+    );
+};
+
 // Set loading state
 export const setCategoryLoading = () => {
   return {

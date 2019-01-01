@@ -20,7 +20,7 @@ import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
-import { updateLocation, getLocationCategories } from '../../store/actions/locationAction'
+import { updatePrivateLocation, getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 
@@ -138,7 +138,8 @@ class Location extends Component {
       images: updatedImages,
       location: location
     };
-    this.props.updateLocation(updatedLocation, this.props.history);
+    this.props.updatePrivateLocation(updatedLocation, this.props.history);
+    this.props.history.push('/product');
   }
 
   onCancel = (e) => {
@@ -406,4 +407,4 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(Location));
+export default connect(mapStateToProps, { updatePrivateLocation, getLocationCategories })(withRouter(Location));
