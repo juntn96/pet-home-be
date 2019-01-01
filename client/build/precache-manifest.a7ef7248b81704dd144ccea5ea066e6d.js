@@ -4,24 +4,24 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.0cb0b9c5.woff2"
   },
   {
-    "revision": "d7992fec57f564e80f9e",
-    "url": "/static/css/main.70f13299.chunk.css"
+    "revision": "598cd1e527b9bed8bfb2",
+    "url": "/static/css/main.f4e0d310.chunk.css"
   },
   {
-    "revision": "1e5cc5f6f75168f0e50a",
-    "url": "/static/js/1.1e5cc5f6.chunk.js"
+    "revision": "fb4b0a8500045ea3f32c",
+    "url": "/static/js/1.fb4b0a85.chunk.js"
   },
   {
     "revision": "912ec66d7572ff821749319396470bde",
     "url": "/static/media/fontawesome-webfont.912ec66d.svg"
   },
   {
-    "revision": "161039f49d4a19734c4c",
-    "url": "/static/js/2.161039f4.chunk.js"
+    "revision": "d2a54c5556d401f54c1c",
+    "url": "/static/js/2.d2a54c55.chunk.js"
   },
   {
-    "revision": "3ac9487fb4235ee36b97",
-    "url": "/static/js/runtime~main.3ac9487f.js"
+    "revision": "929e9fac1d9c5b527af3",
+    "url": "/static/js/runtime~main.929e9fac.js"
   },
   {
     "revision": "6de218ebe72035c8ee5d7bf04a61c4d5",
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/static/media/CoreUI-Icons-Linear-Free.0087dce4.woff"
   },
   {
-    "revision": "d7992fec57f564e80f9e",
-    "url": "/static/js/main.d7992fec.chunk.js"
+    "revision": "598cd1e527b9bed8bfb2",
+    "url": "/static/js/main.598cd1e5.chunk.js"
   },
   {
     "revision": "f33df365d6d0255b586f2920355e94d7",
@@ -88,11 +88,11 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.2fe2efe6.svg"
   },
   {
-    "revision": "161039f49d4a19734c4c",
-    "url": "/static/css/2.22cce0c2.chunk.css"
+    "revision": "d2a54c5556d401f54c1c",
+    "url": "/static/css/2.2d26dc05.chunk.css"
   },
   {
-    "revision": "9be454b648b56345e752d39459ba581e",
+    "revision": "9706de10a94e6bf374179e1d17712f85",
     "url": "/index.html"
   }
 ];
