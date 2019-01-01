@@ -62,7 +62,11 @@ const sendMessage = async mes => {
   try {
     const io = socketService.io;
 
+    console.log(mes);
+
     const receiver = await AppUserService.findUser(mes.notification.receiver);
+
+    console.log(receiver)
 
     const messageData = {
       conversationId: mes.conversationId,
