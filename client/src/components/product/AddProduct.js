@@ -41,6 +41,7 @@ class AddProduct extends Component {
       loadingU: true,
       uploading: false,
       images: [],
+      isLoading: true,
       listTypeProductCategory: ''
     };
   }
@@ -74,9 +75,12 @@ class AddProduct extends Component {
     axios
       .get(`/api/product/category/${ownerId}`)
       .then(res => {
+        let type = "";
+        if(res.data.productParentCategories.length > 0) type =res.data.productParentCategories[0]._id
         this.setState({
           listTypeProductCategory: res.data.productParentCategories,
-          typeProductCategory: res.data.productParentCategories[0]._id
+          typeProductCategory: type,
+          isLoading: false
         })
       }
       )
@@ -103,15 +107,11 @@ class AddProduct extends Component {
     if (this.state.name === ''
       || this.state.price === ''
       || this.state.images.length === 0
-      || this.state.typeProductCategory === 'none') {
+      || this.state.typeProductCategory === '') {
       if (this.state.name === '') { this.refs.nameValidate.innerHTML = 'Vui lòng nhập tên sản phẩm'; this.refs.nameValidate1.classList.add('is-invalid') }
       if (this.state.price === '') { this.refs.priceValidate.innerHTML = 'Vui lòng nhập giá sản phẩm'; this.refs.priceValidate1.classList.add('is-invalid') }
       if (this.state.images.length === 0) {this.refs.imageValidate.innerHTML = 'Vui lòng tải ảnh '}
-      if (this.state.typeProductCategory === 'none') { this.refs.typeProductValidate.innerHTML = 'Vui lòng chọn một thể loại '; }
-        return false;
-      }
-      if (this.state.typeProductCategory === '') {
-        this.refs.typeProductValidate.innerHTML = 'Bạn chưa tạo loại sản phẩm/dịch vụ nào hãy tạo chúng';
+      if (this.state.typeProductCategory === '' ) { this.refs.typeProductValidate.innerHTML = 'Vui lòng tạo thêm thể loại'; }
         return false;
       }
       let imagesUrl = this.state.images.map(item => item.url);
@@ -207,7 +207,7 @@ class AddProduct extends Component {
   }
 
   render() {
-    const { loadingU, uploading, images, listTypeProductCategory } = this.state
+    const { loadingU, uploading, images, listTypeProductCategory } = this.state;
     const { productParentCategories, loading } = this.props.product;
     const content = () => {
       switch (true) {
@@ -283,7 +283,7 @@ class AddProduct extends Component {
                   <FormGroup row className="my-0 mt-3">
                     <Col xs="6">
                       <Label htmlFor="ccyear">Loại</Label>
-                      {listTypeProductCategory === '' || loading ? <Spinner /> :
+                      {listTypeProductCategory === '' || this.state.isLoading ? <Spinner /> :
                         <Input
                           className="form-control form-control-lg"
                           type="select"
