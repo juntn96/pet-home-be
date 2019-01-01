@@ -62,15 +62,21 @@ class ReportList extends Component {
   renderContent = () => {
     return (<div>
       <div>{this.state.detail.title}</div>
+      <br />
       {this.state.detail !== null ? this.state.detail.images.map(item =>
-      <Row><Col xs="4" lg="4"><Img src={item.url} style={{ height: 200, width: 200 }}></Img></Col></Row>
+        <Row>
+          <Col xs="4" lg="4">
+            <Img src={item.url} style={{ height: 200, width: 200 }}>
+            </Img>
+          </Col>
+        </Row>
       ) : ''}
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>
       {this.state.rqDetail.map(item => <div>
-        <hr />
         <div>
-          <strong >{item.reporterId.appName}</strong><small className="text-muted">{new Date(item.updatedAt).toDateString()}</small>
+          <strong style={{ marginBottom: 20 }}>{item.reporterId.appName}</strong>
+          <small className="text-muted" style={spanStyle}>{new Date(item.updatedAt).toDateString()}</small>
           <br />
           <span className="text-muted">{item.description}</span>
         </div>
@@ -128,7 +134,7 @@ class ReportList extends Component {
                 {this.state.detail !== null ? this.renderContent() : <Spinner />}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Ẩn</button>
               </div>
             </div>
           </div>
@@ -142,6 +148,10 @@ const mapStateToProps = state => ({
   errors: state.errors,
   allusers: state.allusers
 });
+
+const spanStyle = {
+  marginLeft: 10
+}
 
 export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportList));
 

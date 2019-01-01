@@ -3,14 +3,32 @@ import { Badge, Button } from 'reactstrap';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {getAllUsers} from '../../../store/actions/usersActions'
+import { getAllUsers } from '../../../store/actions/usersActions'
 class ReportItem extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      deletionFlag: props.reportDetail.deletionFlag
+      deletionFlag: props.reportDetail.deletionFlag,
+      loadingUser: true,
+      allusers: ''
     }
+  }
+
+  componentDidMount() {
+    this._getAllUsers();
+  }
+
+  _getAllUsers = () => {
+    axios.get(`/api/admin/users`).then(res => {
+      console.log(res)
+      this.setState({
+        allusers: res.data.users,
+        loadingUser: false
+      })
+    }).catch(err =>{
+      //todo
+    });
   }
 
   _requestBanUser = () => {
@@ -62,8 +80,8 @@ class ReportItem extends Component {
     const text = deletionFlag !== true ? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
     const {reportDetail, totalReports} = this.props;
-    if(users.allusers.users !== undefined){
-      owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
+    if(this.state.allusers !== ''){
+      owerName = this.state.allusers.filter(item => item._id === reportDetail.ownerId )
     }
     const date = new Date(reportDetail.createdAt).toLocaleDateString() + ' ' + new Date(reportDetail.createdAt).toLocaleTimeString();
     return (
@@ -87,5 +105,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(ReportItem));
+export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportItem));
 

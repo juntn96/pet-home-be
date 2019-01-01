@@ -11,12 +11,12 @@ export default {
         icon: 'icon-list',
         children: [
           {
-            name: 'Bài viết',
+            name: 'Loại bài viết',
             url: '/admin/category/post',
             icon: 'icon-pencil',
           },
           {
-            name: 'Địa điểm',
+            name: 'Loại địa điểm',
             url: '/admin/category/location',
             icon: 'icon-puzzle',
           }

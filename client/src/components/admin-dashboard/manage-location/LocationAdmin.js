@@ -80,13 +80,13 @@ class LocationAdmin extends Component {
                   <Table hover responsive >
                     <thead>
                       <tr>
-                        <th style={{ width: '10%' }}>Tên</th>
-                        <th style={{ width: '30%' }}>Địa chỉ</th>
-                        <th style={{ width: '16%' }}>Mô tả</th>
+                        <th style={{ width: '13%' }}>Tên</th>
+                        <th style={{ width: '25%' }}>Địa chỉ</th>
+                        <th style={{ width: '23%' }}>Mô tả</th>
                         <th style={{ width: '10%' }}>Loại</th>
-                        <th style={{ width: '11%' }}>Đánh giá</th>
+                        <th style={{ width: '8%' }}>Đánh giá</th>
                         <th style={{ width: '9%' }}>Trạng thái</th>
-                        <th style={{ width: '7%' }}>Xử lý</th>
+                        <th style={{ width: '5%' }}>Xử lý</th>
                         <th style={{ width: '7%' }}></th>
                       </tr>
                     </thead>
