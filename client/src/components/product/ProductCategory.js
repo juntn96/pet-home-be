@@ -29,8 +29,8 @@ class ProductCategory extends Component {
       description: '',
       productParentCategories: [],
       checkUpdate: false,
-      isLoading: true,
-      editingIndex: -1
+      isLoading: false,
+      editingIndex: -1,
     }
   }
 
@@ -63,7 +63,7 @@ class ProductCategory extends Component {
     axios.get(`/api/product/productParentCategories/${this.props.auth.user.user_id}`).then(res => {
       this.setState({
         productParentCategories: res.data.productParentCategories,
-        isLoading: false
+        isLoading: false,
       })
     }).catch(err => {
       //todo
@@ -71,7 +71,7 @@ class ProductCategory extends Component {
   }
 
   setDeletionFlagFalse = (e) => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true ,editingIndex: e.currentTarget.getElementsByTagName('input')[0].value});
     let deletionFlag = false;
     if (e.currentTarget.value === 'true') deletionFlag = false;
     if (e.currentTarget.value === 'false') deletionFlag = true;
@@ -80,6 +80,7 @@ class ProductCategory extends Component {
       name: e.currentTarget.getElementsByTagName('input')[1].value,
       description: e.currentTarget.getElementsByTagName('input')[2].value,
       deletionFlag: deletionFlag,
+      editingIndex: e.currentTarget.getElementsByTagName('input')[0].value
     };
     if(newCategory!==null){
       axios.put(`/api/product/updateProductCategory`, newCategory).then(res => {
@@ -99,7 +100,7 @@ class ProductCategory extends Component {
   }
 
   addCategory = (e) => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true });
     e.preventDefault();
     if (this.state.checkUpdate === false) {
       this.refs.title.innerHTML = "Thêm thể loại";
@@ -229,7 +230,7 @@ class ProductCategory extends Component {
                     </tr>
                   </thead>
                   <tbody ref="table">
-                    {productParentCategories === null || this.state.isLoading ? <Spinner /> :
+                    {productParentCategories === null ? <Spinner /> :
                       productParentCategories.map((item, index) => this.renderRowItem(item, index))
                     }
                   </tbody>
