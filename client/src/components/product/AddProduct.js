@@ -62,7 +62,7 @@ class AddProduct extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
       if(nextProps.product.productParentCategories.length > 0){
-        return {errors: nextProps.errors, typeProductCategory: nextProps.product.productParentCategories[0]._id}
+        return {errors: nextProps.errors}
       } else {
         return { errors: nextProps.errors};
       }
@@ -82,14 +82,15 @@ class AddProduct extends Component {
     e.preventDefault();
     if(this.state.name ===''
     ||this.state.price ===''
-    ||this.state.images.length ===0){
+    ||this.state.images.length ===0
+    ||this.state.typeProductCategory === 'none'){
       if(this.state.name ==='') {this.refs.nameValidate.innerHTML ='Vui lòng nhập tên sản phẩm';this.refs.nameValidate1.classList.add('is-invalid')}
       if(this.state.price ==='') {this.refs.priceValidate.innerHTML ='Vui lòng nhập giá sản phẩm';this.refs.priceValidate1.classList.add('is-invalid')}
-      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '}
+      if(this.state.images.length ===0) {this.refs.imageValidate.innerHTML ='Vui lòng tải ảnh '
+      if(this.state.typeProductCategory === 'none') {this.refs.typeProductValidate.innerHTML ='Vui lòng chọn một thể loại '}
       return false;
     }
     if(this.state.typeProductCategory === '') {
-      console.log(this.state.typeProductCategory);
       this.refs.typeProductValidate.innerHTML ='Bạn chưa tạo loại sản phẩm/dịch vụ nào hãy tạo chúng';
       return false;
     }
@@ -136,7 +137,6 @@ class AddProduct extends Component {
       }
 
       if (file.size > 10000000) {
-        console.log(file.size);
         errs.push(`'${file.name}' is too large, please pick a smaller file`)
       }
 
@@ -263,7 +263,7 @@ class AddProduct extends Component {
                 <FormGroup row className="my-0 mt-3">
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
-                    { productParentCategories === null || loading ? <Spinner /> :   
+                    { productParentCategories === null || loading ? <Spinner /> :
                     <Input
                     className="form-control form-control-lg"
                       type="select" 
@@ -272,6 +272,7 @@ class AddProduct extends Component {
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
+                      <option value="none">-- Chọn thể loại --</option>
                       {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
