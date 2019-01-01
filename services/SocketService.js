@@ -62,12 +62,6 @@ const sendMessage = async mes => {
   try {
     const io = socketService.io;
 
-    console.log(mes);
-
-    const receiver = await AppUserService.findUser(mes.notification.receiver);
-
-    console.log(receiver)
-
     const messageData = {
       conversationId: mes.conversationId,
       message: {
@@ -76,20 +70,23 @@ const sendMessage = async mes => {
       },
     };
     await ConversationService.addMessage(messageData);
-
-    ExpoService.sendNotifications({
-      tokens: [receiver.expoToken],
-      data: {
-        message: `${mes.user.name}: ${mes.message.text}`,
-        type: "message",
-        sender: mes.user._id
-      },
-    });
-
+    messageNotification(mes.notification.receiver, mes);
     io.in(mes.conversationId).emit("sendMessage", mes);
   } catch (error) {
     throw error;
   }
+};
+
+const messageNotification = async (toId, mes) => {
+  const receiver = await AppUserService.findUser(toId);
+  ExpoService.sendNotifications({
+    tokens: [receiver.expoToken],
+    data: {
+      message: `Bạn có tin nhắn mới từ:\n${mes.user.name}: ${mes.message.text}`,
+      type: "message",
+      sender: mes.user._id,
+    },
+  });
 };
 
 const votePost = async post => {
