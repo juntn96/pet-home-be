@@ -152,8 +152,8 @@ class LocationCategory extends Component {
           <Col>
             <Card >
               <CardHeader>
-                <div className="form-group row" >
-                  <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" style={{marginLeft:30,marginRight:20,marginTop:-5}}/>
+                <div className="form-group row">
+                <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" style={{marginLeft:30,marginRight:20,marginTop:-5}}/>
                  <div style={{display:"none"}}>
                  <div className="form-check form-check-inline">
                     <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox1"  ref='all' name="all" />

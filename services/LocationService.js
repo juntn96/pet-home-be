@@ -186,6 +186,19 @@ const updateLocation = async (locationDetail) => {
 }
 module.exports.updateLocation= updateLocation;
 
+const deleteLocationByAdmin = async (locationDetail) => {
+  try {
+    const update = await to(Location.findByIdAndUpdate(locationDetail._id, {deletionFlag: true}));
+    const locationProfile = await to(Location.findById(locationDetail._id));
+    return locationProfile[1];
+  }
+  catch (e) {
+    return TE(res, 'Update location failed', 503);
+  }
+}
+module.exports.deleteLocationByAdmin = deleteLocationByAdmin;
+
+
 const getLocationProfile = async (ownerId) => {
   try {
     let getProfile = await Location.find({ ownerId: ownerId });

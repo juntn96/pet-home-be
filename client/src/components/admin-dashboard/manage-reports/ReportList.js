@@ -72,17 +72,16 @@ class ReportList extends Component {
         <Col xs="4" lg="4" style={{height:150,overflow:"hidden",marginBottom: 20}}>
           <Img src={item.url} style={{ height: "auto" }}></Img>
         </Col>) : ''}
-      </Row>
+      </Row>   
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>
-      {this.state.rqDetail.map(item => <div>
-        <hr />
+      {this.state.rqDetail.map(item => 
         <div>
           <strong style={{marginRight:5}}>{item.reporterId.appName}</strong><small className="text-muted">{new Date(item.updatedAt).toDateString()}</small>
           <br />
           <span className="text-muted">{item.description}</span>
         </div>
-      </div>)}
+      )}
     </div>)
   }
 
@@ -138,7 +137,7 @@ class ReportList extends Component {
               </CardBody>
               </Card>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">Ẩn</button>
               </div>
             </div>
           </div>
@@ -152,6 +151,10 @@ const mapStateToProps = state => ({
   errors: state.errors,
   allusers: state.allusers
 });
+
+const spanStyle = {
+  marginLeft: 10
+}
 
 export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportList));
 

@@ -46,8 +46,8 @@ class LocationItem extends Component {
     this.props.onEdit(location);
   }
 
-  _onSetDelete = () => {
-
+  _deleteProduct = (location) => {
+    this.props.onDelete(location);
   }
 
   render() {
@@ -74,7 +74,7 @@ class LocationItem extends Component {
         <td style={{ verticalAlign: "middle" }}>{location.address}</td>
         <td style={{ verticalAlign: "middle" }}>{location.description}</td>
         <td style={{ verticalAlign: "middle" }}>{location.typeId.name}</td>
-        <td style={{ color: "orange",verticalAlign: "middle" }}>{maxRate.map(item => item === 1 ? <FontAwesomeIcon icon={faStar} size='1x' color='#F2BB05' /> : (item === 0.5 ? <FontAwesomeIcon icon={faStarHalfAlt} size='1x' color='#CCCCCC' /> : <span ><FontAwesomeIcon icon={faStar} size='1x' color='#CCCCCC' /></span>))}</td>
+        <td style={{ color: "orange", verticalAlign: "middle" }}>{maxRate.map(item => item === 1 ? <FontAwesomeIcon icon={faStar} size='1x' color='#F2BB05' /> : (item === 0.5 ? <FontAwesomeIcon icon={faStarHalfAlt} size='1x' color='#CCCCCC' /> : <span ><FontAwesomeIcon icon={faStar} size='1x' color='#CCCCCC' /></span>))}</td>
         <td style={{ verticalAlign: "middle" }}><Badge color={style}>{text}</Badge></td>
         {/* <td style={{verticalAlign:"middle"}}>
         <div>{userDetail.appName}</div>
@@ -102,7 +102,7 @@ class LocationItem extends Component {
           {location.ownerId._id === this.props.user.user_id && this.props.user.role === 3 ?
             <button
               className="btn btn-sm btn-danger"
-              onClick={this._onSetDelete}
+              onClick={() => this._deleteProduct(location)}
               data-toggle="modal"
               data-target="#deleteProduct">
               <i className="fa fa-trash"></i>

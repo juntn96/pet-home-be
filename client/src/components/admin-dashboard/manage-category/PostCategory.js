@@ -156,7 +156,8 @@ class PostCategory extends Component {
                 </div>
               </CardHeader>
             </Card>
-          </Col></Row>
+          </Col>
+        </Row>
         <div ref="tesst">
           <Row >
             {categories === null || isLoading ? <Spinner /> :(categories.length === 0? <Empty/> :
@@ -212,7 +213,8 @@ class PostCategory extends Component {
             </div>
           </div>
         </div>
-      </div>)
+      </div>
+    )
   }
 
 }
