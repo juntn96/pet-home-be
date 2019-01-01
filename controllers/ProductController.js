@@ -103,10 +103,25 @@ const getProductParentCategories = async (req, res) => {
   else {
     return ReE(res, 'Get productParentCategories failed', 503);
   }
-  				
 };
-
 module.exports.getProductParentCategories = getProductParentCategories;
+
+const getProductParentCategoriesProduct = async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  const ownerId = req.params.ownerId;
+  let erro, productParentCategories;
+  [erro, productParentCategories] = await to(productService.getProductParentCategoriesProduct(ownerId));
+  if (erro) {
+    return ReE(res, 'Get productParentCategories failed', 422);
+  }	
+  if (productParentCategories) {
+    return ReS(res, { message: 'Get productParentCategories success', productParentCategories: productParentCategories }, 200);
+  }
+  else {
+    return ReE(res, 'Get productParentCategories failed', 503);
+  }
+};
+module.exports.getProductParentCategoriesProduct = getProductParentCategoriesProduct;
 
 const getProductByIds = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');

@@ -63,7 +63,7 @@ class DefaultHeader extends Component {
                 state: { linkState: locationDetail }
               }}>Thông tin địa điểm</Link></DropdownItem>
               <DropdownItem><i className="fa fa-lock"></i>
-              <Link style={{ textDecoration: 'none', color: '#181b1e' }} to={{pathname: "/chgpwd"}}>Thay đổi mật khẩu</Link></DropdownItem>
+              <a href="/chgpwd">Thay đổi mật khẩu</a></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

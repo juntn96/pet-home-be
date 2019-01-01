@@ -29,7 +29,7 @@ class ProductCategory extends Component {
       description: '',
       productParentCategories: [],
       checkUpdate: false,
-      isLoading: false,
+      isLoading: true,
       editingIndex: -1
     }
   }
@@ -229,7 +229,7 @@ class ProductCategory extends Component {
                     </tr>
                   </thead>
                   <tbody ref="table">
-                    {productParentCategories === null || loading ? <Spinner /> :
+                    {productParentCategories === null || this.state.isLoading ? <Spinner /> :
                       productParentCategories.map((item, index) => this.renderRowItem(item, index))
                     }
                   </tbody>

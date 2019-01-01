@@ -42,7 +42,8 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
               <DropdownItem><i className="fa fa-lock"></i>
-              <Link style={{ textDecoration: 'none', color: '#181b1e' }} to={{path: "/admin/chgpwd"}}>Thay đổi mật khẩu</Link></DropdownItem>
+              <a href="/admin/chgpwd">Thay đổi mật khẩu</a>
+              </DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

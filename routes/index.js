@@ -100,6 +100,14 @@ router.get(
   ProductController.getProductParentCategories
 );
 
+router.get(
+  "/product/category/:ownerId",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.getProductParentCategoriesProduct
+);
+
 router.post(
   "/product/addProductParentCategory",
   passport.authenticate("jwt", {
