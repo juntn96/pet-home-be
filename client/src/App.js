@@ -69,6 +69,7 @@ class App extends Component {
               {/* admin */}
               <PrivateRoute path="/admin/allusers" component={DefaultLayoutAdmin}/>
               <PrivateRoute path="/admin/report" component={DefaultLayoutAdmin} />
+              <PrivateRoute path="/admin/report/detail" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/location" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/category/post" component={DefaultLayoutAdmin} />
               <PrivateRoute path="/admin/location" component={DefaultLayoutAdmin} />

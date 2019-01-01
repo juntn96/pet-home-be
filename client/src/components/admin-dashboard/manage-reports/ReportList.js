@@ -8,6 +8,7 @@ import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'
 import axios from 'axios';
 import Empty from '../../common/Empty';
+import Lightbox from 'react-lightbox-component';
 class ReportList extends Component {
 
   constructor(props) {
@@ -60,27 +61,39 @@ class ReportList extends Component {
   }
 
   renderContent = () => {
-    return (<div>
+    const imagesList = this.state.detail.images.map(item => {return { src: item.url}});
+    return (
+    <div>
       <div>{this.state.detail.title}</div>
       <br />
-      {this.state.detail !== null ? this.state.detail.images.map(item =>
-        <Row>
-          <Col xs="4" lg="4">
-            <Img src={item.url} style={{ height: 200, width: 200 }}>
-            </Img>
-          </Col>
-        </Row>
-      ) : ''}
+      {/* <div> */}
+      {this.state.detail !== null ? 
+        // this.state.detail.images.map(item =>
+        // <Row>
+        //   <Col xs="4" lg="4">
+        //     <img src={item.url} style={{ height: 200, width: 200 }}>
+        //     </img>
+        //   </Col>
+        // </Row>) 
+        <Lightbox 
+          images={imagesList}
+          thumbnailWidth='150px'
+          thumbnailHeight='150px'
+          />
+        : ''}
+      {/* </div> */}
+      
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>
-      {this.state.rqDetail.map(item => <div>
+      {this.state.rqDetail.map(item => 
         <div>
-          <strong style={{ marginBottom: 20 }}>{item.reporterId.appName}</strong>
-          <small className="text-muted" style={spanStyle}>{new Date(item.updatedAt).toDateString()}</small>
-          <br />
-          <span className="text-muted">{item.description}</span>
-        </div>
-      </div>)}
+          <div>
+            <strong style={{ marginBottom: 20 }}>{item.reporterId.appName}</strong>
+            <small className="text-muted" style={spanStyle}>{new Date(item.updatedAt).toDateString()}</small>
+            <br />
+            <span className="text-muted">{item.description}</span>
+          </div>
+        </div>)}
     </div>)
   }
 

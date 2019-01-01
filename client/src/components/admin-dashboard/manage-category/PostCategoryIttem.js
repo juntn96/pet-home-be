@@ -14,9 +14,11 @@ class PostCategoryIttem extends Component {
 
   componentDidMount() {
   }
+
   _deleteItem = () => {
     this.props.onDeleteHandle({ id: this.props.postCate._id, deletionFlag: this.props.postCate.deletionFlag, name: this.props.postCate.name });
   }
+  
   render() {
     const { postCate } = this.props;
     const date = new Date(postCate.updatedAt).toLocaleDateString();

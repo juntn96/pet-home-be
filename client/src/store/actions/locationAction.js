@@ -80,6 +80,28 @@ export const updateLocation = (location, history) => dispatch => {
     );
 };
 
+export const deleteAdminLocation = (location, history) => dispatch => {
+  axios
+    .put(`/api/admin/deleteAdminLocation`, location)
+    .then(res =>
+      {
+        history.push('/admin/location');
+        dispatch({
+          type: UPDATE_LOCATION_SUCCESS,
+          payload: res.data.locationProfile
+        })
+      }
+    )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      }
+    );
+};
+
 export const updatePrivateLocation = (location, history) => dispatch => {
   axios
     .put(`/api/location/update`, location)

@@ -32,10 +32,5 @@ export default {
         url: '/admin/report',
         icon: 'icon-list'
       },
-      // {
-      //   name: 'Thêm địa điểm mới',
-      //   url: '/admin/location/add',
-      //   icon: 'icon-list'
-      // }
     ]
 }

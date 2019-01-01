@@ -22,6 +22,7 @@
     "react-geosuggest": "^2.9.0",
     "react-google-maps": "^9.4.5",
     "react-image": "^1.5.1",
+    "react-lightbox-component": "^1.2.1",
     "react-loadable": "^5.5.0",
     "react-notify-toast": "^0.5.0",
     "react-redux": "^5.0.7",

@@ -46,8 +46,8 @@ class LocationItem extends Component {
     this.props.onEdit(location);
   }
 
-  _onSetDelete = () => {
-
+  _deleteProduct = (location) => {
+    this.props.onDelete(location);
   }
 
   render() {
@@ -102,7 +102,7 @@ class LocationItem extends Component {
           {location.ownerId._id === this.props.user.user_id && this.props.user.role === 3 ?
             <button
               className="btn btn-sm btn-danger"
-              onClick={this._onSetDelete}
+              onClick={() => this._deleteProduct(location)}
               data-toggle="modal"
               data-target="#deleteProduct">
               <i className="fa fa-trash"></i>
