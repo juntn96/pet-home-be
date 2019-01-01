@@ -166,7 +166,7 @@ class ProductCategory extends Component {
               <form onSubmit={this.addCategory}>
               <input type ="hidden" value={this.state._id}/>
               <FormGroup>
-                <Label htmlFor="description">Mô tả</Label>
+                <Label htmlFor="description">Tên sản phẩm / dịch vụ</Label>
                 <input type="text"  className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
                 <FormText className="help-block">Vui lòng nhập tên thể loại</FormText>
                 </FormGroup>

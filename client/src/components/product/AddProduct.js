@@ -61,7 +61,11 @@ class AddProduct extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
-      return { errors: nextProps.errors};
+      if(nextProps.product.productParentCategories.length > 0){
+        return {errors: nextProps.errors, typeProductCategory: nextProps.product.productParentCategories[0]._id}
+      } else {
+        return { errors: nextProps.errors};
+      }
     }
     else return null;
   }
@@ -85,6 +89,7 @@ class AddProduct extends Component {
       return false;
     }
     if(this.state.typeProductCategory === '') {
+      console.log(this.state.typeProductCategory);
       this.refs.typeProductValidate.innerHTML ='Bạn chưa tạo loại sản phẩm/dịch vụ nào hãy tạo chúng';
       return false;
     }

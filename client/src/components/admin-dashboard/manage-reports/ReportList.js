@@ -8,7 +8,6 @@ import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'
 import axios from 'axios';
 import Empty from '../../common/Empty';
-import Lightbox from 'react-lightbox-component';
 class ReportList extends Component {
 
   constructor(props) {
@@ -66,22 +65,17 @@ class ReportList extends Component {
     <div>
       <div>{this.state.detail.title}</div>
       <br />
-      {/* <div> */}
+      <div>
       {this.state.detail !== null ? 
-        // this.state.detail.images.map(item =>
-        // <Row>
-        //   <Col xs="4" lg="4">
-        //     <img src={item.url} style={{ height: 200, width: 200 }}>
-        //     </img>
-        //   </Col>
-        // </Row>) 
-        <Lightbox 
-          images={imagesList}
-          thumbnailWidth='150px'
-          thumbnailHeight='150px'
-          />
+        this.state.detail.images.map(item =>
+        <Row>
+          <Col xs="4" lg="4">
+            <Img src={item.url} style={{ height: 200, width: 200 }}>
+            </Img>
+          </Col>
+        </Row>) 
         : ''}
-      {/* </div> */}
+      </div>
       
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>

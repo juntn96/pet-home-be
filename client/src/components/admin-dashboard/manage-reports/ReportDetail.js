@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import axios from 'axios';
-import Lightbox from 'react-lightbox-component';
 
 export default class ReportDetail extends Component {
   constructor(props){
@@ -28,10 +27,6 @@ export default class ReportDetail extends Component {
     return (
       <div>
         <h1>HAHAHAH</h1>
-        <Lightbox
-          images={imagesList}
-          thumbnailWidth='150px'
-          thumbnailHeight='150px'/>
       </div>
     )
   }
