@@ -39,6 +39,10 @@ const onConnection = socket => {
     console.log("hidden post", post);
     hidePost(post);
   });
+  socket.on("commentPost", post => {
+    console.log("comment post", post);
+    onCommentPost(post);
+  });
 };
 
 const joinConversation = (socket, conversation) => {
@@ -90,6 +94,15 @@ const hidePost = async post => {
   try {
     const io = socketService.io;
     io.emit("hidePost", post);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const onCommentPost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("commentPost", post);
   } catch (error) {
     throw error;
   }
