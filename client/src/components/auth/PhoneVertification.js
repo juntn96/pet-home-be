@@ -96,7 +96,7 @@ class PhoneVertification extends Component {
               </div>
 
               { messageSendCode && messageSendCode.message !== undefined && (                      
-                  <p className="font-weight-normal text-center">{messageSendCode.message}</p>
+                  <p className="font-weight-normal text-center" style={{color: '#ffffff', marginBottom: 10 }}>{messageSendCode.message}</p>
               )}
               { errorsProps && (
                   <p className="font-weight-normal" style={{color: '#ffffff'}}>{errorsProps.message}</p>
