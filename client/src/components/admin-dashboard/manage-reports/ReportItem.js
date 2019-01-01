@@ -32,9 +32,13 @@ class ReportItem extends Component {
   }
 
   _requestBanUser = () => {
+    const { socket } = this.props.socketState;
     const update = {id: this.props.reportDetail._id,deletionFlag: !this.state.deletionFlag }
     axios.put('/api/report/updateReportStatus', update).then(res =>{
       this._requestGetDelectionFlag();
+      if (socket) {
+        socket.emit("hidePost", update);
+      }
     })
   }
 
@@ -101,7 +105,8 @@ class ReportItem extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  allusers: state.allusers
+  allusers: state.allusers,
+  socketState: state.socketState,
 });
 
 export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportItem));

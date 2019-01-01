@@ -21,6 +21,17 @@ const get = async (req, res) => {
     return ReE(res, error, 422);
   }
 };
+
+const getVisible = async (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  try {
+    const categories = await postCategoryService.getVisibleCategories();
+    return ReS(res, { categories }, 200);
+  } catch (error) {
+    return ReE(res, error, 422);
+  }
+};
+
 const getByID = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -57,8 +68,12 @@ const updateNameById = async (req, res) => {
   try {
     const id = req.body.id;
     const name = req.body.name;
-    console.log(req.body)
-    const result = await postCategoryService.updateNameById(id,req.body.field, name);
+    console.log(req.body);
+    const result = await postCategoryService.updateNameById(
+      id,
+      req.body.field,
+      name
+    );
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -71,5 +86,6 @@ module.exports = {
   deleteById,
   findByName,
   updateNameById,
-  getByID
+  getByID,
+  getVisible
 };

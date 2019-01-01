@@ -18,17 +18,41 @@ const onConnection = socket => {
   socket.on("joinConversation", conversation =>
     joinConversation(socket, conversation)
   );
+  socket.on("leaveConversation", conversation =>
+    leaveConversation(socket, conversation)
+  );
   socket.on("sendMessage", mes => {
     sendMessage(mes);
   });
+  socket.on("votePost", post => {
+    console.log(">> vote post: ", post);
+    votePost(post);
+  });
   socket.on("disconnect", reason => {
     socket.leaveAll();
+  });
+  socket.on("banUser", user => {
+    console.log("user get banned", user);
+    banUser(user);
+  });
+  socket.on("hidePost", post => {
+    console.log("hidden post", post);
+    hidePost(post);
+  });
+  socket.on("commentPost", post => {
+    console.log("comment post", post);
+    onCommentPost(post);
   });
 };
 
 const joinConversation = (socket, conversation) => {
   console.log("socket joined: ", conversation._id);
   socket.join(conversation._id);
+};
+
+const leaveConversation = (socket, conversation) => {
+  console.log("socket leave: ", conversation._id);
+  socket.leave(conversation._id);
 };
 
 const sendMessage = async mes => {
@@ -43,6 +67,42 @@ const sendMessage = async mes => {
     };
     await ConversationService.addMessage(messageData);
     io.in(mes.conversationId).emit("sendMessage", mes);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const votePost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("votePost", post);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const banUser = async user => {
+  try {
+    const io = socketService.io;
+    io.emit("banUser", user);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const hidePost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("hidePost", post);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const onCommentPost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("commentPost", post);
   } catch (error) {
     throw error;
   }

@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import './App.css';
-import './App.scss';
-import { BrowserRouter as Router,Route, Switch } from 'react-router-dom';
-import PhoneVertification from './components/auth/PhoneVertification';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import ForgetPass from './components/auth/ForgetPass';
-import SendPassSuccess from './components/auth/SendPassSuccess';
-import RegisterSuccess from './components/auth/RegisterSuccess';
+import React, { Component } from "react";
+import "./App.css";
+import "./App.scss";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PhoneVertification from "./components/auth/PhoneVertification";
+import Register from "./components/auth/Register";
+import Login from "./components/auth/Login";
+import ForgetPass from "./components/auth/ForgetPass";
+import SendPassSuccess from "./components/auth/SendPassSuccess";
+import RegisterSuccess from "./components/auth/RegisterSuccess";
 
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser, logoutUser } from './store/actions/authActions';
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import { setCurrentUser, logoutUser } from "./store/actions/authActions";
 
-import { Provider } from 'react-redux';
-import store from './store/store';
+import { Provider } from "react-redux";
+import store from "./store/store";
 
-import PrivateRoute from './components/common/PrivateRoute';
-import NotFound from './components/not-found/NotFound';
+import PrivateRoute from "./components/common/PrivateRoute";
+import NotFound from "./components/not-found/NotFound";
 
-import DefaultLayout from './components/layout/DefaultLayout';
-import UploadImage from './components/uploadImage/UploadImage';
-import DefaultLayoutAdmin from './components/admin-dashboard/layout/DefaultLayoutAdmin';
+import DefaultLayout from "./components/layout/DefaultLayout";
+import UploadImage from "./components/uploadImage/UploadImage";
+import DefaultLayoutAdmin from "./components/admin-dashboard/layout/DefaultLayoutAdmin";
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -40,7 +40,7 @@ if (localStorage.jwtToken) {
     // TODO: Clear current Profile
 
     // Redirect to login
-    window.location.href = '/login';
+    window.location.href = "/login";
   }
 }
 class App extends Component {
@@ -50,7 +50,11 @@ class App extends Component {
         <Router>
           <div className="App">
             <Route exact path="/" component={Login} />
-            <Route exact path="/phoneVertification" component={PhoneVertification} />
+            <Route
+              exact
+              path="/phoneVertification"
+              component={PhoneVertification}
+            />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/forgetPass" component={ForgetPass} />
