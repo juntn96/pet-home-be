@@ -112,9 +112,6 @@ router.post(
 //#region Location
 router.get(
   "/location/detail/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
   LocationController.getLocationProfile
 );
 

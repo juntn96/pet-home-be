@@ -1,12 +1,13 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory } from '../../store/actions/productAction';
-import {FormGroup, 
-  InputGroup, 
-  Input, 
-  Card, 
-  CardBody, 
-  Col, 
+import {
+  FormGroup,
+  InputGroup,
+  Input,
+  Card,
+  CardBody,
+  Col,
   Row,
   CardHeader,
   Table,
@@ -16,12 +17,12 @@ import {FormGroup,
   Badge
 } from 'reactstrap';
 import Spinner from '../common/Spinner';
-import { withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class ProductCategory extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       name: '',
@@ -32,6 +33,7 @@ class ProductCategory extends Component {
       editingIndex: -1
     }
   }
+
   componentDidMount() {
     this._getAllCategory();
     this.setState(this.props.product.productParentCategories);
@@ -40,20 +42,22 @@ class ProductCategory extends Component {
     script.async = true;
     document.body.appendChild(script);
   }
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
-  getPropertyCategory = (e, index) =>{
+
+  getPropertyCategory = (e, index) => {
     e.preventDefault();
     this.setState({
-      _id:e.currentTarget.getElementsByTagName('input')[0].value,
-      name: e.currentTarget.getElementsByTagName('td')[0].innerText.trim(),
-      description: e.currentTarget.getElementsByTagName('td')[1].innerText.trim(),
+      _id: e.currentTarget.getElementsByTagName('input')[0].value,
+      name: e.currentTarget.getElementsByTagName('input')[1].value.trim(),
+      description: e.currentTarget.getElementsByTagName('input')[2].value.trim(),
       checkUpdate: true,
       editingIndex: e.currentTarget.getElementsByTagName('input')[0].value
     });
   }
-  
+
   _getAllCategory = () => {
     axios.get(`/api/product/productParentCategories/${this.props.auth.user.user_id}`).then(res => {
       this.setState({
@@ -65,24 +69,26 @@ class ProductCategory extends Component {
     });
   }
 
-
   setDeletionFlagFalse = (e) => {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true });
     let deletionFlag = false;
-    if(e.currentTarget.value === 'true') deletionFlag = false;
-    if(e.currentTarget.value === 'false') deletionFlag = true;
+    if (e.currentTarget.value === 'true') deletionFlag = false;
+    if (e.currentTarget.value === 'false') deletionFlag = true;
     const newCategory = {
-      id: this.state._id,
-      name: this.state.name,
-      description: this.state.description,
+      id: e.currentTarget.getElementsByTagName('input')[0].value,
+      name: e.currentTarget.getElementsByTagName('input')[1].value,
+      description: e.currentTarget.getElementsByTagName('input')[2].value,
       deletionFlag: deletionFlag,
     };
-    axios.put(`/api/product/updateProductCategory`,newCategory).then(res => {
-      this._getAllCategory();
-    }).catch(err => {
-      //todo
-    });
+    if(newCategory!==null){
+      axios.put(`/api/product/updateProductCategory`, newCategory).then(res => {
+        this._getAllCategory();
+      }).catch(err => {
+        //todo
+      });
+    }
   }
+
   cancelEdit = (e) => {
     this.setState({
       name: '',
@@ -90,54 +96,67 @@ class ProductCategory extends Component {
       checkUpdate: false
     });
   }
+
   addCategory = (e) => {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     e.preventDefault();
-    if (this.state.checkUpdate === false){
+    if (this.state.checkUpdate === false) {
+      this.refs.title.innerHTML = "Thêm thể loại";
       const newCategory = {
         ownerId: this.props.auth.user.user_id,
         name: this.state.name,
         description: this.state.description,
         deletionFlag: false,
       };
-      axios.post(`/api/product/addProductParentCategory`,newCategory).then(res => {
+      axios.post(`/api/product/addProductParentCategory`, newCategory).then(res => {
         this._getAllCategory();
       }).catch(err => {
         //todo
       });
       this.cancelEdit()
-    }else{
+    } else {
+      this.refs.title.innerHTML = "Sửa thể loại";
       const newCategory = {
         id: this.state._id,
         name: this.state.name,
         description: this.state.description
       };
-      axios.put(`/api/product/updateProductCategory`,newCategory).then(res => {
+      axios.put(`/api/product/updateProductCategory`, newCategory).then(res => {
         this._getAllCategory();
       }).catch(err => {
         //todo
       });
       this.cancelEdit()
     }
-    
+
   }
   renderRowItem = (item, index) => {
     return (
-      <tr ref="rowCategory" key={index} onClick={this.getPropertyCategory} style={{opacity: this.state.isLoading === true && item._id === this.state.editingIndex ? 0.4 : 1}} >
-          <input type ="hidden" value={item._id}/>
-          <td name="name">{item.name}</td>
-          <td>{item.description}</td>
-          {item.deletionFlag===false ?
-            <td><Badge color="success">Đang hoạt động</Badge></td>:
-            <td><Badge color="secondary">Đang bị ẩn</Badge></td>
-          }
-          <td><Button onClick={this.setDeletionFlagFalse} size="sm" ref="hideShowFlag" value={item.deletionFlag} color="warning" >
-          {item.deletionFlag===false ? "Ẩn": "Hiện"}<input type ="hidden" value={item._id}/>
-          </Button></td>
+      <tr ref="rowCategory" key={index} style={{ opacity: this.state.isLoading === true && item._id === this.state.editingIndex ? 0.4 : 1 }} >
+        <input type="hidden" value={item._id} />
+        <td name="name">{item.name}</td>
+        <td>{item.description}</td>
+        {item.deletionFlag === false ?
+          <td><Badge color="success">Đang hoạt động</Badge></td> :
+          <td><Badge color="secondary">Đang bị ẩn</Badge></td>
+        }
+        <td><Button onClick={this.setDeletionFlagFalse} size="sm" style={{width:45}} ref="hideShowFlag" value={item.deletionFlag} color="warning" >
+          {item.deletionFlag === false ? "Ẩn" : "Hiện"}
+          <input type="hidden" value={item._id}/><input type="hidden" value={item.name} />
+          <input type="hidden" value={item.description} />
+          <input type="hidden" value={item.deletionFlag} />
+        </Button></td>
+        <td><Button onClick={this.getPropertyCategory} size="sm" style={{width:45}} color="danger" >
+          Sửa
+          <input type="hidden" value={item._id}/><input type="hidden" value={item.name} />
+          <input type="hidden" value={item.description} />
+          <input type="hidden" value={item.deletionFlag} />
+        </Button></td>
       </tr>
     );
   }
-  onSearch =(e) => {
+  onSearch = (e) => {
+    if(this.state.productParentCategories.length !==0){
     let tr = this.refs.table.getElementsByTagName('tr');
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[0];
@@ -148,74 +167,75 @@ class ProductCategory extends Component {
           tr[i].style.display = "none";
         }
       }
-    }
+    }}
   }
 
   render() {
     const { productParentCategories } = this.state;
     const { loading } = this.props.product;
-    return(
+    return (
       <div>
         <Row>
           <Col xs="3" lg="3">
-          <Card>
-            <CardHeader>
-                <i className="fa fa-align-justify"></i> 
-            <strong>Thêm thể loại</strong>
-            </CardHeader><CardBody>
-              <form onSubmit={this.addCategory}>
-              <input type ="hidden" value={this.state._id}/>
-              <FormGroup>
-                <Label htmlFor="description">Mô tả</Label>
-                <input type="text"  className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
-                <FormText className="help-block">Vui lòng nhập tên thể loại</FormText>
-                </FormGroup>
-                <FormGroup row className="my-0">
-                <Col>
-                  <Label htmlFor="description">Mô tả</Label>
-                  <Input type="textarea" value={this.state.description} onChange={this.onChange} name="description" id="description" rows="4"/>
-                  <FormText className="help-block">Nhập nội dung phần mô tả</FormText>
-                </Col>
-                </FormGroup>
-                { this.state.checkUpdate===false ? <Button type="submit" color="info"><i className="fa fa-save"></i> Thêm mới</Button>:<div>
-                <Button type="submit" color="info"><i className="fa fa-save"></i> Sửa</Button>
-                <Button type="button" onClick={this.cancelEdit} color="secondary">Hủy</Button>
-                </div>  }
-              </form>
-              </CardBody>
-              </Card>
-          </Col>
-        <Col xs="8" lg="8">
             <Card>
-            <CardHeader>
+              <CardHeader>
+                <i className="fa fa-align-justify"></i>
+                <strong ref="title">Thêm thể loại</strong>
+              </CardHeader><CardBody>
+                <form onSubmit={this.addCategory}>
+                  <input type="hidden" value={this.state._id} />
+                  <FormGroup>
+                    <Label htmlFor="description">Mô tả</Label>
+                    <input type="text" className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
+                    <FormText className="help-block">Vui lòng nhập tên thể loại</FormText>
+                  </FormGroup>
+                  <FormGroup row className="my-0">
+                    <Col>
+                      <Label htmlFor="description">Mô tả</Label>
+                      <Input type="textarea" value={this.state.description} onChange={this.onChange} name="description" id="description" rows="4" />
+                      <FormText className="help-block">Nhập nội dung phần mô tả</FormText>
+                    </Col>
+                  </FormGroup>
+                  {this.state.checkUpdate === false ? <Button type="submit" color="info"><i className="fa fa-save"></i> Thêm mới</Button> : <div>
+                    <Button type="submit" color="info"><i className="fa fa-save"></i> Sửa</Button>
+                    <Button type="button" onClick={this.cancelEdit} color="secondary">Hủy</Button>
+                  </div>}
+                </form>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xs="8" lg="8">
+            <Card>
+              <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách thể loại
-                <div style={{float: 'right'}}>
+                <div style={{ float: 'right' }}>
                   <Col sm="12">
                     <InputGroup>
-                    <Input type="text" name="search" value={this.state.search}  onChange={this.onSearch} placeholder="Tìm thể loại" />
+                      <Input type="text" name="search" value={this.state.search} onChange={this.onSearch} placeholder="Tìm thể loại" />
                     </InputGroup>
-                    </Col>
-                </div> 
-            </CardHeader>
-            <CardBody>
+                  </Col>
+                </div>
+              </CardHeader>
+              <CardBody>
                 <Table hover responsive>
-                <thead>
-                <tr>
-                    <th>Tên</th>
-                    <th>Mô tả</th>
-                    <th>Trạng thái</th>
-                    <th>Xử lý</th>
-                </tr>
-                </thead>
-                <tbody ref="table">
-                  { productParentCategories === null || loading ? <Spinner /> : 
-                      productParentCategories.map((item, index) => this.renderRowItem(item,index))
-                  }
-                </tbody>
+                  <thead>
+                    <tr>
+                      <th>Tên</th>
+                      <th>Mô tả</th>
+                      <th>Trạng thái</th>
+                      <th>Xử lý</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody ref="table">
+                    {productParentCategories === null || loading ? <Spinner /> :
+                      productParentCategories.map((item, index) => this.renderRowItem(item, index))
+                    }
+                  </tbody>
                 </Table>
-            </CardBody>
+              </CardBody>
             </Card>
-        </Col>
+          </Col>
         </Row>
       </div>
     );
@@ -227,5 +247,5 @@ const mapStateToProps = state => ({
   errors: state.errors,
   product: state.product
 });
-  
-export default connect(mapStateToProps, {createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory  })(withRouter(ProductCategory));
+
+export default connect(mapStateToProps, { createProductParentCategories, getProductParentCategories, updateProductCategory, deleteProductCategory })(withRouter(ProductCategory));

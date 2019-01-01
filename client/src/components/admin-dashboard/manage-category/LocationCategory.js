@@ -81,7 +81,8 @@ class LocationCategory extends Component {
   }
 
   _onSearch = (e) => {
-    this._inputSearchAll(e);
+    if(this.state.locationCategories.length !== 0)
+      this._inputSearchAll(e);
   }
   _inputSearch = (e, val) =>{
     const list = this.refs.search.getElementsByClassName('nameItemValue');
@@ -203,15 +204,15 @@ class LocationCategory extends Component {
                   <input className="form-control" onChange={this.onChange} name="name" value={this.state.name} />
                   <small ref='editErrMsg' className="" style={{ color: 'red' }}></small>
                   <br/>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocationEdit" ref="publicEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===2} id="publicLocation" value="2"/>
-                    <label class="form-check-label" htmlFor="publicLocation">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocationEdit" ref="publicEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===2} id="publicLocation" value="2"/>
+                    <label className="form-check-label" htmlFor="publicLocation">
                       Địa điểm công cộng
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocationEdit" ref="privateEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===1} id="privateLocaton" value="1"/>
-                    <label class="form-check-label" htmlFor="privateLocaton">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocationEdit" ref="privateEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===1} id="privateLocaton" value="1"/>
+                    <label className="form-check-label" htmlFor="privateLocaton">
                       Địa điểm cá nhân
                     </label>
                   </div>
@@ -235,15 +236,15 @@ class LocationCategory extends Component {
                   <input className="form-control" onChange={this.onChange} name="newName" placeholder="nhập tên ..." value={this.state.newName} />
                   <small ref='addErrMsg' className="" style={{ color: 'red' }}></small>
                   <br/>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="2" defaultChecked/>
-                    <label class="form-check-label" htmlFor="publicLocation1">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="2" defaultChecked/>
+                    <label className="form-check-label" htmlFor="publicLocation1">
                       Địa điểm công cộng
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="1"/>
-                    <label class="form-check-label" htmlFor="privateLocaton1">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="1"/>
+                    <label className="form-check-label" htmlFor="privateLocaton1">
                       Địa điểm cá nhân
                     </label>
                   </div>

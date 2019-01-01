@@ -3,7 +3,6 @@ import Loadable from 'react-loadable'
 import ProductList from './components/product/ProductList';
 import ProductCategory from './components/product/ProductCategory';
 import EditProduct from './components/product/EditProduct';
-import Profile from './components/profile/Profile';
 import ChangePassword from './components/auth/ChangePassword';
 import UserList from './components/admin-dashboard/manage-users/UserList';
 import LocationDetail from './components/location/LocationDetail';
@@ -29,7 +28,6 @@ const routes = [
     { path: '/product/edit', exact: true, name: 'Sửa sản phẩm', component: EditProduct },
     { path: '/category', exact: true, name: 'Quản lý thể loại', component: ProductCategory },
     { path: '/product', exact: true, name: 'Quản lý sản phẩm', component: ProductList },
-    { path: '/profile', exact: true, name: 'Thông tin cá nhân', component: Profile },
     { path: '/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePassword },
     { path: '/locationDetail', exact: true, name: 'Thông tin địa điểm', component: LocationDetail },
     { path: '/admin/allusers', exact: true, name: 'Tất cả người dùng', component: UserList },

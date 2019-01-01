@@ -37,6 +37,7 @@ class LocationAdmin extends Component {
   }
 
   onSearch = (e) => {
+    if(this.state.locations.length !==0){
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[1];
@@ -47,7 +48,7 @@ class LocationAdmin extends Component {
           tr[i].style.display = "none";
         }
       }
-    }
+    }}
   }
 
   _onClickAddLocation = () => {

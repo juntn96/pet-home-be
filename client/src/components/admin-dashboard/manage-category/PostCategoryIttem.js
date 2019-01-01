@@ -28,8 +28,8 @@ class PostCategoryIttem extends Component {
           <CardHeader>
             <span ref="nameItem" className="nameItem">{postCate.name}</span>
             <div className="card-header-actions">
-              <a href className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#editModal"><i className="icon-pencil"></i></a>
-              <a href className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#exampleModal">
+              <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#editModal"><i className="icon-pencil"></i></a>
+              <a className="card-header-action btn btn-close" onClick={this._deleteItem} data-toggle="modal" data-target="#exampleModal">
                 <i className="icon-close"></i>
               </a>
             </div>

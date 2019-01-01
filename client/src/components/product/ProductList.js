@@ -36,7 +36,6 @@ class AddProduct extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-
     const newProduct = {
       name: this.state.name,
       desciption: this.state.desciption,
@@ -47,14 +46,16 @@ class AddProduct extends Component {
   }
 
   onSearch = (e) => {
-    let tr = this.refs.tableSearch.getElementsByTagName('tr');
-    for (let i = 0; i < tr.length; i++) {
-      let td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    if(this.state.products.length !== 0){
+      let tr = this.refs.tableSearch.getElementsByTagName('tr');
+      for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
