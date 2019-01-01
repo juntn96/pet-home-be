@@ -82,6 +82,7 @@ const sendMessage = async mes => {
       data: {
         message: `${mes.user.appName}: ${mes.message.text}`,
         type: "message",
+        sender: mes.user._id
       },
     });
 
