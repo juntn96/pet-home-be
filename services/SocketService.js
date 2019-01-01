@@ -18,6 +18,9 @@ const onConnection = socket => {
   socket.on("joinConversation", conversation =>
     joinConversation(socket, conversation)
   );
+  socket.on("leaveConversation", conversation =>
+    leaveConversation(socket, conversation)
+  );
   socket.on("sendMessage", mes => {
     sendMessage(mes);
   });
@@ -33,6 +36,11 @@ const onConnection = socket => {
 const joinConversation = (socket, conversation) => {
   console.log("socket joined: ", conversation._id);
   socket.join(conversation._id);
+};
+
+const leaveConversation = (socket, conversation) => {
+  console.log("socket leave: ", conversation._id);
+  socket.leave(conversation._id);
 };
 
 const sendMessage = async mes => {
