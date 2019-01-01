@@ -1,5 +1,8 @@
 const socket = require("socket.io");
 const ConversationService = require("./ConversationServices");
+const NotificationService = require("./NotificationService");
+const AppUserService = require("./AppUserService");
+const ExpoService = require("./ExpoService");
 
 class SocketService {
   constructor() {
@@ -58,6 +61,9 @@ const leaveConversation = (socket, conversation) => {
 const sendMessage = async mes => {
   try {
     const io = socketService.io;
+
+    const receiver = await AppUserService.findUser(mes.notification.receiver);
+
     const messageData = {
       conversationId: mes.conversationId,
       message: {
@@ -66,6 +72,15 @@ const sendMessage = async mes => {
       },
     };
     await ConversationService.addMessage(messageData);
+
+    ExpoService.sendNotifications({
+      tokens: [receiver.expoToken],
+      data: {
+        message: `${mes.user.appName}: ${mes.message.text}`,
+        type: "message",
+      },
+    });
+
     io.in(mes.conversationId).emit("sendMessage", mes);
   } catch (error) {
     throw error;
