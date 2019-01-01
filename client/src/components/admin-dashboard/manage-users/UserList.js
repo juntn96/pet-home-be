@@ -56,7 +56,7 @@ class UserList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { users.allusers.users === undefined  ? <Spinner /> :
+              { users.allusers.users === undefined ||users ===null  ? <Spinner /> :
                 <Table hover responsive >
                   <thead>
                   <tr>

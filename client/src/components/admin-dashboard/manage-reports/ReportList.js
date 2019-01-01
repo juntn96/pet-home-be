@@ -24,6 +24,7 @@ class ReportList extends Component {
 
   componentDidMount() {
     this._getAllReports();
+    this.props.getAllUsers();
   }
 
   onChange = (e) => {
