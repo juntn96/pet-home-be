@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import {
-   GET_ALL_USERS, BAN_USER_BY_ID
+   GET_ALL_USERS
 } from './types';
 
 // Get Profile

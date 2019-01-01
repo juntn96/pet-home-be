@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
+import { Card, CardHeader, Col, Row } from 'reactstrap';
 import Spinner from '../../common/Spinner';
 import axios from 'axios';
 import LocationCategoryItem from './LocationCategoryItem';
@@ -34,8 +34,8 @@ class LocationCategory extends Component {
   }
 
   _onDeleteItem = () => {
-    const abc = { id: this.state.itemId, field: 'hiddenFlag', value: !this.state.deletionFlg }
-    axios.put('/api/admin/location/locationCategories', abc).then(res => {
+    const data = { id: this.state.itemId, field: 'hiddenFlag', value: !this.state.deletionFlg }
+    axios.put('/api/admin/location/updateLocationCategories', data).then(res => {
       this._requestGetAllLocationCategories();
     }).catch(err => {
       //todo
@@ -52,7 +52,7 @@ class LocationCategory extends Component {
       return;
     }
     const abc = { id: this.state.itemId, field: 'name', value: this.state.name }
-    axios.put('/api/admin/location/locationCategories', abc).then(res => {
+    axios.put('/api/admin/location/updateLocationCategories', abc).then(res => {
       this.refs.editErrMsg.innerHTML = "";
       this._requestGetAllLocationCategories();
       window.hideEditModalLocation();
@@ -67,7 +67,7 @@ class LocationCategory extends Component {
       return;
     }
     const data = { name: this.state.newName, typeLocation: Number(this.state.typeLocation )}
-    axios.post('/api/admin/location/locationCategories', data).then(res => {
+    axios.post('/api/admin/location/addLocationCategory', data).then(res => {
       this._requestGetAllLocationCategories();
       this.refs.addErrMsg.innerHTML = "";
       window.hideAddModalLocation();
@@ -81,12 +81,8 @@ class LocationCategory extends Component {
   }
 
   _onSearch = (e) => {
-    if(this.refs.all.checked)
+    if(this.state.locationCategories.length !== 0)
       this._inputSearchAll(e);
-    else if(this.refs.on.checked)
-      this._inputSearch(e, 'on');
-    else if(this.refs.off.checked)
-      this._inputSearch(e, 'off');
   }
   _inputSearch = (e, val) =>{
     const list = this.refs.search.getElementsByClassName('nameItemValue');
@@ -140,13 +136,7 @@ class LocationCategory extends Component {
     }
   }
   _filterByStatus = (e) => {
-    if(e.target.id ==='all')
-      this._showAll()
-    else if(e.target.id ==='on'){
-      this._filter('on')
-    }else if(e.target.id ==='off'){
-      this._filter('off')
-    }
+    this._showAll();
   }
   _showAll = () => {
     const itemm = this.refs.search.getElementsByClassName('itemSearchLocation');
@@ -162,8 +152,8 @@ class LocationCategory extends Component {
           <Col>
             <Card >
               <CardHeader>
-                <div className="form-group row" >
-                  <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" style={{marginLeft:30,marginRight:20,marginTop:-5}}/>
+                <div className="form-group row">
+                <input className="form-control col-sm-2" placeholder="Tìm theo tên" onChange={this._onSearch} name="name" style={{marginLeft:30,marginRight:20,marginTop:-5}}/>
                  <div style={{display:"none"}}>
                  <div className="form-check form-check-inline">
                     <input className="form-check-input" onClick={this._filterByStatus} type="checkbox" id="inlineCheckbox1"  ref='all' name="all" />
@@ -214,15 +204,15 @@ class LocationCategory extends Component {
                   <input className="form-control" onChange={this.onChange} name="name" value={this.state.name} />
                   <small ref='editErrMsg' className="" style={{ color: 'red' }}></small>
                   <br/>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocationEdit" ref="publicEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===2} id="publicLocation" value="2"/>
-                    <label class="form-check-label" htmlFor="publicLocation">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocationEdit" ref="publicEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===2} id="publicLocation" value="2"/>
+                    <label className="form-check-label" htmlFor="publicLocation">
                       Địa điểm công cộng
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocationEdit" ref="privateEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===1} id="privateLocaton" value="1"/>
-                    <label class="form-check-label" htmlFor="privateLocaton">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocationEdit" ref="privateEditL" onChange={this.onChange} checked={this.state.typeLocationEdit ===1} id="privateLocaton" value="1"/>
+                    <label className="form-check-label" htmlFor="privateLocaton">
                       Địa điểm cá nhân
                     </label>
                   </div>
@@ -246,15 +236,15 @@ class LocationCategory extends Component {
                   <input className="form-control" onChange={this.onChange} name="newName" placeholder="nhập tên ..." value={this.state.newName} />
                   <small ref='addErrMsg' className="" style={{ color: 'red' }}></small>
                   <br/>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="2" defaultChecked/>
-                    <label class="form-check-label" htmlFor="publicLocation1">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="2" defaultChecked/>
+                    <label className="form-check-label" htmlFor="publicLocation1">
                       Địa điểm công cộng
                     </label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="1"/>
-                    <label class="form-check-label" htmlFor="privateLocaton1">
+                  <div className="form-check">
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="1"/>
+                    <label className="form-check-label" htmlFor="privateLocaton1">
                       Địa điểm cá nhân
                     </label>
                   </div>

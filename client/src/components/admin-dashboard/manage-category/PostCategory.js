@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
+import { Card, CardHeader, Col, Row } from 'reactstrap';
 import Spinner from '../../common/Spinner';
 import axios from 'axios';
 import PostCategoryItem from './PostCategoryIttem';
@@ -83,14 +83,17 @@ class PostCategory extends Component {
   }
 
   _onSearch = (e) => {
-    const list = this.refs.tesst.getElementsByClassName('nameItem');
-    const itemm = this.refs.tesst.getElementsByClassName('itemSearch');
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
-        itemm[i].style.display = '';
-      }
-      else {
-        itemm[i].style.display = 'none';
+    if(this.state.categories.length !== 0)
+    {
+      const list = this.refs.tesst.getElementsByClassName('nameItem');
+      const itemm = this.refs.tesst.getElementsByClassName('itemSearch');
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+          itemm[i].style.display = '';
+        }
+        else {
+          itemm[i].style.display = 'none';
+        }
       }
     }
   }
@@ -153,7 +156,8 @@ class PostCategory extends Component {
                 </div>
               </CardHeader>
             </Card>
-          </Col></Row>
+          </Col>
+        </Row>
         <div ref="tesst">
           <Row >
             {categories === null || isLoading ? <Spinner /> :(categories.length === 0? <Empty/> :
@@ -209,7 +213,8 @@ class PostCategory extends Component {
             </div>
           </div>
         </div>
-      </div>)
+      </div>
+    )
   }
 
 }

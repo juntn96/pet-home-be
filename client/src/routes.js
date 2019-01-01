@@ -3,7 +3,6 @@ import Loadable from 'react-loadable'
 import ProductList from './components/product/ProductList';
 import ProductCategory from './components/product/ProductCategory';
 import EditProduct from './components/product/EditProduct';
-import Profile from './components/profile/Profile';
 import ChangePassword from './components/auth/ChangePassword';
 import UserList from './components/admin-dashboard/manage-users/UserList';
 import LocationDetail from './components/location/LocationDetail';
@@ -12,7 +11,8 @@ import PostCategory from './components/admin-dashboard/manage-category/PostCateg
 import LocationCategory from './components/admin-dashboard/manage-category/LocationCategory';
 import LocationAdmin from './components/admin-dashboard/manage-location/LocationAdmin';
 import AddLocation from './components/admin-dashboard/manage-location/AddLocation';
-import changePasswordAdmin from './components/admin-dashboard/changePasswordAdmin';
+import EditLocation from './components/admin-dashboard/manage-location/EditLocation';
+import ChangePasswordAdmin from './components/admin-dashboard/ChangePasswordAdmin';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -28,7 +28,6 @@ const routes = [
     { path: '/product/edit', exact: true, name: 'Sửa sản phẩm', component: EditProduct },
     { path: '/category', exact: true, name: 'Quản lý thể loại', component: ProductCategory },
     { path: '/product', exact: true, name: 'Quản lý sản phẩm', component: ProductList },
-    { path: '/profile', exact: true, name: 'Thông tin cá nhân', component: Profile },
     { path: '/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePassword },
     { path: '/locationDetail', exact: true, name: 'Thông tin địa điểm', component: LocationDetail },
     { path: '/admin/allusers', exact: true, name: 'Tất cả người dùng', component: UserList },
@@ -37,6 +36,7 @@ const routes = [
     { path: '/admin/category/post', exact: true, name: 'Thể loại bài viết', component: PostCategory },
     { path: '/admin/location', exact: true, name: 'Quản lý địa điểm', component: LocationAdmin },
     { path: '/admin/location/add', exact: true, name: 'Thêm địa điểm mới', component: AddLocation },
-    { path: '/admin/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: changePasswordAdmin },
+    { path: '/admin/location/edit', exact: true, name: 'Sửa thông tin địa điểm', component: EditLocation },
+    { path: '/admin/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePasswordAdmin },
 ]
 export default routes;

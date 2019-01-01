@@ -36,6 +36,10 @@ const locationSchema = mongoose.Schema({
   description: {
     type: String
   },
+  hiddenFlag: {
+    type: Boolean,
+		default: false,
+  },
 	deletionFlag: {
 		type: Boolean,
 		default: false,

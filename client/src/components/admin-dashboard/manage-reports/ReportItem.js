@@ -1,32 +1,41 @@
 import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
-
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {getAllUsers} from '../../../store/actions/usersActions'
+import { getAllUsers } from '../../../store/actions/usersActions'
 class ReportItem extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      deletionFlag: props.reportDetail.deletionFlag
+      deletionFlag: props.reportDetail.deletionFlag,
+      loadingUser: true,
+      allusers: ''
     }
   }
 
-  componentDidMount(){
-    const reportDetail = this.props.reportDetail;
+  componentDidMount() {
+    this._getAllUsers();
+  }
+
+  _getAllUsers = () => {
+    axios.get(`/api/admin/users`).then(res => {
+      console.log(res)
+      this.setState({
+        allusers: res.data.users,
+        loadingUser: false
+      })
+    }).catch(err =>{
+      //todo
+    });
   }
 
   _requestBanUser = () => {
-    const reportDetail = this.props.reportDetail;
-    const user = {id: reportDetail.ownerId,deletionFlag : this.state.deletionFlag === 1? false:true}
-    axios.put('/api/admin/users', user).then(res => {
-      const update = {id: this.props.reportDetail._id,deletionFlag: this.state.deletionFlag?0:1 }
-      axios.put('/api/report/updateReportStatus', update).then(res =>{
-        this._requestGetDelectionFlag();
-      })
-    });
+    const update = {id: this.props.reportDetail._id,deletionFlag: !this.state.deletionFlag }
+    axios.put('/api/report/updateReportStatus', update).then(res =>{
+      this._requestGetDelectionFlag();
+    })
   }
 
   _requestGetDelectionFlag = () => {
@@ -41,7 +50,6 @@ class ReportItem extends Component {
   }
 
   _getReportById = () => {
-    
   }
 
   _onClickBanUser = (e) => {
@@ -60,21 +68,19 @@ class ReportItem extends Component {
       this.props.onShowDetail(data)
     }).catch(err =>{
       //todo
-    });
-    
+    });  
   }
 
   render(){
     const key = this.props.index;
     const users = this.props.allusers;
     const { deletionFlag } = this.state
-    const style = deletionFlag !==1 ? "secondary" : "danger";
-    const text = deletionFlag !==1? "Chưa xử lý" : "Đã xử lý";
+    const style = deletionFlag !== true ? "secondary" : "danger";
+    const text = deletionFlag !== true ? "Chưa xử lý" : "Đã xử lý";
     let owerName= []
     const {reportDetail, totalReports} = this.props;
-    console.log(reportDetail)
-    if(users.allusers.users !== undefined){
-      owerName = users.allusers.users.filter(item => item._id === reportDetail.ownerId )
+    if(this.state.allusers !== ''){
+      owerName = this.state.allusers.filter(item => item._id === reportDetail.ownerId )
     }
     const date = new Date(reportDetail.createdAt).toLocaleDateString() + ' ' + new Date(reportDetail.createdAt).toLocaleTimeString();
     return (
@@ -84,25 +90,19 @@ class ReportItem extends Component {
         <td style={{verticalAlign:"middle"}}>{date}</td>
         <td style={{verticalAlign:"middle"}}>{totalReports}</td>
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
-        {/* <td style={{verticalAlign:"middle"}}>
-        <div>{userDetail.appName}</div>
-          <div className="small text-muted">Đăng ký lúc: {date}
-          </div>
-        </td>
-        <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td> */}
-        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Cấm người dùng</Button></td>
-          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hủy</Button></td>}
+        {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Ẩn bài viết</Button></td>
+          :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hiện bài viết</Button></td>}
           <td><a style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
       </tr>
-    )
+      )
+    }
   }
 
-}
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
   allusers: state.allusers
 });
 
-export default connect(mapStateToProps, { getAllUsers})(withRouter(ReportItem));
+export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportItem));
 

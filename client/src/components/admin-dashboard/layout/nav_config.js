@@ -11,12 +11,12 @@ export default {
         icon: 'icon-list',
         children: [
           {
-            name: 'Bài viết',
+            name: 'Loại bài viết',
             url: '/admin/category/post',
             icon: 'icon-pencil',
           },
           {
-            name: 'Địa điểm',
+            name: 'Loại địa điểm',
             url: '/admin/category/location',
             icon: 'icon-puzzle',
           }
@@ -32,10 +32,5 @@ export default {
         url: '/admin/report',
         icon: 'icon-list'
       },
-      {
-        name: 'Thêm địa điểm mới',
-        url: '/admin/location/add',
-        icon: 'icon-list'
-      }
     ]
 }

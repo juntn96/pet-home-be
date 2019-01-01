@@ -9,7 +9,7 @@ module.exports = Object.freeze({
   DELETED_ENTITY: 1,
   NOT_DELETED_ENTITY: 0,
 
-  FIRST_RATTING: 2.5,
+  FIRST_RATTING: 0,
   
   CHAT_HISTORY_EXIST: 1,
 

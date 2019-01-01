@@ -127,7 +127,7 @@ const findPostById = async postId => {
   try {
     const post = await Post.findById(postId)
       .select({ votes: 0, comments: 0 })
-      .populate("ownerId", { _id: 1, appName: 1, avatar: 1 });
+      .populate("ownerId", { _id: 1, appName: 1, avatar: 1, expoToken: 1 });
     return post;
   } catch (error) {
     throw error;
@@ -209,8 +209,9 @@ const getComments = async postId => {
   }
 };
 
-const addComment = async (postId, comment) => {
+const addComment = async (postId, comment, notification) => {
   try {
+    NotificationService.addNotification(notification);
     const result = await Post.findByIdAndUpdate(postId, {
       $push: { comments: { ...comment } },
     });

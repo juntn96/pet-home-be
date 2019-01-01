@@ -20,7 +20,7 @@ import Buttons from './../../uploadImage/Buttons'
 import WakeUp from './../../uploadImage/WakeUp'
 import './../../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
-import { addlocationByAdmin, getLocationCategories } from '../../../store/actions/locationAction'
+import { updateLocation, addlocationByAdmin, getLocationCategories } from '../../../store/actions/locationAction'
 import * as Constants from './../../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 
@@ -40,21 +40,23 @@ const MapComponent = withGoogleMap(props =>
   </GoogleMap>
 )
 
-class AddLocation extends Component {
+class EditLocation extends Component {
+  
   constructor(props) {
     super(props);
+    const {address, description, images, location, name, typeId} = this.props.location.state.data;
     this.state = {
-      images: [],
-      name:'',
-      typeLocationCategory: '' ,
-      description:'',
+      images,
+      name,
+      typeLocationCategory: typeId._id ,
+      description,
       loadingU: true,
       uploading: false,
       modal: false,
-      address: '',
+      address,
       locationCategories: [],
-      location:[],
-      latlong: { lat: 21.029210, lng: 105.852470 }
+      location,
+      latlong: { lat: location.coordinates[1], lng: location.coordinates[0] }
     };
   }
 
@@ -124,17 +126,17 @@ class AddLocation extends Component {
       type: 'Point',
       coordinates: [this.state.latlong.lng,this.state.latlong.lat]
     }
-    const addedLocation = {
+    const updatedLocation = {
       name,
       typeId: typeLocationCategory,
       description,
       address,
       images: addedImages,
       location: location,
-      ownerId: this.props.auth.user.user_id
+      ownerId: this.props.auth.user.user_id,
+      _id: this.props.location.state.data._id
     };
-    this.props.addlocationByAdmin(addedLocation, this.props.history);
-    // console.log(addedLocation)
+    this.props.updateLocation(updatedLocation, this.props.history);
   }
 
   onCancel = (e) => {
@@ -402,4 +404,4 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { addlocationByAdmin, getLocationCategories })(withRouter(AddLocation));
+export default connect(mapStateToProps, { updateLocation, addlocationByAdmin, getLocationCategories })(withRouter(EditLocation));

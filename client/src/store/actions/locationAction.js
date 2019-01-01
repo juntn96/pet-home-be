@@ -9,6 +9,18 @@ import {
   UPDATE_LOCATION_SUCCESS
 } from './types';
 
+export const addlocationByAdmin = (locationData, history) => dispatch => {
+  axios
+    .post('/api/admin/addLocaionByAdmin', locationData)
+    .then(res => history.push('/admin/location'))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data.error
+      })
+    );
+};
+
 // Get Posts
 export const getLocationCategories = type => dispatch => {
   dispatch(setCategoryLoading());
@@ -47,6 +59,50 @@ export const getLocations = ownerId => dispatch => {
 };
 
 export const updateLocation = (location, history) => dispatch => {
+  axios
+    .put(`/api/location/update`, location)
+    .then(res =>
+      {
+        history.push('/admin/location');
+        dispatch({
+          type: UPDATE_LOCATION_SUCCESS,
+          payload: res.data.locationProfile
+        })
+      }
+    )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      }
+    );
+};
+
+export const deleteAdminLocation = (location, history) => dispatch => {
+  axios
+    .put(`/api/admin/deleteAdminLocation`, location)
+    .then(res =>
+      {
+        history.push('/admin/location');
+        dispatch({
+          type: UPDATE_LOCATION_SUCCESS,
+          payload: res.data.locationProfile
+        })
+      }
+    )
+    .catch(err =>
+      {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err
+        })
+      }
+    );
+};
+
+export const updatePrivateLocation = (location, history) => dispatch => {
   axios
     .put(`/api/location/update`, location)
     .then(res =>

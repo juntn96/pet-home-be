@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Badge } from 'reactstrap';
-import Img from 'react-image';
-import axios from 'axios';
+import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 class LocationCategoryItem extends Component {
 
@@ -16,6 +14,7 @@ class LocationCategoryItem extends Component {
 
   componentDidMount() {
   }
+  
   _deleteItem = () => {
     this.props.onDeleteHandle({ id: this.props.locationCate._id, deletionFlag: this.props.locationCate.hiddenFlag, name: this.props.locationCate.name,typeLocation: this.props.locationCate.typeLocation });
   }

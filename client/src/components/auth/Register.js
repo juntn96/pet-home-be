@@ -6,33 +6,20 @@ import { getLocationCategories } from '../../store/actions/locationAction';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../common/Spinner';
-import { compose, withProps } from "recompose"
 import SelectListGroup from './../common/SelectListGroup';
-import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
+import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
+import { Row, Col } from 'reactstrap'
 
-import {
-  Row,
-  Col
-} from 'reactstrap'
-
-const MyMapComponent = compose(
-  withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDZM7hoDN16cKoeHixvIrEyzEU-zlLzA10&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  withScriptjs,
-  withGoogleMap
-)((props) =>
+const MapComponent = withGoogleMap(props =>
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: 21.029210, lng: 105.852470 }}
-    onClick={props.onMapClick}
+    defaultCenter = { props.getDefaultCenter }
+    defaultZoom = { 13 }
+    onClick={ props.onMapClick }
+    center={ props.getDefaultCenter }
   >
-  {<Marker position={props.getLatLong} />}
+    <Marker position={ props.getLatLong } />
   </GoogleMap>
 )
 
@@ -44,11 +31,12 @@ class Register extends Component {
       password: '',
       password2: '',
       typeLocation: '',
-      phone: '',
+      phone: this.props.history.location.state.phone,
       errors: {},
       address: '',
       locationCategories: [],
-      location:[]
+      location:[],
+      latlong: { lat: 21.029210, lng: 105.852470 }
     };
   }
 
@@ -73,13 +61,15 @@ class Register extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
-  clearMsg=()=>{
+
+  clearMsg = () => {
     this.refs.locaitonValidate.innerHTML = '';
     this.refs.nameValidate.innerHTML = '';
     this.refs.passwordValidate.innerHTML = '';
     this.refs.password2Validate.innerHTML = '';
     this.refs.addressValidate.innerHTML = '';
   }
+  
   onSubmit = (e) => {
     e.preventDefault();
     this.clearMsg();
@@ -92,16 +82,16 @@ class Register extends Component {
         if(this.state.name === '')this.refs.nameValidate.innerHTML = 'Vui lòng tên địa điểm';
         if(this.state.password === '')this.refs.passwordValidate.innerHTML = 'Vui lòng nhập mật khẩu';
         if(this.state.password2 === '')this.refs.password2Validate.innerHTML = 'Vui lòng nhập mật khẩu';
-        // if(this.state.address === '')this.refs.addressValidate.innerHTML = 'Vui lòng nhập địa chỉ chi tiết';
+        if(this.state.address === '')this.refs.addressValidate.innerHTML = 'Vui lòng nhập địa chỉ chi tiết';
       return false;
     }
     if(this.state.password!==this.state.password2) this.refs.password2Validate.innerHTML = 'Mật khẩu không khớp';
 
-    // const { phone } = this.props.location.state;
     const location =  {
       type: 'Point',
       coordinates: [this.state.latlong.lng,this.state.latlong.lat]
     }
+    
     const newUser = {
       name: this.state.name,
       password: this.state.password,
@@ -125,113 +115,127 @@ class Register extends Component {
     });
   }
 
-  getLocationCenter =(suggest) => {
-    if(suggest!== undefined){
-      this.setState({location:suggest.location,address:suggest.description})
+  getLocationCenter = (suggest) => {
+    if(suggest){
+      const { location } = suggest;
+      const { lat, lng} = location;
+      this.setState({
+        latlong: {
+          lat, lng
+        },
+        address: suggest.description
+      })
     }
   }
 
   render() {
     const { errors } = this.state;
     const { locationCategories, loading } = this.props.locationApp;
+
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">
-      <div className="register-form">
-        <div className="container-register" style={{marginTop: "8%"}}>
-          <Row >
-            <Col xs="6">
-            <div className="card-form">           
-              <div className="register-form" style={{padding: "10%"}}>
-              <h3 style={{color:"black"}}>Đăng ký cửa hàng</h3>
-              <br/>
-              <form noValidate onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.name
-                    })}
-                    placeholder="Tên địa điểm"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
+          <div className="register-form">    
+            <div className="container-register" style={{marginTop: "8%"}}>
+              <Row >                   
+                <Col xs="6">
+                  <div className="card-form">           
+                    <div className="register-form" style={{padding: "10%"}}>
+                    <h3 style={{color:"black"}}>Đăng ký cửa hàng / dịch vụ</h3>
+                    <br/>
+                    <form noValidate onSubmit={this.onSubmit}>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          className={classnames('form-control form-control-lg', {
+                            'is-invalid': errors.name
+                          })}
+                          placeholder="Tên địa điểm"
+                          name="name"
+                          value={this.state.name}
+                          onChange={this.onChange}
+                        />
+                      <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="password"
+                          className={classnames('form-control form-control-lg', {
+                            'is-invalid': errors.password
+                          })}
+                          placeholder="Mật khẩu"
+                          name="password"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                        />
+                        <div style={{display:'block'}} ref='passwordValidate' className="invalid-feedback"></div>
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="password"
+                          className={classnames('form-control form-control-lg', {
+                            'is-invalid': errors.password2
+                          })}
+                          placeholder="Xác nhận mật khẩu"
+                          name="password2"
+                          value={this.state.password2}
+                          onChange={this.onChange}
+                        />
+                        <div style={{display:'block'}} ref='password2Validate' className="invalid-feedback"></div>
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          className={classnames('form-control form-control-lg', {
+                            'is-invalid': errors.address
+                          })}
+                          placeholder="Địa chỉ chi tiết"
+                          name="address"
+                          value={this.state.address}
+                          onChange={this.onChange}
+                        />                
+                        <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
+                      </div>
+                      <div className="form-group" >
+                        <Geosuggest 
+                          style={{ width: '100%'}}
+                          className='form-control form-control-lg' 
+                          onSuggestSelect={this.getLocationCenter} 
+                          placeholder='Tìm địa chỉ'
+                          width={`100%`}/>
+                      </div>
+                      <div className="form-group" >
+                        { locationCategories === null || loading ? <Spinner /> :
+                          <SelectListGroup
+                            placeholder="Loại địa điểm"
+                            name="typeLocation"
+                            value={this.state.typeLocation}
+                            onChange={this.onChangeTypeLocation}
+                            options={locationCategories}
+                            error={errors.status}
+                          />
+                        }
+                      </div>
+                      <p ref='locaitonValidate' style={{fontSize:14, color:'#f86c6b'}}></p> 
+                      <input type="submit" className="btn-lg btn-primary btn-block mt-4" value="Đăng kí"/>
+                    </form>                  
+                  </div>
+                </div>
+                </Col>
+                <Col xs="6">
+                  <MapComponent
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `100%` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                    onMapClick={this.getLatLong}
+                    getLatLong={this.state.latlong}
+                    getDefaultCenter={this.state.latlong}
                   />
-                  <div style={{display:'block'}} ref='nameValidate' className="invalid-feedback"></div>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password
-                    })}
-                    placeholder="Mật khẩu"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.onChange}
-                  />
-                  <div style={{display:'block'}} ref='passwordValidate' className="invalid-feedback"></div>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password2
-                    })}
-                    placeholder="Xác nhận mật khẩu"
-                    name="password2"
-                    value={this.state.password2}
-                    onChange={this.onChange}
-                  />
-                  <div style={{display:'block'}} ref='password2Validate' className="invalid-feedback"></div>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.address
-                    })}
-                    placeholder="Địa chỉ chi tiết"
-                    name="address"
-                    value={this.state.address}
-                    onChange={this.onChange}
-                  />
-                  {/* <Geosuggest className='form-control form-control-lg' onSuggestSelect={this.getLocationCenter} placeholder='Địa chỉ'/> */}
-                  <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
-                </div>
-                <div className="form-group" >
-                    { locationCategories === null || loading ? <Spinner /> :
-                      <SelectListGroup
-                        placeholder="Loại địa điểm"
-                        name="typeLocation"
-                        value={this.state.typeLocation}
-                        onChange={this.onChangeTypeLocation}
-                        options={locationCategories}
-                        error={errors.status}
-                        info="Cho chúng tôi biết loại địa điểm bạn muốn tạo"
-                      />
-                    }
-                </div>
-                <p ref='locaitonValidate' style={{fontSize:14, color:'#f86c6b'}}></p> 
-                <input type="submit" className="btn-lg btn-primary btn-block mt-4" value="Đăng kí"/>
-              </form>
-              
-              </div>
+                </Col>
+              </Row>
             </div>
-            </Col>
-            <Col xs="6">
-              <div className="google-map">
-              <MyMapComponent
-                onMarkerClick={this.handleMarkerClick}
-                onMapClick={this.getLatLong}
-                getLatLong={this.state.latlong}
-              />
-              </div>
-            </Col>
-          </Row>
-      </div>
-      </div>
-      </div>
+          </div>
+        </div>
       </div>
     );
   }

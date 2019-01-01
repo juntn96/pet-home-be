@@ -10,7 +10,6 @@ import {
   DELETE_PRODUCT_BY_ID,
   DELETE_PRODUCT_CATEGORY_BY_ID,
   UPDATE_PRODUCT_CATEGORIES_BY_ID,
-  UPDATE_PRODUCT_BY_ID,
   GET_PRODUCT_DETAIL
 } from './types';
 
@@ -18,7 +17,7 @@ import {
 export const getProductParentCategories = ownerId => dispatch => {
     dispatch(setProductParentCategoriesLoading());
     axios
-      .get(`/api/product/productParentCategories/${ownerId}`)
+      .get(`/api/product/category/${ownerId}`)
       .then(res =>
         dispatch({
           type: GET_PRODUCT_PARENT_CATEGORIES,
