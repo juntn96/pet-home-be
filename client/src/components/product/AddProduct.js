@@ -60,12 +60,8 @@ class AddProduct extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      if(nextProps.product.productParentCategories.length > 0){
-        return {errors: nextProps.errors, typeProductCategory: nextProps.product.productParentCategories[0]._id}
-      } else {
+    if (nextProps.errors) {     
         return { errors: nextProps.errors};
-      }
     }
     else return null;
   }
