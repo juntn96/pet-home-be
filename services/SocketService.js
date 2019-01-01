@@ -21,6 +21,10 @@ const onConnection = socket => {
   socket.on("sendMessage", mes => {
     sendMessage(mes);
   });
+  socket.on("votePost", post => {
+    console.log(">> vote post: ", post);
+    votePost(post);
+  });
   socket.on("disconnect", reason => {
     socket.leaveAll();
   });
@@ -43,6 +47,15 @@ const sendMessage = async mes => {
     };
     await ConversationService.addMessage(messageData);
     io.in(mes.conversationId).emit("sendMessage", mes);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const votePost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("votePost", post);
   } catch (error) {
     throw error;
   }
