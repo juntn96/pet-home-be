@@ -101,6 +101,14 @@ router.get(
   ProductController.getProductParentCategories
 );
 
+router.get(
+  "/product/category/:ownerId",
+  passport.authenticate("jwt", {
+    session: false,
+  }),
+  ProductController.getProductParentCategoriesProduct
+);
+
 router.post(
   "/product/addProductParentCategory",
   passport.authenticate("jwt", {
@@ -113,9 +121,6 @@ router.post(
 //#region Location
 router.get(
   "/location/detail/:ownerId",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
   LocationController.getLocationProfile
 );
 

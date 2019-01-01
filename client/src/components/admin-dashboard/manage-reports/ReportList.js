@@ -24,6 +24,7 @@ class ReportList extends Component {
 
   componentDidMount() {
     this._getAllReports();
+    this.props.getAllUsers();
   }
 
   onChange = (e) => {
@@ -42,14 +43,16 @@ class ReportList extends Component {
   }
 
   onSearch = (e) => {
-    let tr = this.refs.tableSearch.getElementsByTagName('tr');
-    for (let i = 0; i < tr.length; i++) {
-      let td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    if(this.state.reports.length !==0){
+      let tr = this.refs.tableSearch.getElementsByTagName('tr');
+      for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
@@ -60,34 +63,26 @@ class ReportList extends Component {
   }
 
   renderContent = () => {
-    const imagesList = this.state.detail.images.map(item => {return { src: item.url}});
-    return (
-    <div>
+    return (<div>
+      <strong style={{marginRight:5}}>Nội dung bài viết:</strong>
       <div>{this.state.detail.title}</div>
-      <br />
-      <div>
-      {this.state.detail !== null ? 
-        this.state.detail.images.map(item =>
-        <Row>
-          <Col xs="4" lg="4">
-            <Img src={item.url} style={{ height: 200, width: 200 }}>
-            </Img>
-          </Col>
-        </Row>) 
-        : ''}
-      </div>
-      
+      <br/>
+      <strong style={{marginRight:5}}>Ảnh:</strong>
+      <Row>
+      {this.state.detail !== null ? this.state.detail.images.map(item =>
+        <Col xs="4" lg="4" style={{height:150,overflow:"hidden",marginBottom: 20}}>
+          <Img src={item.url} style={{ height: "auto" }}></Img>
+        </Col>) : ''}
+      </Row>   
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>
       {this.state.rqDetail.map(item => 
         <div>
-          <div>
-            <strong style={{ marginBottom: 20 }}>{item.reporterId.appName}</strong>
-            <small className="text-muted" style={spanStyle}>{new Date(item.updatedAt).toDateString()}</small>
-            <br />
-            <span className="text-muted">{item.description}</span>
-          </div>
-        </div>)}
+          <strong style={{marginRight:5}}>{item.reporterId.appName}</strong><small className="text-muted">{new Date(item.updatedAt).toDateString()}</small>
+          <br />
+          <span className="text-muted">{item.description}</span>
+        </div>
+      )}
     </div>)
   }
 
@@ -134,12 +129,14 @@ class ReportList extends Component {
         <div ref="" className="modal fade" id="showReportDetail" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">
-              <div className="modal-header">
-                <h4> Chi tiết </h4>
-              </div>
-              <div className="modal-body">
+            <Card>
+              <CardHeader>
+                <i className="fa fa-align-justify"></i> Chi tiết bài viết
+              </CardHeader>
+              <CardBody>
                 {this.state.detail !== null ? this.renderContent() : <Spinner />}
-              </div>
+              </CardBody>
+              </Card>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Ẩn</button>
               </div>

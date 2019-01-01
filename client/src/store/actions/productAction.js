@@ -17,7 +17,7 @@ import {
 export const getProductParentCategories = ownerId => dispatch => {
     dispatch(setProductParentCategoriesLoading());
     axios
-      .get(`/api/product/productParentCategories/${ownerId}`)
+      .get(`/api/product/category/${ownerId}`)
       .then(res =>
         dispatch({
           type: GET_PRODUCT_PARENT_CATEGORIES,
