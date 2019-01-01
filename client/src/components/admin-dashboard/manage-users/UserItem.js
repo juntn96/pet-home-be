@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Badge, Button } from 'reactstrap';
 import Img from 'react-image';
 import axios from 'axios';
+import SuccessMsg from '../../common/SuccessMsg';
 
 class UserItem extends Component {
 
@@ -29,7 +30,8 @@ class UserItem extends Component {
       this.setState({
         deletionFlag: res.data.deletionFlag,
         isLoading: false
-      })
+      });
+      window.messageSuccess();
     }).catch(err =>{
       //todo
     });

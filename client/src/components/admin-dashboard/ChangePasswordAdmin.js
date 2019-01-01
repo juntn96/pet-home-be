@@ -11,6 +11,7 @@ import {
   Button
 } from 'reactstrap';
 import axios from 'axios';
+import SuccessMsg from '../common/SuccessMsg';
 class ChangePasswordAdmin extends Component {
   constructor(props) {
     super(props);
@@ -59,7 +60,8 @@ class ChangePasswordAdmin extends Component {
         oldPassword: '',
         newPassword: '',
         newPassword1: '',
-      })
+      });
+      window.messageSuccess();
     }).catch(err => {
       this.setState({messageErr:err.response.data.message, messageSucc:""});
     });
@@ -128,6 +130,7 @@ class ChangePasswordAdmin extends Component {
           </Col>
             </div>
           </div>
+          <SuccessMsg />
       </div>
     );
   }

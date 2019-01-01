@@ -43,7 +43,8 @@ class ReportItem extends Component {
       this.setState({
         deletionFlag: res.data.result.deletionFlag,
         isLoading: false
-      })
+      });
+      window.messageSuccess();
     }).catch(err =>{
       //todo
     });

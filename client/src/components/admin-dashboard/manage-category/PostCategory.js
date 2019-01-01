@@ -4,6 +4,7 @@ import Spinner from '../../common/Spinner';
 import axios from 'axios';
 import PostCategoryItem from './PostCategoryIttem';
 import Empty from '../../common/Empty';
+import SuccessMsg from '../../common/SuccessMsg';
 class PostCategory extends Component {
 
   constructor(props) {
@@ -18,15 +19,26 @@ class PostCategory extends Component {
   oldName = '';
   data = {};
   componentDidMount() {
-    this._requestGetAllPostCategories();
+    this._requestGetAllPostCategoriesFirst();
   }
   errMsg = '';
-  _requestGetAllPostCategories = () => {
+  _requestGetAllPostCategoriesFirst = () => {
     axios.get('/api/post/category/get').then(res => {
       this.setState({
         categories: res.data.categories,
         isLoading: false
       })
+    }).catch(err => {
+      //todo
+    });
+  }
+  _requestGetAllPostCategories = () => {
+    axios.get('/api/post/category/get').then(res => {
+      this.setState({
+        categories: res.data.categories,
+        isLoading: false
+      });
+      window.messageSuccess();
     }).catch(err => {
       //todo
     });
@@ -213,6 +225,7 @@ class PostCategory extends Component {
             </div>
           </div>
         </div>
+        <SuccessMsg />
       </div>
     )
   }
