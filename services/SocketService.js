@@ -35,6 +35,10 @@ const onConnection = socket => {
     console.log("user get banned", user);
     banUser(user);
   });
+  socket.on("hidePost", post => {
+    console.log("hidden post", post);
+    hidePost(post);
+  });
 };
 
 const joinConversation = (socket, conversation) => {
@@ -77,6 +81,15 @@ const banUser = async user => {
   try {
     const io = socketService.io;
     io.emit("banUser", user);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const hidePost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("hidePost", post);
   } catch (error) {
     throw error;
   }
