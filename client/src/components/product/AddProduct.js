@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createProduct, getProductParentCategories ,getProductDetailById, updateProduct} from '../../store/actions/productAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
+import axios from 'axios';
 import {
   Card,
   CardBody,
@@ -39,16 +40,18 @@ class AddProduct extends Component {
       typeProductCategory: '',
       loadingU: true,
       uploading: false,
-      images: []
+      images: [],
+      listTypeProductCategory: ''
     };
   }
 
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id);
-    const { productParentCategories  } = this.props.product; 
-    if(productParentCategories.length > 0) {
-      this.setState({ typeProductCategory: productParentCategories[0]._id });
-    }
+    // this.props.getProductParentCategories(this.props.auth.user.user_id);
+    this.getAllProductCategories();
+    // const { productParentCategories  } = this.props.product; 
+    // if(productParentCategories.length > 0) {
+    //   this.setState({ typeProductCategory: productParentCategories[0]._id });
+    // }
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -64,6 +67,21 @@ class AddProduct extends Component {
         return { errors: nextProps.errors};
     }
     else return null;
+  }
+
+  getAllProductCategories = () => {
+    const ownerId = this.props.auth.user.user_id
+    axios
+      .get(`/api/product/category/${ownerId}`)
+      .then(res => {
+        console.log("hshshshshsh")
+        console.log(res.data.productParentCategories)  
+        this.setState({
+          listTypeProductCategory: res.data.productParentCategories,
+          typeProductCategory: res.data.productParentCategories[0]._id
+        })
+      }      
+      )
   }
 
   onChangeTypeProduct = e => {
@@ -183,7 +201,7 @@ class AddProduct extends Component {
   }
 
   render() {
-    const { loadingU, uploading, images } = this.state
+    const { loadingU, uploading, images, listTypeProductCategory } = this.state
     const { productParentCategories , loading } = this.props.product;  
     const content = () => {
       switch(true) {
@@ -259,7 +277,7 @@ class AddProduct extends Component {
                 <FormGroup row className="my-0 mt-3">
                   <Col xs="6">
                     <Label htmlFor="ccyear">Loại</Label>
-                    { productParentCategories === null || loading ? <Spinner /> :   
+                    { listTypeProductCategory === '' || loading ? <Spinner /> :   
                     <Input
                     className="form-control form-control-lg"
                       type="select" 
@@ -268,7 +286,7 @@ class AddProduct extends Component {
                       value={this.state.typeProductCategory}
                       onChange={this.onChangeTypeProduct}
                       >
-                      {productParentCategories.map((item, index) => this.renderOptionItem(item,index))}
+                      {listTypeProductCategory.map((item, index) => this.renderOptionItem(item,index))}
                     </Input>
                     }
                     <div style={{display:'block'}} ref='typeProductValidate' className="invalid-feedback"></div>
