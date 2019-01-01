@@ -3,7 +3,7 @@ const Conversation = require("../models/Conversation");
 const createConversation = async data => {
   try {
     const isExisted = await findConversationByUsers(data.users);
-    if (isExisted) return isExisted;
+    if (isExisted) return await getConversationById(isExisted._id);
     const conversation = new Conversation(data);
     const rs = await Conversation.create(conversation);
     const result = await getConversationById(rs._id);
