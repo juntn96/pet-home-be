@@ -48,6 +48,7 @@ class ProductCategory extends Component {
   }
 
   getPropertyCategory = (e, index) => {
+    this.refs.nameCategory.focus();
     e.preventDefault();
     this.setState({
       _id: e.currentTarget.getElementsByTagName('input')[0].value,
@@ -185,8 +186,8 @@ class ProductCategory extends Component {
                 <form onSubmit={this.addCategory}>
                   <input type="hidden" value={this.state._id} />
                   <FormGroup>
-                    <Label htmlFor="description">Mô tả</Label>
-                    <input type="text" className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
+                    <Label htmlFor="description">Tên thể loại</Label>
+                    <input type="text" ref="nameCategory" className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
                     <FormText className="help-block">Vui lòng nhập tên thể loại</FormText>
                   </FormGroup>
                   <FormGroup row className="my-0">
