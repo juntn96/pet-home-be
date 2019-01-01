@@ -8,6 +8,7 @@ import Img from 'react-image';
 import Spinner from '../uploadImage/Spinner';
 import Empty from '../common/Empty';
 import axios from 'axios';
+import SuccessMsg from '../common/SuccessMsg';
 class AddProduct extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +24,10 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    this._getAllProducts()
+    this._getAllProducts();
+    if( this.props.location.state){
+      if(this.props.location.state.isChange) window.messageSuccess();
+    }
   }
 
   onChangeTypeProduct = (e) => {
@@ -117,9 +121,6 @@ class AddProduct extends Component {
         <FormGroup row>
           <Col sm="8">
             <InputGroup>
-              <InputGroupAddon addonType="prepend">
-                <Button type="button" color="primary" size="lg"><i className="fa fa-search"></i> Tìm kiếm</Button>
-              </InputGroupAddon>
               <Input type="text" id="input1-group2" onChange={this.onSearch} size="lg" name="input1-group2" placeholder="Tìm sản phẩm" />
             </InputGroup>
           </Col>
@@ -172,6 +173,7 @@ class AddProduct extends Component {
             </div>
           </div>
         </div>
+        <SuccessMsg />
       </div>
     );
   }
