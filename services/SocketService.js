@@ -82,7 +82,7 @@ const messageNotification = async (toId, mes) => {
   ExpoService.sendNotifications({
     tokens: [receiver.expoToken],
     data: {
-      message: `Bạn có tin nhắn mới từ:\n${mes.user.name}: ${mes.message.text}`,
+      message: `Bạn có tin nhắn mới từ:\n\b${mes.user.name}\b: ${mes.message.text}`,
       type: "message",
       sender: mes.user._id,
     },
