@@ -5,7 +5,21 @@ const createConversation = async data => {
     const isExisted = await findConversationByUsers(data.users);
     if (isExisted) return isExisted;
     const conversation = new Conversation(data);
-    const result = await Conversation.create(conversation);
+    const rs = await Conversation.create(conversation);
+    const result = await getConversationById(rs._id);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getConversationById = async id => {
+  try {
+    const result = await Conversation.findById(id).populate("users.user", {
+      _id: 1,
+      avatar: 1,
+      appName: 1,
+    });
     return result;
   } catch (error) {
     throw error;
