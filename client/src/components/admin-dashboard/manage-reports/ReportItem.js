@@ -62,15 +62,13 @@ class ReportItem extends Component {
 
   _showModal =(e) => {
     e.preventDefault();
-    // window.showReportDetail();
-    // axios.get(`/api/report/${this.props.reportDetail._id}`).then(res => {
-    //   const data = {post:this.props.reportDetail, allReport: res.data.result }
-    //   this.props.onShowDetail(data)
-    // }).catch(err =>{
-    //   //todo
-    // });  
-
-    this.props.history.push('/admin/report/detail', this.props.reportDetail);
+    window.showReportDetail();
+    axios.get(`/api/report/${this.props.reportDetail._id}`).then(res => {
+      const data = {post:this.props.reportDetail, allReport: res.data.result }
+      this.props.onShowDetail(data)
+    }).catch(err =>{
+      //todo
+    });  
   }
 
   render(){

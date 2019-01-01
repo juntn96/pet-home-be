@@ -72,20 +72,7 @@ class ReportList extends Component {
         <Col xs="4" lg="4" style={{height:150,overflow:"hidden",marginBottom: 20}}>
           <Img src={item.url} style={{ height: "auto" }}></Img>
         </Col>) : ''}
-      </Row>
-      <br />
-      <div>
-      {this.state.detail !== null ? 
-        this.state.detail.images.map(item =>
-        <Row>
-          <Col xs="4" lg="4">
-            <Img src={item.url} style={{ height: 200, width: 200 }}>
-            </Img>
-          </Col>
-        </Row>) 
-        : ''}
-      </div>
-      
+      </Row>   
       <br />
       <small style={{ marginTop: 20 }} className="text-muted">Nội dung báo cáo:</small>
       {this.state.rqDetail.map(item => 
@@ -94,7 +81,7 @@ class ReportList extends Component {
           <br />
           <span className="text-muted">{item.description}</span>
         </div>
-      </div>)}
+      )}
     </div>)
   }
 
