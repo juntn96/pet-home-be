@@ -9,7 +9,6 @@ class SocketHandle extends Component {
   }
 
   componentDidMount() {
-    const { socket } = this.props.socketState;
     this.props.initSocket();
   }
 

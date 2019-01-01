@@ -23,8 +23,6 @@ import DefaultLayout from "./components/layout/DefaultLayout";
 import UploadImage from "./components/uploadImage/UploadImage";
 import DefaultLayoutAdmin from "./components/admin-dashboard/layout/DefaultLayoutAdmin";
 
-import SocketHandle from "./components/socketHandle";
-
 // Check for token
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -86,7 +84,6 @@ class App extends Component {
             <Route exact path="/not-found" component={NotFound} />
           </div>
         </Router>
-        <SocketHandle />
       </Provider>
     );
   }

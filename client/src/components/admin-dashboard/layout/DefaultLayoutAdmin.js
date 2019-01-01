@@ -21,6 +21,7 @@ import {
 import navigation from './nav_config';
 // routes config
 import routes from '../../../routes';
+import SocketHandle from '../../socketHandle/SocketHandle';
 
 const propTypes = {
   children: PropTypes.node,
@@ -31,6 +32,7 @@ class DefaultLayoutAdmin extends Component {
   render() {
     return (
       <div className="app">
+        <SocketHandle />
         <AppHeader fixed>
           <DefaultHeader />
         </AppHeader>

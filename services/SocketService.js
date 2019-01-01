@@ -31,6 +31,10 @@ const onConnection = socket => {
   socket.on("disconnect", reason => {
     socket.leaveAll();
   });
+  socket.on("banUser", user => {
+    console.log("user get banned", user);
+    banUser(user);
+  });
 };
 
 const joinConversation = (socket, conversation) => {
@@ -64,6 +68,15 @@ const votePost = async post => {
   try {
     const io = socketService.io;
     io.emit("votePost", post);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const banUser = async user => {
+  try {
+    const io = socketService.io;
+    io.emit("banUser", user);
   } catch (error) {
     throw error;
   }
