@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getLocations } from '../../store/actions/locationAction';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import {
@@ -11,11 +10,7 @@ import {
   FormGroup,
   Input,
   Label,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Button,
-  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import Spinner from '../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
@@ -24,33 +19,24 @@ import Images from './../uploadImage/Images'
 import Buttons from './../uploadImage/Buttons'
 import WakeUp from './../uploadImage/WakeUp'
 import './../uploadImage/UploadImage.css'
-import { GoogleMap, withGoogleMap, Marker,withScriptjs } from "react-google-maps"
-import { updateLocation, getLocationCategories } from '../../store/actions/locationAction'
+import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
+import { updatePrivateLocation, getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
-import { compose, withProps } from "recompose"
 
 const toastColor = { 
   background: '#505050', 
   text: '#fff' 
 }
 
-const MyMapComponent = compose(
-  withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDZM7hoDN16cKoeHixvIrEyzEU-zlLzA10&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100%` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  withScriptjs,
-  withGoogleMap
-)((props) =>
+const MapComponent = withGoogleMap(props =>
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: props.lat, lng: props.long }}
+    defaultCenter = { props.getDefaultCenter }
+    defaultZoom = { 13 }
+    center={ props.getDefaultCenter }
     onClick={props.onMapClick}
   >
-  {<Marker position={props.getLatLong} />}
+    <Marker position={props.getLatLong} />
   </GoogleMap>
 )
 
@@ -69,9 +55,22 @@ class Location extends Component {
       description,
       loadingU: true,
       uploading: false,
-      images: images,
-      modal: false
+      modal: false,
+      latlong: {
+        lat: location.coordinates[1],
+        lng: location.coordinates[0],        
+      }
     };
+  }
+
+  getLatLong = (event) =>{    
+    var lat = event.latLng.lat(), long = event.latLng.lng();
+    this.setState({
+      latlong:{
+        lat:lat, 
+        lng:long
+      }
+    });
   }
 
   componentDidMount() {
@@ -115,7 +114,7 @@ class Location extends Component {
       return false;
     }
 
-    const { name, _id, typeId, description, address, location, images} = this.state
+    const { name, _id, typeLocationCategory, description, address, images } = this.state
 
     const updatedImages = images.map(item => { 
       return {
@@ -126,17 +125,21 @@ class Location extends Component {
         bytes: item.bytes,
         secure_url: item.secure_url
     }})
-
+    const location =  {
+      type: 'Point',
+      coordinates: [this.state.latlong.lng,this.state.latlong.lat]
+    }
     const updatedLocation = {
       name,
       _id,
-      typeId,
+      typeId: typeLocationCategory,
       description,
       address,
       images: updatedImages,
-      location: this.state.location
+      location: location
     };
-    this.props.updateLocation(updatedLocation, this.props.history);
+    this.props.updatePrivateLocation(updatedLocation, this.props.history);
+    this.props.history.push('/product');
   }
 
   onCancel = (e) => {
@@ -163,7 +166,7 @@ class Location extends Component {
         errs.push(`'${file.type}' không phải dịnh dạng phù hợp`)
       }
 
-      if (file.size > 150000) {
+      if (file.size > 10000000) {
         errs.push(`'${file.name}' quá lớn, bạn hãy chọn file kích cỡ nhỏ hơn`)
       }
 
@@ -238,9 +241,22 @@ class Location extends Component {
     });
   }
 
+  getLocationCenter =(suggest) => {
+    if(suggest){
+      const { location } = suggest;
+      const { lat, lng} = location;
+      this.setState({
+        latlong: {
+          lat, lng
+        },
+        address: suggest.description
+      })
+    }
+  }
+
   render() {
     const { loadingU, uploading, images } = this.state
-    const { locationCategories, loading, error } = this.props.locationApp;  
+    const { locationCategories, loading } = this.props.locationApp;  
     const content = () => {
       switch(true) {
         case loadingU:
@@ -297,10 +313,20 @@ class Location extends Component {
                     type="text"
                     className={classnames('form-control form-control-lg')}
                     placeholder="Địa chỉ"
-                    name="name"
+                    name="address"
                     value={this.state.address}
                     onChange={this.onChange}
                   />
+                  <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
+                </FormGroup>
+                <FormGroup>
+                  <Label htmlFor="company">Tìm địa chỉ</Label>
+                  <Geosuggest 
+                    style={{ width: '100%'}}
+                    className='form-control form-control-lg' 
+                    onSuggestSelect={this.getLocationCenter} 
+                    placeholder='Tìm địa chỉ'
+                    width={`100%`}/>
                   <div style={{display:'block'}} ref='addressValidate' className="invalid-feedback"></div>
                 </FormGroup>
                 <FormGroup row className="my-0 mt-3">
@@ -349,17 +375,23 @@ class Location extends Component {
               </Card>
             </Col>
           </div> 
-          <div className="col-md-7">
-            <Col xs="6" sm="6">
-                <div className="google-map">
-                  <MyMapComponent
-                    onMarkerClick={this.handleMarkerClick}
+          <div className="col-md-5"> 
+            <Col xs="12" sm="12">
+              <Card>
+                <CardHeader>
+                  <strong>Địa điểm</strong>
+                </CardHeader>
+                <CardBody>
+                  <MapComponent
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: '500px' , width: `100%`}} />}
+                    mapElement={<div style={{ height: `100%` }} />}
                     onMapClick={this.getLatLong}
                     getLatLong={this.state.latlong}
-                    long={this.state.location[0]}
-                    lat={this.state.location[1]}
+                    getDefaultCenter={this.state.latlong}
                   />
-                </div>
+                </CardBody>
+              </Card>
             </Col>
           </div>           
         </div>
@@ -375,4 +407,4 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { updateLocation, getLocationCategories })(withRouter(Location));
+export default connect(mapStateToProps, { updatePrivateLocation, getLocationCategories })(withRouter(Location));

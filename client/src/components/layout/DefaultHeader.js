@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
+import { AppHeaderDropdown, AppSidebarToggler,AppNavbarBrand } from '@coreui/react';
 import { Link } from 'react-router-dom';
 import { getLocations } from '../../store/actions/locationAction';
 import { logoutUser } from '../../store/actions/authActions';
 import Img from 'react-image';
+import logo from '../../assets/img/logo-ad.png';
 
 const propTypes = {
   children: PropTypes.node,
@@ -20,7 +21,7 @@ class DefaultHeader extends Component {
     e.preventDefault();
     this.props.logoutUser();
   }
- 
+
   componentDidMount() {
     this.props.getLocations(this.props.auth.user.user_id);
   }
@@ -32,15 +33,17 @@ class DefaultHeader extends Component {
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
-
+        <AppNavbarBrand
+          full={{ src: logo, width: 89, height: 25, alt: 'Pethome Logo' }}
+        />
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <Link 
-              style={{textDecoration:'none'}} 
+          <Link
+              style={{ textDecoration: 'none' }}
               to={{
                 pathname: '/locationDetail',
                 state: { linkState: locationDetail }
-              }}>Thông tin địa điểm</Link>
+              }}></Link>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
@@ -49,17 +52,22 @@ class DefaultHeader extends Component {
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <Img src={this.props.auth.user.avatar} style={{height:35,width:35}} className="img-avatar"></Img>
+              <Img src={this.props.auth.user.avatar} style={{ height: 35, width: 35 }} className="img-avatar"></Img>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> <Link style={{textDecoration:'none', color:'#181b1e'}} to="/chgpwd">Thay đổi mật khẩu</Link></DropdownItem>
+              <DropdownItem><i className="fa fa-map-marker"></i> <Link
+              style={{ textDecoration: 'none' }}
+              to={{
+                pathname: '/locationDetail',
+                state: { linkState: locationDetail }
+              }}>Thông tin địa điểm</Link></DropdownItem>
+              <DropdownItem><i className="fa fa-lock"></i>
+              <a href="/chgpwd">Thay đổi mật khẩu</a></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
-        {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );
   }

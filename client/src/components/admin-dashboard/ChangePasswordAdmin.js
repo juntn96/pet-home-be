@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import Spinner from '../common/Spinner';
-import { Link } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -122,9 +120,6 @@ class ChangePasswordAdmin extends Component {
                   <FormGroup row className="my-0">
                     <Col col="3" sm="2" md="2" className="mb-3 mb-xl-0">
                       <Button style={{marginLeft:15}} block color="primary" onClick={this._changePassword}>Lưu</Button>
-                    </Col>
-                    <Col col="3" sm="2" md="2" className="mb-xl-0">
-                      <Button block color="secondary" onClick={this.onCancel}>Hủy</Button>
                     </Col>
                   </FormGroup>
                   </div>

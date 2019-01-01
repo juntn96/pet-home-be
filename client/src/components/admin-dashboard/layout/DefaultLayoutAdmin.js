@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {  Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 import PropTypes from 'prop-types';
@@ -57,9 +56,6 @@ class DefaultLayoutAdmin extends Component {
             </Switch>
             </Container>
           </main>
-          <AppAside fixed>
-            <DefaultAside />
-          </AppAside>
         </div>
         <AppFooter>
           <DefaultFooter />

@@ -46,7 +46,6 @@ const addLocationCategory = async (val, type) => {
   try {
     const nameExisted = await findByName(val);
     if (nameExisted) throw ("Đã có loại địa điểm này");
-    // const category = new LocationCategory();
     const result = await LocationCategory.create({ name: val , typeLocation: type});
     return result;
   } catch (error) {
@@ -94,8 +93,6 @@ const getTotalCountLocationByTypeId = async (id) => {
   }
 };
 module.exports.getTotalCountLocationByTypeId = getTotalCountLocationByTypeId;
-
-
 
 const getLocationWithAllProduct = async query => {
   try {
@@ -189,6 +186,19 @@ const updateLocation = async (locationDetail) => {
 }
 module.exports.updateLocation= updateLocation;
 
+const deleteLocationByAdmin = async (locationDetail) => {
+  try {
+    const update = await to(Location.findByIdAndUpdate(locationDetail._id, {deletionFlag: true}));
+    const locationProfile = await to(Location.findById(locationDetail._id));
+    return locationProfile[1];
+  }
+  catch (e) {
+    return TE(res, 'Update location failed', 503);
+  }
+}
+module.exports.deleteLocationByAdmin = deleteLocationByAdmin;
+
+
 const getLocationProfile = async (ownerId) => {
   try {
     let getProfile = await Location.find({ ownerId: ownerId });
@@ -202,7 +212,7 @@ module.exports.getLocationProfile = getLocationProfile;
 
 const getAllLocations = async () => {
   try {
-    let listLocationCategory = await Location.find().populate('ownerId').populate('typeId')
+    let listLocationCategory = await Location.find({deletionFlag: false}).populate('ownerId').populate('typeId')
     return listLocationCategory;
   }
   catch (e) {
@@ -211,9 +221,9 @@ const getAllLocations = async () => {
 };
 module.exports.getAllLocations = getAllLocations;
 
-const hideLocationById = async (id, deletionFlag) => {
+const hideLocationById = async (id, hiddenFlag ) => {
   try {
-    let listLocationCategory = await Location.findByIdAndUpdate(id, {deletionFlag: deletionFlag})
+    let listLocationCategory = await Location.findByIdAndUpdate(id, {hiddenFlag: hiddenFlag})
     return listLocationCategory;
   }
   catch (e) {
@@ -226,19 +236,19 @@ const getLocationById = async (id) => {
   try {
     let locaiton = await Location.findById(id);
     return locaiton;
-  }
-  catch (e) {
+  } catch (e) {
     return TE(res, 'Get location failed', 503);
   }
 };
 module.exports.getLocationById = getLocationById;
+
 const getAllActiveLocation = async () => {
   try {
-    let listLocationCategory = await Location.find({ deletionFlag: false}).populate('ownerId').populate('typeId')
-    return listLocationCategory;
-  }
-  catch (e) {
-    return TE(res, 'Get locationCategories failed', 503);
+    let activeLocations = await Location.find({ deletionFlag: false, hiddenFlag: false }).populate('ownerId').populate('typeId')
+    return activeLocations;
+  } catch (e) {
+    return TE(res, 'Get location active location failed', 503);
   }
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
+

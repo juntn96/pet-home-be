@@ -35,9 +35,20 @@ const getProductParentCategories = async (ownerId) => {
 	}
 	catch (e) {
 		return TE(res, 'Get productParentCategories failed', 503);
-	}		
+	}
 };
 module.exports.getProductParentCategories = getProductParentCategories;
+
+const getProductParentCategoriesProduct = async (ownerId) => {
+	try {
+    let getProductCategoryList = await ProductParentCategory.find({ ownerId: ownerId, deletionFlag: false});
+		return getProductCategoryList;
+	}
+	catch (e) {
+		return TE(res, 'Get productParentCategories failed', 503);
+	}
+};
+module.exports.getProductParentCategoriesProduct = getProductParentCategoriesProduct;
 
 const getProductByIds = async (ownerId,name) => {
 	try {

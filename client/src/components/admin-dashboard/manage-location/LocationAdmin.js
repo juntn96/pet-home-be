@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
-import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Spinner from '../../common/Spinner'
 import LocationItem from './LocationItem'
 import axios from 'axios';
 import Empty from '../../common/Empty';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { deleteAdminLocation } from '../../../store/actions/locationAction'
 class LocationAdmin extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       userId: '',
-      deletionFlag: false,
       locations: [],
-      isLoading: true
+      isLoading: true,
+      modal: false,
+      _id:''
     }
   }
 
@@ -29,13 +33,14 @@ class LocationAdmin extends Component {
       this.setState({
         locations: res.data.locations,
         isLoading: false
-      })
+      });
     }).catch(err => {
       //todo
     });
   }
 
   onSearch = (e) => {
+    if(this.state.locations.length !==0){
     let tr = this.refs.tableSearch.getElementsByTagName('tr');
     for (let i = 0; i < tr.length; i++) {
       let td = tr[i].getElementsByTagName("td")[1];
@@ -46,11 +51,47 @@ class LocationAdmin extends Component {
           tr[i].style.display = "none";
         }
       }
-    }
+    }}
   }
 
   _onClickAddLocation = () => {
+    this.props.history.push('/admin/location/add');
+  }
 
+  _onEdit = (item) => {
+    this.props.history.push('/admin/location/edit', { data: item });
+  }
+
+  _onToggle= (item) => {
+    console.log("_onToggle")
+    this.setState({
+      modal: !this.state.modal,
+      _id: item._id
+    });
+  }
+
+  _onConfirm = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+    console.log("_onConfirm")
+    console.log(this.state._id);
+    this.props.deleteAdminLocation({_id: this.state._id}, this.props.history);
+    axios.get('/api/admin/getLocation').then(res => {
+      this.setState({
+        locations: res.data.locations,
+        isLoading: false
+      });
+    }).catch(err => {
+      //todo
+    });
+  }
+
+  _onCancel = () => {
+    console.log("_onCancel")
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   render() {
@@ -71,23 +112,29 @@ class LocationAdmin extends Component {
                 <Button color="primary" style={{ float: "right", marginRight: 20 }} size="lg" onClick={this._onClickAddLocation}>Thêm địa điểm</Button>
               </CardHeader>
               <CardBody>
-                {this.state.isLoading ? <Spinner /> :(locations.length === 0? <Empty/> :
+                {this.state.isLoading ? <Spinner /> : (locations.length === 0 ? <Empty /> :
                   <Table hover responsive >
                     <thead>
                       <tr>
-                        <th>Tên</th>
-                        <th>Địa chỉ</th>
-                        <th>Mô tả</th>
-                        <th>Loại</th>
-                        <th>Đánh giá</th>
-                        <th>Trạng thái</th>
-                        <th>Xử lý</th>
-                        <th></th>
+                        <th style={{ width: '13%' }}>Tên</th>
+                        <th style={{ width: '25%' }}>Địa chỉ</th>
+                        <th style={{ width: '23%' }}>Mô tả</th>
+                        <th style={{ width: '10%' }}>Loại</th>
+                        <th style={{ width: '8%' }}>Đánh giá</th>
+                        <th style={{ width: '9%' }}>Trạng thái</th>
+                        <th style={{ width: '5%' }}>Xử lý</th>
+                        <th style={{ width: '7%' }}></th>
                       </tr>
                     </thead>
                     <tbody ref="tableSearch">
                       {locations.map((item, index) =>
-                        <LocationItem location={item} key={index} />)}
+                        <LocationItem
+                          location={item}
+                          key={item._id}
+                          user={this.props.auth.user}
+                          onEdit={() => this._onEdit(item)}
+                          onDelete={() => this._onToggle(item)}
+                        />)}
                     </tbody>
                   </Table>)
                 }
@@ -95,9 +142,24 @@ class LocationAdmin extends Component {
             </Card>
           </Col>
         </Row>
-      </div>)
+        <Modal isOpen={this.state.modal} toggle={this._onToggle}>
+          <ModalHeader toggle={this.toggle}>Xóa địa điểm</ModalHeader>
+          <ModalBody>
+            Bạn có muốn xóa địa điểm này không ?
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this._onConfirm}>Đồng ý</Button>{' '}
+            <Button color="secondary" onClick={this._onCancel}>Hủy</Button>
+          </ModalFooter>
+        </Modal>
+      </div>
+    )
   }
 }
 
-export default LocationAdmin;
+// export default LocationAdmin;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
+export default connect(mapStateToProps, {deleteAdminLocation})(withRouter(LocationAdmin));

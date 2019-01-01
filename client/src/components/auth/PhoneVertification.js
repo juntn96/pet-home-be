@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CustomLink from '../common/CustomLink';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { 
@@ -31,23 +30,25 @@ class PhoneVertification extends Component {
     this.props.clearErrorsProps();
     const { phone, code } = this.state;
     this.props.getVertify({phone, code});
-    const { messageSendCode, messageCheckCode} = this.props;
-    
+    // const { messageSendCode, messageCheckCode} = this.props;   
   }
+  
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.messageSendCode && nextProps.messageCheckCode.message !== undefined) {
-      nextProps.history.push('/register',{phone: prevState.phone})
+      nextProps.history.push('/register', {phone: prevState.phone})
     }
     if (nextProps.errors) {
       return { errors: nextProps.errors};
     }
     else return null;
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.isAuthenticated) {
       prevProps.history.push('/product');
     }
   }
+
   onChangePhoneNumber = (e) => {
     this.setState({phone: e.target.value});
   }
@@ -58,7 +59,7 @@ class PhoneVertification extends Component {
 
   render() {
     const { errors } = this.state;
-    const { messageSendCode, messageCheckCode, errorsProps } = this.props;
+    const { messageSendCode, errorsProps } = this.props;
     return (
       <div className="landing">
         <div className="dark-overlay landing-inner text-light">
@@ -66,7 +67,15 @@ class PhoneVertification extends Component {
         <div className="container bounceInRight">
           <div className="row">
             <div className="col-md-4 m-auto bounceInRight">           
-            <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}><Link  style={{color:'white', fontSize: 20}} to="/login">Quay lại</Link></div>
+            <div className="form-group" style={{color:'white',marginTop:20, marginLeft:10}}>
+              <Link 
+                style={{
+                  color:'white', 
+                  fontSize: 20,
+                  borderColor: '#ffffff',
+                  borderRadius: 5
+                }} to="/login">Quay lại</Link>
+            </div>
             <h1 className="display-4 text-center" style={{ marginBottom:30}}>Đăng ký</h1>             
               <div className="form-group">
                 <input
@@ -87,10 +96,10 @@ class PhoneVertification extends Component {
               </div>
 
               { messageSendCode && messageSendCode.message !== undefined && (                      
-                  <p className="font-weight-normal text-center">{messageSendCode.message}</p>
+                  <p className="font-weight-normal text-center" style={{color: '#ffffff', marginBottom: 10 }}>{messageSendCode.message}</p>
               )}
               { errorsProps && (
-                  <p className="font-weight-normal">{errorsProps.message}</p>
+                  <p className="font-weight-normal" style={{color: '#ffffff'}}>{errorsProps.message}</p>
               )}
               {messageSendCode? (<div>
                 <div className="form-group">

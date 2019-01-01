@@ -155,8 +155,9 @@ const addComment = async (req, res) => {
     const postId = req.body.postId;
     const userCommentId = req.body.userCommentId;
     const content = req.body.content;
+    const notification = req.body.notification;
     const data = { userCommentId, content };
-    const result = await PostService.addComment(postId, data);
+    const result = await PostService.addComment(postId, data, notification);
     return ReS(res, { result }, 200);
   } catch (error) {
     return ReE(res, error, 422);
@@ -266,14 +267,14 @@ const temp = async (req, res) => {
   }
 };
 
-const getPosterById = async (id) => {
+const getPosterById = async id => {
   try {
-    let user = await User.findById(id).select('appName _id');
+    let user = await User.findById(id).select("appName _id");
     return user;
   } catch (error) {
     return ReE(res, error, 422);
   }
-}
+};
 const getPostById = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   try {
@@ -293,7 +294,7 @@ module.exports = {
   getByOwnerId,
   getPublicByTypeId,
   deleteById,
-  
+
   ////////////
   getImages,
   addImages,
@@ -312,5 +313,5 @@ module.exports = {
   //
   testNotification,
   //
-  getPostById
+  getPostById,
 };

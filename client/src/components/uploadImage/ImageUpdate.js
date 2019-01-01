@@ -11,7 +11,7 @@ export default props =>
       >
         <FontAwesomeIcon icon={faTimesCircle} size='1x' />
       </div>
-      <img 
+      <img className="uploadImg"
         src={image.secure_url !== undefined ? image.secure_url: image} 
         alt='' 
         onError={() => props.onError(image)}

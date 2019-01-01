@@ -47,7 +47,7 @@ class UserList extends Component {
         <Col xs="12" lg="8">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Danh sách sản phẩm
+                <i className="fa fa-align-justify"></i> Danh sách người dùng
                 <input type="text" 
                   className="form-control" 
                   style={{float:"right", width:"20%"}} 
@@ -56,7 +56,7 @@ class UserList extends Component {
                   value={this.state.search}/>
               </CardHeader>
               <CardBody>
-              { users.allusers.users === undefined  ? <Spinner /> :
+              { users.allusers.users === undefined ||users ===null  ? <Spinner /> :
                 <Table hover responsive >
                   <thead>
                   <tr>
