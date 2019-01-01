@@ -80,7 +80,7 @@ const sendMessage = async mes => {
     ExpoService.sendNotifications({
       tokens: [receiver.expoToken],
       data: {
-        message: `${mes.user.appName}: ${mes.message.text}`,
+        message: `${mes.user.name}: ${mes.message.text}`,
         type: "message",
         sender: mes.user._id
       },
