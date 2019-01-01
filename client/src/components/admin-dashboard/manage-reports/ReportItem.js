@@ -94,7 +94,7 @@ class ReportItem extends Component {
         <td style={{verticalAlign:"middle"}}><Badge color={style}>{text}</Badge></td>
         {!this.state.deletionFlag?<td style={{verticalAlign:"middle"}}><Button color="success" size="sm" onClick={this._onClickBanUser}>Ẩn bài viết</Button></td>
           :<td style={{verticalAlign:"middle"}}><Button color="warning" size="sm" onClick={this._onClickBanUser}>Hiện bài viết</Button></td>}
-          <td><a href style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
+          <td><a style={{color:"blue", textDecorationLine:"yes",cursor:"pointer"}} onClick={this._showModal}>Chi tiết</a></td>
       </tr>
       )
     }

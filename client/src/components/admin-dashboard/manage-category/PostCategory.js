@@ -83,14 +83,17 @@ class PostCategory extends Component {
   }
 
   _onSearch = (e) => {
-    const list = this.refs.tesst.getElementsByClassName('nameItem');
-    const itemm = this.refs.tesst.getElementsByClassName('itemSearch');
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
-        itemm[i].style.display = '';
-      }
-      else {
-        itemm[i].style.display = 'none';
+    if(this.state.categories.length !== 0)
+    {
+      const list = this.refs.tesst.getElementsByClassName('nameItem');
+      const itemm = this.refs.tesst.getElementsByClassName('itemSearch');
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].innerHTML.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) {
+          itemm[i].style.display = '';
+        }
+        else {
+          itemm[i].style.display = 'none';
+        }
       }
     }
   }
