@@ -99,7 +99,7 @@ class PhoneVertification extends Component {
                   <p className="font-weight-normal text-center">{messageSendCode.message}</p>
               )}
               { errorsProps && (
-                  <p className="font-weight-normal">{errorsProps.message}</p>
+                  <p className="font-weight-normal" style={{color: '#ffffff'}}>{errorsProps.message}</p>
               )}
               {messageSendCode? (<div>
                 <div className="form-group">

@@ -17,6 +17,7 @@ import {FormGroup,
 } from 'reactstrap';
 import Spinner from '../common/Spinner';
 import { withRouter} from 'react-router-dom';
+import axios from 'axios';
 
 class ProductCategory extends Component {
 
@@ -25,12 +26,15 @@ class ProductCategory extends Component {
     this.state = {
       name: '',
       description: '',
-      checkUpdate: false
+      productParentCategories: [],
+      checkUpdate: false,
+      isLoading: false,
+      editingIndex: -1
     }
   }
   componentDidMount() {
-    this.props.getProductParentCategories(this.props.auth.user.user_id); 
-    this.setState(this.props.product.productParentCategories)
+    this._getAllCategory();
+    this.setState(this.props.product.productParentCategories);
     const script = document.createElement("script");
     script.src = "https://use.typekit.net/foobar.js";
     script.async = true;
@@ -39,43 +43,45 @@ class ProductCategory extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
-  getPropertyCategory = (e) =>{
+  getPropertyCategory = (e, index) =>{
     e.preventDefault();
     this.setState({
       _id:e.currentTarget.getElementsByTagName('input')[0].value,
       name: e.currentTarget.getElementsByTagName('td')[0].innerText.trim(),
       description: e.currentTarget.getElementsByTagName('td')[1].innerText.trim(),
-      checkUpdate: true
+      checkUpdate: true,
+      editingIndex: e.currentTarget.getElementsByTagName('input')[0].value
     });
   }
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if(nextProps.product.productDetail.productDetail && prevState.isUpdate){
+  
+  _getAllCategory = () => {
+    axios.get(`/api/product/productParentCategories/${this.props.auth.user.user_id}`).then(res => {
+      this.setState({
+        productParentCategories: res.data.productParentCategories,
+        isLoading: false
+      })
+    }).catch(err => {
+      //todo
+    });
+  }
 
-  //   }
-  // }
-  // setDeletionFlagFalse = (e) =>{
-  //   alert('aa');
-  //   const newCategory = {
-  //     id: this.state._id,
-  //     deletionFlag : false
-  //   };
-  //   this.props.updateProductCategory(newCategory, this.props.history);
-  //   this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
-  // }
 
   setDeletionFlagFalse = (e) => {
+    this.setState({isLoading: true})
     let deletionFlag = false;
     if(e.currentTarget.value === 'true') deletionFlag = false;
     if(e.currentTarget.value === 'false') deletionFlag = true;
-
     const newCategory = {
       id: this.state._id,
       name: this.state.name,
       description: this.state.description,
       deletionFlag: deletionFlag,
     };
-    this.props.updateProductCategory(newCategory, this.props.history);
-    this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
+    axios.put(`/api/product/updateProductCategory`,newCategory).then(res => {
+      this._getAllCategory();
+    }).catch(err => {
+      //todo
+    });
   }
   cancelEdit = (e) => {
     this.setState({
@@ -85,6 +91,7 @@ class ProductCategory extends Component {
     });
   }
   addCategory = (e) => {
+    this.setState({isLoading: true})
     e.preventDefault();
     if (this.state.checkUpdate === false){
       const newCategory = {
@@ -93,8 +100,11 @@ class ProductCategory extends Component {
         description: this.state.description,
         deletionFlag: false,
       };
-      this.props.createProductParentCategories(newCategory, this.props.history);
-      this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
+      axios.post(`/api/product/addProductParentCategory`,newCategory).then(res => {
+        this._getAllCategory();
+      }).catch(err => {
+        //todo
+      });
       this.cancelEdit()
     }else{
       const newCategory = {
@@ -102,15 +112,18 @@ class ProductCategory extends Component {
         name: this.state.name,
         description: this.state.description
       };
-      this.props.updateProductCategory(newCategory, this.props.history);
-      this.setState(this.props.getProductParentCategories(this.props.auth.user.user_id));
+      axios.put(`/api/product/updateProductCategory`,newCategory).then(res => {
+        this._getAllCategory();
+      }).catch(err => {
+        //todo
+      });
       this.cancelEdit()
     }
     
   }
   renderRowItem = (item, index) => {
     return (
-      <tr ref="rowCategory" key={index} onClick={this.getPropertyCategory}>
+      <tr ref="rowCategory" key={index} onClick={this.getPropertyCategory} style={{opacity: this.state.isLoading === true && item._id === this.state.editingIndex ? 0.4 : 1}} >
           <input type ="hidden" value={item._id}/>
           <td name="name">{item.name}</td>
           <td>{item.description}</td>
@@ -139,16 +152,21 @@ class ProductCategory extends Component {
   }
 
   render() {
-    const { productParentCategories , loading } = this.props.product;    
+    const { productParentCategories } = this.state;
+    const { loading } = this.props.product;
     return(
       <div>
         <Row>
           <Col xs="3" lg="3">
+          <Card>
+            <CardHeader>
+                <i className="fa fa-align-justify"></i> 
             <strong>Thêm thể loại</strong>
+            </CardHeader><CardBody>
               <form onSubmit={this.addCategory}>
               <input type ="hidden" value={this.state._id}/>
               <FormGroup>
-                <Label htmlFor="name">Tên thể loại</Label>
+                <Label htmlFor="description">Tên sản phẩm / dịch vụ</Label>
                 <input type="text"  className="form-control" value={this.state.name} onChange={this.onChange} name="name" required="required" />
                 <FormText className="help-block">Vui lòng nhập tên thể loại</FormText>
                 </FormGroup>
@@ -164,8 +182,10 @@ class ProductCategory extends Component {
                 <Button type="button" onClick={this.cancelEdit} color="secondary">Hủy</Button>
                 </div>  }
               </form>
+              </CardBody>
+              </Card>
           </Col>
-        <Col xs="7" lg="7">
+        <Col xs="8" lg="8">
             <Card>
             <CardHeader>
                 <i className="fa fa-align-justify"></i> Danh sách thể loại
@@ -178,13 +198,13 @@ class ProductCategory extends Component {
                 </div> 
             </CardHeader>
             <CardBody>
-                <Table responsive>
+                <Table hover responsive>
                 <thead>
                 <tr>
                     <th>Tên</th>
                     <th>Mô tả</th>
                     <th>Trạng thái</th>
-                    <th></th>
+                    <th>Xử lý</th>
                 </tr>
                 </thead>
                 <tbody ref="table">

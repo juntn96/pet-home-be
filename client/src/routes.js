@@ -12,7 +12,9 @@ import PostCategory from './components/admin-dashboard/manage-category/PostCateg
 import LocationCategory from './components/admin-dashboard/manage-category/LocationCategory';
 import LocationAdmin from './components/admin-dashboard/manage-location/LocationAdmin';
 import AddLocation from './components/admin-dashboard/manage-location/AddLocation';
+import EditLocation from './components/admin-dashboard/manage-location/EditLocation';
 import ChangePasswordAdmin from './components/admin-dashboard/ChangePasswordAdmin';
+import ReportDetail from './components/admin-dashboard/manage-reports/ReportDetail';
 
 function Loading() {
   return <div>Loading...</div>;
@@ -33,10 +35,12 @@ const routes = [
     { path: '/locationDetail', exact: true, name: 'Thông tin địa điểm', component: LocationDetail },
     { path: '/admin/allusers', exact: true, name: 'Tất cả người dùng', component: UserList },
     { path: '/admin/report', exact: true, name: 'Báo cáo', component: ReportList },
+    { path: '/admin/report/detail', exact: true, name: 'Báo cáo chi tiết', component: ReportDetail },
     { path: '/admin/category/location', exact: true, name: 'Thể loại địa điểm', component: LocationCategory },
     { path: '/admin/category/post', exact: true, name: 'Thể loại bài viết', component: PostCategory },
     { path: '/admin/location', exact: true, name: 'Quản lý địa điểm', component: LocationAdmin },
     { path: '/admin/location/add', exact: true, name: 'Thêm địa điểm mới', component: AddLocation },
+    { path: '/admin/location/edit', exact: true, name: 'Sửa thông tin địa điểm', component: EditLocation },
     { path: '/admin/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePasswordAdmin },
 ]
 export default routes;

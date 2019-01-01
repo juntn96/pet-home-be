@@ -12,16 +12,16 @@ import {
   Label,
   Button,
 } from 'reactstrap';
-import Spinner from '../common/Spinner'
+import Spinner from '../../common/Spinner'
 import Notifications, { notify } from 'react-notify-toast'
-import SpinnerU from './../uploadImage/Spinner'
-import Images from './../uploadImage/Images'
-import Buttons from './../uploadImage/Buttons'
-import WakeUp from './../uploadImage/WakeUp'
-import './../uploadImage/UploadImage.css'
+import SpinnerU from './../../uploadImage/Spinner'
+import Images from './../../uploadImage/Images'
+import Buttons from './../../uploadImage/Buttons'
+import WakeUp from './../../uploadImage/WakeUp'
+import './../../uploadImage/UploadImage.css'
 import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
-import { updatePrivateLocation, getLocationCategories } from '../../store/actions/locationAction'
-import * as Constants from './../../utils/constants';
+import { updateLocation, addlocationByAdmin, getLocationCategories } from '../../../store/actions/locationAction'
+import * as Constants from './../../../utils/constants';
 import Geosuggest from 'react-geosuggest';
 
 const toastColor = { 
@@ -40,26 +40,23 @@ const MapComponent = withGoogleMap(props =>
   </GoogleMap>
 )
 
-class Location extends Component {
+class EditLocation extends Component {
+  
   constructor(props) {
     super(props);
-    const {_id, description, address, images, location, name, systemRating, typeId} = this.props.location.state.linkState;
+    const {address, description, images, location, name, typeId} = this.props.location.state.data;
     this.state = {
-      _id,
-      address ,
       images,
-      location,
       name,
-      systemRating,
-      typeLocationCategory: typeId ,
+      typeLocationCategory: typeId._id ,
       description,
       loadingU: true,
       uploading: false,
       modal: false,
-      latlong: {
-        lat: location.coordinates[1],
-        lng: location.coordinates[0],        
-      }
+      address,
+      locationCategories: [],
+      location,
+      latlong: { lat: location.coordinates[1], lng: location.coordinates[0] }
     };
   }
 
@@ -74,7 +71,7 @@ class Location extends Component {
   }
 
   componentDidMount() {
-    this.props.getLocationCategories(Constants.PRIVATE_LOCATION);
+    this.props.getLocationCategories(Constants.PUBLIC_LOCATION);
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -114,9 +111,9 @@ class Location extends Component {
       return false;
     }
 
-    const { name, _id, typeLocationCategory, description, address, images } = this.state
+    const { name, typeLocationCategory, description, address, images } = this.state
 
-    const updatedImages = images.map(item => { 
+    const addedImages = images.map(item => { 
       return {
         public_id: item.public_id,
         width: item.width,
@@ -131,15 +128,15 @@ class Location extends Component {
     }
     const updatedLocation = {
       name,
-      _id,
       typeId: typeLocationCategory,
       description,
       address,
-      images: updatedImages,
-      location: location
+      images: addedImages,
+      location: location,
+      ownerId: this.props.auth.user.user_id,
+      _id: this.props.location.state.data._id
     };
-    this.props.updatePrivateLocation(updatedLocation, this.props.history);
-    this.props.history.push('/product');
+    this.props.updateLocation(updatedLocation, this.props.history);
   }
 
   onCancel = (e) => {
@@ -407,4 +404,4 @@ const mapStateToProps = state => ({
   locationApp: state.locationApp
 });
 
-export default connect(mapStateToProps, { updatePrivateLocation, getLocationCategories })(withRouter(Location));
+export default connect(mapStateToProps, { updateLocation, addlocationByAdmin, getLocationCategories })(withRouter(EditLocation));

@@ -68,13 +68,10 @@ router.put(
 
 //#region Location admin
 router.get("/admin/getLocation", LocationController.getAllLocations);
-router.get(
-  "/admin/getLocationById/:locationId",
-  LocationController.getLocationById
-);
-router.put("/admin/updateLocation", LocationController.hideShowLocation);
-router.post("/admin/addLocation", LocationController.hideShowLocation);
+router.get("/admin/getLocationById/:locationId", LocationController.getLocationById);
+router.put("/admin/hideOrShowLocation", LocationController.hideShowLocation);
 router.post("/admin/addLocaionByAdmin", LocationController.addLocaionByAdmin);
+router.put("/admin/deleteAdminLocation", LocationController.deleteLocationByAdmin);
 //#endregion
 
 //#region Create Admin

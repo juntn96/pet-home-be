@@ -273,15 +273,15 @@ const getAllActiveLocation = async function (req, res) {
 };
 module.exports.getAllActiveLocation = getAllActiveLocation;
 
-// @route   PUT api/admin/updateLocation
+// @route   PUT api/admin/hideOrShowLocation
 // @desc    
 // @access  Public
 const hideShowLocation = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   try {
     const locationId = req.body.id;
-    const hiddentFlag = req.body.hiddentFlag;
-    const result = await locationService.hideLocationById(locationId, hiddentFlag);
+    const hiddenFlag = req.body.hiddenFlag;
+    const result = await locationService.hideLocationById(locationId, hiddenFlag);
     return ReS(res, { result }, 200);
   } catch (error) {
       return ReE(res, error, 422);
@@ -920,3 +920,16 @@ const getLocationCategoriesWithType = async function (req, res) {
 	}
 }
 module.exports.getLocationCategoriesWithType = getLocationCategoriesWithType;
+
+const deleteLocationByAdmin = async function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  let error, locationProfile;
+  [error, locationProfile] = await to(locationService.deleteLocationByAdmin(req.body));
+  if (error) return ReE(res, 'Không cập nhật địa điểm', 422);
+  return ReS(res, {
+    message: 'Update location successfully',
+    locationProfile: locationProfile
+  }, 200);
+}
+module.exports.deleteLocationByAdmin = deleteLocationByAdmin;
+
