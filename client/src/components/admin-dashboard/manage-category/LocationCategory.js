@@ -15,7 +15,7 @@ class LocationCategory extends Component {
       name: '',
       newName: '',
       typeLocationEdit:"",
-      typeLocation:''
+      typeLocation: 2
     }
   }
 
@@ -60,12 +60,14 @@ class LocationCategory extends Component {
       this.refs.editErrMsg.innerHTML = "Vui lòng không bỏ trống!";
       return;
     }
-    if (this.state.name.trim() === this.oldName) {
+    console.log("typeLocation");
+    console.log(this.state.typeLocation);
+    if (this.state.name.trim() === this.oldName && this.state.itemId === this.oldTypeLocation) {
       this.refs.editErrMsg.innerHTML = "Bạn chưa thay đổi!";
       return;
     }
-    const abc = { id: this.state.itemId, field: 'name', value: this.state.name }
-    axios.put('/api/admin/location/updateLocationCategories', abc).then(res => {
+    const data = { id: this.state.itemId, field: 'name', value: this.state.name }
+    axios.put('/api/admin/location/updateLocationCategories', data).then(res => {
       this.refs.editErrMsg.innerHTML = "";
       this._requestGetAllLocationCategories();
       window.hideEditModalLocation();
@@ -78,8 +80,9 @@ class LocationCategory extends Component {
     if (this.state.newName === '') {
       this.refs.addErrMsg.innerHTML = "Vui lòng không bỏ trống!";
       return;
-    }
-    const data = { name: this.state.newName, typeLocation: Number(this.state.typeLocation )}
+    } 
+    const data = { name: this.state.newName, typeLocation: Number(this.state.typeLocation) }
+    console.log(data);
     axios.post('/api/admin/location/addLocationCategory', data).then(res => {
       this._requestGetAllLocationCategories();
       this.refs.addErrMsg.innerHTML = "";
@@ -89,7 +92,9 @@ class LocationCategory extends Component {
     });
   }
   deleteHandle = (obj) => {
+    console.log(obj);
     this.oldName = obj.name;
+    this.oldTypeLocation = obj.typeLocation;
     this.setState({ name: obj.name, itemId: obj.id, deletionFlg: obj.deletionFlag, typeLocationEdit: Number(obj.typeLocation) })
   }
 
@@ -97,6 +102,7 @@ class LocationCategory extends Component {
     if(this.state.locationCategories.length !== 0)
       this._inputSearchAll(e);
   }
+
   _inputSearch = (e, val) =>{
     const list = this.refs.search.getElementsByClassName('nameItemValue');
     const listCheck = this.refs.search.getElementsByClassName('statusFlagLocation');
@@ -110,6 +116,7 @@ class LocationCategory extends Component {
       }
     }
   }
+
   _inputSearchAll = (e, val) =>{
     const list = this.refs.search.getElementsByClassName('nameItemValue');
     const itemm = this.refs.search.getElementsByClassName('itemSearchLocation');
@@ -123,7 +130,7 @@ class LocationCategory extends Component {
     }
   }
   oldName = '';
-
+  oldTypeLocation = -1;
   onChange = (e) => {
     if(e.target.name==="typeLocationEdit")
       this.setState({ [e.target.name]: Number(e.target.value) });
@@ -131,10 +138,10 @@ class LocationCategory extends Component {
       this.setState({ [e.target.name]: e.target.value });
   }
 
-  deleteHandle = (obj) => {
-    this.oldName = obj.name;
-    this.setState({ name: obj.name, itemId: obj.id, deletionFlg: obj.deletionFlag,typeLocationEdit:obj.typeLocation })
-  }
+  // deleteHandle = (obj) => {
+  //   this.oldName = obj.name;
+  //   this.setState({ name: obj.name, itemId: obj.id, deletionFlg: obj.deletionFlag,typeLocationEdit:obj.typeLocation })
+  // }
 
   _filter = (val) => {
     const list = this.refs.search.getElementsByClassName('statusFlagLocation');
