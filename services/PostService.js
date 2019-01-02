@@ -211,7 +211,9 @@ const getComments = async postId => {
 
 const addComment = async (postId, comment, notification) => {
   try {
-    NotificationService.addNotification(notification);
+    if (notification) {
+      NotificationService.addNotification(notification);
+    }
     const result = await Post.findByIdAndUpdate(postId, {
       $push: { comments: { ...comment } },
     });
@@ -313,14 +315,18 @@ const vote = async (postId, newVote, notification) => {
     const oldVote = await findVote(postId, newVote.voterId);
     if (!oldVote) {
       const result = await addVote(postId, newVote);
-      await NotificationService.addNotification(notification);
+      if (notification) {
+        NotificationService.addNotification(notification);
+      }
       return result;
     } else {
       if (newVote.voteType === oldVote.voteType) {
         return await removeVote(postId, newVote.voterId);
       } else {
         const result = await editVote(postId, newVote);
-        await NotificationService.addNotification(notification);
+        if (notification) {
+          NotificationService.addNotification(notification);
+        }
         return result;
       }
     }
