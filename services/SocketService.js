@@ -46,6 +46,10 @@ const onConnection = socket => {
     console.log("comment post", post);
     onCommentPost(post);
   });
+  socket.on("editPost", post => {
+    console.log("edit post", post);
+    onEditPost(post);
+  });
 };
 
 const joinConversation = (socket, conversation) => {
@@ -121,6 +125,15 @@ const onCommentPost = async post => {
   try {
     const io = socketService.io;
     io.emit("commentPost", post);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const onEditPost = async post => {
+  try {
+    const io = socketService.io;
+    io.emit("editPost", post);
   } catch (error) {
     throw error;
   }
