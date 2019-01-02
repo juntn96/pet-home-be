@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/static/media/Simple-Line-Icons.0cb0b9c5.woff2"
   },
   {
-    "revision": "91cbad4aa0c04fa7871f",
+    "revision": "245983d4df83cf47c5bb",
     "url": "/static/css/main.f4e0d310.chunk.css"
   },
   {
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/static/media/CoreUI-Icons-Linear-Free.0087dce4.woff"
   },
   {
-    "revision": "91cbad4aa0c04fa7871f",
-    "url": "/static/js/main.91cbad4a.chunk.js"
+    "revision": "245983d4df83cf47c5bb",
+    "url": "/static/js/main.245983d4.chunk.js"
   },
   {
     "revision": "f33df365d6d0255b586f2920355e94d7",
@@ -92,7 +92,7 @@ self.__precacheManifest = [
     "url": "/static/css/2.2d26dc05.chunk.css"
   },
   {
-    "revision": "f057d312e7e315758e3cb215df4b54ff",
+    "revision": "c27b206658f5fe3ba2a7484b1011d444",
     "url": "/index.html"
   }
 ];
