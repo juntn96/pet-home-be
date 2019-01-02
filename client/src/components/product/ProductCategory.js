@@ -178,7 +178,6 @@ class ProductCategory extends Component {
 
   render() {
     const { productParentCategories } = this.state;
-    const { loading } = this.props.product;
     return (
       <div>
         <Row>

@@ -3,7 +3,7 @@ import { Badge, Button } from 'reactstrap';
 import Img from 'react-image';
 import axios from 'axios';
 import SuccessMsg from '../../common/SuccessMsg';
-
+import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 
 class UserItem extends Component {

@@ -155,9 +155,5 @@ const mapStateToProps = state => ({
   allusers: state.allusers
 });
 
-const spanStyle = {
-  marginLeft: 10
-}
-
 export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportList));
 

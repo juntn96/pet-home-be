@@ -47,12 +47,7 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    // this.props.getProductParentCategories(this.props.auth.user.user_id);
     this.getAllProductCategories();
-    // const { productParentCategories  } = this.props.product; 
-    // if(productParentCategories.length > 0) {
-    //   this.setState({ typeProductCategory: productParentCategories[0]._id });
-    // }
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -208,7 +203,6 @@ class AddProduct extends Component {
 
   render() {
     const { loadingU, uploading, images, listTypeProductCategory } = this.state;
-    const { productParentCategories, loading } = this.props.product;
     const content = () => {
       switch (true) {
         case loadingU:

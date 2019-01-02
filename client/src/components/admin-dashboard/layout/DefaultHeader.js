@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { AppAsideToggler, AppHeaderDropdown, AppSidebarToggler,AppNavbarBrand } from '@coreui/react';
-import { Link } from 'react-router-dom';
+import { AppHeaderDropdown, AppSidebarToggler,AppNavbarBrand } from '@coreui/react';
 import { logoutUser } from '../../../store/actions/authActions';
 import Img from 'react-image';
 import logo from '../../../assets/img/logo-ad.png'
@@ -29,8 +28,8 @@ class DefaultHeader extends Component {
         <AppNavbarBrand
           full={{ src: logo, width: 89, height: 25, alt: 'Pethome Logo' }}
         />
-        <Nav className="d-md-down-none" navbar>
-        </Nav>
+        {/* <Nav className="d-md-down-none" navbar>
+        </Nav> */}
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none" nav>
             <NavLink href="#">{this.props.auth.user.phone}</NavLink>
