@@ -67,7 +67,7 @@ class App extends Component {
               <PrivateRoute path="/product/add" component={DefaultLayout} />
               <PrivateRoute path="/product/edit" component={DefaultLayout} />
               <PrivateRoute path="/product" component={DefaultLayout} />
-              <PrivateRoute path="/chgpwd" component={DefaultLayout} />
+              <PrivateRoute path="/user/changePass" component={DefaultLayout} />
               <PrivateRoute path="/category" component={DefaultLayout} />
               <PrivateRoute path="/locationDetail" component={DefaultLayout} />
               {/* admin */}

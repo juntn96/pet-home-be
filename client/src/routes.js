@@ -28,7 +28,7 @@ const routes = [
     { path: '/product/edit', exact: true, name: 'Sửa sản phẩm', component: EditProduct },
     { path: '/category', exact: true, name: 'Quản lý thể loại', component: ProductCategory },
     { path: '/product', exact: true, name: 'Quản lý sản phẩm', component: ProductList },
-    { path: '/chgpwd', exact: true, name: 'Thay đổi mật khẩu', component: ChangePassword },
+    { path: '/user/changePass', exact: true, name: 'Thay đổi mật khẩu', component: ChangePassword },
     { path: '/locationDetail', exact: true, name: 'Thông tin địa điểm', component: LocationDetail },
     { path: '/admin/allusers', exact: true, name: 'Tất cả người dùng', component: UserList },
     { path: '/admin/report', exact: true, name: 'Báo cáo', component: ReportList },
