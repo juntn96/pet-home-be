@@ -19,7 +19,8 @@ import {
 import Spinner from '../common/Spinner';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 class ProductCategory extends Component {
 
   constructor(props) {
@@ -85,6 +86,7 @@ class ProductCategory extends Component {
     if(newCategory!==null){
       axios.put(`/api/product/updateProductCategory`, newCategory).then(res => {
         this._getAllCategory();
+        window.messageSuccess();
       }).catch(err => {
         //todo
       });
@@ -112,6 +114,7 @@ class ProductCategory extends Component {
       };
       axios.post(`/api/product/addProductParentCategory`, newCategory).then(res => {
         this._getAllCategory();
+        window.messageSuccess();
       }).catch(err => {
         //todo
       });
@@ -125,6 +128,7 @@ class ProductCategory extends Component {
       };
       axios.put(`/api/product/updateProductCategory`, newCategory).then(res => {
         this._getAllCategory();
+        window.messageSuccess();
       }).catch(err => {
         //todo
       });
@@ -239,6 +243,9 @@ class ProductCategory extends Component {
             </Card>
           </Col>
         </Row>
+        <div className="alert alert-success" id="messageTrigger" style={{display:"none",color:"green",zIndex:100,position:"fixed",opacity:0.5, border:"2px green solid",top:"14%",left:"45%"}}>
+        <FontAwesomeIcon icon={faCheckCircle} size='1x' color='green' /> Xử lý thành công!
+        </div>
       </div>
     );
   }

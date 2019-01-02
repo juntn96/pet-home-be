@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Badge, Button } from "reactstrap";
-import Img from "react-image";
-import axios from "axios";
-import { withRouter } from "react-router-dom";
+import React,{Component} from 'react';
+import { Badge, Button } from 'reactstrap';
+import Img from 'react-image';
+import axios from 'axios';
+import SuccessMsg from '../../common/SuccessMsg';
 
 import { connect } from "react-redux";
 
@@ -31,18 +31,16 @@ class UserItem extends Component {
   };
 
   _requestGetDelectionFlag = () => {
-    axios
-      .get(`/api/admin/users/status/${this.props.userDetail._id}`)
-      .then(res => {
-        this.setState({
-          deletionFlag: res.data.deletionFlag,
-          isLoading: false,
-        });
-      })
-      .catch(err => {
-        //todo
+    axios.get(`/api/admin/users/status/${this.props.userDetail._id}`).then(res => {
+      this.setState({
+        deletionFlag: res.data.deletionFlag,
+        isLoading: false
       });
-  };
+      window.messageSuccess();
+    }).catch(err =>{
+      //todo
+    });
+  }
 
   _onClickBanUser = () => {
     this.setState({

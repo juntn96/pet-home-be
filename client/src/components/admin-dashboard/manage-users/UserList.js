@@ -5,6 +5,7 @@ import { Card, CardBody, CardHeader, Col, Row,Table } from 'reactstrap';
 import {getAllUsers} from '../../../store/actions/usersActions'
 import Spinner from '../../common/Spinner'
 import UserItem from './UserItem'
+import SuccessMsg from '../../common/SuccessMsg';
 
 class UserList extends Component {
 
@@ -75,6 +76,7 @@ class UserList extends Component {
             </Card>
           </Col>
         </Row>
+        <SuccessMsg />
     </div>)
   }
 

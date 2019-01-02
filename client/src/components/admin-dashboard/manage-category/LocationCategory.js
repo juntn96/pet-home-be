@@ -4,6 +4,7 @@ import Spinner from '../../common/Spinner';
 import axios from 'axios';
 import LocationCategoryItem from './LocationCategoryItem';
 import Empty from '../../common/Empty';
+import SuccessMsg from '../../common/SuccessMsg';
 class LocationCategory extends Component {
 
   constructor(props) {
@@ -19,7 +20,18 @@ class LocationCategory extends Component {
   }
 
   componentDidMount() {
-    this._requestGetAllLocationCategories();
+    this._requestGetAllLocationCategoriesFirst();
+  }
+
+  _requestGetAllLocationCategoriesFirst = () => {
+    axios.get('/api/location/locationCategories').then(res => {
+      this.setState({
+        locationCategories: res.data.locationCategories,
+        isLoading: false
+      })
+    }).catch(err => {
+      //todo
+    });
   }
 
   _requestGetAllLocationCategories = () => {
@@ -27,7 +39,8 @@ class LocationCategory extends Component {
       this.setState({
         locationCategories: res.data.locationCategories,
         isLoading: false
-      })
+      });
+      window.messageSuccess();
     }).catch(err => {
       //todo
     });
@@ -257,6 +270,7 @@ class LocationCategory extends Component {
               </div>
             </div>
           </div>
+          <SuccessMsg />
         </div>
       </div>)
   }
