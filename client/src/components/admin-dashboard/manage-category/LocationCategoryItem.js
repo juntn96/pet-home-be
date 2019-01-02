@@ -21,8 +21,8 @@ class LocationCategoryItem extends Component {
 
   render() {
     const { locationCate } = this.props;
-    const type = locationCate.typeLocation === 1 ? 'Địa điểm cá nhân' : 'Địa điểm công cộng';
-    const typeColor = locationCate.typeLocation === 1 ? 'card-accent-warning' : 'card-accent-primary';
+    const type = locationCate.typeLocation === 2 ? 'Địa điểm cá nhân' : 'Địa điểm công cộng';
+    const typeColor = locationCate.typeLocation === 2 ? 'card-accent-warning' : 'card-accent-primary';
     const date = new Date(locationCate.updatedAt).toLocaleDateString();
     const classnametype = locationCate.hiddenFlag ? 'badge-secondary' : 'badge-success';
     // const date = new Date(locationCate.createdAt).toDateString();

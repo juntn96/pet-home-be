@@ -15,7 +15,7 @@ class LocationCategory extends Component {
       name: '',
       newName: '',
       typeLocationEdit:"",
-      typeLocation: 2
+      typeLocation: 1
     }
   }
 
@@ -257,13 +257,13 @@ class LocationCategory extends Component {
                   <small ref='addErrMsg' className="" style={{ color: 'red' }}></small>
                   <br/>
                   <div className="form-check">
-                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="2" defaultChecked/>
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="publicLocation1" value="1" defaultChecked/>
                     <label className="form-check-label" htmlFor="publicLocation1">
                       Địa điểm công cộng
                     </label>
                   </div>
                   <div className="form-check">
-                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="1"/>
+                    <input className="form-check-input" type="radio" name="typeLocation" onChange={this.onChange} id="privateLocaton1" value="2"/>
                     <label className="form-check-label" htmlFor="privateLocaton1">
                       Địa điểm cá nhân
                     </label>
