@@ -35,9 +35,9 @@ router.get("/users/detail/:userId", UserController.getUserById);
 
 router.put(
   "/auth/changePassword",
-  passport.authenticate("jwt", {
-    session: false,
-  }),
+  // passport.authenticate("jwt", {
+  //   session: false,
+  // }),
   AuthController.changePassword
 );
 //#endregion

@@ -6,6 +6,7 @@ import { AppHeaderDropdown, AppSidebarToggler,AppNavbarBrand } from '@coreui/rea
 import { logoutUser } from '../../../store/actions/authActions';
 import Img from 'react-image';
 import logo from '../../../assets/img/logo-ad.png'
+import { Link } from 'react-router-dom';
 
 const propTypes = {
   children: PropTypes.node,
@@ -41,7 +42,7 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>Quản lý tài khoản</strong></DropdownItem>
               <DropdownItem><i className="fa fa-lock"></i>
-              <a href="/admin/chgpwd">Thay đổi mật khẩu</a>
+              <Link to="/admin/chgpwd">Thay đổi mật khẩu</Link>
               </DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>

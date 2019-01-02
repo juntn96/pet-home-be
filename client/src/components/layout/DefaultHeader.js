@@ -63,7 +63,7 @@ class DefaultHeader extends Component {
                 state: { linkState: locationDetail }
               }}>Thông tin địa điểm</Link></DropdownItem>
               <DropdownItem><i className="fa fa-lock"></i>
-              <a href="/user/changePass">Thay đổi mật khẩu</a></DropdownItem>
+              <Link to="/user/changePass">Thay đổi mật khẩu</Link></DropdownItem>
               <DropdownItem onClick={this.onLogoutClick}><i className="fa fa-sign-out"></i> Đăng xuất</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>

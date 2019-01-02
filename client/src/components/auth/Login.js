@@ -125,9 +125,9 @@ class Login extends Component {
                   </div>
                   <div className="flex-sb-m w-full p-b-48">
                     <div>
-                      <a href="/forgetPass" className="txt3">
-                        Quên mật khẩu?
-                      </a>
+                    <Link to="/forgetPass" className="txt3">
+                      Quên mật khẩu?
+                    </Link>
                     </div>
                   </div>
                   <div className="container-login100-form-btn">
