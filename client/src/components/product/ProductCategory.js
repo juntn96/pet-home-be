@@ -203,7 +203,7 @@ class ProductCategory extends Component {
                   </FormGroup>
                   {this.state.checkUpdate === false ? <Button type="submit" color="info"><i className="fa fa-save"></i> Thêm mới</Button> : <div>
                     <Button type="submit" color="info"><i className="fa fa-save"></i> Sửa</Button>
-                    <Button type="button" onClick={this.cancelEdit} color="secondary">Hủy</Button>
+                    <Button type="button" onClick={this.cancelEdit} color="secondary" style={{ marginLeft: 5}}>Hủy</Button>
                   </div>}
                 </form>
               </CardBody>
