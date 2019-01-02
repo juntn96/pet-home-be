@@ -244,7 +244,11 @@ module.exports.getLocationById = getLocationById;
 
 const getAllActiveLocation = async () => {
   try {
-    let activeLocations = await Location.find({ deletionFlag: false, hiddenFlag: false }).populate('ownerId').populate('typeId')
+    let activeLocations = await Location.find({ 
+      deletionFlag: false, 
+      hiddenFlag: false ,
+      systemRating: { $gte: 3 }
+    }).populate('ownerId').populate('typeId')
     return activeLocations;
   } catch (e) {
     return TE(res, 'Get location active location failed', 503);
