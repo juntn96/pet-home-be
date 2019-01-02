@@ -1,5 +1,8 @@
 const socket = require("socket.io");
 const ConversationService = require("./ConversationServices");
+const NotificationService = require("./NotificationService");
+const AppUserService = require("./AppUserService");
+const ExpoService = require("./ExpoService");
 
 class SocketService {
   constructor() {
@@ -58,6 +61,7 @@ const leaveConversation = (socket, conversation) => {
 const sendMessage = async mes => {
   try {
     const io = socketService.io;
+
     const messageData = {
       conversationId: mes.conversationId,
       message: {
@@ -66,10 +70,24 @@ const sendMessage = async mes => {
       },
     };
     await ConversationService.addMessage(messageData);
+    messageNotification(mes.notification.receiver, mes);
     io.in(mes.conversationId).emit("sendMessage", mes);
   } catch (error) {
     throw error;
   }
+};
+
+const messageNotification = async (toId, mes) => {
+  const receiver = await AppUserService.findUser(toId);
+  ExpoService.sendNotifications({
+    tokens: [receiver.expoToken],
+    data: {
+      content: mes.notification.content,
+      message: `Bạn có tin nhắn mới từ\n ${mes.user.name}: ${mes.message.text}`,
+      type: "message",
+      sender: mes.user._id,
+    },
+  });
 };
 
 const votePost = async post => {
