@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { initSocket } from "../../store/actions/socketActions";
 
-class SocketHandle extends Component {
+class SocketHandle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};

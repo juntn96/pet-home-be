@@ -9,9 +9,10 @@ import {
   Col,
   FormGroup,
   Label,
-  Button,
-} from "reactstrap";
-import axios from "axios";
+  Button
+} from 'reactstrap';
+import axios from 'axios';
+import SuccessMsg from '../common/SuccessMsg';
 class ChangePasswordAdmin extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +52,21 @@ class ChangePasswordAdmin extends Component {
       return false;
     }
     this.setState({
-      isLoading: false,
+      isLoading: false
+    })
+    const user = {uid: this.props.auth.user.user_id, password: this.state.oldPassword, newPassword: this.state.newPassword1}
+    axios.put(`/api/auth/changePassword`,user).then(res => {
+      this.setState({
+        isLoading: false,
+        messageSucc: res.data.message,
+        messageErr:"",
+        oldPassword: '',
+        newPassword: '',
+        newPassword1: '',
+      });
+      window.messageSuccess();
+    }).catch(err => {
+      this.setState({messageErr:err.response.data.message, messageSucc:""});
     });
     const user = {
       uid: this.props.auth.user.user_id,
@@ -182,7 +197,7 @@ class ChangePasswordAdmin extends Component {
               </Card>
             </Col>
           </div>
-        </div>
+          <SuccessMsg />
       </div>
     );
   }

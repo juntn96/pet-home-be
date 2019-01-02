@@ -36,7 +36,7 @@ export const createProduct = (product, history) => dispatch => {
   axios
     .post('/api/product/add', product)
     .then(res =>
-        history.push('/product')
+        history.push('/product', {isChange : true})
       )
     .catch(err =>
       {
@@ -157,7 +157,7 @@ export const updateProduct = (product, history) => dispatch => {
   axios
     .put(`/api/product/update`, product)
     .then(res =>
-      history.push('/product')
+      history.push('/product',{isChange : true})
     )
     .catch(err =>
       {

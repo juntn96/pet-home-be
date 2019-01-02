@@ -23,6 +23,8 @@ import { GoogleMap, withGoogleMap, Marker } from "react-google-maps"
 import { updatePrivateLocation, getLocationCategories } from '../../store/actions/locationAction'
 import * as Constants from './../../utils/constants';
 import Geosuggest from 'react-geosuggest';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const toastColor = { 
   background: '#505050', 
@@ -139,7 +141,8 @@ class Location extends Component {
       location: location
     };
     this.props.updatePrivateLocation(updatedLocation, this.props.history);
-    this.props.history.push('/product');
+    // this.props.history.push('/product');
+    window.messageSuccess();
   }
 
   onCancel = (e) => {
@@ -393,7 +396,11 @@ class Location extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </div>           
+          </div>
+
+        </div>
+        <div className="alert alert-success" id="messageTrigger" style={{display:"none",color:"green",zIndex:100,position:"fixed",opacity:0.5, border:"2px green solid",top:"14%",left:"45%"}}>
+        <FontAwesomeIcon icon={faCheckCircle} size='1x' color='green' /> Xử lý thành công!
         </div>
       </div>
     );

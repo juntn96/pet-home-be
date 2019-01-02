@@ -1,6 +1,6 @@
 const phoneService = require('./../services/PhoneService');
 const PhoneVerification = require('../models/PhoneVerification');
-
+const User = require('../models/User');
 // @route   POST api/phone/sms
 // @desc    Send code by sms to user
 // @access  Public
@@ -14,6 +14,12 @@ const sendPhoneVerifyCode = async function (req, res) {
     if (!vietnamesePhoneRegex.test(body.phone)) {
       return ReEM(res, 'Số điện thoại của bạn không hợp lệ', 400);
     } else {
+      const users = await User.find({role: 1});
+      const userNumbers = users.map(item => item.phoneNumber);
+      console.log(userNumbers);
+      if(userNumbers.includes(body.phone)){
+        return ReEM(res, 'Số điện thoại này đã được đăng kí !', 400);
+      }
       let errors, status;
       [errors, status] = await to(phoneService.sendSMSVerification(body.phone));
       if (errors) {

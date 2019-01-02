@@ -8,6 +8,7 @@ import Spinner from '../../common/Spinner'
 import ReportItem from './ReportItem'
 import axios from 'axios';
 import Empty from '../../common/Empty';
+import SuccessMsg from '../../common/SuccessMsg';
 class ReportList extends Component {
 
   constructor(props) {
@@ -143,6 +144,7 @@ class ReportList extends Component {
             </div>
           </div>
         </div>
+        <SuccessMsg />
       </div>)
   }
 
@@ -152,10 +154,6 @@ const mapStateToProps = state => ({
   errors: state.errors,
   allusers: state.allusers
 });
-
-const spanStyle = {
-  marginLeft: 10
-}
 
 export default connect(mapStateToProps, { getAllUsers })(withRouter(ReportList));
 

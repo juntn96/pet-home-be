@@ -47,12 +47,7 @@ class AddProduct extends Component {
   }
 
   componentDidMount() {
-    // this.props.getProductParentCategories(this.props.auth.user.user_id);
     this.getAllProductCategories();
-    // const { productParentCategories  } = this.props.product; 
-    // if(productParentCategories.length > 0) {
-    //   this.setState({ typeProductCategory: productParentCategories[0]._id });
-    // }
     fetch(`/api/wake-up`)
       .then(res => {
         if (res.ok) {
@@ -76,7 +71,7 @@ class AddProduct extends Component {
       .get(`/api/product/category/${ownerId}`)
       .then(res => {
         let type = "";
-        if(res.data.productParentCategories.length > 0) type =res.data.productParentCategories[0]._id
+        if (res.data.productParentCategories.length > 0) type = res.data.productParentCategories[0]._id
         this.setState({
           listTypeProductCategory: res.data.productParentCategories,
           typeProductCategory: type,
@@ -95,9 +90,9 @@ class AddProduct extends Component {
   }
   _clearMsg = () => {
     this.refs.nameValidate.innerHTML = '';
-    this.refs.nameValidate1.classList.remove('is-invalid') 
+    this.refs.nameValidate1.classList.remove('is-invalid')
     this.refs.priceValidate.innerHTML = '';
-    this.refs.priceValidate1.classList.remove('is-invalid') 
+    this.refs.priceValidate1.classList.remove('is-invalid')
     this.refs.imageValidate.innerHTML = ''
     this.refs.typeProductValidate.innerHTML = '';
   }
@@ -110,20 +105,20 @@ class AddProduct extends Component {
       || this.state.typeProductCategory === '') {
       if (this.state.name === '') { this.refs.nameValidate.innerHTML = 'Vui lòng nhập tên sản phẩm'; this.refs.nameValidate1.classList.add('is-invalid') }
       if (this.state.price === '') { this.refs.priceValidate.innerHTML = 'Vui lòng nhập giá sản phẩm'; this.refs.priceValidate1.classList.add('is-invalid') }
-      if (this.state.images.length === 0) {this.refs.imageValidate.innerHTML = 'Vui lòng tải ảnh '}
-      if (this.state.typeProductCategory === '' ) { this.refs.typeProductValidate.innerHTML = 'Vui lòng tạo thêm thể loại'; }
-        return false;
-      }
-      let imagesUrl = this.state.images.map(item => item.url);
-      const newProduct = {
-        name: this.state.name,
-        ownerId: this.props.auth.user.user_id,
-        typeId: this.state.typeProductCategory,
-        description: this.state.description,
-        price: this.state.price,
-        images: imagesUrl
-      };
-      this.props.createProduct(newProduct, this.props.history);
+      if (this.state.images.length === 0) { this.refs.imageValidate.innerHTML = 'Vui lòng tải ảnh ' }
+      if (this.state.typeProductCategory === '') { this.refs.typeProductValidate.innerHTML = 'Vui lòng tạo thêm thể loại'; }
+      return false;
+    }
+    let imagesUrl = this.state.images.map(item => item.url);
+    const newProduct = {
+      name: this.state.name,
+      ownerId: this.props.auth.user.user_id,
+      typeId: this.state.typeProductCategory,
+      description: this.state.description,
+      price: this.state.price,
+      images: imagesUrl
+    };
+    this.props.createProduct(newProduct, this.props.history);
   }
 
   onCancel = (e) => {
@@ -208,7 +203,6 @@ class AddProduct extends Component {
 
   render() {
     const { loadingU, uploading, images, listTypeProductCategory } = this.state;
-    const { productParentCategories, loading } = this.props.product;
     const content = () => {
       switch (true) {
         case loadingU:
